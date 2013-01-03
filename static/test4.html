@@ -1,0 +1,341 @@
+<html>
+<head>
+<title>nothon</title>
+<link rel="stylesheet" href="/static/css/main.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/highlight.css" type="text/css" />
+</head>
+<body>
+<script type="text/javascript">
+	
+// http://stackoverflow.com/questions/4767848/get-caret-cursor-position-in-contenteditable-area-containing-html-content
+// http://stackoverflow.com/questions/3972014/get-caret-position-in-contenteditable-div
+// http://www.allwebdevhelp.com/javascript/js-help-tutorials.php?i=14882
+// http://forums.phpfreaks.com/topic/268622-place-cursor-at-end-of-line-in-editable-div/
+
+var active_div = null
+
+function generate_head_html(id) {
+	var html = ('<div id="div_head_header_' + id + '" class="div_head_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
+			'<div id="div_head_body_' + id + '" class="div_head_body"></div>')
+	return html
+}
+
+function generate_plot_html(id) {
+	var html = ('<div id="div_plot_header_' + id + '" class="div_plot_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
+				'<div id="div_plot_title_' + id + '" class="div_plot_title"></div>' +
+			'<div id="div_plot_body_' + id + '" class="div_plot_body"></div>')
+	return html
+}
+
+function generate_code_html(id) {
+	var html = ('<div id="div_code_header_' + id + '" class="div_code_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
+			'<div id="div_code_body_' + id + '" class="div_code_body"></div>')
+	return html
+}
+
+function generate_text_html(id) {
+	var html = ('<div id="div_text_header_' + id + '" class="div_text_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
+			'<div id="div_text_body_' + id + '" class="div_text_body"></div>')
+	return html
+}
+
+function xml_http_post(url, data, callback) {
+    var req = false;
+    try {
+        // Firefox, Opera 8.0+, Safari
+        req = new XMLHttpRequest();
+    }
+    catch (e) {
+        // Internet Explorer
+        try {
+            req = new ActiveXObject("Msxml2.XMLHTTP");
+        }
+        catch (e) {
+            try {
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch (e) {
+                alert("Your browser does not support AJAX!");
+                return false;
+            }
+        }
+    }
+    req.open("POST", url, true);
+    req.onreadystatechange = function() {
+        if (req.readyState == 4) {
+            callback(req);
+        }
+    }
+    req.send(data);
+}
+
+function toggle2(showHideDiv, switchTextDiv) {
+	var elem = document.getElementById(showHideDiv);
+	var text = document.getElementById(switchTextDiv);
+	if(elem.style.display == "block") {
+    		elem.style.display = "none";
+		text.innerHTML = "restore";
+  	}
+	else {
+		elem.style.display = "block";
+		text.innerHTML = "collapse";
+	}
+}
+
+function insertAfter(newElement, targetElement) {
+	var parent = targetElement.parentNode;
+	if(parent.lastchild == targetElement) {
+		parent.appendChild(newElement)
+	} else {
+		parent.insertBefore(newElement, targetElement.nextSibling)
+	}
+}
+
+function create_new_div(div_type, id, listener) {
+	var new_div = document.createElement("div")
+	new_div.id = id
+	console.log("id: " + id)
+	new_div.setAttribute("class", div_type)
+	if(listener) {
+		 addKeyPressListener(new_div, listener)
+	}
+	return new_div
+}
+
+function addKeyPressListener(divide, listener) {
+	if (typeof divide.addEventListener != "undefined") {
+		divide.addEventListener("keypress", listener, false);
+	} else if (typeof divide.attachEvent != "undefined") {
+		divide.attachEvent("onkeypress", listener);
+	}
+}
+
+function get_divs() {
+	var elems = document.getElementsByClassName("div_code_main")
+}
+
+function get_index(obj) {
+	var num = obj.split("_")
+	return parseInt(num[num.length-1])
+}
+
+function get_num(divide) {
+	var num = divide.id.split("_")
+	return parseInt(num[num.length-1])
+}
+
+function get_max_index(className) {
+	var elems = document.getElementsByClassName(className)
+	console.log(elems.length)
+	var num = 0
+	for(i=0; i < elems.length; i++) {
+		if(num < get_num(elems[i])) {
+			num = get_num(elems[i])
+		}
+	}
+	return num
+}
+
+function create_and_insert(className, position) {
+	if(active_div) position = active_div.id.replace('_header_', '_main_')
+
+	var num = get_max_index(className) + 1
+	var new_div = document.createElement("div")
+	new_div.setAttribute("class", className)
+	new_div.id = className + '_' + num
+	if (className == "div_head_main") {
+		new_div.innerHTML = generate_head_html(num)
+	} else if (className == "div_plot_main") {
+		new_div.innerHTML = generate_plot_html(num)
+	} else if (className == "div_text_main") {
+		new_div.innerHTML = generate_text_html(num)
+	} else if (className == "div_code_main") {
+		new_div.innerHTML = generate_code_html(num)
+	}
+	insertAfter(new_div, document.getElementById(position))
+	document.getElementById(className.replace('_main', '_header_'+num)).focus()
+}
+
+function generic_keypress(event) {
+	console.log(event.target.id)
+	if (event.which === 13 && event.ctrlKey) {
+		if(event.target.id.substring(0, 16) == "div_head_header_") {
+			head_data(event.target)
+		} else if(event.target.id.substring(0, 16) == "div_plot_header_") {
+			plot_data(event.target)
+		} else if(event.target.id.substring(0, 16) == "div_code_header_") {
+			code_data(event.target)
+		} else if(event.target.id.substring(0, 16) == "div_text_header_") {
+			text_data(event.target)
+		}
+		return false
+	}
+	if (event.which === 13 && event.shiftKey) {
+		if(event.target.id.substring(0, 12) == "head_header_") {
+			var header_num = get_max_index(event.target.className)
+			var new_div = create_new_div("div_header", "head_header_" + (header_num + 1), generic_keypress)
+			console.log('target')
+			var elem = document.getElementById("head_body_" + (get_num(event.target) + 1))
+			if (!elem) { elem = document.getElementById("header_" + get_num(event.target)) }
+			insertAfter(new_div, elem)
+			//new_div.innerHTML = "header"
+			new_div.contentEditable = "true";
+			new_div.focus()
+			header_data(event.target)
+			set_active(new_div)
+		}
+		return false
+	}
+	return true
+}
+
+function plot_keypress(event) {	
+	if (event.which === 13 && event.ctrlKey) {
+		// execute plot
+		plot_data(event.target)
+		return false
+	} else if (event.which === 13 && event.shiftKey) {
+		// Insert new plot box
+		var plot_num = get_max_index("div_plot")
+		var new_parent = create_new_div("div_plot", "plot_" + (plot_num + 1), false)
+		var elem = document.getElementById("plot_body_" + get_num(event.target))
+		insertAfter(new_parent, elem)
+		var new_div = document.createElement("div")
+		new_div.id = "plot_header_" + (plot_num + 1)
+		addKeyPressListener(new_div, plot_keypress)
+		new_div.innerHTML = "plot("
+		//new_div.setSelectionRange(5, 5);
+		new_div.contentEditable = true
+		new_div.focus()
+		set_active(new_div)
+		new_parent.appendChild(new_div)
+		plot_data(event.target)
+		//new_div.scrollTop = new_div.scrollHeight
+		return false
+	}
+
+	return true
+	//else if (charCode == 42) {
+		//event.returnValue = false
+	//}
+}
+
+function plot_data(div_data) {
+	var message = new Object()
+	message.type = "plot"
+	message.id = div_data.id
+	message.title = document.title
+	message.content = div_data.innerHTML
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), plot_handler)
+}
+
+function plot_handler(req) {
+	var message = JSON.parse(req.responseText)
+	document.getElementById(message.title_target).innerHTML = message.title
+	// TODO: check, if the plot has been created! In not, put out a warning!
+	if(!document.getElementById('img_' + message.target)) {
+		var elem = document.createElement("img")
+		// TODO: attach right mouse click to object
+		elem.id = 'img_' + message.target
+	} else {
+		var elem = document.getElementById('img_' + message.target)
+	}
+	document.getElementById(message.target).appendChild(elem)
+	elem.src = "data:image/png;base64," + message.image_data
+	elem.style.width = "60%"
+}
+
+function head_data(div_data) {
+	var message = new Object()
+	message.type = "test"
+	message.id = div_data.id
+	message.content = div_data.innerHTML
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), head_handler)
+}
+
+function head_handler(req) {
+	var message = JSON.parse(req.responseText)
+	var header_div = document.getElementById(message.target)
+	header_div.innerHTML = message.content
+	header_div.scrollTop = header_div.scrollHeight
+}
+
+function code_data(div_data) {
+	var message = new Object()
+	message.type = "code"
+	message.id = div_data.id
+	message.content = div_data.innerHTML
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), code_handler)
+}
+
+function code_handler(req) {
+	var message = JSON.parse(req.responseText)
+	var elem = document.getElementById(message.target_pos)
+	if(!document.getElementById(message.target)) {
+		var header_div = create_new_div("div_header_data", message.target, false)
+		insertAfter(header_div, elem)
+	} else {
+		header_div = document.getElementById(message.target)
+	}
+	header_div.innerHTML = message.content
+	header_div.scrollTop = header_div.scrollHeight
+}
+
+function test_button() {
+//	 console.log(active_div.id)
+	var elem = document.getElementById(active_div.id)
+	var data = elem.innerHTML
+    xml_http_post("http://127.0.0.1:8080/", data, test_handle)
+}
+
+function test_handle(req) {
+	var plot_id = active_div.id.split("_")
+	var elem = document.getElementById("plot_" + plot_id[1])
+	elem.src = "data:image/png;base64," + req.responseText
+}
+
+function delay_ms(ms) {
+	var date = new Date();
+	var curDate = null;
+	do { 
+		curDate = new Date(); 
+	} while(curDate-date < ms);
+}
+
+function set_active(id) {
+	active_div = id
+}
+
+function text_keypress(event) {
+	console.log(event.target.id)
+	console.log(event.which)
+	var elem = document.getElementById(event.target.id)
+	var text = elem.innerHTML
+	console.log(text)
+
+	if ((event.which || event.keyCode) == 42) {	// *
+		var elem = document.getElementById(event.target.id)
+		var text = elem.innerHTML
+		console.log(text)
+		var idx = text.indexOf('*')
+		if (idx >= 0) {
+			var new_string = text.slice(0, idx) + '<strong>' + text.slice(idx+1, -1) + '</strong>'
+			elem.innerHTML = new_string
+			return false
+		} else { return true }
+	} else {
+		return true
+	}
+}
+</script>
+<aside>
+</aside>
+<article>
+<button onclick="create_and_insert('div_head_main', 'dummy');">head</button>
+<button onclick="create_and_insert('div_plot_main', 'dummy');">plot</button>
+<button onclick="create_and_insert('div_code_main', 'dummy');">code</button>
+<button onclick="create_and_insert('div_text_main', 'dummy');">text</button>
+<div id="dummy"></div>
+</article>
+</body>
+</html>
