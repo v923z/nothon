@@ -17,4 +17,17 @@ render mathematical formulae and so on.
 The body of a unit (text, plot, etc) can be made hidden by clicking on the gray outline 
 on the right hand side. The body will re-appear, if one clicks on the gray area once more.
 
+Plots can be created by simply calling 
+
+	plot(sin(x))
+
+This will automatically create an array by calling x = linspace(-10, 10, 100). If this range 
+(or frequency) is not appropriate for a particular plot, the user can override it by specifically 
+sending 
+
+	x = linspace(0, 2, 1000)
+	plot(sin(x))
+
+to the server. 
+
 By pressing "save", the stripped content of the notebook will be written to nothon.note.
