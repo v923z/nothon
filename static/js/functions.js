@@ -113,9 +113,10 @@ function get_mouse_pos(event) {
 	console.log(elem.id)
 	console.log(event.layerX)
 	console.log(event.layerY)
-	if(elem.id.indexOf('_main_') != -1) 
-	var elem = document.getElementById(elem.id.replace('_main_', '_body_'))
-	toggle_show_hide(elem)
+	if(elem.id.indexOf('_main_') != -1) {
+		var elem = document.getElementById(elem.id.replace('_main_', '_body_'))
+		toggle_show_hide(elem)
+	}
 }
 
 function create_and_insert(className, position) {
