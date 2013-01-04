@@ -105,11 +105,38 @@ def texteval(message):
 	return simplejson.dumps({'target' : message['id'], 
 							'success' : 'success', 
 							'content' : result})
+def remove_mathjax(string):
+    out_string = ''
+    first = string.index('<span class="MathJax_Preview">')
+    if first < 0:
+        return string
+    
+    while True:    
+        first = string.find('<span class="MathJax_Preview">')
+        if first < 0:
+            out_string += string
+            break
+        out_string += string[:first]
+        
+        second = string[first:].find('<script id=')
+        last = string[first:].find('</script>')
+        new_string = string[first+second:first+last]
+        if new_string.find("mode=display") > -1:
+            f = new_string.find("mode=display")
+            out_string += '\[\n' + new_string[f:].replace('mode=display">', '', 1) + '\n\]\n'
+        else:
+            f = new_string.find('math/tex')
+            print new_string
+            out_string += '\(' + new_string[f:].replace('math/tex">', '', 1) + '\)'
+            
+        string = string[first+last:].replace('</script>', '', 1)
+        
+    return out_string
 
 def save_page(message):
 	print message['content']
 	fout = open(message['title'] + '.note', 'w')
-	fout.write(message['content'].replace('<br>','\n'))
+	fout.write(remove_mathjax(message['content'].replace('<br>','\n')))
 	fout.close()
 	return  simplejson.dumps({'success' : 'success'})
 
