@@ -107,7 +107,7 @@ def texteval(message):
 							'content' : result})
 def remove_mathjax(string):
     out_string = ''
-    first = string.index('<span class="MathJax_Preview">')
+    first = string.find('<span class="MathJax_Preview">')
     if first < 0:
         return string
     
