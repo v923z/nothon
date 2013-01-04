@@ -11,7 +11,7 @@ An active div can be removed by clicking on remove.
 Mathematical formulae can be inserted in a text box by enclosing a LaTeX expression between 
 $$...$$ (display style), or between \\(...\\) (inline style). 
 
-Units can be "executed" by pressing Cntr+Enter. This will collect the head/tail of files, 
+Units can be "executed" by pressing `Cntr+Enter`. This will collect the head/tail of files, 
 render mathematical formulae and so on. 
 
 The body of a unit (text, plot, etc) can be made hidden by clicking on the gray outline 
@@ -28,6 +28,7 @@ sending
 	x = linspace(0, 2, 1000)
 	plot(sin(x))
 
-to the server. 
+to the server. Note that no error checking is done at the moment, so if the syntax is wrong, nothing 
+will happen. This will be fixed in a future version. 
 
-By pressing "save", the stripped content of the notebook will be written to nothon.note.
+By pressing "save", the stripped content of the notebook will be written to nothon.note. 
