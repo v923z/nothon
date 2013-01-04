@@ -60,16 +60,12 @@ function xml_http_post(url, data, callback) {
     req.send(data);
 }
 
-function toggle2(showHideDiv, switchTextDiv) {
-	var elem = document.getElementById(showHideDiv);
-	var text = document.getElementById(switchTextDiv);
+function toggle_show_hide(elem) {
 	if(elem.style.display == "block") {
-    		elem.style.display = "none";
-		text.innerHTML = "restore";
+    	elem.style.display = "none";
   	}
 	else {
 		elem.style.display = "block";
-		text.innerHTML = "collapse";
 	}
 }
 
@@ -112,12 +108,25 @@ function get_max_index(className) {
 	return num
 }
 
+function get_mouse_pos(event) {
+	var elem = event.target
+	console.log(elem.id)
+	console.log(event.layerX)
+	console.log(event.layerY)
+	if(elem.id.indexOf('_main_') != -1) 
+	var elem = document.getElementById(elem.id.replace('_main_', '_body_'))
+	toggle_show_hide(elem)
+}
+
 function create_and_insert(className, position) {
 	if(active_div) position = active_div.id.replace('_header_', '_main_')
 
 	var num = get_max_index(className) + 1
 	var new_div = document.createElement("div")
+	new_div.id = className + '_' + num
 	new_div.setAttribute("class", className)
+	new_div.addEventListener("click", get_mouse_pos, false)
+	
 	new_div.id = className + '_' + num
 	if (className == "div_head_main") {
 		new_div.innerHTML = generate_head_html(num)
