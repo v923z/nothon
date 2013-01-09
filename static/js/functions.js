@@ -316,30 +316,42 @@ function text_keypress(event) {
 	}
 }
 
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
 function get_divs() {
 	var message_string = ''
-	var elems = document.getElementsByTagName("*")
+	var elems = document.getElementById('docmain').getElementsByTagName("*")
 	for(i=0; i < elems.length; i++) {
-		if(elems[i].getAttribute('class') == 'div_plot_main') {
-			message_string += strip_plot(get_num(elems[i]))
+		if(endsWith(elems[i].className, '_main')) {
+			message_string += block_content(elems[i]) 
 		}
-		if(elems[i].getAttribute('class') == 'div_text_main') {
-			message_string += strip_text(get_num(elems[i]))
-		}		
 	}
 	return message_string
 }
 
-function strip_plot(idx) {
-	var head = document.getElementById('div_plot_header_' + idx).innerHTML
-	var title = document.getElementById('div_plot_title_' + idx).innerHTML
-	return '<plot ' + idx + '>\n<head>' + head + '</head>\n<title>' + title + '</title>\n</plot>\n'
-}
-
-function strip_text(idx) {
-	var head = document.getElementById('div_text_header_' + idx).innerHTML
-	var title = document.getElementById('div_text_body_' + idx).innerHTML
-	return '<text ' + idx + '>\n<head>' + head + '</head>\n<body>' + title + '</body>\n</text ' + idx + '>\n'
+function block_content(elem) {
+	var header = document.getElementById(elem.id.replace('_main_', '_header_')).innerHTML
+	var title = document.getElementById(elem.id.replace('_main_', '_title_')).innerHTML
+	var body = document.getElementById(elem.id.replace('_main_', '_body_')).innerHTML
+	var container = document.getElementById(elem.id.replace('_main_', '_container_')).innerHTML
+	console.log(elem.className)
+	if(elem.className == 'div_plot_main') {
+		return '<plot>\n<header>' + header + '</header>\n<title>' + title + '</title>\n</plot>\n'
+	}
+	if(elem.className == 'div_text_main') {
+		return '<text>\n<header>' + header + '</header>\n<body>' + body + '\n</body>\n</text>\n'
+	}
+	if(elem.className == 'div_head_main') {
+		return '<head>\n<header>' + header + '</header>\n<title>' + title + '</title>\n<body>' + body + '\n</body>\n</head>\n'
+	}
+	if(elem.className == 'div_code_main') {
+		return '<code>\n<header>' + header + '</header>\n<title>' + title + '</title>\n<body>' + container + '\n </body>\n</code>\n'
+	}
+	else {
+		return
+	}
 }
 
 function save() {
@@ -356,7 +368,6 @@ function save_handler(req) {
 function save_html() {
 	var message = create_message('', "savehtml")
 	message.title = document.title
-	console.log(document.documentElement.innerHTML)
 	message.content = document.getElementById('docmain').innerHTML
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), save_handler)
 }
