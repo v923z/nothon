@@ -1,0 +1,28 @@
+$def with (title, aside, content)
+<html>
+<head>
+<title>$title</title>
+<link rel="stylesheet" href="/static/css/main.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/highlight.css" type="text/css" />
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+<script type="text/javascript" src="/static/js/functions.js"></script>
+<body>
+<aside>
+	$aside
+</aside>
+<article>
+<input type="button" class="button" onclick="create_and_insert('div_head_main', 'dummy');" value="head">
+<input type="button" class="button" onclick="create_and_insert('div_plot_main', 'dummy');" value="plot">
+<input type="button" class="button" onclick="create_and_insert('div_code_main', 'dummy');" value="code">
+<input type="button" class="button" onclick="create_and_insert('div_text_main', 'dummy');" value="text">
+<input type="button" class="button" onclick="save();" value="save">
+<input type="button" class="button" onclick="save_html();" value="html">
+<input type="button" class="button" onclick="delete_block();" value="remove">
+<div id="dummy"></div>
+$:content
+</article>
+</body>
+</html>

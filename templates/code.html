@@ -1,0 +1,16 @@
+$def with (id, code_title, code_header, code_body, code_container)
+$ tid = 'div_code_title_%s'%(id)
+$ hid = 'div_code_header_%s'%(id)
+$ bid = 'div_code_body_%s'%(id)
+$ cid = 'div_code_container_%s'%(id)
+
+<div id="$hid" class="div_code_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);">
+$code_header
+</div>
+<div id="$bid" class="div_code_body">
+$:code_body
+</div>
+<div id="$cid" class="div_code_container">
+$code_container	
+</div>
+

@@ -1,0 +1,10 @@
+$def with (id, header_head, header_body)
+$ hid = 'div_head_header_%s'%(id)
+$ bid = 'div_head_body_%s'%(id)
+
+<div id="$hid" class="div_head_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);">
+$header_head
+</div>
+<div id="$bid" class="div_head_body">
+$header_body			
+</div>
