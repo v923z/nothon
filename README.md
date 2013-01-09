@@ -14,8 +14,11 @@ the document can be moved up or down by clicking on the up or down arrow on the 
 Mathematical formulae can be inserted in a text box by enclosing a LaTeX expression between 
 $$...$$ (display style), or between \\(...\\) (inline style). 
 
-Units can be "executed" by pressing `Cntr+Enter`. This will collect the head/tail of files, 
-render mathematical formulae and so on. 
+Headers are evaluated by pressing `Enter`. This will move the cursor to the body of a text header, 
+or send a request to the server for a code or head header. 
+
+Units can be "executed" by pressing `Cntr+Enter`. This will collect render mathematical formulae, 
+or execute a plot. 
 
 The body of a unit (text, plot, etc) can be made hidden by clicking on the gray outline 
 on the right hand side. The body will re-appear, if one clicks on the gray area once more.
