@@ -21,8 +21,11 @@ $def with (title, aside, content)
 <input type="button" class="button" onclick="save();" value="save">
 <input type="button" class="button" onclick="save_html();" value="html">
 <input type="button" class="button" onclick="delete_block();" value="remove">
-<div id="dummy"></div>
+<div id="docmain">
 $:content
+</div>
+<div class="div_trash" id="trash">
+</div>
 </article>
 </body>
 </html>
