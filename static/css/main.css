@@ -196,6 +196,7 @@ div_plot_container, .div_head_container, .div_code_container, .div_text_containe
 	background: #eeffee;
 	margin-top: 1px;
 	min-height:  1.2em;
+	word-wrap: break-word;
 }
 
 .div_text_header:focus {

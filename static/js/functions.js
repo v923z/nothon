@@ -177,8 +177,8 @@ function create_and_insert(className, position) {
 
 function generic_keypress(event) {
 	console.log(event.target.id)
-	console.log(event.target.startOffset)
-	
+	//console.log(event.target.startOffset)
+	console.log(window.getSelection().getRangeAt(0))
 	if (event.which === 13 && event.ctrlKey) {
 		if(event.target.id.substring(0, 16) == "div_head_header_") {
 			head_data(event.target)
@@ -196,6 +196,19 @@ function generic_keypress(event) {
 	if (event.which === 13 && event.shiftKey) {
 		if(event.target.id.substring(0, 16) == "div_head_header_") {
 		}
+		return false
+	}
+	if(event.which === 13 && event.target.className == "div_code_header") {
+			code_data(event.target)
+			return false
+	}
+	if(event.which === 13 && event.target.className == "div_head_header") {
+			head_data(event.target)
+			return false
+	}
+	if (event.which === 13 && event.target.className == 'div_text_header') {
+		document.getElementById(event.target.id.replace('_header_', '_body_')).focus()
+		//event.target.nextSibling.focus()
 		return false
 	}
 	return true
@@ -234,19 +247,20 @@ function plot_data(div_data) {
 function plot_handler(req) {
 	var message = JSON.parse(req.responseText)
 	document.getElementById(message.title_target).innerHTML = message.title
+	var target = message.target.replace('_plot_header_', '_plot_body_')
 	// TODO: check, if the plot has been created! If not, put out a warning!
-	if(!document.getElementById('img_' + message.target)) {
+	if(!document.getElementById('img_' + target)) {
 		var elem = document.createElement("img")
 		// TODO: attach right mouse click to object
-		elem.id = 'img_' + message.target
+		elem.id = 'img_' + target
 	} else {
-		var elem = document.getElementById('img_' + message.target)
+		var elem = document.getElementById('img_' + target)
 	}
-	document.getElementById(message.target).appendChild(elem)
+	document.getElementById(target).appendChild(elem)
 	elem.src = "data:image/png;base64," + message.image_data
 	elem.style.width = "60%"
-	console.log(message.target)
-	elem.scrollTop = message.target.scrollHeight
+	console.log(target)
+	elem.scrollTop = target.scrollHeight
 }
 
 function head_data(div_data) {
@@ -268,8 +282,10 @@ function code_data(div_data) {
 
 function code_handler(req) {
 	var message = JSON.parse(req.responseText)
-	var elem = document.getElementById(message.target)
+	var elem = document.getElementById(message.target.replace('_code_header_', '_code_body_'))
+	var container = document.getElementById(message.target.replace('_code_header_', '_code_container_'))
 	elem.innerHTML = message.content
+	container.innerHTML = message.raw
 	elem.scrollTop = elem.scrollHeight
 }
 
