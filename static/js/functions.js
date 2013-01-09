@@ -7,26 +7,33 @@ var active_div = null
 
 function generate_head_html(id) {
 	var html = ('<div id="div_head_header_' + id + '" class="div_head_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-			'<div id="div_head_body_' + id + '" class="div_head_body"></div>')
+			'<div id="div_head_title_' + id + '" class="div_head_title"></div>' +
+			'<div id="div_head_body_' + id + '" class="div_head_body"></div>' + 
+			'<div id="div_head_container_' + id + '" class="div_head_container"></div>')
 	return html
 }
 
 function generate_plot_html(id) {
 	var html = ('<div id="div_plot_header_' + id + '" class="div_plot_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
 				'<div id="div_plot_title_' + id + '" class="div_plot_title"></div>' +
-			'<div id="div_plot_body_' + id + '" class="div_plot_body"></div>')
+			'<div id="div_plot_body_' + id + '" class="div_plot_body" onfocus="set_active(this);"></div>' + 
+			'<div id="div_plot_container_' + id + '" class="div_plot_container"></div>')
 	return html
 }
 
 function generate_code_html(id) {
 	var html = ('<div id="div_code_header_' + id + '" class="div_code_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-			'<div id="div_code_body_' + id + '" class="div_code_body"></div>')
+			'<div id="div_code_title_' + id + '" class="div_code_title"></div>' + 
+			'<div id="div_code_body_' + id + '" class="div_code_body"></div>' + 
+			'<div id="div_code_container_' + id + '" class="div_code_container"></div>')
 	return html
 }
 
 function generate_text_html(id) {
 	var html = ('<div id="div_text_header_' + id + '" class="div_text_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-			'<div id="div_text_body_' + id + '" class="div_text_body" contenteditable="true" onkeypress="return generic_keypress(event);"></div>')
+			'<div id="div_text_title_' + id + '" class="div_text_title"></div>' + 
+			'<div id="div_text_body_' + id + '" class="div_text_body" contenteditable="true" onkeypress="return generic_keypress(event);"></div>' + 
+			'<div id="div_text_container_' + id + '" class="div_text_container"></div>')
 	return html
 }
 
@@ -60,13 +67,37 @@ function xml_http_post(url, data, callback) {
     req.send(data);
 }
 
+function move(where) {
+	if(!active_div) return
+	position = active_div.parentNode
+	if(where == 'up' && document.getElementById('docmain').firstChild.id != position.id) {
+		position.parentNode.insertBefore(position, position.previousSibling)
+	}
+	if(where == 'down' && document.getElementById('docmain').lastChild.id != position.id) {
+		position.nextSibling.parentNode.insertBefore(position.nextSibling, position)
+	}
+	active_div.focus()
+}
+
 function toggle_show_hide(elem) {
+	if(elem.className == 'div_plot_main') {
+		var elem = document.getElementById(elem.id.replace('_main_', '_header_'))
+		console.log(elem.id)
+		active_div = document.getElementById(elem.id.replace('_header_', '_body_'))
+	}
+	else {
+		var elem = document.getElementById(elem.id.replace('_main_', '_body_'))
+		console.log(elem.id)
+		active_div = document.getElementById(elem.id.replace('_body_', '_header_'))
+	}
 	if(elem.style.display == "block") {
     	elem.style.display = "none";
   	}
 	else {
 		elem.style.display = "block";
 	}
+	console.log('active', active_div.id)
+	active_div.focus()	
 }
 
 function insertAfter(newElement, targetElement) {
@@ -110,18 +141,18 @@ function get_max_index(className) {
 
 function get_mouse_pos(event) {
 	var elem = event.target
-	console.log(elem.id)
-	console.log(event.layerX)
-	console.log(event.layerY)
 	if(elem.id.indexOf('_main_') != -1) {
-		var elem = document.getElementById(elem.id.replace('_main_', '_body_'))
 		toggle_show_hide(elem)
 	}
 }
 
 function create_and_insert(className, position) {
-	if(active_div) position = active_div.id.replace('_header_', '_main_')
+//	if(active_div) position = active_div.id.replace('_header_', '_main_')
+	if(active_div) position = active_div.parentNode
+//	else position = document.getElementById('menucontainer-right')
 
+	else position = document.getElementById('docmain')
+	
 	var num = get_max_index(className) + 1
 	var new_div = document.createElement("div")
 	new_div.id = className + '_' + num
@@ -138,12 +169,16 @@ function create_and_insert(className, position) {
 	} else if (className == "div_code_main") {
 		new_div.innerHTML = generate_code_html(num)
 	}
-	insertAfter(new_div, document.getElementById(position))
+	//insertAfter(new_div, document.getElementById(position))
+	if(active_div) insertAfter(new_div, position)
+	else position.appendChild(new_div)
 	document.getElementById(className.replace('_main', '_header_'+num)).focus()
 }
 
 function generic_keypress(event) {
 	console.log(event.target.id)
+	console.log(event.target.startOffset)
+	
 	if (event.which === 13 && event.ctrlKey) {
 		if(event.target.id.substring(0, 16) == "div_head_header_") {
 			head_data(event.target)
@@ -199,7 +234,7 @@ function plot_data(div_data) {
 function plot_handler(req) {
 	var message = JSON.parse(req.responseText)
 	document.getElementById(message.title_target).innerHTML = message.title
-	// TODO: check, if the plot has been created! In not, put out a warning!
+	// TODO: check, if the plot has been created! If not, put out a warning!
 	if(!document.getElementById('img_' + message.target)) {
 		var elem = document.createElement("img")
 		// TODO: attach right mouse click to object
@@ -306,12 +341,21 @@ function save_html() {
 	var message = create_message('', "savehtml")
 	message.title = document.title
 	console.log(document.documentElement.innerHTML)
-	message.content = document.documentElement.innerHTML
+	message.content = document.getElementById('docmain').innerHTML
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), save_handler)
 }
 
 function delete_block() {
-	var elem = active_div.parentNode
-	console.log(elem.id)
-	elem.parentNode.removeChild(elem)
+	if(active_div) {
+		var elem = active_div.parentNode
+		document.getElementById('trash').appendChild(elem)
+		active_div = null
+	}
+}
+
+function recover_block() {
+	var elem = document.getElementById('trash').lastChild
+	if(elem) {
+		document.getElementById('docmain').appendChild(elem)
+	}
 }
