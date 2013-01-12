@@ -8,9 +8,10 @@ http://127.0.0.1:8080/static/test.html
 A new div can be added by clicking on the appropriate under the + sign on the right hand side. 
 The active div can be removed by clicking on remove. This operation moves the divide to the trash, 
 which is part of the document, but is a hidden divide. (The trash can be made visible by clicking on 
-the trashbin icon on the lower right corner.) By clicking on recover, the last block in the 
-trash is restored to the visible part of the document, and is inserted as the last divide. Blocks of 
-the document can be moved up or down by clicking on the up or down arrow on the right hand side. 
+the trashbin icon on the lower right corner.) By clicking on recover, either the active block of 
+the trashbin, or if that does not exist, then the last block in the trash is restored to the visible 
+part of the document, and is inserted as the last divide. Blocks of the document can be moved up or 
+down by clicking on the up or down arrow on the right hand side. 
 
 Mathematical formulae can be inserted in a text box by enclosing a LaTeX expression between 
 $$...$$ (display style), or between \\(...\\) (inline style). 
@@ -39,3 +40,5 @@ to the server. Note that no error checking is done at the moment, so if the synt
 will happen. This will be fixed in a future version. 
 
 By pressing "save", the stripped content of the notebook will be written to nothon.note. 
+
+Using "html" produces the stand-alone html document nothon.html. 
