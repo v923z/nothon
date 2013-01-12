@@ -223,7 +223,8 @@ div_plot_container, .div_head_container, .div_code_container, .div_text_containe
 */
 
 .div_trash {
-	display: 	hidden;
+	display: 	none;
+	background:	#ffe699;
 }
 
 .div_trash_image {
