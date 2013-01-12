@@ -380,6 +380,7 @@ function delete_block() {
 		document.getElementById('trash').appendChild(elem)
 		active_div = null
 	}
+	// This has to be fixed at one point.
 	//document.getElementById('trash_image').style.background="url('trashbin_full.png')"
 }
 
