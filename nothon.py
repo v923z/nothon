@@ -12,7 +12,7 @@ from pygments.formatters import HtmlFormatter
 # http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
 # http://www.codinghorror.com/blog/2009/11/parsing-html-the-cthulhu-way.html
 # http://stackoverflow.com/questions/9662346/python-code-to-remove-html-tags-from-a-string
-import helper
+#import helper
 from pylab import *
 
 urls = ('/',  'Index')
@@ -243,7 +243,7 @@ def save_html(message):
 	return  simplejson.dumps({'success' : 'success'})
 
 class Index(object):
-	render_note('nothon.note')
+	#render_note('nothon.note')
 
 	def GET(self):
 		link = web.input(name='/static/test.html')
