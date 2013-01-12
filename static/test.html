@@ -9,18 +9,31 @@
 </head>
 <script type="text/javascript" src="/static/js/functions.js"></script>
 <body>
-
 <aside>
 </aside>
 <article>
-<input type="button" class="button" onclick="create_and_insert('div_head_main', 'dummy');" value="head">
-<input type="button" class="button" onclick="create_and_insert('div_plot_main', 'dummy');" value="plot">
-<input type="button" class="button" onclick="create_and_insert('div_code_main', 'dummy');" value="code">
-<input type="button" class="button" onclick="create_and_insert('div_text_main', 'dummy');" value="text">
-<input type="button" class="button" onclick="save();" value="save">
-<input type="button" class="button" onclick="save_html();" value="html">
-<input type="button" class="button" onclick="delete_block();" value="remove">
-<div id="dummy"></div>
+<div class="div_trash_image" id="trash_image" onclick="trash_click();">
+</div>
+<div id="menucontainer-right">
+<div class="menu" onclick="move('up');"><img src="./css/up-arrow.png"  width="40%"></div>
+<div class="menu"><img src="./css/add.png" width="40%">
+<ul>
+	<li onclick="create_and_insert('div_text_main', 'dummy');">text</li>
+	<li onclick="create_and_insert('div_plot_main', 'dummy');">plot</li>
+	<li onclick="create_and_insert('div_head_main', 'dummy');">header</li>
+	<li onclick="create_and_insert('div_code_main', 'dummy');">code</li>
+	<li onclick="save();">save</li>
+	<li onclick="save_html();" >html</li>
+	<li onclick="delete_block();">remove</li>
+	<li onclick="recover_block();">recover</li>
+</ul>
+</div>
+<div class="menu" onclick="move('down');"><img src="./css/down-arrow.png" width="40%"></div>
+</div>
+<div id="docmain">
+</div>
+<div id="trash" class="div_trash">
+</div>
 </article>
 </body>
 </html>
