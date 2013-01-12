@@ -386,3 +386,8 @@ function recover_block() {
 		document.getElementById('docmain').appendChild(elem)
 	}
 }
+
+function trash_click() {
+	var elem = document.getElementById('trash')
+	toggle_show_hide(elem)
+}
