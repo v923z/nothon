@@ -235,10 +235,18 @@ def save_page(message):
 	return  simplejson.dumps({'success' : 'success'})
 
 def save_html(message):
+	fin = open('static/css/main.css', 'r')
+	css = fin.read()
+	fin.close()
+	fin = open('static/css/highlight.css', 'r')
+	css += fin.read()
+	fin.close()
+	print message['content']
 	# TODO: If the source of the page has a link to an image, either on disc, or on the web, 
 	# then that has to be resolved, and the base64 representation inserted in the html file.
 	fout = open(message['title'] + '.html', 'w')
-	fout.write(message['content'])
+	# The aside (third argument) could be used for adding a table of contents to the page later on
+	fout.write(str(render.saved_document(message['title'], css, 'aside', message['content'])))
 	fout.close()
 	return  simplejson.dumps({'success' : 'success'})
 

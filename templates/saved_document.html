@@ -1,0 +1,22 @@
+$def with (title, css, aside, content)
+<html>
+<head>
+<title>$title</title>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<style type="text/css">
+$:css
+</style>
+</head>
+<body>
+<aside>
+	$aside
+</aside>
+<article>
+<div id="docmain">
+$:content
+</div>
+</article>
+</body>
+</html>
