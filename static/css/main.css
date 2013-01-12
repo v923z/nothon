@@ -223,7 +223,18 @@ div_plot_container, .div_head_container, .div_code_container, .div_text_containe
 */
 
 .div_trash {
-	display: none;
+	display: 	hidden;
+}
+
+.div_trash_image {
+	width:				40px;
+	height:				40px;
+	position: 			fixed;
+	bottom:				0px;
+	right:				0px;
+	display: 			block;
+	background-image: 	url('trashbin_empty.png');
+	background-size:	contain;
 }
 
 #menucontainer-right {
