@@ -225,6 +225,10 @@ def remove_mathjax(string):
 
 	return out_string
 
+def raw_text(message):
+	return simplejson.dumps({'target' : message['id'],
+							'content' : remove_mathjax(message['content'])})
+
 def save_page(message):
 	" Writes the stipped document content to disc "
 	
@@ -279,7 +283,10 @@ class Index(object):
 			
 		if message['type'] == 'savehtml':
 			return save_html(message)
-
+			
+		if message['type'] == 'raw_text':
+			return raw_text(message)
+			
 		else:
 			return simplejson.dumps(message)
 

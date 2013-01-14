@@ -79,8 +79,18 @@ function move(where) {
 	active_div.focus()
 }
 
-function toggle_show_hide(elem) {
-	if(elem.className == 'div_plot_main') {
+function toggle_show_hide(event) {
+	var elem = event.target
+	console.log(event.pageX - elem.offsetLeft, elem.className)
+	if(event.pageY - elem.offsetTop > 15 && elem.className == 'div_text_main') {
+		var elem = document.getElementById(elem.id.replace('_main_', '_body_'))
+		raw_text(elem)
+		return
+	}
+	if(elem.id == 'trash_image') {
+		var elem = document.getElementById('trash')
+	}
+	else if(elem.className == 'div_plot_main') {
 		var elem = document.getElementById(elem.id.replace('_main_', '_header_'))
 		console.log(elem.id)
 		active_div = document.getElementById(elem.id.replace('_header_', '_body_'))
@@ -140,9 +150,9 @@ function get_max_index(className) {
 }
 
 function get_mouse_pos(event) {
-	var elem = event.target
-	if(elem.id.indexOf('_main_') != -1) {
-		toggle_show_hide(elem)
+//	console.log(event.pageX - elem.offsetLeft, event.pageY - elem.offsetTop)
+	if(event.target.id.indexOf('_main_') != -1) {
+		toggle_show_hide(event)
 	}
 }
 
@@ -181,7 +191,7 @@ function generic_keypress(event) {
 	console.log(event.target.id)
 	//console.log(event.target.startOffset)
 	console.log(window.getSelection().getRangeAt(0))
-	if (event.which === 13 && event.ctrlKey) {
+	if (event.which === 13 && event.ctrlKey) {	// Enter
 		if(event.target.id.substring(0, 16) == "div_head_header_") {
 			head_data(event.target)
 		} else if(event.target.id.substring(0, 16) == "div_plot_header_") {
@@ -238,6 +248,15 @@ function evaluate_text_handler(req) {
 	document.getElementById(message.target).innerHTML += message.content + '<br>aadasd'
 	var math = document.getElementById(message.target);
 	MathJax.Hub.Queue(["Typeset", MathJax.Hub, math]);
+}
+
+function raw_text(div_data) {
+	var message = create_message(div_data, "raw_text")
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), raw_text_handler)
+}
+
+function raw_text_handler(req) {
+	head_handler(req)
 }
 
 function plot_data(div_data) {
@@ -394,9 +413,4 @@ function recover_block() {
 	if(elem) {
 		document.getElementById('docmain').appendChild(elem)
 	}
-}
-
-function trash_click() {
-	var elem = document.getElementById('trash')
-	toggle_show_hide(elem)
 }
