@@ -14,7 +14,9 @@ part of the document, and is inserted as the last divide. Blocks of the document
 down by clicking on the up or down arrow on the right hand side. 
 
 Mathematical formulae can be inserted in a text box by enclosing a LaTeX expression between 
-$$...$$ (display style), or between \\(...\\) (inline style). 
+$$...$$ (display style), or between \\(...\\) (inline style). The raw LaTeX code can be retrieved 
+from the server by clicking on the gray shaded area next to the **body** of the text. By clicking 
+on the header of the text, the body will become hidden. 
 
 Headers are evaluated by pressing `Enter`. This will move the cursor to the body of a text header, 
 or send a request to the server for a code or head header. 
