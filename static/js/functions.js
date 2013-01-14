@@ -235,8 +235,7 @@ function create_message(div_data, message_type) {
 }
 
 function evaluate_text(div_data) {
-	var math = div_data.id
-	MathJax.Hub.Queue(["Typeset", MathJax.Hub, math]);
+	MathJax.Hub.Queue(["Typeset", MathJax.Hub, div_data.id]);
 	//var message = create_message(div_data, "texteval")
     //xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), evaluate_text_handler)
 }
@@ -267,9 +266,15 @@ function plot_data(div_data) {
 
 function plot_handler(req) {
 	var message = JSON.parse(req.responseText)
+	if(message['success'] == 'failure') {
+		console.log(message['error'])
+		var target = document.getElementById(message.target.replace('_plot_header_', '_plot_body_'))
+		target.innerHTML = message['error']
+		return
+	}
 	document.getElementById(message.title_target).innerHTML = message.title
 	var target = message.target.replace('_plot_header_', '_plot_body_')
-	// TODO: check, if the plot has been created! If not, put out a warning!
+	document.getElementById(target).innerHTML = ''
 	if(!document.getElementById('img_' + target)) {
 		var elem = document.createElement("img")
 		// TODO: attach right mouse click to object

@@ -4,6 +4,7 @@ import shutil
 import urllib
 import base64
 import simplejson
+import traceback
 
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename
@@ -106,7 +107,7 @@ def extract_content(string, elem_type):
     if start > -1: string = string[start + len('</%s>'%elem_type):]
     return string, {"type" : elem_type, "title" : title, "head" : head, "body": body}
 
-def retreive_header(message):
+def retrieve_header(message):
 	target = message['id'].replace('head_header_', 'head_body_')
 	head = message['content'].split('<br>')
 	sp = head[0].split(' ')
@@ -136,21 +137,25 @@ def retreive_header(message):
 							'content' : '<br>'.join([x.rstrip('\n\r') for x in lines])})
 
 def plot_code(message):
-	target = message['id']
 	x = linspace(-10, 10, 100)
 	fn = message['title'] + message['id'].replace('div_plot_header_', '_') + '.png'
 	code = message['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
 	print code
-	# TODO: check, whether the code can be executed! a 'try, except' could probably do
-	exec(code)
-	savefig(fn)
-	close()
-	with open(fn, "rb") as image_file:
-		encoded_image = base64.b64encode(image_file.read())
-	return simplejson.dumps({'target' : target, 
+	try:
+		exec(code)
+		savefig(fn)
+		close()
+		with open(fn, "rb") as image_file:
+			encoded_image = base64.b64encode(image_file.read())
+		return simplejson.dumps({'target' : message['id'], 
 							'title' : fn,
 							'title_target' :  message['id'].replace('plot_header_', 'plot_title_'), 
-							'image_data' : encoded_image})
+							'image_data' : encoded_image,
+							'success' : 'success'})
+	except:
+		return simplejson.dumps({'target' : message['id'], 
+					'error' : traceback.format_exc(),
+					'success' : 'failure'})
 	
 def highlight_code(message):
 	target = message['id']
@@ -270,7 +275,7 @@ class Index(object):
 			return plot_code(message)
 			
 		if message['type'] == 'head':
-			return retreive_header(message)
+			return retrieve_header(message)
 			
 		if message['type'] == 'code':
 			return highlight_code(message)
