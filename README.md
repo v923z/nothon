@@ -5,7 +5,7 @@ After starting nothon.py, the notebook can be accessed at address
 
 http://127.0.0.1:8080/static/test.html
 
-A new div can be added by clicking on the appropriate under the + sign on the right hand side. 
+A new div can be added by clicking on the appropriate label under the + sign on the right hand side. 
 The active div can be removed by clicking on remove. This operation moves the divide to the trash, 
 which is part of the document, but is a hidden divide. (The trash can be made visible by clicking on 
 the trashbin icon on the lower right corner.) By clicking on recover, either the active block of 
@@ -16,7 +16,7 @@ down by clicking on the up or down arrow on the right hand side.
 Mathematical formulae can be inserted in a text box by enclosing a LaTeX expression between 
 $$...$$ (display style), or between \\(...\\) (inline style). The raw LaTeX code can be retrieved 
 from the server by clicking on the gray shaded area next to the **body** of the text. By clicking 
-on the header of the text, the body will become hidden. 
+on the gray area at the level of the header of the text, the body will become hidden. 
 
 Headers are evaluated by pressing `Enter`. This will move the cursor to the body of a text header, 
 or send a request to the server for a code or head header. 
@@ -38,8 +38,8 @@ sending
 	x = linspace(0, 2, 1000)
 	plot(sin(x))
 
-to the server. Note that no error checking is done at the moment, so if the syntax is wrong, nothing 
-will happen. This will be fixed in a future version. 
+to the server. Note that in case of an error, the traceback is returned to the client, and is displayed 
+instead of the (missing) plot. 
 
 By pressing "save", the stripped content of the notebook will be written to nothon.note. 
 
