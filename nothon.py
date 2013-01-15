@@ -158,12 +158,11 @@ def plot_code(message):
 					'success' : 'failure'})
 	
 def highlight_code(message):
-	target = message['id']
 	head = message['content'].split('<br>')
 	sp = head[0].split(' ')
 	fn = sp[0]
 	if not os.path.exists(fn): 
-		return simplejson.dumps({'target' : target, 'target_pos' : message['id'], 'content' : "File doesn't exist"})
+		return simplejson.dumps({'target' : message['id'], 'content' : "File doesn't exist"})
 		
 	lexer = get_lexer_for_filename(fn)
 	fin = open(fn, 'r')
@@ -171,8 +170,7 @@ def highlight_code(message):
 	fin.close()
 	# TODO: read lines between limits, and also between tags
 	print highlight(code, lexer, HtmlFormatter())
-	return simplejson.dumps({'target' : target, 
-							'target_pos' : message['id'],
+	return simplejson.dumps({'target' : message['id'],
 							'content' : highlight(code, lexer, HtmlFormatter()),
 							'raw' : code})
 

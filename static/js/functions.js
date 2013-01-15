@@ -81,11 +81,15 @@ function move(where) {
 
 function toggle_show_hide(event) {
 	var elem = event.target
-	console.log(event.pageX - elem.offsetLeft, elem.className)
-	if(event.pageY - elem.offsetTop > 15 && elem.className == 'div_text_main') {
-		var elem = document.getElementById(elem.id.replace('_main_', '_body_'))
-		raw_text(elem)
-		return
+	if(elem.className == 'div_text_main') {
+		var text_header = document.getElementById(elem.id.replace('_main_', '_header_'))
+		var text_body = document.getElementById(elem.id.replace('_main_', '_body_'))
+		if(event.pageY - text_header.offsetTop > text_header.offsetHeight) {
+			raw_text(text_body)
+			set_active(text_body)
+			active_div.focus()
+			return
+		}
 	}
 	if(elem.id == 'trash_image') {
 		var elem = document.getElementById('trash')
@@ -219,8 +223,9 @@ function generic_keypress(event) {
 			return false
 	}
 	if (event.which === 13 && event.target.className == 'div_text_header') {
-		document.getElementById(event.target.id.replace('_header_', '_body_')).focus()
-		//event.target.nextSibling.focus()
+		var elem = document.getElementById(event.target.id.replace('_header_', '_body_'))
+		elem.focus()
+		set_active(elem)
 		return false
 	}
 	return true
@@ -404,18 +409,17 @@ function delete_block() {
 		document.getElementById('trash').appendChild(elem)
 		active_div = null
 	}
-	// This has to be fixed at one point.
-	//document.getElementById('trash_image').style.background="url('trashbin_full.png')"
+	document.getElementById('trash_image').style.backgroundImage = 'url(css/trashbin_full.png)'
 }
 
 function recover_block() {
 	if(active_div) {
 		var elem = active_div.parentNode
-		if(elem.parentNode.id != 'trash') {
-			elem = document.getElementById('trash').lastChild		
+		if(elem && elem.parentNode.id == 'trash') {
+			document.getElementById('docmain').appendChild(elem)
 		}
 	}
-	if(elem) {
-		document.getElementById('docmain').appendChild(elem)
+	if(document.getElementById('trash').childNodes.length == 1) {
+		document.getElementById('trash_image').style.backgroundImage = 'url(css/trashbin_empty.png)'
 	}
 }
