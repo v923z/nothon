@@ -79,11 +79,11 @@ article {
 }
 */
 
-div_plot_container, .div_head_container, .div_code_container, .div_text_container {
+.plot_container, .head_container, .code_container, .text_container {
 	display: none;
 }
 
-.div_plot_main, .div_head_main, .div_code_main, .div_text_main {
+.plot_main, .head_main, .code_main, .text_main {
 	background-color: rgba(0, 0, 0, 0.05);
 	margin-top: 5px;
 	margin-left: 5px;
@@ -91,7 +91,7 @@ div_plot_container, .div_head_container, .div_code_container, .div_text_containe
 	width: 80%;
 }
 
-.div_plot_header, .div_plot_title, .div_plot_body {
+.plot_header, .plot_title, .plot_body {
 	font-size: 12pt;
 	color: #000099;
 	background: #eeeeff;
@@ -99,113 +99,129 @@ div_plot_container, .div_head_container, .div_code_container, .div_text_containe
 	width: 95%;
 }
 
-.div_plot_header {
+.plot_header {
 	background: #eeeeee;
 	min-height:  1.2em;
 }
 
-.div_plot_title {
+.plot_title {
 	background: rgba(0, 0, 0, 0.05)
 }
 
-.div_plot_header:focus {
+.plot_header:focus {
 	border: solid blue;
 	border-width: 0 10px 0 0;
 }
 
-.div_plot_title:focus {
+.plot_title:focus {
 	border: solid blue;
 	border-width: 0 10px 0 0;
 }
 
-.div_plot_body:focus {
+.plot_body:focus {
 	border: solid blue;
 	border-width: 0 10px 0 0;
 	contenteditable: true;
 }
 
-.div_plot_title {
+.plot_title {
 	/* This can be made hidden */
 	font-size: 10pt;
 	font-weight: bold;
 }
 
-.div_head_header, .div_head_body, .div_head_title {
+.plot_image {
+	width: 60%;
+}
+
+.head_header, .head_body, .head_date {
 	font-size: 12pt;
 	color: #008800;
 	border-radius: 2px;
 	width: 95%;
 }
 
-.div_head_header {
+.head_header {
 	background: #d3e8da;
 	min-height:  1.2em;
 }
 
-.div_head_title {
+.head_date {
 	font-weight: bold;
-	background: #ffcccc;	
 }
 
-.div_head_body {
+.head_body {
 	background: #eeffee;
 	margin-top: 1px;
 }
 
-.div_head_header:focus {
+.head_header:focus {
 	border: solid green;
 	border-width: 0 10px 0 0;
 }
 
-.div_code_header, .div_code_body {
+.code_header, .code_body {
 	font-size: 12pt;
 	color: #008800;
 	border-radius: 2px;
 	width: 95%;
 }
 
-.div_code_header {
+.code_header {
 	background: #d3e8da;
 	min-height:  1.2em;
 }
 
-.div_code_body {
+.code_body {
 	background: #eeffee;
 	margin-top: 1px;
 }
 
-.div_code_header:focus {
+.code_header:focus {
 	border: solid green;
 	border-width: 0 10px 0 0;
 }
 
-.div_text_header, .div_text_body {
+.code_error, .head_error {
+	color: #990000;
+	font-weight: bold;
+}
+
+.code_date {
+	font-size: 12pt;
+	color: #000099;
+	background: #eeeeff;
+	border-radius: 2px;
+	width: 95%;
+}
+
+.text_header, .text_body {
 	font-size: 12pt;
 	color: #008800;
 	border-radius: 2px;
 	width: 95%;
 }
 
-.div_text_header {
+.text_header {
 	background: 	#d3e8da;
 	min-height:  	1.2em;
 	font-weight: 	bold;
 }
 
-.div_text_body {
+.text_body {
 	background: #eeffee;
 	margin-top: 1px;
 	min-height:  1.2em;
 	word-wrap: break-word;
 }
 
-.div_text_header:focus {
+.text_header:focus {
 	border: solid green;
 	border-width: 0 10px 0 0;
 	
 }
 
-.div_text_body:focus {
+.text_body:focus {
 	border: solid green;
 	border-width: 0 10px 0 0;	
 }
@@ -222,12 +238,12 @@ div_plot_container, .div_head_container, .div_code_container, .div_text_containe
 }
 */
 
-.div_trash {
+.trash {
 	display: 	none;
 	background:	#ffe699;
 }
 
-.div_trash_image {
+.trash_image {
 	width:				40px;
 	height:				40px;
 	position: 			fixed;

@@ -6,34 +6,34 @@
 var active_div = null
 
 function generate_head_html(id) {
-	var html = ('<div id="div_head_header_' + id + '" class="div_head_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-			'<div id="div_head_title_' + id + '" class="div_head_title"></div>' +
-			'<div id="div_head_body_' + id + '" class="div_head_body"></div>' + 
-			'<div id="div_head_container_' + id + '" class="div_head_container"></div>')
+	var html = ('<div id="div_head_header_' + id + '" class="head_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
+			'<div id="div_head_date_' + id + '" class="head_date"></div>' +
+			'<div id="div_head_body_' + id + '" class="head_body"></div>' + 
+			'<div id="div_head_container_' + id + '" class="head_container"></div>')
 	return html
 }
 
 function generate_plot_html(id) {
-	var html = ('<div id="div_plot_header_' + id + '" class="div_plot_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-				'<div id="div_plot_title_' + id + '" class="div_plot_title"></div>' +
-			'<div id="div_plot_body_' + id + '" class="div_plot_body" onfocus="set_active(this);"></div>' + 
-			'<div id="div_plot_container_' + id + '" class="div_plot_container"></div>')
+	var html = ('<div id="div_plot_header_' + id + '" class="plot_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
+				'<div id="div_plot_title_' + id + '" class="plot_title"></div>' +
+			'<div id="div_plot_body_' + id + '" class="plot_body" onfocus="set_active(this);"></div>' + 
+			'<div id="div_plot_container_' + id + '" class="plot_container"></div>')
 	return html
 }
 
 function generate_code_html(id) {
-	var html = ('<div id="div_code_header_' + id + '" class="div_code_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-			'<div id="div_code_title_' + id + '" class="div_code_title"></div>' + 
-			'<div id="div_code_body_' + id + '" class="div_code_body"></div>' + 
-			'<div id="div_code_container_' + id + '" class="div_code_container"></div>')
+	var html = ('<div id="div_code_header_' + id + '" class="code_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
+			'<div id="div_code_date_' + id + '" class="code_date"></div>' + 
+			'<div id="div_code_body_' + id + '" class="code_body"></div>' + 
+			'<div id="div_code_container_' + id + '" class="code_container"></div>')
 	return html
 }
 
 function generate_text_html(id) {
-	var html = ('<div id="div_text_header_' + id + '" class="div_text_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-			'<div id="div_text_title_' + id + '" class="div_text_title"></div>' + 
-			'<div id="div_text_body_' + id + '" class="div_text_body" contenteditable="true" onkeypress="return generic_keypress(event);"></div>' + 
-			'<div id="div_text_container_' + id + '" class="div_text_container"></div>')
+	var html = ('<div id="div_text_header_' + id + '" class="text_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
+			'<div id="div_text_title_' + id + '" class="text_title"></div>' + 
+			'<div id="div_text_body_' + id + '" class="text_body" contenteditable="true" onkeypress="return generic_keypress(event);"></div>' + 
+			'<div id="div_text_container_' + id + '" class="text_container"></div>')
 	return html
 }
 
@@ -81,7 +81,7 @@ function move(where) {
 
 function toggle_show_hide(event) {
 	var elem = event.target
-	if(elem.className == 'div_text_main') {
+	if(elem.className == 'text_main') {
 		var text_header = document.getElementById(elem.id.replace('_main_', '_header_'))
 		var text_body = document.getElementById(elem.id.replace('_main_', '_body_'))
 		if(event.pageY - text_header.offsetTop > text_header.offsetHeight) {
@@ -94,7 +94,7 @@ function toggle_show_hide(event) {
 	if(elem.id == 'trash_image') {
 		var elem = document.getElementById('trash')
 	}
-	else if(elem.className == 'div_plot_main') {
+	else if(elem.className == 'plot_main') {
 		var elem = document.getElementById(elem.id.replace('_main_', '_header_'))
 		console.log(elem.id)
 		active_div = document.getElementById(elem.id.replace('_header_', '_body_'))
@@ -171,64 +171,64 @@ function create_and_insert(className, position) {
 		
 	var num = get_max_index(className) + 1
 	var new_div = document.createElement("div")
-	new_div.id = className + '_' + num
+	new_div.id = 'div_' + className + '_' + num
+	console.log(new_div.id)
 	new_div.setAttribute("class", className)
 	new_div.addEventListener("click", get_mouse_pos, false)
 	
-	new_div.id = className + '_' + num
-	if (className == "div_head_main") {
+	new_div.id = 'div_' + className + '_' + num
+	if (className == "head_main") {
 		new_div.innerHTML = generate_head_html(num)
-	} else if (className == "div_plot_main") {
+	} else if (className == "plot_main") {
 		new_div.innerHTML = generate_plot_html(num)
-	} else if (className == "div_text_main") {
+	} else if (className == "text_main") {
 		new_div.innerHTML = generate_text_html(num)
-	} else if (className == "div_code_main") {
+	} else if (className == "code_main") {
 		new_div.innerHTML = generate_code_html(num)
 	}
 	//insertAfter(new_div, document.getElementById(position))
 	if(active_div) insertAfter(new_div, position)
 	else position.appendChild(new_div)
-	document.getElementById(className.replace('_main', '_header_'+num)).focus()
+	document.getElementById('div_' + className.replace('main', 'header_'+num)).focus()
 }
 
 function generic_keypress(event) {
 	console.log(event.target.id)
-	//console.log(event.target.startOffset)
-	console.log(window.getSelection().getRangeAt(0))
 	if (event.which === 13 && event.ctrlKey) {	// Enter
-		if(event.target.id.substring(0, 16) == "div_head_header_") {
+		if(event.target.className == "head_header") {
 			head_data(event.target)
-		} else if(event.target.id.substring(0, 16) == "div_plot_header_") {
+		} else if(event.target.className == "plot_header") { 
 			plot_data(event.target)
-		} else if(event.target.id.substring(0, 16) == "div_code_header_") {
+		} else if(event.target.className == "code_header") {
 			code_data(event.target)
-		} else if(event.target.id.substring(0, 16) == "div_text_header_") {
+		} else if(event.target.className == "text_header") {
 			text_data(event.target)
-		} else if(event.target.id.substring(0, 14) == "div_text_body_") {
+		} else if(event.target.className == "text_body") {
 			evaluate_text(event.target)
 		}
 		return false
 	}
 	if (event.which === 13 && event.shiftKey) {
-		if(event.target.id.substring(0, 16) == "div_head_header_") {
+		if(event.target.className == "head_header") {
 		}
 		return false
 	}
-	if(event.which === 13 && event.target.className == "div_code_header") {
+	if(event.which === 13 && event.target.className == "code_header") {
 			code_data(event.target)
 			return false
 	}
-	if(event.which === 13 && event.target.className == "div_head_header") {
+	if(event.which === 13 && event.target.className == "head_header") {
 			head_data(event.target)
 			return false
 	}
-	if (event.which === 13 && event.target.className == 'div_text_header') {
+	if (event.which === 13 && event.target.className == "text_header") {
 		var elem = document.getElementById(event.target.id.replace('_header_', '_body_'))
 		elem.focus()
 		set_active(elem)
 		return false
 	}
-	return true
+	else text_keypress(event)
+	//return true
 }
 
 function create_message(div_data, message_type) {
@@ -266,58 +266,32 @@ function raw_text_handler(req) {
 function plot_data(div_data) {
 	var message = create_message(div_data, "plot")
 	message.title = document.title
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), plot_handler)
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
 }
 
-function plot_handler(req) {
+function message_handler(req) {
 	var message = JSON.parse(req.responseText)
-	if(message['success'] == 'failure') {
-		console.log(message['error'])
-		var target = document.getElementById(message.target.replace('_plot_header_', '_plot_body_'))
-		target.innerHTML = message['error']
-		return
+	for(i in message) {
+		var elem = document.getElementById(i)
+		if(elem && i != "scroller") {
+			elem.innerHTML = message[i]
+		}
 	}
-	document.getElementById(message.title_target).innerHTML = message.title
-	var target = message.target.replace('_plot_header_', '_plot_body_')
-	document.getElementById(target).innerHTML = ''
-	if(!document.getElementById('img_' + target)) {
-		var elem = document.createElement("img")
-		// TODO: attach right mouse click to object
-		elem.id = 'img_' + target
-	} else {
-		var elem = document.getElementById('img_' + target)
+	// TODO: scrolling is not quite perfect
+	if(message["scroller"]) {
+		var elem = document.getElementById(message["scroller"])
+		if(elem) elem.scrollTop = elem.scrollHeight
 	}
-	document.getElementById(target).appendChild(elem)
-	elem.src = "data:image/png;base64," + message.image_data
-	elem.style.width = "60%"
-	console.log(target)
-	elem.scrollTop = target.scrollHeight
 }
 
 function head_data(div_data) {
 	var message = create_message(div_data, "head")
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), head_handler)
-}
-
-function head_handler(req) {
-	var message = JSON.parse(req.responseText)
-	var elem = document.getElementById(message.target)
-	elem.innerHTML = message.content
-	elem.scrollTop = elem.scrollHeight
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
 }
 
 function code_data(div_data) {
 	var message = create_message(div_data, "code")
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), code_handler)
-}
-
-function code_handler(req) {
-	var message = JSON.parse(req.responseText)
-	var elem = document.getElementById(message.target.replace('_code_header_', '_code_body_'))
-	var container = document.getElementById(message.target.replace('_code_header_', '_code_container_'))
-	elem.innerHTML = message.content
-	container.innerHTML = message.raw
-	elem.scrollTop = elem.scrollHeight
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
 }
 
 function set_active(id) {
@@ -328,13 +302,28 @@ function set_active(id) {
 function text_keypress(event) {
 	console.log(event.target.id)
 	console.log(event.which)
-	var elem = document.getElementById(event.target.id)
+	var elem = event.target
 	var text = elem.innerHTML
 	console.log(text)
-
+	if ((event.which || event.keyCode) == 93) {	// ]
+//		var new_string = text.slice(0, idx) + '<strong>' + text.slice(idx+1, -1) + '</strong>'
+//		elem.innerHTML = new_string
+		var sel = window.getSelection()
+		if (sel.rangeCount) {
+            var range = sel.getRangeAt(0);
+			console.log(sel.rangeCount)
+			range.collapse(false);
+			range.insertNode(node);
+			range = range.cloneRange();
+			range.selectNodeContents(node);
+			range.collapse(false);
+			sel.removeAllRanges();
+			sel.addRange(range);
+		}
+		return false
+	}
+	
 	if ((event.which || event.keyCode) == 42) {	// *
-		var elem = document.getElementById(event.target.id)
-		var text = elem.innerHTML
 		console.log(text)
 		var idx = text.indexOf('*')
 		if (idx >= 0) {
@@ -368,16 +357,16 @@ function block_content(elem) {
 	var body = document.getElementById(elem.id.replace('_main_', '_body_')).innerHTML
 	var container = document.getElementById(elem.id.replace('_main_', '_container_')).innerHTML
 	console.log(elem.className)
-	if(elem.className == 'div_plot_main') {
+	if(elem.className == 'plot_main') {
 		return '<plot>\n<header>' + header + '</header>\n<title>' + title + '</title>\n</plot>\n'
 	}
-	if(elem.className == 'div_text_main') {
+	if(elem.className == 'text_main') {
 		return '<text>\n<header>' + header + '</header>\n<body>' + body + '\n</body>\n</text>\n'
 	}
-	if(elem.className == 'div_head_main') {
+	if(elem.className == 'head_main') {
 		return '<head>\n<header>' + header + '</header>\n<title>' + title + '</title>\n<body>' + body + '\n</body>\n</head>\n'
 	}
-	if(elem.className == 'div_code_main') {
+	if(elem.className == 'code_main') {
 		return '<code>\n<header>' + header + '</header>\n<title>' + title + '</title>\n<body>' + container + '\n </body>\n</code>\n'
 	}
 	else {

@@ -107,16 +107,21 @@ def extract_content(string, elem_type):
     if start > -1: string = string[start + len('</%s>'%elem_type):]
     return string, {"type" : elem_type, "title" : title, "head" : head, "body": body}
 
-def retrieve_header(message):
-	target = message['id'].replace('head_header_', 'head_body_')
-	head = message['content'].split('<br>')
-	sp = head[0].split(' ')
-	if not os.path.exists(sp[0]): 
-		return simplejson.dumps({'target' : target, 'target_pos' : message['id'], 'content' : "File doesn't exist"})
+def head_data(message):
+	scroller = message['id'].replace('div_head_header_', 'div_head_main_')
+	body = message['id'].replace('div_head_header_', 'div_head_body_')
+	container = message['id'].replace('div_head_header_', 'div_head_container_')
+	date = message['id'].replace('div_head_header_', 'div_head_date_')
+	
+	head = message['content'].rstrip('<br>')
+	sp = head.split(' ')
+	fn = sp[0]
+	if not os.path.exists(fn): 
+		return simplejson.dumps({body : '<span class="head_error">File doesn\'t exist</span>', date : ''})
 	if len(sp) == 1: n = 10
 	# TODO: elif sp[1] == '#':	
 	else: n = int(sp[1])
-	fin = open(sp[0], 'r')	
+	fin = open(fn, 'r')	
 	if n > 0:
 		lines = []
 		it = 0
@@ -132,13 +137,16 @@ def retrieve_header(message):
 		lines = fin.readlines()
 		lines = lines[n:]
 	fin.close()	
-	return simplejson.dumps({'target' : target, 
-							'target_pos' : message['id'], 
-							'content' : '<br>'.join([x.rstrip('\n\r') for x in lines])})
+	return simplejson.dumps({"scroller" : scroller,
+							date : os.path.getmtime(fn), 
+							body : '<br>'.join([x.rstrip('\n\r') for x in lines])})
 
-def plot_code(message):
+def plot_data(message):
 	x = linspace(-10, 10, 100)
 	fn = message['title'] + message['id'].replace('div_plot_header_', '_') + '.png'
+	scroller = message['id'].replace('div_plot_header_', 'div_plot_main_')
+	body = message['id'].replace('div_plot_header_', 'div_plot_body_')
+	title = message['id'].replace('div_plot_header_', 'div_plot_title_')
 	code = message['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
 	print code
 	try:
@@ -147,22 +155,25 @@ def plot_code(message):
 		close()
 		with open(fn, "rb") as image_file:
 			encoded_image = base64.b64encode(image_file.read())
-		return simplejson.dumps({'target' : message['id'], 
-							'title' : fn,
-							'title_target' :  message['id'].replace('plot_header_', 'plot_title_'), 
-							'image_data' : encoded_image,
-							'success' : 'success'})
+		return simplejson.dumps({ "scroller" : scroller,
+							title : fn, 
+							body : '<img class="plot_image" src="data:image/png;base64,' + encoded_image + '"/>'})
 	except:
-		return simplejson.dumps({'target' : message['id'], 
-					'error' : traceback.format_exc(),
-					'success' : 'failure'})
+		return simplejson.dumps({ "scroller" : scroller,
+								title : '', 
+								body : traceback.format_exc()})
 	
-def highlight_code(message):
-	head = message['content'].split('<br>')
-	sp = head[0].split(' ')
+	
+def code_data(message):
+	sp = message['content'].split(' ')
+	scroller = message['id'].replace('div_code_header_', 'div_code_main_')
+	body = message['id'].replace('div_code_header_', 'div_code_body_')
+	container = message['id'].replace('div_code_header_', 'div_code_container_')
+	date = message['id'].replace('div_code_header_', 'div_code_date_')
+
 	fn = sp[0]
 	if not os.path.exists(fn): 
-		return simplejson.dumps({'target' : message['id'], 'content' : "File doesn't exist"})
+		return simplejson.dumps({body : '<span class="code_error">File doesn\'t exist!</span>'})
 		
 	lexer = get_lexer_for_filename(fn)
 	fin = open(fn, 'r')
@@ -170,9 +181,10 @@ def highlight_code(message):
 	fin.close()
 	# TODO: read lines between limits, and also between tags
 	print highlight(code, lexer, HtmlFormatter())
-	return simplejson.dumps({'target' : message['id'],
-							'content' : highlight(code, lexer, HtmlFormatter()),
-							'raw' : code})
+	return simplejson.dumps({date : os.path.getmtime(fn),
+							body : highlight(code, lexer, HtmlFormatter()),
+							container : code,
+							"scroller" : scroller})
 
 def texteval(message):
 	print message['content']
@@ -270,13 +282,13 @@ class Index(object):
 		# This could, perhaps, be simplified, if we used something like 
 		# eval(message['type'] + '_function(message)')
 		if message['type'] == 'plot':
-			return plot_code(message)
+			return plot_data(message)
 			
 		if message['type'] == 'head':
-			return retrieve_header(message)
+			return head_data(message)
 			
 		if message['type'] == 'code':
-			return highlight_code(message)
+			return code_data(message)
 			
 		if message['type'] == 'texteval':
 			return texteval(message)
