@@ -23,6 +23,19 @@ render = web.template.render('templates/')
 tags = ('<text>', '<header>', '<plot>', '<code>')
 order = ('title', 'head', 'body')
 
+def update_js():
+	list_of_files = [file.split('.')[0] for file in os.listdir('templates/') if file.endswith('_html.html')]
+	for fn in list_of_files:
+		if not os.path.exists('static/js/%s.js'%(fn)) or os.path.getmtime('templates/%s.html'%(fn)) > os.path.getmtime('static/js/%s.js'%(fn)):
+			with open('static/js/%s.js'%(fn), "w") as fout:
+				fout.write(create_js(fn))
+		
+def create_js(func_name):
+	func_head = "function %s(id) { \n\thtml = '"%(func_name)
+	func_tail = "'.replace(/ID_TAG/g, id)\n return html\n }"
+	templ = web.template.frender('templates/%s.html'%(func_name))
+	return func_head + '\\\n\t'.join(str(templ('ID_TAG', False)).splitlines()) + func_tail
+
 def read_plot(fn):
 	try:
 		with open(fn, "rb") as image_file:
@@ -113,7 +126,7 @@ def head_data(message):
 	container = message['id'].replace('div_head_header_', 'div_head_container_')
 	date = message['id'].replace('div_head_header_', 'div_head_date_')
 	
-	head = message['content'].rstrip('<br>')
+	head = message['content'].rstrip('<br>').rstrip('\t')
 	sp = head.split(' ')
 	fn = sp[0]
 	if not os.path.exists(fn): 
@@ -271,7 +284,7 @@ def save_html(message):
 
 class Index(object):
 	#render_note('nothon.note')
-
+	update_js()
 	def GET(self):
 		link = web.input(name='/static/test.html')
 		web.seeother('/static/test.html')

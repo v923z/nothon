@@ -1,10 +1,22 @@
-$def with (id, header_head, header_body)
-$ hid = 'div_head_header_%s'%(id)
-$ bid = 'div_head_body_%s'%(id)
+$def with (id, content)
+$ did = 'div_code_date_%s'%(id)
+$ hid = 'div_code_header_%s'%(id)
+$ bid = 'div_code_body_%s'%(id)
+$ cid = 'div_code_container_%s'%(id)
 
-<div id="$hid" class="div_head_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);">
-$header_head
+<div id="$hid" class="head_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);">
+$if content:
+	$content["header"]
 </div>
-<div id="$bid" class="div_head_body">
-$header_body			
+<div id="$did" class="head_date">
+$if content:
+	$content["date"]
+</div>
+<div id="$bid" class="head_body">
+$if content:
+	$:content["body"]
+</div>
+<div id="$cid" class="head_container">
+$if content:
+	$content["container"]
 </div>

@@ -7,6 +7,12 @@
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 </head>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/plot_html.js"></script>
+<script type="text/javascript" src="/static/js/text_html.js"></script>
+<script type="text/javascript" src="/static/js/head_html.js"></script>
+<script type="text/javascript" src="/static/js/code_html.js"></script>
+
 <script type="text/javascript" src="/static/js/functions.js"></script>
 <body>
 <aside>
@@ -16,7 +22,7 @@
 </div>
 <div id="menucontainer-right">
 <div class="menu" onclick="move('up');"><img src="./css/up-arrow.png"  width="40%"></div>
-<div class="menu"><img src="./css/add.png" width="40%">
+<div id="menu" class="menu"><img src="./css/add.png" width="40%">
 <ul>
 	<li onclick="create_and_insert('text_main', 'dummy');">text</li>
 	<li onclick="create_and_insert('plot_main', 'dummy');">plot</li>

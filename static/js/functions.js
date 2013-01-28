@@ -5,38 +5,6 @@
 
 var active_div = null
 
-function generate_head_html(id) {
-	var html = ('<div id="div_head_header_' + id + '" class="head_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-			'<div id="div_head_date_' + id + '" class="head_date"></div>' +
-			'<div id="div_head_body_' + id + '" class="head_body"></div>' + 
-			'<div id="div_head_container_' + id + '" class="head_container"></div>')
-	return html
-}
-
-function generate_plot_html(id) {
-	var html = ('<div id="div_plot_header_' + id + '" class="plot_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-				'<div id="div_plot_title_' + id + '" class="plot_title"></div>' +
-			'<div id="div_plot_body_' + id + '" class="plot_body" onfocus="set_active(this);"></div>' + 
-			'<div id="div_plot_container_' + id + '" class="plot_container"></div>')
-	return html
-}
-
-function generate_code_html(id) {
-	var html = ('<div id="div_code_header_' + id + '" class="code_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-			'<div id="div_code_date_' + id + '" class="code_date"></div>' + 
-			'<div id="div_code_body_' + id + '" class="code_body"></div>' + 
-			'<div id="div_code_container_' + id + '" class="code_container"></div>')
-	return html
-}
-
-function generate_text_html(id) {
-	var html = ('<div id="div_text_header_' + id + '" class="text_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);"></div>' + 
-			'<div id="div_text_title_' + id + '" class="text_title"></div>' + 
-			'<div id="div_text_body_' + id + '" class="text_body" contenteditable="true" onkeypress="return generic_keypress(event);"></div>' + 
-			'<div id="div_text_container_' + id + '" class="text_container"></div>')
-	return html
-}
-
 function xml_http_post(url, data, callback) {
     var req = false;
     try {
@@ -161,6 +129,8 @@ function get_mouse_pos(event) {
 }
 
 function create_and_insert(className, position) {
+	$("#menu > ul").fadeOut("slow"); 
+
 	if(active_div) {
 		position = active_div.parentNode
 		if(position.parentNode.id == 'trash') {
@@ -178,13 +148,13 @@ function create_and_insert(className, position) {
 	
 	new_div.id = 'div_' + className + '_' + num
 	if (className == "head_main") {
-		new_div.innerHTML = generate_head_html(num)
+		new_div.innerHTML = head_html(num)
 	} else if (className == "plot_main") {
-		new_div.innerHTML = generate_plot_html(num)
+		new_div.innerHTML = plot_html(num)
 	} else if (className == "text_main") {
-		new_div.innerHTML = generate_text_html(num)
+		new_div.innerHTML = text_html(num)
 	} else if (className == "code_main") {
-		new_div.innerHTML = generate_code_html(num)
+		new_div.innerHTML = code_html(num)
 	}
 	//insertAfter(new_div, document.getElementById(position))
 	if(active_div) insertAfter(new_div, position)
@@ -412,3 +382,12 @@ function recover_block() {
 		document.getElementById('trash_image').style.backgroundImage = 'url(css/trashbin_empty.png)'
 	}
 }
+
+$(document).ready(function () {
+	$("#menu").hover(function() {
+		$("#menu > ul").fadeIn("slow"); 
+	}, 
+	function() {
+		$("#menu > ul").fadeOut("slow"); 
+	});
+});

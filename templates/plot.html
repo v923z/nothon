@@ -1,16 +1,22 @@
-$def with (id, plot_title, plot_header, plot_body)
+$def with (id, content)
 $ tid = 'div_plot_title_%s'%(id)
 $ hid = 'div_plot_header_%s'%(id)
 $ bid = 'div_plot_body_%s'%(id)
-<div id="$hid" class="div_plot_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);">
-$plot_header
-</div> 
-<div id="$tid" class="div_plot_title">
-$plot_title
+
+<div id="$hid" class="plot_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);">
+$if content:
+	$content["header"]
 </div>
-<div id="$bid" class="div_plot_body">
-$if plot_body:
-	<img style="width: 60%;" src="data:image/png;base64,$plot_body" id="img_$bid">
-$else:
-	"Couldn't load $plot_title"
+<div id="$tid" class="plot_title">
+$if content:
+	$content["title"]
 </div>
+<div id="$bid" class="plot_body">
+$if content:
+	<img class="plot_image" src="data:image/png;base64,$content["body"]">
+</div>
+<div id="$cid" class="plot_container">
+$if content:
+	$content["container"]
+</div>
+
