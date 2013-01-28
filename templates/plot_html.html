@@ -2,6 +2,7 @@ $def with (id, content)
 $ tid = 'div_plot_title_%s'%(id)
 $ hid = 'div_plot_header_%s'%(id)
 $ bid = 'div_plot_body_%s'%(id)
+$ cid = 'div_plot_container_%s'%(id)
 
 <div id="$hid" class="plot_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);">
 $if content:

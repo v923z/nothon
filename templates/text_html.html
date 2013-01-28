@@ -1,0 +1,14 @@
+$def with (id, content)
+$ tid = 'div_text_title_%s'%(id)
+$ hid = 'div_text_header_%s'%(id)
+$ bid = 'div_text_body_%s'%(id)
+$ cid = 'div_text_container_%s'%(id)
+
+<div id="$hid" class="text_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);">
+$if content:
+	$:content["text_head"]
+</div>
+<div id="$bid" class="text_body" contenteditable="true" onkeypress="return generic_keypress(event);">
+$if content:
+	$:content["text_body"]
+</div>
