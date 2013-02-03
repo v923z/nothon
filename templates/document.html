@@ -1,4 +1,4 @@
-$def with (title, aside, content)
+$def with (title, aside, content, handler_funcs, create_funcs)
 <html>
 <head>
 <title>$title</title>
@@ -7,24 +7,41 @@ $def with (title, aside, content)
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="/static/js/functions.js"></script>
+$for f in create_funcs + handler_funcs:
+	$ js_src = "/static/js/%s.js"%(f)
+	<script type="text/javascript" src="$js_src"></script>
 </head>
 <body>
 <aside>
 	$aside
 </aside>
 <article>
-<input type="button" class="button" onclick="create_and_insert('div_head_main', 'dummy');" value="head">
-<input type="button" class="button" onclick="create_and_insert('div_plot_main', 'dummy');" value="plot">
-<input type="button" class="button" onclick="create_and_insert('div_code_main', 'dummy');" value="code">
-<input type="button" class="button" onclick="create_and_insert('div_text_main', 'dummy');" value="text">
-<input type="button" class="button" onclick="save();" value="save">
-<input type="button" class="button" onclick="save_html();" value="html">
-<input type="button" class="button" onclick="delete_block();" value="remove">
-<div id="docmain">
-$:content
+<div class="trash_image" id="trash_image" onclick="toggle_show_hide(event);">
 </div>
-<div class="div_trash" id="trash">
+<div id="menucontainer-right">
+<div class="menu" onclick="move('up');"><img src="/static/css/up-arrow.png"  width="40%"></div>
+<div id="menu" class="menu"><img src="/static/css/add.png" width="40%">
+<ul>
+$for f in create_funcs:
+	$ value = "%s"%(f.split("_")[0])
+	$ main_src = "%s_main"%(value)
+	<li onclick="create_and_insert('$main_src');">$value</li>
+<li onclick="save();">save</li>
+<li onclick="save_html();">html</li>
+<li onclick="delete_block();">remove</li>
+<li onclick="recover_block();">recover</li>
+</ul>
+</div>
+<div class="menu" onclick="move('down');"><img src="/static/css/down-arrow.png" width="40%"></div>
+</div>
+
+<div id="docmain">
+$if content:
+	$:content
+</div>
+<div id="trash" class="div_trash">
 </div>
 </article>
 </body>

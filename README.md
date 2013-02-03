@@ -3,7 +3,7 @@ A few comments on use
 
 After starting nothon.py, the notebook can be accessed at address 
 
-http://127.0.0.1:8080/static/test.html
+http://127.0.0.1:8080/
 
 A new div can be added by clicking on the appropriate label under the + sign on the right hand side. 
 The active div can be removed by clicking on remove. This operation moves the divide to the trash, 

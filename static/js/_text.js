@@ -19,39 +19,38 @@ function text_onclick(event) {
 
 function text_keypress(event) {
 	console.log(event.which)
-	if(event.which === 13 && event.shiftKey) {					// Enter
+	
+	if(event.which === 13 && event.target.id.indexOf('_header_') > -1) {
+		active_div = document.getElementById(event.target.id.replace('_header_', '_body_'))
+		active_div.focus()
+		return false
+	} else if(event.which === 13 && event.shiftKey) {					// Enter
 		text_data(event.target)
 		create_and_insert('text_main')
 		return false
-	}
-	else if(event.which === 13 && event.ctrlKey) {				// Enter
+	} else if(event.which === 13 && event.ctrlKey) {				// Enter
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub, event.target.id]);
 		return false
-	}
-	else if(event.which === 109 && event.ctrlKey && !event.altKey) {				// m
+	} else if(event.which === 109 && event.ctrlKey && !event.altKey) {				// m
 		insert_math('inline', event.target)
 		return false
-	}
-	else if(event.which === 109 && event.ctrlKey && event.altKey) {	// M
+	} else if(event.which === 109 && event.ctrlKey && event.altKey) {	// M
 		insert_math('display', event.target)
 		return false
-	}
-	else if(event.which === 98 && event.ctrlKey) {				// b
+	} else if(event.which === 98 && event.ctrlKey) {				// b
 		// insert boldface
 		apply_tag('<b>', '</b>', event.target)
         return false
-	}
-	else if(event.which === 105 && event.ctrlKey) {				// i
+	} else if(event.which === 105 && event.ctrlKey) {				// i
 		// insert italic
 		apply_tag('<i>', '</i>', event.target)
         return false		
-	}
-	else if(event.which === 117 && event.ctrlKey) {				// u
+	} else if(event.which === 117 && event.ctrlKey) {				// u
 		// insert underline
 		apply_tag('<u>', '</u>', event.target)
 		return false
 	}
-	else return _text_keypress(event)
+	return true
 }
 
 function text_data(div_data) {

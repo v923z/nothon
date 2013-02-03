@@ -97,7 +97,6 @@ function create_and_insert(className) {
 	var num = get_max_index(className) + 1
 	var new_div = document.createElement("div")
 	new_div.innerHTML = eval(className.replace('_main', '_html') + '(' + num + ')')
-	console.log('child', new_div.firstChild.id)
 	var elem_id = new_div.firstChild.id
 	if(active_div) {
 		insertAfter(new_div.firstChild, position)

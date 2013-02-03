@@ -286,12 +286,20 @@ def save_html(message):
 	fout.close()
 	return  simplejson.dumps({'success' : 'success'})
 
+def list_handler_functions():
+	return [file.split('.')[0] for file in os.listdir('static/js/') if file.startswith('_')]
+	
+def list_create_functions():
+	return [file.split('.')[0] for file in os.listdir('static/js/') if file.endswith('_html.js')]
+
 class Index(object):
 	#render_note('nothon.note')
 	update_js()
 	def GET(self):
 		link = web.input(name='/static/test.html')
-		web.seeother('/static/test.html')
+		print str(render.document('test', 'ASIDE', False, list_handler_functions(), list_create_functions()))
+		return render.document('test', 'ASIDE', False, list_handler_functions(), list_create_functions())
+		#web.seeother('/static/test.html')
 			
 	def POST(self):
 		message = simplejson.loads(web.data())
