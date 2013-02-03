@@ -1,23 +1,25 @@
 $def with (id, content)
+$ mid = 'div_plot_main_%s'%(id)
 $ tid = 'div_plot_title_%s'%(id)
 $ hid = 'div_plot_header_%s'%(id)
 $ bid = 'div_plot_body_%s'%(id)
 $ cid = 'div_plot_container_%s'%(id)
 
-<div id="$hid" class="plot_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);">
+<div id='$mid' class='plot_main' onclick='plot_onclick(event);'>
+<div id='$hid' class='plot_header' contenteditable='true' onkeypress='return plot_keypress(event);' onfocus='set_active(this);' data-nothon='save;'>
 $if content:
-	$content["header"]
+	$content["plot_header"]
 </div>
-<div id="$tid" class="plot_title">
+<div id='$tid' class='plot_title' data-nothon='save;'>
 $if content:
-	$content["title"]
+	$content["plot_title"]
 </div>
-<div id="$bid" class="plot_body">
+<div id='$bid' class='plot_body' data-nothon=''>
 $if content:
-	<img class="plot_image" src="data:image/png;base64,$content["body"]">
+	<img class='plot_image' src='data:image/png;base64,$content["plot_body"]'>
 </div>
-<div id="$cid" class="plot_container">
+<div id='$cid' class='plot_container' data-nothon=''>
 $if content:
-	$content["container"]
+	$content["plot_container"]
 </div>
-
+</div>

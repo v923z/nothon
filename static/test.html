@@ -12,8 +12,11 @@
 <script type="text/javascript" src="/static/js/text_html.js"></script>
 <script type="text/javascript" src="/static/js/head_html.js"></script>
 <script type="text/javascript" src="/static/js/code_html.js"></script>
-
 <script type="text/javascript" src="/static/js/functions.js"></script>
+<script type="text/javascript" src="/static/js/_plot.js"></script>
+<script type="text/javascript" src="/static/js/_code.js"></script>
+<script type="text/javascript" src="/static/js/_head.js"></script>
+<script type="text/javascript" src="/static/js/_text.js"></script>
 <body>
 <aside>
 </aside>
@@ -24,10 +27,10 @@
 <div class="menu" onclick="move('up');"><img src="./css/up-arrow.png"  width="40%"></div>
 <div id="menu" class="menu"><img src="./css/add.png" width="40%">
 <ul>
-	<li onclick="create_and_insert('text_main', 'dummy');">text</li>
-	<li onclick="create_and_insert('plot_main', 'dummy');">plot</li>
-	<li onclick="create_and_insert('head_main', 'dummy');">header</li>
-	<li onclick="create_and_insert('code_main', 'dummy');">code</li>
+	<li onclick="create_and_insert('text_main');">text</li>
+	<li onclick="create_and_insert('plot_main');">plot</li>
+	<li onclick="create_and_insert('head_main');">header</li>
+	<li onclick="create_and_insert('code_main');">code</li>
 	<li onclick="save();">save</li>
 	<li onclick="save_html();" >html</li>
 	<li onclick="delete_block();">remove</li>

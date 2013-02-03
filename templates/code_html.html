@@ -1,23 +1,26 @@
 $def with (id, content)
+$ mid = 'div_code_main_%s'%(id)
 $ did = 'div_code_date_%s'%(id)
 $ hid = 'div_code_header_%s'%(id)
 $ bid = 'div_code_body_%s'%(id)
 $ cid = 'div_code_container_%s'%(id)
 
-<div id="$hid" class="code_header" contenteditable="true" onkeypress="return generic_keypress(event);" onfocus="set_active(this);">
+<div id='$mid' class='code_main' onclick='code_onclick(event);'>
+<div id='$hid' class='code_header' contenteditable='true' onkeypress='return code_keypress(event);' onfocus='set_active(this);'  data-nothon='save;'>
 $if content:
-	$content["header"]
+	$content["code_header"]
 </div>
-<div id="$did" class="code_date">
+<div id='$did' class='code_date' data-nothon='save;'>
 $if content:
-	$content["date"]
+	$content["code_date"]
 </div>
-<div id="$bid" class="code_body">
+<div id='$bid' class='code_body' data-nothon=''>
 $if content:
-	$:content["body"]
+	$:content["code_body"]
 </div>
-<div id="$cid" class="code_container">
+<div id='$cid' class='code_container' data-nothon='save;'>
 $if content:
-	$content["container"]
+	$content["code_container"]
+</div>
 </div>
 

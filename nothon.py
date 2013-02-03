@@ -31,10 +31,10 @@ def update_js():
 				fout.write(create_js(fn))
 		
 def create_js(func_name):
-	func_head = "function %s(id) { \n\thtml = '"%(func_name)
-	func_tail = "'.replace(/ID_TAG/g, id)\n return html\n }"
+	func_head = "function %s(id) { \n\thtml = \""%(func_name)
+	func_tail = "\".replace(/ID_TAG/g, id)\n return html\n }"
 	templ = web.template.frender('templates/%s.html'%(func_name))
-	return func_head + '\\\n\t'.join(str(templ('ID_TAG', False)).splitlines()) + func_tail
+	return func_head + '\\\n'.join(str(templ('ID_TAG', False)).splitlines()) + func_tail
 
 def read_plot(fn):
 	try:
@@ -120,7 +120,7 @@ def extract_content(string, elem_type):
     if start > -1: string = string[start + len('</%s>'%elem_type):]
     return string, {"type" : elem_type, "title" : title, "head" : head, "body": body}
 
-def head_data(message):
+def head_handler(message):
 	scroller = message['id'].replace('div_head_header_', 'div_head_main_')
 	body = message['id'].replace('div_head_header_', 'div_head_body_')
 	container = message['id'].replace('div_head_header_', 'div_head_container_')
@@ -150,11 +150,12 @@ def head_data(message):
 		lines = fin.readlines()
 		lines = lines[n:]
 	fin.close()	
+	# date : os.path.getmtime(fn) should be extended with creation time.
 	return simplejson.dumps({"scroller" : scroller,
 							date : os.path.getmtime(fn), 
 							body : '<br>'.join([x.rstrip('\n\r') for x in lines])})
 
-def plot_data(message):
+def plot_handler(message):
 	x = linspace(-10, 10, 100)
 	fn = message['title'] + message['id'].replace('div_plot_header_', '_') + '.png'
 	scroller = message['id'].replace('div_plot_header_', 'div_plot_main_')
@@ -177,7 +178,7 @@ def plot_data(message):
 								body : traceback.format_exc()})
 	
 	
-def code_data(message):
+def code_handler(message):
 	sp = message['content'].split(' ')
 	scroller = message['id'].replace('div_code_header_', 'div_code_main_')
 	body = message['id'].replace('div_code_header_', 'div_code_body_')
@@ -260,7 +261,10 @@ def raw_text(message):
 def save_page(message):
 	" Writes the stipped document content to disc "
 	
-	print message['content']
+	print 'content: ', message['content']
+	print 'type', type(message['content'])
+	for key in message['content'].keys():
+		print message['content'][key]
 	fout = open(message['title'] + '.note', 'w')
 	fout.write(remove_mathjax(message['content'].replace('<br>','\n')))
 	fout.close()
@@ -295,13 +299,13 @@ class Index(object):
 		# This could, perhaps, be simplified, if we used something like 
 		# eval(message['type'] + '_function(message)')
 		if message['type'] == 'plot':
-			return plot_data(message)
+			return plot_handler(message)
 			
 		if message['type'] == 'head':
-			return head_data(message)
+			return head_handler(message)
 			
 		if message['type'] == 'code':
-			return code_data(message)
+			return code_handler(message)
 			
 		if message['type'] == 'texteval':
 			return texteval(message)

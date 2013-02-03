@@ -17,20 +17,19 @@ long_line_column=72
 
 [files]
 current_page=0
-FILE_NAME_0=993;Python;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Fnothon.py;0;4
+FILE_NAME_0=5481;Python;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Fnothon.py;0;4
 FILE_NAME_1=3116;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Fstatic%2Ftest2.html;0;4
-FILE_NAME_2=2568;CSS;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Fstatic%2Fcss%2Fmain.css;0;4
-FILE_NAME_3=726;Javascript;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Fstatic%2Fjs%2Ffunctions.js;0;4
+FILE_NAME_2=3877;CSS;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Fstatic%2Fcss%2Fmain.css;0;4
+FILE_NAME_3=8786;Javascript;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Fstatic%2Fjs%2Ffunctions.js;0;4
 FILE_NAME_4=1134;Markdown;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2FREADME.md;0;4
 FILE_NAME_5=328;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Ftemplates%2Fsaved_document.html;0;4
-FILE_NAME_6=382;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Ftemplates%2Ftext.html;0;4
-FILE_NAME_7=126;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Ftemplates%2Fplot_html.html;0;4
-FILE_NAME_8=0;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Ftemplates%2Fhead_html.html;0;4
-FILE_NAME_9=0;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Ftemplates%2Fcode_html.html;0;4
-FILE_NAME_10=926;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Fstatic%2Ftest.html;0;4
+FILE_NAME_6=349;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Ftemplates%2Ftext_html.html;0;4
+FILE_NAME_7=685;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Ftemplates%2Fplot_html.html;0;4
+FILE_NAME_8=635;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Ftemplates%2Fhead_html.html;0;4
+FILE_NAME_9=342;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Ftemplates%2Fcode_html.html;0;4
+FILE_NAME_10=791;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Fstatic%2Ftest.html;0;4
 FILE_NAME_11=51;None;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Fcopyright.txt;0;4
 FILE_NAME_12=413;HTML;0;16;1;1;0;%2Fhome%2Fv923z%2Fsandbox%2Fnothon%2Ftemplates%2Fdocument.html;0;4
-FILE_NAME_13=3597;Python;0;16;1;1;0;%2Fhome2%2Ftest4.py;0;4
 
 [file_prefs]
 final_new_line=true
