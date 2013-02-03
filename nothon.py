@@ -295,17 +295,9 @@ class Index(object):
 			
 	def POST(self):
 		message = simplejson.loads(web.data())
-		print message
-		# This could, perhaps, be simplified, if we used something like 
-		# eval(message['type'] + '_function(message)')
-		if message['type'] == 'plot':
-			return plot_handler(message)
-			
-		if message['type'] == 'head':
-			return head_handler(message)
-			
-		if message['type'] == 'code':
-			return code_handler(message)
+		if message['type'] in ('plot', 'head', 'code', 'text'):
+			exec('result = %s_handler(message)'%(message['type']))
+			return result
 			
 		if message['type'] == 'texteval':
 			return texteval(message)

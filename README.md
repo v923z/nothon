@@ -15,8 +15,9 @@ down by clicking on the up or down arrow on the right hand side.
 
 Mathematical formulae can be inserted in a text box by enclosing a LaTeX expression between 
 $$...$$ (display style), or between \\(...\\) (inline style). The raw LaTeX code can be retrieved 
-from the server by clicking on the gray shaded area next to the **body** of the text. By clicking 
-on the gray area at the level of the header of the text, the body will become hidden. 
+from the server by clicking on the gray shaded area next to the **body** of the text. Alternatively, 
+`Cntr - M`, and `Cntr - Alt - M` inserts inline, and display style math, respectively. By clicking 
+on the gray area at the level of the header of the text, the body will become hidden. (This will not work now!)
 
 Headers are evaluated by pressing `Enter`. This will move the cursor to the body of a text header, 
 or send a request to the server for a code or head header. 
@@ -40,6 +41,9 @@ sending
 
 to the server. Note that in case of an error, the traceback is returned to the client, and is displayed 
 instead of the (missing) plot. 
+
+The text style in a text box can be changed by highlighting some elements, and then hitting `Cntr-B` **bold**, 
+`Cntr-I` *italic*, or `Cntr-U` __underlined__.
 
 By pressing "save", the stripped content of the notebook will be written to nothon.note. 
 
