@@ -136,7 +136,7 @@ function set_active(id) {
 function block_content(elem) {
 	var block = new Object()
 
-	block.type = $(elem).attr('class').split('_')[0]
+	block.type = $(elem).data('type')
 	block.id = get_index($(elem).attr('id'))
 	block.content = {}
 	$(elem).children().each( function() {
@@ -187,7 +187,7 @@ function delete_block() {
 		document.getElementById('trash').appendChild(elem)
 		active_div = null
 	}
-	document.getElementById('trash_image').style.backgroundImage = 'url(css/trashbin_full.png)'
+	document.getElementById('trash_image').style.backgroundImage = 'url(static/css/trashbin_full.png)'
 }
 
 function recover_block() {
@@ -198,7 +198,7 @@ function recover_block() {
 		}
 	}
 	if(document.getElementById('trash').childNodes.length == 1) {
-		document.getElementById('trash_image').style.backgroundImage = 'url(css/trashbin_empty.png)'
+		document.getElementById('trash_image').style.backgroundImage = 'url(static/css/trashbin_empty.png)'
 	}
 }
 

@@ -3,9 +3,8 @@ $ mid = 'div_plot_main_%s'%(id)
 $ tid = 'div_plot_title_%s'%(id)
 $ hid = 'div_plot_header_%s'%(id)
 $ bid = 'div_plot_body_%s'%(id)
-$ cid = 'div_plot_container_%s'%(id)
 
-<div id='$mid' class='plot_main' onclick='plot_onclick(event);'>
+<div id='$mid' class='plot_main' onclick='plot_onclick(event);' data-type='plot'>
 <div id='$hid' class='plot_header' contenteditable='true' onkeypress='return plot_keypress(event);' onfocus='set_active(this);' data-nothon='save;'>
 $if content:
 	$content["plot_header"]
@@ -17,9 +16,5 @@ $if content:
 <div id='$bid' class='plot_body' data-nothon=''>
 $if content:
 	<img class='plot_image' src='data:image/png;base64,$content["plot_body"]'>
-</div>
-<div id='$cid' class='plot_container' data-nothon=''>
-$if content:
-	$content["plot_container"]
 </div>
 </div>

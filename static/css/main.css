@@ -79,7 +79,7 @@ article {
 }
 */
 
-.plot_container, .head_container, .code_container, .text_container {
+.head_container, .code_container, .text_container {
 	display: none;
 }
 

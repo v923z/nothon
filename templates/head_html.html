@@ -3,9 +3,8 @@ $ mid = 'div_head_main_%s'%(id)
 $ did = 'div_head_date_%s'%(id)
 $ hid = 'div_head_header_%s'%(id)
 $ bid = 'div_head_body_%s'%(id)
-$ cid = 'div_head_container_%s'%(id)
 
-<div id='$mid' class='head_main' onclick='head_onclick(event);'>
+<div id='$mid' class='head_main' onclick='head_onclick(event);' data-type='head'>
 <div id='$hid' class='head_header' contenteditable='true' onkeypress='return head_keypress(event);' onfocus='set_active(this);' data-nothon='save;'>
 $if content:
 	$content["head_header"]
@@ -17,9 +16,5 @@ $if content:
 <div id='$bid' class='head_body' data-nothon='save;'>
 $if content:
 	$:content["head_body"]
-</div>
-<div id='$cid' class='head_container' data-nothon=''>
-$if content:
-	$content["head_container"]
 </div>
 </div>

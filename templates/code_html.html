@@ -5,7 +5,7 @@ $ hid = 'div_code_header_%s'%(id)
 $ bid = 'div_code_body_%s'%(id)
 $ cid = 'div_code_container_%s'%(id)
 
-<div id='$mid' class='code_main' onclick='code_onclick(event);'>
+<div id='$mid' class='code_main' onclick='code_onclick(event);' data-type='code'>
 <div id='$hid' class='code_header' contenteditable='true' onkeypress='return code_keypress(event);' onfocus='set_active(this);'  data-nothon='save;'>
 $if content:
 	$content["code_header"]

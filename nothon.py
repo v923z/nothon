@@ -272,7 +272,6 @@ class Index(object):
 		link = web.input(name='/static/test.html')
 		print str(render.document('test', 'ASIDE', False, list_handler_functions(), list_create_functions()))
 		return render.document('test', 'ASIDE', False, list_handler_functions(), list_create_functions())
-		#web.seeother('/static/test.html')
 			
 	def POST(self):
 		message = simplejson.loads(web.data())
