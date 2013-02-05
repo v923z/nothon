@@ -19,7 +19,7 @@ function plot_onclick(event) {
 }
 
 function plot_keypress(event) {
-	if (event.which === 13 && event.ctrlKey) {	// Enter
+	if (event.which === 13 && event.ctrlKey) {			// Enter
 		plot_data(event.target)
 		return false
 	}
@@ -33,6 +33,8 @@ function plot_keypress(event) {
 
 function plot_data(div_data) {
 	var message = create_message(div_data, "plot")
-	message.title = document.title
+	message.title = 'div_plot_title_' + get_num(div_data)
+	message.filename = document.title + '_' + get_num(div_data) + '.png'
+	message.body = 'div_plot_body_' + get_num(div_data)
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
 }

@@ -33,5 +33,8 @@ function head_keypress(event) {
 
 function head_data(div_data) {
 	var message = create_message(div_data, "head")
+	message.body = 'div_head_body_' + get_num(div_data)
+	message.container = 'div_head_container_' + get_num(div_data)
+	message.date = 'div_head_date_' + get_num(div_data)
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
 }

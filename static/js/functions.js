@@ -134,40 +134,40 @@ function set_active(id) {
 }
 
 function block_content(elem) {
-	var array = new Array()
+	var block = new Object()
 
+	block.type = $(elem).attr('class').split('_')[0]
+	block.id = get_index($(elem).attr('id'))
+	block.content = {}
 	$(elem).children().each( function() {
 		if($(this).parent().get(0) === $(elem).get(0)) {
 			var nothon = $(this).data('nothon')
-			if(nothon.indexOf('save;') !== -1) {
-				var content = new Object()
-				// We could insert other things, like parameters, properties, or attributes here.
-				content[$(this).attr('class')] = $(this).html()
-				array.push(content)
+			if(nothon) {
+				if(nothon.indexOf('save;') !== -1) {
+					block.content[$(this).attr('class')] = $(this).html()
+				}
 			}
 		}
 	})
-	console.log('content: ', JSON.stringify(array))
-	return array
+	return block
 }
 
 function get_divs() {
 	var content = new Array()
+	content[0] = {"title" : document.title }
 	$("div[class*='_main']").each( function() {			
-			content.push([$(this).attr('id'), [{"type" : $(this).attr('class').replace('_main', '')}, 
-											{"content" : block_content($(this))}]])
+			content.push(block_content($(this)))
 		}
 	);
-	console.log(JSON.stringify(content))
+	//console.log('content', JSON.stringify(content))
 	return content
 }
 
 function save() {
 	var message = create_message('', "save")
-	message.title = document.title
 	message.content = get_divs()
-	console.log('divs: ', get_divs(), 'json: ', JSON.stringify(message))
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), save_handler)
+	//console.log('divs: ', get_divs(), 'json: ', JSON.stringify(message, null, 4))
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 
 function save_handler(req) {

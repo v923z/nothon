@@ -50,6 +50,10 @@ function text_keypress(event) {
 		apply_tag('<u>', '</u>', event.target)
 		return false
 	}
+	else if(event.which === 100 && event.altKey) {					// d
+		insert_time(event.target)
+		return false
+	}
 	return true
 }
 
@@ -116,4 +120,28 @@ function insert_math(mode, target) {
 		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<br>\\[<br>').replace('_math_close_inserted_', '<span id="_math_marker_"></span><br>\\]<br>')
 	}
 	goto_marker("_math_marker_")
+}
+
+function insert_time(target) {
+	var date = new Date()
+	
+	var sel, range
+    var selectedText
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            selectedText = range.toString();
+            range.deleteContents();
+			range.insertNode(document.createTextNode(date.toString()) + '_date_inserted_')
+        }
+    }
+    else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange()
+        selectedText = document.selection.createRange().text + ""
+		range.text = date.toString() + '_date_inserted_'
+    }
+    var t = document.getElementById(target.id)
+	t.innerHTML = t.innerHTML.replace('_date_inserted_', '<span id="_date_marker_"></span>')
+	goto_marker("_date_marker_")
 }

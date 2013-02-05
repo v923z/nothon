@@ -34,5 +34,8 @@ function code_keypress(event) {
 
 function code_data(div_data) {
 	var message = create_message(div_data, "code")
+	message.body = 'div_code_body_' + get_num(div_data)
+	message.container = 'div_code_container_' + get_num(div_data)
+	message.date = 'div_code_date_' + get_num(div_data)
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
 }

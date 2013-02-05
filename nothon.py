@@ -74,25 +74,14 @@ def render_note(fn):
 	fout = open('tt.html', 'w')
 	fout.write(str(render.document("title", "aside", html_content)))
 	fout.close()
-	
-def parse_note(string, tags, elements=[]):
-    " Takes a notebook file, and turns it into a list of dictionaries "
-    indices = []
-    for tag in tags:
-        i = string.find(tag)
-        if i > -1: indices.append([i, tag])
-    if len(indices) == 0: 
-        return string, elements
-    
-    indices.sort(key=lambda x: x[0])
-    string = string[indices[0][0]:]
-    start_tag = indices[0][1]
-    elem_type = start_tag[1:-1]
-    string, elem = extract_content(string, elem_type)
-    elements.append(elem)
-    if len(string) > 0:
-        string, elements = parse_note(string, tags, elements)
-    return string, elements
+
+def parse_note(fn):	
+	fin = open(fn)
+	data = simplejson.load(fin)
+	fin.close()
+	content = data["notebook"]
+	for element in content:
+		exec('print render.%s_html(%s, %s)'%(element['type'], element['id'], element['content']))
     
 def extract_content(string, elem_type):
     " In the notebook file, the order of the parts in each element should be title, head,  body"
@@ -120,17 +109,12 @@ def extract_content(string, elem_type):
     if start > -1: string = string[start + len('</%s>'%elem_type):]
     return string, {"type" : elem_type, "title" : title, "head" : head, "body": body}
 
-def head_handler(message):
-	scroller = message['id'].replace('div_head_header_', 'div_head_main_')
-	body = message['id'].replace('div_head_header_', 'div_head_body_')
-	container = message['id'].replace('div_head_header_', 'div_head_container_')
-	date = message['id'].replace('div_head_header_', 'div_head_date_')
-	
+def head_handler(message):	
 	head = message['content'].rstrip('<br>').rstrip('\t')
 	sp = head.split(' ')
 	fn = sp[0]
 	if not os.path.exists(fn): 
-		return simplejson.dumps({body : '<span class="head_error">File doesn\'t exist</span>', date : ''})
+		return simplejson.dumps({message['body'] : '<span class="head_error">File doesn\'t exist</span>', date : ''})
 	if len(sp) == 1: n = 10
 	# TODO: elif sp[1] == '#':	
 	else: n = int(sp[1])
@@ -151,39 +135,31 @@ def head_handler(message):
 		lines = lines[n:]
 	fin.close()	
 	# date : os.path.getmtime(fn) should be extended with creation time.
-	return simplejson.dumps({"scroller" : scroller,
-							date : os.path.getmtime(fn), 
-							body : '<br>'.join([x.rstrip('\n\r') for x in lines])})
+	return simplejson.dumps({"scroller" : message['body'],
+							message['date'] : os.path.getmtime(fn), 
+							message['body'] : '<br>'.join([x.rstrip('\n\r') for x in lines])})
 
 def plot_handler(message):
 	x = linspace(-10, 10, 100)
-	fn = message['title'] + message['id'].replace('div_plot_header_', '_') + '.png'
-	scroller = message['id'].replace('div_plot_header_', 'div_plot_main_')
-	body = message['id'].replace('div_plot_header_', 'div_plot_body_')
-	title = message['id'].replace('div_plot_header_', 'div_plot_title_')
 	code = message['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
 	print code
 	try:
 		exec(code)
-		savefig(fn)
+		savefig(message['filename'])
 		close()
-		with open(fn, "rb") as image_file:
+		with open(message['filename'], "rb") as image_file:
 			encoded_image = base64.b64encode(image_file.read())
-		return simplejson.dumps({ "scroller" : scroller,
-							title : fn, 
-							body : '<img class="plot_image" src="data:image/png;base64,' + encoded_image + '"/>'})
+		return simplejson.dumps({ "scroller" : message['body'],
+							message['title'] : message['filename'], 
+							message['body'] : '<img class="plot_image" src="data:image/png;base64,' + encoded_image + '"/>'})
 	except:
-		return simplejson.dumps({ "scroller" : scroller,
-								title : '', 
-								body : traceback.format_exc()})
+		return simplejson.dumps({ "scroller" : message['body'],
+								message['title'] : '', 
+								message['body'] : traceback.format_exc().replace('\n', '<br>')})
 	
 	
 def code_handler(message):
 	sp = message['content'].split(' ')
-	scroller = message['id'].replace('div_code_header_', 'div_code_main_')
-	body = message['id'].replace('div_code_header_', 'div_code_body_')
-	container = message['id'].replace('div_code_header_', 'div_code_container_')
-	date = message['id'].replace('div_code_header_', 'div_code_date_')
 
 	fn = sp[0]
 	if not os.path.exists(fn): 
@@ -195,10 +171,10 @@ def code_handler(message):
 	fin.close()
 	# TODO: read lines between limits, and also between tags
 	print highlight(code, lexer, HtmlFormatter())
-	return simplejson.dumps({date : os.path.getmtime(fn),
-							body : highlight(code, lexer, HtmlFormatter()),
-							container : code,
-							"scroller" : scroller})
+	return simplejson.dumps({message['date'] : os.path.getmtime(fn),
+							message['body'] : highlight(code, lexer, HtmlFormatter()),
+							message['container'] : code,
+							"scroller" : message['body']})
 
 def texteval(message):
 	print message['content']
@@ -258,16 +234,12 @@ def raw_text(message):
 	return simplejson.dumps({'target' : message['id'],
 							'content' : remove_mathjax(message['content'])})
 
-def save_page(message):
+def save_handler(message):
 	" Writes the stipped document content to disc "
-	
-	print 'content: ', message['content']
-	print 'type', type(message['content'])
-	for key in message['content'].keys():
-		print message['content'][key]
-	fout = open(message['title'] + '.note', 'w')
-	fout.write(remove_mathjax(message['content'].replace('<br>','\n')))
-	fout.close()
+	title = message['content'][0]	
+	with open(title['title'] + '.note', 'w') as fout:
+	#fout.write(remove_mathjax(message['content'].replace('<br>','\n')))
+		fout.write("{\n\"nothon version\" : 1.0,\n\"notebook\" : " + simplejson.dumps(message['content'][1:], sort_keys=True, indent=4) + '\n}')
 	return  simplejson.dumps({'success' : 'success'})
 
 def save_html(message):
@@ -294,6 +266,7 @@ def list_create_functions():
 
 class Index(object):
 	#render_note('nothon.note')
+	parse_note('test.note')
 	update_js()
 	def GET(self):
 		link = web.input(name='/static/test.html')
@@ -303,15 +276,12 @@ class Index(object):
 			
 	def POST(self):
 		message = simplejson.loads(web.data())
-		if message['type'] in ('plot', 'head', 'code', 'text'):
+		if message['type'] in ('plot', 'head', 'code', 'text', 'save'):
 			exec('result = %s_handler(message)'%(message['type']))
 			return result
 			
 		if message['type'] == 'texteval':
 			return texteval(message)
-
-		if message['type'] == 'save':
-			return save_page(message)
 			
 		if message['type'] == 'savehtml':
 			return save_html(message)
