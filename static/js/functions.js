@@ -67,6 +67,8 @@ function get_num(divide) {
 }
 
 function get_max_index(className) {
+	// TODO: using the className is probably not the best idea. 
+	// This should be done using the data-type tag!
 	var elems = document.getElementsByClassName(className)
 	console.log(elems.length)
 	var num = 0

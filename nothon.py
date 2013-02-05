@@ -43,6 +43,40 @@ def read_plot(fn):
 	except IOError:
 		return False
 		
+def directory_tree(directory, ext='.note', basepath=''):
+	file_list = []
+	for root, subfolders, files in os.walk(directory):
+	#print subfolders
+		for file in files:
+			if file.endswith(ext):
+				print file, root
+				file_list.append(os.path.join(root, file).replace(basepath, '', 1))
+
+	file_list.sort()
+	return file_list
+
+def create_tree(wood, prefix=''):
+	dir_list = '\n%s<ul>\n'%('\t'*prefix.count('/'))
+	i = 0
+	basename = prefix
+	while i < len(wood):
+		tree = wood[i]
+		if tree.count('/') == 1:
+			dir_list += '%s<li>%s</li>\n'%('\t'*prefix.count('/'), prefix + tree)
+			i += 1
+		else:
+			dirname = os.path.dirname(tree)
+			b = dirname.split('/')
+			basename += '/' + b[1]
+			chopped = [tr.replace('/' + b[1], '') for tr in wood if tr.startswith(dirname)]
+			i += len(chopped)
+			dir_list += '%s<li>+%s'%('\t'*prefix.count('/'), b[1])
+			dir_list += create_tree(chopped, basename)
+			dir_list += '\n%s</li>\n'%('\t'*prefix.count('/'))
+	dir_list += '%s</ul>'%('\t'*prefix.count('/'))
+	
+	return dir_list
+	  
 def render_note(fn):
 	# TODO: check, if the notebook exists, and not, return some default page.
 	fin = open(fn, 'r')
@@ -199,41 +233,6 @@ def texteval(message):
 							'success' : 'success', 
 							'content' : result})
 
-def remove_mathjax(string):
-	""" 
-	Strips the innerHTML of a div of the mathjax code, and returns the text, 
-	and formatted LaTeX code
-	"""	
-	out_string = ''
-	first = string.find('<span class="MathJax_Preview">')
-	if first < 0:
-		return string
-
-	while True:    
-		first = string.find('<span class="MathJax_Preview">')
-		if first < 0:
-			out_string += string
-			break
-		out_string += string[:first]
-
-		second = string[first:].find('<script id=')
-		last = string[first:].find('</script>')
-		new_string = string[first+second:first+last]
-		if new_string.find("mode=display") > -1:
-			f = new_string.find("mode=display")
-			out_string += '\[\n' + new_string[f:].replace('mode=display">', '', 1) + '\n\]\n'
-		else:
-			f = new_string.find('math/tex')
-			out_string += '\(' + new_string[f:].replace('math/tex">', '', 1) + '\)'
-
-		string = string[first+last:].replace('</script>', '', 1)
-
-	return out_string
-
-def raw_text(message):
-	return simplejson.dumps({'target' : message['id'],
-							'content' : remove_mathjax(message['content'])})
-
 def save_handler(message):
 	" Writes the stipped document content to disc "
 	title = message['content'][0]	
@@ -266,7 +265,8 @@ def list_create_functions():
 
 class Index(object):
 	#render_note('nothon.note')
-	parse_note('test.note')
+	print create_tree(directory_tree('/home/v923z/sandbox/nothon/', '.note', '/home/v923z/sandbox/nothon'))
+	#parse_note('test.note')
 	update_js()
 	def GET(self):
 		link = web.input(name='/static/test.html')

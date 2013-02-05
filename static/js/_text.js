@@ -49,12 +49,55 @@ function text_keypress(event) {
 		// insert underline
 		apply_tag('<u>', '</u>', event.target)
 		return false
-	}
-	else if(event.which === 100 && event.altKey) {					// d
+	} else if(event.which === 111 && event.ctrlKey) {					// o
+		// insert highlight
+		apply_tag('<span style="background-color:yellow;">', '</span>', event.target)
+		return false
+	} else if(event.which === 100 && event.altKey) {					// d
 		insert_time(event.target)
 		return false
+	} else if(event.which === 108 && event.ctrlKey) {						// l
+		// retrieve raw text
+		event.target.innerHTML = strip_mathjax(event.target.innerHTML)
+		return false
+	} else if(event.which === 38) {			// &
+		// evaluate math expression 
+		return true
 	}
 	return true
+}
+
+function less_than(a, b) {
+	if(a > 0 && b > 0 && a < b) return true
+	if(a > 0 && b < 0) return true
+	if(a > 0 && a < b) return true
+	if(a < 0 && b > 0) return false
+	if(a > 0 && a > b) return false
+}
+
+function strip_mathjax(div_text) {
+	var offset, scr
+	var first = div_text.indexOf('<span class="MathJax_Preview">')
+	if(first > 0) {
+		var second = div_text.indexOf('type="math/tex">')
+		var third = div_text.indexOf('type="math/tex; mode=display">')
+		if(second > 0 && less_than(second, third)) {
+			offset = 'type="math/tex">'.length
+			div_text = div_text.slice(0, first) + '\\(' + div_text.slice(second + offset, div_text.length)
+			scr = div_text.indexOf('</script>')
+			offset = '</script>'.length
+			div_text = div_text.slice(0, scr) + '\\)' + div_text.slice(scr + offset, div_text.length)
+		}
+		else if(third > 0 && less_than(third, second)) {
+			offset = 'type="math/tex; mode=display">'.length
+			div_text = div_text.slice(0, first) + '\\[<br>' + div_text.slice(third + offset, div_text.length)
+			scr = div_text.indexOf('</script>')
+			offset = '</script>'.length
+			div_text = div_text.slice(0, scr) + '<br>\\]' + div_text.slice(scr + offset, div_text.length)			
+		}
+		div_text = strip_mathjax(div_text)
+	}
+	return div_text
 }
 
 function text_data(div_data) {
