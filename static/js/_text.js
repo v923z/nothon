@@ -6,13 +6,20 @@ function text_activate(id) {
 function text_onclick(event) {
 	var elem = event.target
 	if(elem.id.indexOf('_main_') === -1) return
-	var elem = document.getElementById(elem.id.replace('_main_', '_body_'))
-	active_div = document.getElementById(elem.id.replace('_body_', '_header_'))
-	if(elem.style.display == "block") {
-    	elem.style.display = "none"
-  	}
-	else {
-		elem.style.display = "block"
+	var text_body = document.getElementById(elem.id.replace('_main_', '_body_'))
+	var text_header = document.getElementById(elem.id.replace('_main_', '_header_'))
+	
+	if(event.pageY - text_header.offsetTop > text_header.offsetHeight) {
+		text_body.innerHTML = strip_mathjax(text_body.innerHTML)
+		active_div = text_body
+	} else {
+		if(text_body.style.display == "block") {
+			text_body.style.display = "none"
+			active_div = text_header
+		} else {
+			text_body.style.display = "block"
+			active_div = text_body
+		}
 	}
 	active_div.focus()
 }
