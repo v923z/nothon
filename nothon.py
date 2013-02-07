@@ -143,18 +143,26 @@ def plot_handler(message):
 	x = linspace(-10, 10, 100)
 	code = message['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
 	print code
-	try:
-		exec(code)
-		savefig(message['filename'])
-		close()
-		return simplejson.dumps({ "scroller" : message['body'],
-							message['title'] : message['filename'], 
-							message['body'] : read_plot(message['filename'])})
-	except:
-		return simplejson.dumps({ "scroller" : message['body'],
-								message['title'] : '', 
-								message['body'] : traceback.format_exc().replace('\n', '<br>')})
+	first_line = code.split('\n')[0]
+	if first_line.startswith('#gnuplot') or first_line.startswith('# gnuplot'):
+		with open(message['filename'] + '.gp', 'w') as fout:
+			fout.write("set term png; set out '%s'\n"%(message['filename']) + code)
+		os.system("gnuplot %s.gp"%(message['filename']))
+		os.system("rm %s.gp -f"%(message['filename']))
+		exit_status = read_plot(message['filename'])
+		
+	else:
+		try:
+			exec(code)
+			savefig(message['filename'])
+			close()
+			exit_status = read_plot(message['filename'])
+		except:
+			exit_status = traceback.format_exc().replace('\n', '<br>')
 	
+	return simplejson.dumps({ "scroller" : message['body'],
+						message['title'] : message['filename'], 
+						message['body'] : exit_status})
 	
 def code_handler(message):
 	print message
