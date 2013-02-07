@@ -15,10 +15,11 @@ $if content:
 	$content["code_date"]
 </div>
 <div id='$bid' class='code_body' data-nothon=''>
+$if content:
+	$:content["code_body"]
 </div>
 <div id='$cid' class='code_container' data-nothon='save;'>
-$if content:
-	$content["code_container"]
+$if content: $content["code_container"]
 </div>
 </div>
 

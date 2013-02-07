@@ -113,11 +113,13 @@ function create_message(div_data, message_type) {
 	message.type = message_type
 	message.id = div_data.id
 	message.content = div_data.innerHTML
+	console.log(message.content)
 	return message
 }
 
 function message_handler(req) {
 	var message = JSON.parse(req.responseText)
+	console.log(message)
 	for(i in message) {
 		var elem = document.getElementById(i)
 		if(elem && i != "scroller") {
@@ -151,6 +153,7 @@ function block_content(elem) {
 			}
 		}
 	})
+	eval('block = ' + block.type + '_sanitise(block)')
 	return block
 }
 
@@ -168,7 +171,7 @@ function get_divs() {
 function save() {
 	var message = create_message('', "save")
 	message.content = get_divs()
-	//console.log('divs: ', get_divs(), 'json: ', JSON.stringify(message, null, 4))
+	//console.log('json: ', JSON.stringify(message, null, 4))
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 

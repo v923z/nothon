@@ -195,3 +195,8 @@ function insert_time(target) {
 	t.innerHTML = t.innerHTML.replace('_date_inserted_', '<span id="_date_marker_"></span>')
 	goto_marker("_date_marker_")
 }
+
+function text_sanitise(block) {
+	block.content.text_body = strip_mathjax(block.content.text_body)
+	return block
+}

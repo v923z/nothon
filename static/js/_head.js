@@ -38,3 +38,7 @@ function head_data(div_data) {
 	message.date = 'div_head_date_' + get_num(div_data)
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
 }
+
+function head_sanitise(block) {
+	return block
+}

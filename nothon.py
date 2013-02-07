@@ -20,9 +20,6 @@ urls = ('/',  'Index')
 app = web.application(urls, globals())
 render = web.template.render('templates/')
 
-tags = ('<text>', '<header>', '<plot>', '<code>')
-order = ('title', 'head', 'body')
-
 def update_js():
 	list_of_files = [file.split('.')[0] for file in os.listdir('templates/') if file.endswith('_html.html')]
 	for fn in list_of_files:
@@ -39,9 +36,9 @@ def create_js(func_name):
 def read_plot(fn):
 	try:
 		with open(fn, "rb") as image_file:
-			return base64.b64encode(image_file.read())
+			return '<img class="plot_image" src="data:image/png;base64,' + base64.b64encode(image_file.read()) + '"/>'
 	except IOError:
-		return False
+		return '<span class="code_error">Could not read file from disc</span>'
 		
 def directory_tree(directory, ext='.note', basepath=''):
 	file_list = []
@@ -76,79 +73,41 @@ def create_tree(wood, prefix=''):
 	dir_list += '%s</ul>'%('\t'*prefix.count('/'))
 	
 	return dir_list
-	  
-def render_note(fn):
-	# TODO: check, if the notebook exists, and not, return some default page.
-	fin = open(fn, 'r')
-	string = fin.read()
-	fin.close()
-	string, elements = parse_note(string, tags)
-	html_content = ''
-	text_counter, header_counter, plot_counter, code_counter = 0, 0, 0, 0
-	for element in elements:
-		if element['type'] == 'text':
-			text_counter += 1
-			html_content += str(render.text(text_counter, element['head'], element['body']))
-		if element['type'] == 'header':
-			header_counter += 1
-			html_content += render.header(header_counter, "here", "there")
-		if element['type'] == 'plot':
-			plot_counter += 1
-			image = read_plot(element['title'])
-			html_content += str(render.plot(plot_counter, element['head'], element['title'], image))
-		if element['type'] == 'code':
-			code_counter += 1
-			fn = element['head'].split(' ')[0]
-			lexer = get_lexer_for_filename(fn)
-			print highlight(code, lexer, HtmlFormatter())
-			html_content += render.code(code_counter, 
-							element['head'], element['title'], 
-							highlight(element['body'], lexer, HtmlFormatter()), element['body'])
-	
-	fout = open('tt.html', 'w')
-	fout.write(str(render.document("title", "aside", html_content)))
-	fout.close()
 
+def plot_update_dict(dictionary):
+	dictionary['content']['plot_body'] = read_plot(dictionary['content']['plot_title'])
+	return dictionary
+	
+def text_update_dict(dictionary):
+	return dictionary
+
+def head_update_dict(dictionary):
+	return dictionary
+
+def code_update_dict(dictionary):
+	lexer = get_lexer_for_filename(dictionary['content']['code_header'])
+	dictionary['content']['code_body'] = highlight(dictionary['content']['code_container'], lexer, HtmlFormatter())
+	return dictionary
+	
 def parse_note(fn):	
+	note = ''
 	fin = open(fn)
 	data = simplejson.load(fin)
 	fin.close()
 	content = data["notebook"]
 	for element in content:
-		exec('print render.%s_html(%s, %s)'%(element['type'], element['id'], element['content']))
-    
-def extract_content(string, elem_type):
-    " In the notebook file, the order of the parts in each element should be title, head,  body"
-    title, head, body = '', '', ''
-    start = string.find('<title>')
-    end = string.find('</title>')
-    abs_end = string.find('</%s>'%elem_type)
-    if start > -1 and end > -1 and start < abs_end:
-        title = string[start+len('<title>'):end]
-        string = string[end+len('</title>'):]
-
-    start = string.find('<head>')
-    end = string.find('</head>')
-    if start > -1 and end > -1:
-        head = string[start+len('<head>'):end]
-        string = string[end+len('</head>'):]
-        
-    start = string.find('<body>')
-    end = string.find('</body>')
-    if start > -1 and end > -1:
-        body = string[start+len('<body>'):end]
-        string = string[end+len('</body>'):]
-        
-    start = string.find('</%s>'%elem_type)
-    if start > -1: string = string[start + len('</%s>'%elem_type):]
-    return string, {"type" : elem_type, "title" : title, "head" : head, "body": body}
+		print element
+		exec('element = %s_update_dict(element)'%(element['type']))	
+		exec('div = render.%s_html(%s, %s)'%(element['type'], element['id'], element['content']))
+		note += str(div)
+	return note
 
 def head_handler(message):	
 	head = message['content'].rstrip('<br>').rstrip('\t')
 	sp = head.split(' ')
 	fn = sp[0]
 	if not os.path.exists(fn): 
-		return simplejson.dumps({message['body'] : '<span class="head_error">File doesn\'t exist</span>', date : ''})
+		return simplejson.dumps({message['body'] : '<span class="head_error">File doesn\'t exist</span>', message['date'] : ''})
 	if len(sp) == 1: n = 10
 	# TODO: elif sp[1] == '#':	
 	else: n = int(sp[1])
@@ -181,11 +140,9 @@ def plot_handler(message):
 		exec(code)
 		savefig(message['filename'])
 		close()
-		with open(message['filename'], "rb") as image_file:
-			encoded_image = base64.b64encode(image_file.read())
 		return simplejson.dumps({ "scroller" : message['body'],
 							message['title'] : message['filename'], 
-							message['body'] : '<img class="plot_image" src="data:image/png;base64,' + encoded_image + '"/>'})
+							message['body'] : read_plot(message['filename'])})
 	except:
 		return simplejson.dumps({ "scroller" : message['body'],
 								message['title'] : '', 
@@ -193,11 +150,12 @@ def plot_handler(message):
 	
 	
 def code_handler(message):
+	print message
 	sp = message['content'].split(' ')
 
 	fn = sp[0]
 	if not os.path.exists(fn): 
-		return simplejson.dumps({body : '<span class="code_error">File doesn\'t exist!</span>'})
+		return simplejson.dumps({message['body'] : '<span class="code_error">File doesn\'t exist!</span>'})
 		
 	lexer = get_lexer_for_filename(fn)
 	fin = open(fn, 'r')
@@ -234,10 +192,10 @@ def texteval(message):
 							'content' : result})
 
 def save_handler(message):
+	print message
 	" Writes the stipped document content to disc "
 	title = message['content'][0]	
-	with open(title['title'] + '.note', 'w') as fout:
-	#fout.write(remove_mathjax(message['content'].replace('<br>','\n')))
+	with open(title['title'], 'w') as fout:
 		fout.write("{\n\"nothon version\" : 1.0,\n\"notebook\" : " + simplejson.dumps(message['content'][1:], sort_keys=True, indent=4) + '\n}')
 	return  simplejson.dumps({'success' : 'success'})
 
@@ -264,17 +222,19 @@ def list_create_functions():
 	return [file.split('.')[0] for file in os.listdir('static/js/') if file.endswith('_html.js')]
 
 class Index(object):
-	#render_note('nothon.note')
-	print create_tree(directory_tree('/home/v923z/sandbox/nothon/', '.note', '/home/v923z/sandbox/nothon'))
-	#parse_note('test.note')
+	#print create_tree(directory_tree('/home/v923z/sandbox/nothon/', '.note', '/home/v923z/sandbox/nothon'))
 	update_js()
 	def GET(self):
-		link = web.input(name='/static/test.html')
-		print str(render.document('test', 'ASIDE', False, list_handler_functions(), list_create_functions()))
-		return render.document('test', 'ASIDE', False, list_handler_functions(), list_create_functions())
-			
+		link = web.input(name='test.note')
+		if not os.path.exists(link.name): 
+			return 	render.document(link.name, 'A', False, list_handler_functions(), list_create_functions())
+
+		print parse_note(link.name)
+		return 	render.document(link.name, 'A', parse_note(link.name), list_handler_functions(), list_create_functions())
+
 	def POST(self):
 		message = simplejson.loads(web.data())
+		print message
 		if message['type'] in ('plot', 'head', 'code', 'text', 'save'):
 			exec('result = %s_handler(message)'%(message['type']))
 			return result
