@@ -16,9 +16,16 @@ from pygments.formatters import HtmlFormatter
 #import helper
 from pylab import *
 
+def safe_content(dictionary, key):
+	if not dictionary or key not in dictionary:
+		return ""
+	else:
+		return dictionary[key]
+
 urls = ('/',  'Index')
-app = web.application(urls, globals())
 render = web.template.render('templates/')
+web.template.Template.globals['safe_content'] = safe_content
+app = web.application(urls, globals())
 
 def update_js():
 	list_of_files = [file.split('.')[0] for file in os.listdir('templates/') if file.endswith('_html.html')]
@@ -103,7 +110,7 @@ def parse_note(fn):
 	return note
 
 def head_handler(message):	
-	head = message['content'].rstrip('<br>').rstrip('\t')
+	head = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n')
 	sp = head.split(' ')
 	fn = sp[0]
 	if not os.path.exists(fn): 
@@ -151,7 +158,7 @@ def plot_handler(message):
 	
 def code_handler(message):
 	print message
-	sp = message['content'].split(' ')
+	sp = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n').split(' ')
 
 	fn = sp[0]
 	if not os.path.exists(fn): 
@@ -162,7 +169,6 @@ def code_handler(message):
 	code = fin.read()
 	fin.close()
 	# TODO: read lines between limits, and also between tags
-	print highlight(code, lexer, HtmlFormatter())
 	return simplejson.dumps({message['date'] : os.path.getmtime(fn),
 							message['body'] : highlight(code, lexer, HtmlFormatter()),
 							message['container'] : code,
@@ -251,7 +257,6 @@ class Index(object):
 		else:
 			return simplejson.dumps(message)
 
-app = web.application(urls, globals())
 if __name__ == "__main__": app.run()
 
 #class StaticMiddleware:
