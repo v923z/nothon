@@ -202,7 +202,7 @@ def save_handler(message):
 	" Writes the stipped document content to disc "
 	title = message['content'][0]	
 	with open(title['title'], 'w') as fout:
-		fout.write("{\n\"saved:\"" + message["saved"] + "\n\"nothon version\" : 1.0,\n\"notebook\" : " + simplejson.dumps(message['content'][1:], sort_keys=True, indent=4) + '\n}')
+		fout.write("{\n\"saved\" : \"" + message["saved"] + "\",\n\"nothon version\" : 1.0,\n\"notebook\" : " + simplejson.dumps(message['content'][1:], sort_keys=True, indent=4) + '\n}')
 	return  simplejson.dumps({'success' : 'success'})
 
 def save_html(message):
