@@ -171,6 +171,7 @@ function get_divs() {
 function save() {
 	var message = create_message('', "save")
 	message.content = get_divs()
+	message.saved = Date()
 	//console.log('json: ', JSON.stringify(message, null, 4))
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
