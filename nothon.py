@@ -82,7 +82,7 @@ def create_tree(wood, prefix=''):
 	return dir_list
 
 def plot_update_dict(dictionary):
-	dictionary['content']['plot_body'] = read_plot(dictionary['content']['plot_title'])
+	dictionary['content']['plot_body'] = read_plot(dictionary['content']['plot_file'])
 	return dictionary
 	
 def text_update_dict(dictionary):
@@ -98,9 +98,9 @@ def code_update_dict(dictionary):
 	
 def parse_note(fn):	
 	note = ''
-	fin = open(fn)
-	data = simplejson.load(fin)
-	fin.close()
+	with open(fn, 'r') as fin:
+		data = simplejson.load(fin)
+		
 	content = data["notebook"]
 	for element in content:
 		print element

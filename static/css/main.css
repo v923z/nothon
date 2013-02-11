@@ -91,7 +91,7 @@ article {
 	width: 80%;
 }
 
-.plot_header, .plot_title, .plot_body {
+.plot_header, .plot_file, .plot_body {
 	font-size: 12pt;
 	color: #000099;
 	background: #eeeeff;
@@ -104,7 +104,7 @@ article {
 	min-height:  1.2em;
 }
 
-.plot_title {
+.plot_file {
 	background: rgba(0, 0, 0, 0.05)
 }
 
@@ -113,7 +113,7 @@ article {
 	border-width: 0 10px 0 0;
 }
 
-.plot_title:focus {
+.plot_file:focus {
 	border: solid blue;
 	border-width: 0 10px 0 0;
 }
@@ -124,7 +124,7 @@ article {
 	contenteditable: true;
 }
 
-.plot_title {
+.plot_file {
 	/* This can be made hidden */
 	font-size: 10pt;
 	font-weight: bold;

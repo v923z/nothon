@@ -1,11 +1,11 @@
 $def with (id, content)
 $ mid = 'div_plot_main_%s'%(id)
-$ tid = 'div_plot_title_%s'%(id)
+$ tid = 'div_plot_file_%s'%(id)
 $ hid = 'div_plot_header_%s'%(id)
 $ bid = 'div_plot_body_%s'%(id)
 
 <div id='$mid' class='plot_main' onclick='plot_onclick(event);' data-type='plot'>
 <div id='$hid' class='plot_header' contenteditable='true' onkeypress='return plot_keypress(event);' onfocus='set_active(this);' data-nothon='save;'>$safe_content(content, "plot_header")</div>
-<div id='$tid' class='plot_title' data-nothon='save;'>$safe_content(content, "plot_title")</div>
+<div id='$tid' class='plot_file' data-nothon='save;'>$safe_content(content, "plot_file")</div>
 <div id='$bid' class='plot_body' data-nothon=''>$:safe_content(content, "plot_body")</div>
 </div>

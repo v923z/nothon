@@ -160,6 +160,7 @@ function block_content(elem) {
 function get_divs() {
 	var content = new Array()
 	content[0] = {"title" : document.title }
+	// TODO: this should loop through elements in docmain only
 	$("div[class*='_main']").each( function() {			
 			content.push(block_content($(this)))
 		}
@@ -215,4 +216,6 @@ $(document).ready(function () {
 	function() {
 		$("#menu > ul").fadeOut("slow"); 
 	});
+	$('#calendar').datepick({onSelect: function(dates) { alert('The chosen date(s): ' + dates); }});
 });
+
