@@ -83,7 +83,7 @@ def create_tree(wood, prefix=''):
 	return dir_list
 
 def plot_update_dict(dictionary):
-	dictionary['content']['plot_body'] = {"content" : read_plot(dictionary['content']['plot_file']['content'])}
+	dictionary['content']['plot_body'] = {'content' : read_plot(dictionary['content']['plot_file']['content'])}
 	return dictionary
 	
 def text_update_dict(dictionary):
@@ -94,7 +94,7 @@ def head_update_dict(dictionary):
 
 def code_update_dict(dictionary):
 	lexer = get_lexer_for_filename(dictionary['content']['code_header'])
-	dictionary['content']['code_body'] = highlight(dictionary['content']['code_container'], lexer, HtmlFormatter())
+	dictionary['content']['code_body'] = {'content' : highlight(dictionary['content']['code_container'], lexer, HtmlFormatter())}
 	return dictionary
 	
 def parse_note(fn):	
