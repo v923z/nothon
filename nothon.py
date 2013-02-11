@@ -93,7 +93,7 @@ def head_update_dict(dictionary):
 	return dictionary
 
 def code_update_dict(dictionary):
-	lexer = get_lexer_for_filename(dictionary['content']['code_header'])
+	lexer = get_lexer_for_filename(dictionary['content']['code_header']['content'])
 	dictionary['content']['code_body'] = {'content' : highlight(dictionary['content']['code_container'], lexer, HtmlFormatter())}
 	return dictionary
 	
