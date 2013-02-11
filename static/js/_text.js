@@ -197,6 +197,6 @@ function insert_time(target) {
 }
 
 function text_sanitise(block) {
-	block.content.text_body = strip_mathjax(block.content.text_body)
+	block.content.text_body.content = strip_mathjax(block.content.text_body.content)
 	return block
 }

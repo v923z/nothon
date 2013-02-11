@@ -20,7 +20,7 @@ def safe_content(dictionary, key):
 	if not dictionary or key not in dictionary:
 		return ""
 	else:
-		return dictionary[key]
+		return dictionary[key]['content']
 
 urls = ('/',  'Index')
 render = web.template.render('templates/')
@@ -97,17 +97,27 @@ def code_update_dict(dictionary):
 	return dictionary
 	
 def parse_note(fn):	
-	note = ''
+	note = {}
+	note_str = ''
 	with open(fn, 'r') as fin:
 		data = simplejson.load(fin)
 		
 	content = data["notebook"]
+	note["directory"] = data["directory"]
+	
 	for element in content:
 		print element
 		exec('element = %s_update_dict(element)'%(element['type']))	
 		exec('div = render.%s_html(%s, %s)'%(element['type'], element['id'], element['content']))
-		note += str(div)
+		note_str += str(div)
+		
+	note["content"] = note_str
 	return note
+
+def get_note_dir(fn):
+	with open(fn, 'r') as fin:
+		data = simplejson.load(fin)
+	return data["directory"]
 
 def head_handler(message):	
 	head = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n')
@@ -140,26 +150,39 @@ def head_handler(message):
 							message['body'] : '<br>'.join([x.rstrip('\n\r') for x in lines])})
 
 def plot_handler(message):
-	x = linspace(-10, 10, 100)
 	code = message['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
 	print code
-	first_line = code.split('\n')[0]
-	if first_line.startswith('#gnuplot') or first_line.startswith('# gnuplot'):
+	exit_status = False
+	pwd = os.getcwd()
+	print message['directory']
+	if message['directory']: os.chdir(message['directory'].strip('\n'))
+	
+	if code.startswith('#gnuplot') or code.startswith('# gnuplot'):
 		with open(message['filename'] + '.gp', 'w') as fout:
-			fout.write("set term png; set out '%s'\n"%(message['filename']) + code)
+			fout.write("set term png; set out '%s'\n"%(pwd + '/' + message['filename']) + code)
 		os.system("gnuplot %s.gp"%(message['filename']))
 		os.system("rm %s.gp -f"%(message['filename']))
-		exit_status = read_plot(message['filename'])
+
+	#else if code.statswith('%matlab') or code.statswith('% matlab'):
+		#with open(message['filename'] + '.matlab', 'w') as fout:
+			#fout.write("set term png; set out '%s'\n"%(message['filename']) + code)
+		#os.system("matlab %s.matlab"%(message['filename']))
+		#os.system("rm %s.matlab -f"%(message['filename']))
+		#exit_status = read_plot(message['filename'])
 		
 	else:
+		x = linspace(-10, 10, 100)
 		try:
 			exec(code)
-			savefig(message['filename'])
+			savefig(pwd + '/' + message['filename'])
 			close()
-			exit_status = read_plot(message['filename'])
 		except:
 			exit_status = traceback.format_exc().replace('\n', '<br>')
-	
+
+	os.chdir(pwd)
+	if not exit_status:
+		exit_status = read_plot(message['filename'])
+
 	return simplejson.dumps({ "scroller" : message['body'],
 						message['title'] : message['filename'], 
 						message['body'] : exit_status})
@@ -210,7 +233,11 @@ def save_handler(message):
 	" Writes the stipped document content to disc "
 	title = message['content'][0]	
 	with open(title['title'], 'w') as fout:
-		fout.write("{\n\"saved\" : \"" + message["saved"] + "\",\n\"nothon version\" : 1.0,\n\"notebook\" : " + simplejson.dumps(message['content'][1:], sort_keys=True, indent=4) + '\n}')
+		fout.write('{\n"directory" : "%s",\n'%(message["directory"].strip('\n')))
+		fout.write('"saved" : "%s",\n'%(message["saved"]))
+		fout.write('"nothon version" : 1.1,\n')
+		fout.write('"notebook" : "%s"\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))
+		
 	return  simplejson.dumps({'success' : 'success'})
 
 def save_html(message):

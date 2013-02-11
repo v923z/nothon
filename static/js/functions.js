@@ -113,6 +113,7 @@ function create_message(div_data, message_type) {
 	message.type = message_type
 	message.id = div_data.id
 	message.content = div_data.innerHTML
+	message.directory = document.getElementById("div_directory").innerHTML
 	console.log(message.content)
 	return message
 }
@@ -148,7 +149,11 @@ function block_content(elem) {
 			var nothon = $(this).data('nothon')
 			if(nothon) {
 				if(nothon.indexOf('save;') !== -1) {
-					block.content[$(this).attr('class')] = $(this).html()
+					var sub_block = new Object()
+					sub_block["content"] = $(this).html()
+					sub_block["props"]= 'placeholder;'
+					block.content[$(this).attr('class')] = sub_block
+					// We should implement tracking of hidden/collapsed properties, and so on
 				}
 			}
 		}
@@ -171,6 +176,7 @@ function get_divs() {
 
 function save() {
 	var message = create_message('', "save")
+	message.directory = document.getElementById("div_directory").innerHTML	
 	message.content = get_divs()
 	message.saved = Date()
 	//console.log('json: ', JSON.stringify(message, null, 4))

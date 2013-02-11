@@ -43,10 +43,14 @@ $for f in create_funcs:
 </div>
 <div class="menu" onclick="move('down');"><img src="/static/css/down-arrow.png" width="40%"></div>
 </div>
-
+<div id="div_directory">
+$if content:
+	$content["directory"]
+$else: /home/v923z/sandbox/nothon
+</div>
 <div id="docmain">
 $if content:
-	$:content
+	$:content["content"]
 </div>
 <div id="trash" class="trash">
 </div>
