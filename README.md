@@ -55,6 +55,15 @@ in this way. Therefore,
 
 is also a valid piece of code. 
 
+Note, however, that the default plotting backend can be overriden by adding an identifier to the first line of the 
+code block. The following code will call gnuplot instead of matplotlib:
+
+	# gnuplot
+	plot sin(x)
+	
+write the corresponding file to disc, retrieve its content, and insert it in the notebook. When doing so, keep in 
+mind that the whole code block will be passed to gnuplot, therefore, python codes will throw a gnuplot error. 
+
 The text style in a text block can be changed by highlighting some elements, and then hitting `Cntr-B` **bold**, 
 `Cntr-I` *italic*, or `Cntr-U` __underlined__.
 
@@ -124,4 +133,6 @@ to the list in data-nothon.
 
 * Adding support for a simple canvas element.
 
+* Adding the option for saving notebooks into PDF. This should be done through LaTeX.
 
+* Adding support for matlab plots. This should be trivial, and be done in the same way as we handle gnuplot. 
