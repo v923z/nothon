@@ -133,6 +133,6 @@ to the list in data-nothon.
 
 * Adding support for a simple canvas element.
 
-* Adding the option for saving notebooks into PDF. This should be done through LaTeX.
+* Adding the option for saving notebooks into PDF. This should be done through LaTeX, and templating. 
 
 * Adding support for matlab plots. This should be trivial, and be done in the same way as we handle gnuplot. 
