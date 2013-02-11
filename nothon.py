@@ -20,6 +20,7 @@ def safe_content(dictionary, key):
 	if not dictionary or key not in dictionary:
 		return ""
 	else:
+		print key
 		return dictionary[key]['content']
 
 urls = ('/',  'Index')
@@ -82,7 +83,7 @@ def create_tree(wood, prefix=''):
 	return dir_list
 
 def plot_update_dict(dictionary):
-	dictionary['content']['plot_body'] = read_plot(dictionary['content']['plot_file'])
+	dictionary['content']['plot_body'] = {"content" : read_plot(dictionary['content']['plot_file']['content'])}
 	return dictionary
 	
 def text_update_dict(dictionary):
@@ -112,12 +113,8 @@ def parse_note(fn):
 		note_str += str(div)
 		
 	note["content"] = note_str
+	print 'here'
 	return note
-
-def get_note_dir(fn):
-	with open(fn, 'r') as fin:
-		data = simplejson.load(fin)
-	return data["directory"]
 
 def head_handler(message):	
 	head = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n')
@@ -236,7 +233,7 @@ def save_handler(message):
 		fout.write('{\n"directory" : "%s",\n'%(message["directory"].strip('\n')))
 		fout.write('"saved" : "%s",\n'%(message["saved"]))
 		fout.write('"nothon version" : 1.1,\n')
-		fout.write('"notebook" : "%s"\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))
+		fout.write('"notebook" : %s\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))
 		
 	return  simplejson.dumps({'success' : 'success'})
 
