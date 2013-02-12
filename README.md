@@ -79,7 +79,8 @@ text box between a pair of `&&` delimiters. E.g.,
 	
 will return, and format the results using Mathjax. The maxima code is executed when the fourth ampersand is 
 pressed, no other action is required. At the moment, the maxima code is lost, once the evaluation is done. In 
-a future version, the the user will be able to retrieve the code. 
+a future version, the the user will be able to retrieve the code. If the code execution results in a failure, 
+the code is not touched, so that it can still be edited. Instead, the user is presented with an alert. 
 
 Developer notes
 ========
