@@ -113,7 +113,7 @@ function create_message(div_data, message_type) {
 	message.type = message_type
 	message.id = div_data.id
 	message.content = div_data.innerHTML
-	message.directory = document.getElementById("div_directory").innerHTML
+	message.directory = document.getElementById("div_dir").innerHTML
 	console.log(message.content)
 	return message
 }
@@ -176,9 +176,9 @@ function get_divs() {
 
 function save() {
 	var message = create_message('', "save")
-	//message.title = document.title
-	//message.doc_title = document.getElementById("div_title").innerHTML
-	message.directory = document.getElementById("div_directory").innerHTML
+	message.outfile = document.title
+	message.title = document.getElementById("div_title").innerHTML
+	message.directory = document.getElementById("div_dir").innerHTML
 	message.content = get_divs()
 	message.saved = Date()
 	//console.log('json: ', JSON.stringify(message, null, 4))
@@ -191,7 +191,7 @@ function save_handler(req) {
 
 function save_html() {
 	var message = create_message('', "savehtml")
-	message.title = document.title
+	message.outfile = document.title
 	message.content = document.getElementById('docmain').innerHTML
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), save_handler)
 }
@@ -227,3 +227,7 @@ $(document).ready(function () {
 	$('#calendar').datepick({onSelect: function(dates) { alert('The chosen date(s): ' + dates); }});
 });
 
+function dir_keypress(event) {
+	if(event.which === 13) return false
+	else return true
+}

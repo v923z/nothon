@@ -22,7 +22,6 @@ def safe_content(dictionary, key):
 	if not dictionary or key not in dictionary:
 		return ""
 	else:
-		print key
 		return dictionary[key]['content']
 
 urls = ('/',  'Index')
@@ -105,8 +104,9 @@ def parse_note(fn):
 	with open(fn, 'r') as fin:
 		data = simplejson.load(fin)
 		
-	content = data["notebook"]
-	note["directory"] = data["directory"]
+	content = data['notebook']
+	note['directory'] = {'content' : data['directory']}
+	note['title'] = {'content' : data['title']}
 	
 	for element in content:
 		print element
@@ -114,8 +114,7 @@ def parse_note(fn):
 		exec('div = render.%s_html(%s, %s)'%(element['type'], element['id'], element['content']))
 		note_str += str(div)
 		
-	note["content"] = note_str
-	print 'here'
+	note['content'] = {'content' : note_str}
 	return note
 
 def head_handler(message):	
@@ -230,11 +229,10 @@ def text_handler(message):
 def save_handler(message):
 	print message
 	" Writes the stipped document content to disc "
-	title = message['content'][0]	
-	with open(title['title'], 'w') as fout:
-		#fout.write('{\n"title" : "%s",\n'%(message["doc_title"]))
-		#fout.write('"directory" : "%s",\n'%(message["directory"].strip('\n')))
-		fout.write('{\n"directory" : "%s",\n'%(message["directory"].strip('\n')))
+	with open(message['outfile'], 'w') as fout:
+		fout.write('{\n"title" : "%s",\n'%(message["title"]))
+		fout.write('"directory" : "%s",\n'%(message["directory"].strip('\n')))
+		#fout.write('{\n"directory" : "%s",\n'%(message["directory"].strip('\n')))
 		fout.write('"saved" : "%s",\n'%(message["saved"]))
 		fout.write('"nothon version" : 1.1,\n')
 		fout.write('"notebook" : %s\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))

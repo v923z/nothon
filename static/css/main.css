@@ -83,6 +83,25 @@ article {
 	display: none;
 }
 
+#div_title {
+	font-size: 24pt;
+	background-color: rgba(1, 1, 1, 0.2);
+	margin-top: 5px;
+	margin-left: 5px;
+	border-radius: 2px;
+	width: 80%;
+	text-align: center;
+}
+
+#div_dir {
+	font-size: 12pt;
+	background-color: rgba(0, 0, 1, 0.25);
+	margin-top: 5px;
+	margin-left: 5px;
+	border-radius: 2px;
+	width: 80%;
+}
+
 .plot_main, .head_main, .code_main, .text_main {
 	background-color: rgba(0, 0, 0, 0.05);
 	margin-top: 5px;
