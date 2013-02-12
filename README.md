@@ -72,6 +72,15 @@ By pressing "save", the stripped content of the notebook will be written to some
 Using "html" produces the stand-alone html document somenotebook.html, i.e., all required style sheets, 
 and images will be included. 
 
+If maxima is installed, symbolic manipulations can be performed by inserting a piece of valid maxima code in a 
+text box between a pair of `&&` delimiters. E.g., 
+
+	&&solve(x+4=0, x);&&
+	
+will return, and format the results using Mathjax. The maxima code is executed when the fourth ampersand is 
+pressed, no other action is required. At the moment, the maxima code is lost, once the evaluation is done. In 
+a future version, the the user will be able to retrieve the code. 
+
 Developer notes
 ========
 
@@ -105,7 +114,7 @@ for executing a server request, and finally,
 
 	new_plugin_sanitise(block)
 	
-This last function should stip the content of a new_plugin block before saving. For an example, see 
+This last function should strip the content of a new_plugin block before saving. For an example, see 
 _plot.js, and the functions therein.
 
 In addition, on the server side, one also needs a the following functions:
