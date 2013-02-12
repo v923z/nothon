@@ -5,6 +5,8 @@ import urllib
 import base64
 import simplejson
 import traceback
+import tempfile
+
 
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename
@@ -202,34 +204,36 @@ def code_handler(message):
 							message['container'] : code,
 							"scroller" : message['body']})
 
-def texteval(message):
-	print message['content']
-	lines = message['content'].rstrip('<br>').split('<br>')
-	print lines
-	if lines[-1].find('..img::') > 0:
-		img_path = lines[-1][lines[-1].find('..img::'):].lstrip('..img::')
-		print img_path	
-		return simplejson.dumps({'target' : message['id'], 
-							'success' : 'success', 
-							'content' : '<img src="%s"></img>'%img_path})
-
-	# TODO: check, whether the evaluation was successful. Use the 'success' tag for that
-	print lines[-1].replace('&nbsp;', ' ').rstrip('<br>').rstrip('=')
-	result = eval(lines[-1].replace('&nbsp;', ' ').rstrip('<br>').rstrip('='))
-	print simplejson.dumps({'target' : message['id'], 
-							'success' : 'success', 
-							'content' : result})
+def write_to_temp(string):
+	_, tmp = tempfile.mkstemp()
+	with open(tmp, 'w') as fout:
+		fout.write(string)
+	return tmp
 	
-
-	return simplejson.dumps({'target' : message['id'], 
-							'success' : 'success', 
-							'content' : result})
+def maxima_execute(max_string):
+	tmp = write_to_temp(max_string + '\ntex(%);')
+	os.system('maxima -b %s > %s.out'%(tmp, tmp))
+	result = open(tmp + '.out', 'r').read()	
+	os.remove(tmp)
+	os.remove(tmp + '.out')
+	return result
+	
+def text_handler(message):
+	print message["content"]
+	result = maxima_execute(message["content"])
+	if result.find('$$') == -1:
+		return simplejson.dumps({'target' : message['id'], 'success' : 'failed', 'result' : result})
+	else:
+		print simplejson.dumps({'target' : message['id'], 'success' : 'success', 'result' : result.split('$$')[1]})
+		return simplejson.dumps({'target' : message['id'], 'success' : 'success', 'result' : result.split('$$')[1]})
 
 def save_handler(message):
 	print message
 	" Writes the stipped document content to disc "
 	title = message['content'][0]	
 	with open(title['title'], 'w') as fout:
+		#fout.write('{\n"title" : "%s",\n'%(message["doc_title"]))
+		#fout.write('"directory" : "%s",\n'%(message["directory"].strip('\n')))
 		fout.write('{\n"directory" : "%s",\n'%(message["directory"].strip('\n')))
 		fout.write('"saved" : "%s",\n'%(message["saved"]))
 		fout.write('"nothon version" : 1.1,\n')
@@ -281,9 +285,6 @@ class Index(object):
 			
 		if message['type'] == 'savehtml':
 			return save_html(message)
-			
-		if message['type'] == 'raw_text':
-			return raw_text(message)
 			
 		else:
 			return simplejson.dumps(message)

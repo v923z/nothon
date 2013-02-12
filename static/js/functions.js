@@ -176,7 +176,9 @@ function get_divs() {
 
 function save() {
 	var message = create_message('', "save")
-	message.directory = document.getElementById("div_directory").innerHTML	
+	//message.title = document.title
+	//message.doc_title = document.getElementById("div_title").innerHTML
+	message.directory = document.getElementById("div_directory").innerHTML
 	message.content = get_divs()
 	message.saved = Date()
 	//console.log('json: ', JSON.stringify(message, null, 4))

@@ -32,7 +32,7 @@ function text_keypress(event) {
 		active_div.focus()
 		return false
 	} else if(event.which === 13 && event.shiftKey) {					// Enter
-		text_data(event.target)
+		//text_data(event.target)
 		create_and_insert('text_main')
 		return false
 	} else if(event.which === 13 && event.ctrlKey) {				// Enter
@@ -69,6 +69,7 @@ function text_keypress(event) {
 		return false
 	} else if(event.which === 38) {			// &
 		// evaluate math expression 
+		get_math_code(event.target)
 		return true
 	}
 	return true
@@ -80,6 +81,19 @@ function less_than(a, b) {
 	if(a > 0 && a < b) return true
 	if(a < 0 && b > 0) return false
 	if(a > 0 && a > b) return false
+}
+
+function get_math_code(target) {
+	var div_text = target.innerHTML
+	console.log('text', div_text)
+	var first = div_text.indexOf('&amp;&amp;')
+	if(first > 0) {
+		second = div_text.slice(first + '&amp;&amp;'.length, div_text.length).indexOf('&amp;')
+		if(second > 0) {
+			var math_string = div_text.slice(first+'&amp;&amp;'.length, first+'&amp;&amp;'.length+second)
+			text_data(target, math_string)
+		}
+	}
 }
 
 function strip_mathjax(div_text) {
@@ -107,9 +121,25 @@ function strip_mathjax(div_text) {
 	return div_text
 }
 
-function text_data(div_data) {
+function text_data(div_data, math_string) {
 	var message = create_message(div_data, "text")
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
+	message.content = math_string
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), text_handler)
+}
+
+function text_handler(req) {
+	var message = JSON.parse(req.responseText)
+	if(message['success'] == 'failed') {
+		alert('failed!' + message['result'])
+	}
+	else {
+		var div_text = document.getElementById(message['target']).innerHTML
+		var first = div_text.indexOf('&amp;&amp;')
+		var second = first + div_text.slice(first + '&amp;&amp;'.length, div_text.length).indexOf('&amp;&amp;')+2*'&amp;&amp;'.length
+		div_text = div_text.slice(0, first) + '\\[' + message['result'] + '\\]' + div_text.slice(second, div_text.length)
+		document.getElementById(message['target']).innerHTML = div_text
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub, message['target']]);
+	}
 }
 
 function goto_marker(id) {
