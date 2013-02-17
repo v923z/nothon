@@ -81,7 +81,6 @@ function get_max_index(className) {
 }
 
 function get_mouse_pos(event) {
-//	console.log(event.pageX - elem.offsetLeft, event.pageY - elem.offsetTop)
 	if(event.target.id.indexOf('_main_') != -1) {
 		toggle_show_hide(event)
 	}
@@ -170,7 +169,6 @@ function get_divs() {
 			content.push(block_content($(this)))
 		}
 	);
-	//console.log('content', JSON.stringify(content))
 	return content
 }
 
@@ -181,7 +179,6 @@ function save() {
 	message.directory = document.getElementById("div_dir").innerHTML
 	message.content = get_divs()
 	message.saved = Date()
-	//console.log('json: ', JSON.stringify(message, null, 4))
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 
@@ -192,6 +189,7 @@ function save_handler(req) {
 function save_html() {
 	var message = create_message('', "savehtml")
 	message.outfile = document.title
+	message.title = document.getElementById("div_title").innerHTML
 	message.content = document.getElementById('docmain').innerHTML
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), save_handler)
 }
