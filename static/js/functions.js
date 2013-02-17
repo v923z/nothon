@@ -227,6 +227,11 @@ $(document).ready(function () {
 	$('#calendar').datepick({onSelect: function(dates) { alert('The chosen date(s): ' + dates); }});
 	$(function() {
 		$("#document_tree").dynatree({
+			onActivate: function(node) {
+				if(node.data.href){
+					window.location.href = node.data.href
+				}
+			}
 		});
 	});
 });
