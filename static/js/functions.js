@@ -226,8 +226,13 @@ $(document).ready(function () {
 	});
 	
 	$('#calendar').datepick({
-		onSelect: function(dates) { 
-			alert('The chosen date(s): ' + dates); 
+		dateFormat: 'yyyy-mm-dd',
+		onSelect: function(date) {
+			var d = new Date(date)
+			var month = (100 + d.getMonth() + 1).toString().slice(1,3)
+			var day = (100 + d.getDate()).toString().slice(1,3)
+			console.log('Calendar/' + d.getFullYear() + '/' + month + '/' + day)
+			window.location.href = 'http://127.0.0.1:8080/?name=Calendar/' + d.getFullYear() + '/' + month + '/' + day + '.note'
 		}
 	});
 	

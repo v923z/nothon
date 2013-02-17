@@ -256,12 +256,13 @@ class Index(object):
 	update_js()
 	def GET(self):
 		link = web.input(name='test.note')
-		aside = {"tree" : dir_html(dir_tree('.'))}
-		
+		aside = {"tree" : dir_html(dir_tree('.'))}		
 		if not os.path.exists(link.name): 
-			return 	render.document(link.name, aside, False, list_handler_functions(), list_create_functions())
-
-		print parse_note(link.name)
+			title = os.path.basename(link.name).strip('.note')
+			if not os.path.exists(os.path.dirname(link.name)):
+				os.makedirs(os.path.dirname(link.name))
+			with open(link.name, 'w') as fout:
+				fout.write('{"title" : "%s", "directory" : "%s", "saved" : "", "nothon version" : 1.1, "notebook" : []}'%(title, os.getcwd()))
 		return 	render.document(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 
 	def POST(self):
