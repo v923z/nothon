@@ -29,6 +29,30 @@ render = web.template.render('templates/')
 web.template.Template.globals['safe_content'] = safe_content
 app = web.application(urls, globals())
 
+def dir_tree(dir):
+	tree = []
+	for item in os.listdir(dir):
+		path = os.path.join(dir, item)
+		if os.path.isdir(path):
+			subtree = dir_tree(path)
+			if len(subtree) > 0:
+				tree.append((item,subtree))
+		elif item.endswith('.note'):
+			tree.append(item)
+	tree.sort()
+	return tree
+
+def dir_html(tree):
+	tree_string = '<ul>'
+	for n in tree:
+		if isinstance(n,tuple):
+			tree_string += '<li class="folder">%s\n'%(n[0])
+			tree_string += dir_html(n[1])
+		else:
+			tree_string += '<li><a href="?name=%s">%s</a>\n'%(n, n)
+			
+	return tree_string + '</ul>\n'
+
 def update_js():
 	list_of_files = [file.split('.')[0] for file in os.listdir('templates/') if file.endswith('_html.html')]
 	for fn in list_of_files:
@@ -48,40 +72,6 @@ def read_plot(fn):
 			return '<img class="plot_image" src="data:image/png;base64,' + base64.b64encode(image_file.read()) + '"/>'
 	except IOError:
 		return '<span class="code_error">Could not read file from disc</span>'
-		
-def directory_tree(directory, ext='.note', basepath=''):
-	file_list = []
-	for root, subfolders, files in os.walk(directory):
-	#print subfolders
-		for file in files:
-			if file.endswith(ext):
-				print file, root
-				file_list.append(os.path.join(root, file).replace(basepath, '', 1))
-
-	file_list.sort()
-	return file_list
-
-def create_tree(wood, prefix=''):
-	dir_list = '\n%s<ul>\n'%('\t'*prefix.count('/'))
-	i = 0
-	basename = prefix
-	while i < len(wood):
-		tree = wood[i]
-		if tree.count('/') == 1:
-			dir_list += '%s<li>%s</li>\n'%('\t'*prefix.count('/'), prefix + tree)
-			i += 1
-		else:
-			dirname = os.path.dirname(tree)
-			b = dirname.split('/')
-			basename += '/' + b[1]
-			chopped = [tr.replace('/' + b[1], '') for tr in wood if tr.startswith(dirname)]
-			i += len(chopped)
-			dir_list += '%s<li>+%s'%('\t'*prefix.count('/'), b[1])
-			dir_list += create_tree(chopped, basename)
-			dir_list += '\n%s</li>\n'%('\t'*prefix.count('/'))
-	dir_list += '%s</ul>'%('\t'*prefix.count('/'))
-	
-	return dir_list
 
 def plot_update_dict(dictionary):
 	dictionary['content']['plot_body'] = {'content' : read_plot(dictionary['content']['plot_file']['content'])}
@@ -210,6 +200,8 @@ def write_to_temp(string):
 	return tmp
 	
 def maxima_execute(max_string):
+	if len(max_string)!='' and max_string[-1] != ';':
+		max_string += ';'
 	tmp = write_to_temp(max_string + '\ntex(%);')
 	os.system('maxima -b %s > %s.out'%(tmp, tmp))
 	result = open(tmp + '.out', 'r').read()	
@@ -261,15 +253,16 @@ def list_create_functions():
 	return [file.split('.')[0] for file in os.listdir('static/js/') if file.endswith('_html.js')]
 
 class Index(object):
-	#print create_tree(directory_tree('/home/v923z/sandbox/nothon/', '.note', '/home/v923z/sandbox/nothon'))
 	update_js()
 	def GET(self):
 		link = web.input(name='test.note')
+		aside = {"tree" : dir_html(dir_tree('.'))}
+		
 		if not os.path.exists(link.name): 
-			return 	render.document(link.name, 'A', False, list_handler_functions(), list_create_functions())
+			return 	render.document(link.name, aside, False, list_handler_functions(), list_create_functions())
 
 		print parse_note(link.name)
-		return 	render.document(link.name, 'A', parse_note(link.name), list_handler_functions(), list_create_functions())
+		return 	render.document(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 
 	def POST(self):
 		message = simplejson.loads(web.data())

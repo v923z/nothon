@@ -225,6 +225,10 @@ $(document).ready(function () {
 		$("#menu > ul").fadeOut("slow"); 
 	});
 	$('#calendar').datepick({onSelect: function(dates) { alert('The chosen date(s): ' + dates); }});
+	$(function() {
+		$("#document_tree").dynatree({
+		});
+	});
 });
 
 function dir_keypress(event) {

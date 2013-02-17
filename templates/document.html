@@ -4,7 +4,7 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 <title>$title</title>
 <link rel="stylesheet" href="/static/css/main.css" type="text/css" />
 <link rel="stylesheet" href="/static/css/highlight.css" type="text/css" />
-<link rel="stylesheet" href="/static/css/jdpicker.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/ui.dynatree.css" type="text/css" id="skinSheet">
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
@@ -12,17 +12,19 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 <script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/jquery.datepick.css"> 
 <script type="text/javascript" src="/static/js/jquery.datepick.js"></script>
+<script type="text/javascript" src="/static/js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/static/js/jquery.dynatree-1.2.4.js"></script>
 <script type="text/javascript" src="/static/js/functions.js"></script>
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
 	<script type="text/javascript" src="$js_src"></script>
+
 </head>
 <body>
 <aside>
 <div id="calendar"></div>
-<div>
-$aside
-</div>
+<div id="document_tree">$:aside['tree']</div>
 </aside>
 <article>
 <div class="trash_image" id="trash_image" onclick="toggle_show_hide(event);">
