@@ -249,3 +249,15 @@ function dir_keypress(event) {
 	if(event.which === 13) return false
 	else return true
 }
+
+document.addEventListener("keydown", function(e) {
+  if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+    e.preventDefault()
+	save()
+  }
+  if (e.keyCode == 72 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+    e.preventDefault()
+	alert('Ctlr-H\tHelp\nCtlr-S\tSave\nCtlr-B\tBoldface\nCtlr-I\t\tItalic\nCtlr-U\tUnderline\nCtlr-O\tHighlight\nCtlr-L\t\tRetrieve LaTeX\nCtlr-M\tInline math\nCtlr-Alt-M\tDisplay math\n&&...&&\tExecute maxima')
+  }
+  
+}, false)

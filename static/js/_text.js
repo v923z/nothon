@@ -32,7 +32,6 @@ function text_keypress(event) {
 		active_div.focus()
 		return false
 	} else if(event.which === 13 && event.shiftKey) {					// Enter
-		//text_data(event.target)
 		create_and_insert('text_main')
 		return false
 	} else if(event.which === 13 && event.ctrlKey) {				// Enter
