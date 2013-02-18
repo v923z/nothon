@@ -200,8 +200,7 @@ def write_to_temp(string):
 	return tmp
 	
 def maxima_execute(max_string):
-	if len(max_string)!='' and max_string[-1] != ';':
-		max_string += ';'
+	if not max_string.endswith(';'): max_string += ';'
 	tmp = write_to_temp(max_string + '\ntex(%);')
 	os.system('maxima -b %s > %s.out'%(tmp, tmp))
 	result = open(tmp + '.out', 'r').read()	
