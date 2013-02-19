@@ -46,7 +46,7 @@ $for f in create_funcs:
 <div class="menu" onclick="move('down');"><img src="/static/css/down-arrow.png" width="40%"></div>
 </div>
 <div id="div_title" contenteditable='true'>$safe_content(content, "title")</div>
-<div id="div_dir" contenteditable='true' onkeypress='return dir_keypress(event);'>$safe_content(content, "directory")</div>
+<div>Directory:<div id="div_dir" contenteditable='true' onkeypress='return dir_keypress(event);'>$safe_content(content, "directory")</div></div>
 <div id="docmain">$:safe_content(content, "content")
 </div>
 <div id="trash" class="trash">
