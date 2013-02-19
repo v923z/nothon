@@ -228,11 +228,12 @@ article {
 }
 
 .code_date {
-	font-size: 12pt;
-	color: #000099;
-	background: #eeeeff;
-	border-radius: 2px;
-	width: 95%;
+	font-size: 			12pt;
+	font-weight: 		bold;
+	color: 				#000099;
+	background: 		#eeeeff;
+	border-radius: 		2px;
+	width: 				95%;
 }
 
 .text_header, .text_body {

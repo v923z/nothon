@@ -6,7 +6,7 @@ import base64
 import simplejson
 import traceback
 import tempfile
-
+import time
 
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename
@@ -85,9 +85,9 @@ def head_update_dict(dictionary):
 
 def code_update_dict(dictionary):
 	lexer = get_lexer_for_filename(dictionary['content']['code_header']['content'])
-	dictionary['content']['code_body'] = {'content' : highlight(dictionary['content']['code_container'], lexer, HtmlFormatter())}
+	dictionary['content']['code_body'] = {'content' : highlight(dictionary['content']['code_container']['content'], lexer, HtmlFormatter())}
 	return dictionary
-	
+
 def parse_note(fn):	
 	note = {}
 	note_str = ''
@@ -132,9 +132,8 @@ def head_handler(message):
 		lines = fin.readlines()
 		lines = lines[n:]
 	fin.close()	
-	# date : os.path.getmtime(fn) should be extended with creation time.
 	return simplejson.dumps({"scroller" : message['body'],
-							message['date'] : os.path.getmtime(fn), 
+							message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),  
 							message['body'] : '<br>'.join([x.rstrip('\n\r') for x in lines])})
 
 def plot_handler(message):
@@ -182,7 +181,8 @@ def code_handler(message):
 	fn = sp[0]
 	if not os.path.exists(fn): 
 		return simplejson.dumps({message['body'] : '<span class="code_error">File doesn\'t exist!</span>'})
-		
+	
+	# TODO: this breaks, if unknown filetype
 	lexer = get_lexer_for_filename(fn)
 	fin = open(fn, 'r')
 	code = fin.read()
@@ -190,11 +190,8 @@ def code_handler(message):
 	# TODO: read lines between limits, and also between tags
 	linenos=False
 	if '-lineno' in sp:
-		linenos=True
-	if '-lines' in sp:
-		indx = sp.index('-lines')
-		
-	return simplejson.dumps({message['date'] : os.path.getmtime(fn),
+		linenos=True		
+	return simplejson.dumps({message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
 							message['body'] : highlight(code, lexer, HtmlFormatter(linenos=linenos)),
 							message['container'] : code,
 							"scroller" : message['body']})

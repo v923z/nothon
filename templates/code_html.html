@@ -8,7 +8,7 @@ $ cid = 'div_code_container_%s'%(id)
 <div id='$mid' class='code_main' onclick='code_onclick(event);' data-type='code'>
 <div id='$hid' class='code_header' contenteditable='true' onkeypress='return code_keypress(event);' onfocus='set_active(this);'  data-nothon='save;'>$safe_content(content, "code_header")</div>
 <div id='$did' class='code_date' data-nothon='save;'>$safe_content(content, "code_date")</div>
-<div id='$bid' class='code_body' data-nothon=''>$safe_content(content, "code_body")</div>
+<div id='$bid' class='code_body' data-nothon=''>$:safe_content(content, "code_body")</div>
 <div id='$cid' class='code_container' data-nothon='save;'>$safe_content(content, "code_container")</div>
 </div>
 
