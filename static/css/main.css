@@ -9,7 +9,7 @@ body {
 	font-family: Verdana, Arial, sans-serif;
 	margin: 0;
 	padding: 0;
-	background: #aaa;
+	background: #e3e8ea;
 }
  
 .doc {
@@ -60,24 +60,31 @@ aside {
 	width: 20%;
 	height: 100%;
 	padding: 0 5px;
-	margin-right: 2px;
-	float: left;
-	background: #a1a2e6;
+	margin-right: 0px;
+	left: 0;
+	top: 0;
+	background: #1c4f63;
+	overflow-y: scroll;
+	color: #98dbcc;
 }
 
 article {
 	float:right;
 	width: 78%;
+	top: 25px;
 }
 
-/*
-.div_page {
-	font-size: 16pt;
-	color: #000099;
-	font-weight: bold;
+#top_menu {
+	position: fixed;
+	top: 0;
+	left:	20%;
+	float: right;
 	width: 80%;
+	background: #116688;
+	padding: 0 0;
+	height: 25px;
+	display: block;
 }
-*/
 
 .head_container, .code_container, .text_container {
 	display: none;
@@ -85,7 +92,7 @@ article {
 
 #div_title {
 	font-size: 24pt;
-	background-color: rgba(1, 1, 1, 0.2);
+	background-color: #8899aa;
 	margin-top: 5px;
 	margin-left: 5px;
 	border-radius: 2px;
@@ -93,21 +100,35 @@ article {
 	text-align: center;
 }
 
+#dir_container {
+	background-color: 	#ddbbaa;
+	margin-left: 		5px;
+	margin-top:			8px;
+	width: 				80%;
+}
+
+#dir_tag {
+	font-size: 			12pt;
+	font-weight: 		bold;
+	float: 				left;
+}
+
 #div_dir {
-	font-size: 12pt;
-	background-color: rgba(0, 0, 1, 0.25);
-	margin-top: 5px;
-	margin-left: 5px;
-	border-radius: 2px;
-	width: 80%;
+	font-size: 			12pt;
+	position: 			relative;
+	left:				10%;
+	width: 				90%;
+	min-height:			20px;
 }
 
 .plot_main, .head_main, .code_main, .text_main {
 	background-color: rgba(0, 0, 0, 0.05);
-	margin-top: 5px;
+	margin-top: 8px;
 	margin-left: 5px;
 	border-radius: 2px;
 	width: 80%;
+	border-top: 2px solid #ac9;
+    border-bottom: 2px solid #ac9;
 }
 
 .plot_header, .plot_file, .plot_body {
@@ -245,18 +266,6 @@ article {
 	border-width: 0 10px 0 0;	
 }
 
-/*
-.div_text {
-	font-size: 12pt;
-	color: #000088;
-	background: #cce6ff;
-	margin-left: 5px;
-	width: 80%;
-	margin-top: 5px;
-	border-radius: 2px;
-}
-*/
-
 .trash {
 	display: 	none;
 	background:	#ffe699;
@@ -285,7 +294,7 @@ article {
 	color: #0a0a0a;
 	padding: 2px;
 	margin: 5px 0px 5px 5px;
-	background: #b2ddf0;
+	background: #1c4f63;
 }
 
 .menu:hover {
@@ -293,7 +302,7 @@ article {
 }
 
 .menu ul {
-	background: #b2ddf0;
+	background: #8899aa;
 	font-size: 24px;	
 	display: none;
 	position: absolute;
@@ -307,31 +316,4 @@ article {
 
 .menu ul li:hover {
 	background: #ffffff;
-}
-
-/*
-.menu:hover ul {
-	display: block;
-	position: absolute;
-	right: 70px;
-	top: 30px;
-}
-*/
-
-
-.button {
-	font-family: Arial;
-	color: #0a0a0a;
-	font-size: 16px;
-	padding: 2px;
-	width: 100px;
-	text-decoration: none;
-	-webkit-border-radius: 1px;
-	-moz-border-radius: 1px;
-	border: solid #003366 0px;
-	background: #b2ddf0;
-}
-
-.button:hover {
-	background: #42aaff;
 }

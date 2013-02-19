@@ -188,8 +188,14 @@ def code_handler(message):
 	code = fin.read()
 	fin.close()
 	# TODO: read lines between limits, and also between tags
+	linenos=False
+	if '-lineno' in sp:
+		linenos=True
+	if '-lines' in sp:
+		indx = sp.index('-lines')
+		
 	return simplejson.dumps({message['date'] : os.path.getmtime(fn),
-							message['body'] : highlight(code, lexer, HtmlFormatter()),
+							message['body'] : highlight(code, lexer, HtmlFormatter(linenos=linenos)),
 							message['container'] : code,
 							"scroller" : message['body']})
 
