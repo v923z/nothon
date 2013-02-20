@@ -1,0 +1,12 @@
+#!/bin/sh
+
+python nothon.py &
+server_pid=$!
+
+if [ $# -ge 1 ]; then
+	firefox 127.0.0.1:8080?name=$1
+else
+	firefox 127.0.0.1:8080?name=main.note
+fi
+
+kill $server_pid
