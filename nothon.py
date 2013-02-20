@@ -256,15 +256,17 @@ def list_create_functions():
 
 class Index(object):
 	update_js()
+	
 	def GET(self):
 		link = web.input(name='test.note')
-		aside = {"tree" : dir_html(dir_tree('.'))}
 		if not os.path.exists(link.name): 
 			title = os.path.basename(link.name).replace('.note', '')
 			if not os.path.exists(os.getcwd() + os.path.dirname(link.name)):
 				os.makedirs(os.getcwd() + os.path.dirname(link.name))
 			with open(link.name, 'w') as fout:
 				fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"saved" : "", \n"nothon version" : 1.1, \n"notebook" : []\n}'%(title, os.getcwd()))
+				
+		aside = {"tree" : dir_html(dir_tree('.'))}
 		return 	render.document(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 
 	def POST(self):
