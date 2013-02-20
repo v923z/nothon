@@ -1,0 +1,11 @@
+ul.dynatree-container {
+	font-size: 		12pt;
+	white-space: 	nowrap;
+	overflow: 		auto;
+	background: 	rgba(0, 0, 0, 0);
+	border: 		0;
+}
+
+ul.dynatree-container a {
+	color: 			#8accc1;
+}
