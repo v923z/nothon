@@ -233,7 +233,7 @@ def save_handler(message):
 		
 	return  simplejson.dumps({'success' : 'success'})
 
-def save_html(message):
+def savehtml_handler(message):
 	fin = open('static/css/main.css', 'r')
 	css = fin.read()
 	fin.close()
@@ -272,15 +272,9 @@ class Index(object):
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['type'] in ('plot', 'head', 'code', 'text', 'save'):
+		if message['type'] in ('plot', 'head', 'code', 'text', 'save', 'savehtml'):
 			exec('result = %s_handler(message)'%(message['type']))
 			return result
-			
-		if message['type'] == 'texteval':
-			return texteval(message)
-			
-		if message['type'] == 'savehtml':
-			return save_html(message)
 			
 		else:
 			return simplejson.dumps(message)
