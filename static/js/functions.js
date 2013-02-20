@@ -226,6 +226,7 @@ $(document).ready(function () {
 	$('#calendar').datepick({
 		dateFormat: 'yyyy-mm-dd',
 		onSelect: function(date) {
+			save()
 			var d = new Date(date)
 			var month = (100 + d.getMonth() + 1).toString().slice(1,3)
 			var day = (100 + d.getDate()).toString().slice(1,3)
@@ -237,6 +238,7 @@ $(document).ready(function () {
 	$(function() {
 		$("#document_tree").dynatree({
 			onActivate: function(node) {
+				save()
 				if(node.data.href){
 					window.location.href = node.data.href
 				}
