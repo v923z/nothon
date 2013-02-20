@@ -259,10 +259,12 @@ class Index(object):
 	
 	def GET(self):
 		link = web.input(name='test.note')
+		print link
 		if not os.path.exists(link.name): 
 			title = os.path.basename(link.name).replace('.note', '')
-			if not os.path.exists(os.getcwd() + os.path.dirname(link.name)):
-				os.makedirs(os.getcwd() + os.path.dirname(link.name))
+			path = os.path.join(os.getcwd(),os.path.dirname(link.name))
+			if not os.path.exists(path):
+				os.makedirs(path)
 			with open(link.name, 'w') as fout:
 				fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"saved" : "", \n"nothon version" : 1.1, \n"notebook" : []\n}'%(title, os.getcwd()))
 				
