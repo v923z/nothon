@@ -217,7 +217,6 @@ def text_handler(message):
 	if result.find('$$') == -1:
 		return simplejson.dumps({'target' : message['id'], 'success' : 'failed', 'result' : result})
 	else:
-		print simplejson.dumps({'target' : message['id'], 'success' : 'success', 'result' : result.split('$$')[1]})
 		return simplejson.dumps({'target' : message['id'], 'success' : 'success', 'result' : result.split('$$')[1]})
 
 def save_handler(message):
@@ -248,6 +247,13 @@ def savehtml_handler(message):
 	fout.close()
 	return  simplejson.dumps({'success' : 'success'})
 
+def docmain_render_handler(message):
+	notebook = parse_note(message["address"])
+	return simplejson.dumps({'docmain' : notebook['content']['content'], 
+							'title' : notebook['title']['content'],
+							'doc_title' : message["address"],
+							'directory' : notebook['directory']['content']})
+	
 def list_handler_functions():
 	return [file.split('.')[0] for file in os.listdir('static/js/') if file.startswith('_')]
 	
@@ -274,7 +280,7 @@ class Index(object):
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['type'] in ('plot', 'head', 'code', 'text', 'save', 'savehtml'):
+		if message['type'] in ('plot', 'head', 'code', 'text', 'save', 'savehtml', 'docmain_render'):
 			exec('result = %s_handler(message)'%(message['type']))
 			return result
 			

@@ -119,7 +119,7 @@ function create_message(div_data, message_type) {
 
 function message_handler(req) {
 	var message = JSON.parse(req.responseText)
-	console.log(message)
+//	console.log(message)
 	for(i in message) {
 		var elem = document.getElementById(i)
 		if(elem && i != "scroller") {
@@ -194,6 +194,20 @@ function save_html() {
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), save_handler)
 }
 
+function docmain_render(address) {
+	var message = create_message('', "docmain_render")
+	message.address = address
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), docmain_handler)
+}
+
+function docmain_handler(req) {
+	var message = JSON.parse(req.responseText)
+	$('#docmain').html(message['docmain'])
+	document.title = message['doc_title']
+	$('#div_dir').html(message["directory"])
+	$('#div_title').html(message["title"])	
+}
+
 function delete_block() {
 	if(active_div) {
 		var elem = active_div.parentNode
@@ -239,10 +253,15 @@ $(document).ready(function () {
 		$("#document_tree").dynatree({
 			onActivate: function(node) {
 				save()
-				window.location.href = "?name=" + node.getKeyPath().slice(1)
+				docmain_render(node.getKeyPath().slice(1))
+				//window.location.href = "?name=" + node.getKeyPath().slice(1)
 				return false
 			}
 		});
+	});
+	
+	$("#document_tree").bind("contextmenu", function(e) {
+		return false;
 	});
 });
 
