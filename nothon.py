@@ -46,10 +46,10 @@ def dir_html(tree):
 	tree_string = '<ul>'
 	for n in tree:
 		if isinstance(n,tuple):
-			tree_string += '<li class="folder">%s\n'%(n[0])
+			tree_string += '<li id="%s" class="folder">%s\n'%(n[0], n[0])
 			tree_string += dir_html(n[1])
 		else:
-			tree_string += '<li><a href="?name=%s">%s</a>\n'%(n, n)
+			tree_string += '<li id="%s"><a href="?name=%s">%s</a>\n'%(n, n, n)
 			
 	return tree_string + '</ul>\n'
 

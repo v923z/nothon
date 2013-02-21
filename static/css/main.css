@@ -1,3 +1,6 @@
+html, body {
+	overflow: hidden;
+}
 header, section, footer, aside, nav, article {
 	display: block;
 }
@@ -56,16 +59,29 @@ body {
 }
 
 aside {
-	position: fixed;
-	width: 20%;
-	height: 100%;
-	padding: 0 5px;
-	margin-right: 0px;
-	left: 0;
-	top: 0;
-	background: #1c4f63;
-	overflow-y: scroll;
-	color: #98dbcc;
+	position: 		fixed;
+	width: 			20%;
+	height: 		100%;
+	padding: 		0 5px;
+	margin-right: 	0px;
+	left: 			0;
+	top: 			0;
+	right:			-30px;
+	background: 	#1c4f63;
+	overflow-y: 	scroll;
+	color: 			#98dbcc;
+	display:		block;
+}
+
+#aside_switch {
+	position: 		fixed;
+	width: 			15px;
+	height: 		100%;
+	left: 			20%;
+	top: 			0;
+	padding: 		0 0;
+	background: 	#ff0000;
+	color: 			#98dbcc;
 }
 
 article {

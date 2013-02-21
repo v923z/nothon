@@ -239,9 +239,8 @@ $(document).ready(function () {
 		$("#document_tree").dynatree({
 			onActivate: function(node) {
 				save()
-				if(node.data.href){
-					window.location.href = node.data.href
-				}
+				window.location.href = "?name=" + node.getKeyPath().slice(1)
+				return false
 			}
 		});
 	});
@@ -256,6 +255,8 @@ document.addEventListener("keydown", function(e) {
   if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault()
 	save()
+	//document.getElementById("aside").style.width = 0
+	//document.getElementById("article").style.width = "98%"
   }
   if (e.keyCode == 72 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault()
