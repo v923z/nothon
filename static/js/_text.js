@@ -24,6 +24,73 @@ function text_onclick(event) {
 	active_div.focus()
 }
 
+function get_id_marker() {
+    return "marker_" + ("" + Math.random()).slice(2);
+}
+
+function marker_from_id(id) {
+    return '<span id="' + id + '"></span>';
+} 
+
+function insert_node_at_caret(node) {
+		var sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            var range = sel.getRangeAt(0);
+            range.deleteContents();
+
+            var el = document.createElement("div");
+            el.innerHTML = node;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+            
+            if (lastNode) {
+                range = range.cloneRange();
+                range.setStartAfter(lastNode);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+		}
+}
+
+function goto_marker(id) {
+    var range = document.createRange()
+    range.selectNodeContents(document.getElementById(id))
+
+    var selection= window.getSelection()
+    selection.removeAllRanges()
+    selection.addRange(range)
+
+    var element = document.getElementById(id)
+    element.parentNode.removeChild(element)
+}
+
+function insert_if_linestarts(html) {
+	var id = get_id_marker();
+	insert_node_at_caret(marker_from_id(id));
+		
+	var elem = document.getElementById(id)
+	var children = elem.parentNode.childNodes;
+		
+	// determine the index
+	var i = 0;
+  	for (; i < children.length; i++)
+		if(children[i].id == elem.id)
+			break;
+		
+	if(i>0 && children[i-1].tagName == 'BR') {
+		goto_marker(id)
+		insert_node_at_caret(html + " ")
+		return false
+	} else {
+		goto_marker(id)
+		return true
+	}		
+}
+
 function text_keypress(event) {
 	console.log(event.which)
 	
@@ -70,6 +137,10 @@ function text_keypress(event) {
 		// evaluate math expression 
 		get_math_code(event.target)
 		return true
+	} else if(event.which === 42) { // *
+		return insert_if_linestarts("&bull;");
+	} else if(event.which === 93) { // ]
+		return insert_if_linestarts('<input type="checkbox" value="true" />');
 	}
 	return true
 }
@@ -139,18 +210,6 @@ function text_handler(req) {
 		document.getElementById(message['target']).innerHTML = div_text
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub, message['target']]);
 	}
-}
-
-function goto_marker(id) {
-    var range = document.createRange()
-    range.selectNodeContents(document.getElementById(id))
-
-    var selection= window.getSelection()
-    selection.removeAllRanges()
-    selection.addRange(range)
-
-    var element = document.getElementById(id)
-    element.parentNode.removeChild(element)
 }
 
 function apply_tag(open_tag, close_tag, target) {
