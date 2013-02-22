@@ -64,7 +64,7 @@ aside {
 	height: 		100%;
 	padding: 		0 5px;
 	margin-right: 	0px;
-	left: 			0;
+	left: 			15px;
 	top: 			0;
 	right:			-30px;
 	background: 	#1c4f63;
@@ -73,21 +73,28 @@ aside {
 	display:		block;
 }
 
-#aside_switch {
+.aside_switch {
 	position: 		fixed;
 	width: 			15px;
 	height: 		100%;
-	left: 			20%;
+	left: 			0;
 	top: 			0;
 	padding: 		0 0;
-	background: 	#ff0000;
+	background: 	#36677c;
 	color: 			#98dbcc;
+	vertical-align: middle;
+	font-weight:	bold;
+}
+
+.aside_switch:hover {
+	background: 	#133f52;
 }
 
 article {
 	float:right;
 	width: 78%;
 	top: 25px;
+	default-width:	20%;
 }
 
 #top_menu {

@@ -244,7 +244,6 @@ $(document).ready(function () {
 			var d = new Date(date)
 			var month = (100 + d.getMonth() + 1).toString().slice(1,3)
 			var day = (100 + d.getDate()).toString().slice(1,3)
-			console.log('Calendar/' + d.getFullYear() + '/' + month + '/' + day)
 			window.location.href = 'http://127.0.0.1:8080/?name=Calendar/' + d.getFullYear() + '/' + month + '/' + day + '.note'
 		}
 	});
@@ -254,7 +253,6 @@ $(document).ready(function () {
 			onActivate: function(node) {
 				save()
 				docmain_render(node.getKeyPath().slice(1))
-				//window.location.href = "?name=" + node.getKeyPath().slice(1)
 				return false
 			}
 		});
@@ -270,12 +268,24 @@ function dir_keypress(event) {
 	else return true
 }
 
+function toggle_document_tree() {
+	if($('#aside').css('display') == 'block') {
+		$('#aside').css('display', 'none')
+		// TODO: find out how to retrieve default properties
+		$('#article').css('width', '98%')
+		$('#aside_switch').html('>>')
+	}
+	else {
+		$('#aside').css('display', 'block')
+		$('#article').css('width', '78%')
+		$('#aside_switch').html('<<')
+	}
+}
+
 document.addEventListener("keydown", function(e) {
   if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault()
 	save()
-	//document.getElementById("aside").style.width = 0
-	//document.getElementById("article").style.width = "98%"
   }
   if (e.keyCode == 72 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault()
