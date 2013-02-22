@@ -122,6 +122,8 @@ function text_sanitise(block) {
 	return block
 }
 
+// Keep mandatory functions at the beginning of the file!
+
 function get_id_marker() {
     return "marker_" + ("" + Math.random()).slice(2);
 }
