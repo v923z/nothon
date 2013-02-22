@@ -44,20 +44,17 @@ function text_keypress(event) {
 		insert_math('display', event.target)
 		return false
 	} else if(event.which === 98 && event.ctrlKey) {				// b
-		// insert boldface
-		apply_tag('<b>', '</b>', event.target)
+		document.execCommand("bold", false, false)
         return false
 	} else if(event.which === 105 && event.ctrlKey) {				// i
-		// insert italic
-		apply_tag('<i>', '</i>', event.target)
+		document.execCommand("italic", false, false)
         return false		
 	} else if(event.which === 117 && event.ctrlKey) {				// u
-		// insert underline
-		apply_tag('<u>', '</u>', event.target)
+		document.execCommand("underline", false, false)
 		return false
 	} else if(event.which === 111 && event.ctrlKey) {					// o
 		// insert highlight
-		apply_tag('<span style="background-color:yellow;">', '</span>', event.target)
+		document.execCommand("hilitecolor", false, "#ffff00")
 		return false
 	} else if(event.which === 100 && event.altKey) {					// d
 		insert_time(event.target)
@@ -151,27 +148,6 @@ function goto_marker(id) {
 
     var element = document.getElementById(id)
     element.parentNode.removeChild(element)
-}
-
-function apply_tag(open_tag, close_tag, target) {
-    var sel, range, selectedText
-    if (window.getSelection) {
-        sel = window.getSelection()
-        if(sel.rangeCount) {
-            range = sel.getRangeAt(0)
-            selectedText = range.toString()
-            range.deleteContents()
-            range.insertNode(document.createTextNode('_tag_open_inserted_' + selectedText + '_tag_close_inserted_'))
-        }
-    }
-    else if(document.selection && document.selection.createRange) {
-        range = document.selection.createRange()
-        selectedText = document.selection.createRange().text + ""
-        range.text = '_tag_open_inserted_' + selectedText + '_tag_close_inserted_'
-    }
-    var t = document.getElementById(target.id)
-	t.innerHTML = t.innerHTML.replace('_tag_open_inserted_', open_tag).replace('_tag_close_inserted_', close_tag + '<span id="_text_style_marker_"></span>')
-	goto_marker("_text_style_marker_")
 }
 
 function insert_math(mode, target) {
