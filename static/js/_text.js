@@ -138,7 +138,29 @@ function text_keypress(event) {
 		get_math_code(event.target)
 		return true
 	} else if(event.which === 42) { // *
-		return insert_if_linestarts("&bull;");
+		var id = get_id_marker();
+		insert_node_at_caret(marker_from_id(id));
+			
+		var elem = document.getElementById(id)
+		var children = elem.parentNode.childNodes;
+			
+		// determine the index
+		var i = 0;
+	  	for (; i < children.length; i++)
+			if(children[i].id == elem.id)
+				break;
+			
+		if(i>0 && children[i-1].tagName == 'BR') {
+			goto_marker(id)
+			
+			var id2 = get_id_marker();
+			insert_node_at_caret("<ul><li>" + marker_from_id(id2) + "</li></ul>")
+			goto_marker(id2)
+			return false
+		} else {
+			goto_marker(id)
+			return true
+		}
 	} else if(event.which === 93) { // ]
 		return insert_if_linestarts('<input type="checkbox" />');
 	}
