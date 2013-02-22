@@ -140,7 +140,7 @@ function text_keypress(event) {
 	} else if(event.which === 42) { // *
 		return insert_if_linestarts("&bull;");
 	} else if(event.which === 93) { // ]
-		return insert_if_linestarts('<input type="checkbox" value="true" />');
+		return insert_if_linestarts('<input type="checkbox" />');
 	}
 	return true
 }
