@@ -340,3 +340,8 @@ article {
 .menu ul li:hover {
 	background: #ffffff;
 }
+
+p {
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
