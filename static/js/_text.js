@@ -26,7 +26,7 @@ function text_onclick(event) {
 
 function text_keypress(event) {
 	console.log(event.which)
-	
+
 	if(event.which === 13 && event.target.id.indexOf('_header_') > -1) {
 		active_div = document.getElementById(event.target.id.replace('_header_', '_body_'))
 		active_div.focus()
@@ -92,6 +92,48 @@ function text_keypress(event) {
 		}
 	} else if(event.which === 93) { // ]
 		return insert_if_linestarts('<input type="checkbox" />');
+	} else if(event.keyCode === 38) { // arrow key up
+		var id = get_id_marker();
+		insert_node_at_caret(marker_from_id(id));
+		var elem_child = document.getElementById(id)
+		var elem = elem_child.parentNode
+		
+		//console.log(elem.id, elem_child.id,"-",elem_child.previousSibling.data,"-", elem_child.previousSibling.nodeName)
+		if(elem.tagName == "DIV" && 
+			( elem_child.previousSibling==null || (elem_child.previousSibling.nodeName == "#text" && is_blank(elem_child.previousSibling.data)) ) ) {
+				
+			goto_marker(id)
+			
+			elem = elem.previousSibling
+			while(elem.tagName != "DIV") {
+				elem = elem.previousSibling
+			}
+			console.log('id',elem.id)
+			elem.focus()
+		} else {
+			goto_marker(id)
+		}
+	} else if(event.keyCode === 40) { // arrow key down
+		var id = get_id_marker();
+		insert_node_at_caret(marker_from_id(id));
+		var elem_child = document.getElementById(id)
+		var elem = elem_child.parentNode
+		
+		console.log(elem.id, elem_child.id,"-",elem_child.nextSibling.data,"-", elem_child.nextSibling.nodeName)
+		if(elem.tagName == "DIV" && 
+			( elem_child.nextSibling==null || (elem_child.nextSibling.nodeName == "#text" && is_blank(elem_child.nextSibling.data)) ) ) {
+				
+			goto_marker(id)
+			
+			elem = elem.nextSibling
+			while(elem.tagName != "DIV") {
+				elem = elem.nextSibling
+			}
+			console.log('id',elem.id)
+			elem.focus()
+		} else {
+			goto_marker(id)
+		}		
 	}
 	return true
 }
@@ -124,6 +166,10 @@ function text_sanitise(block) {
 
 // Keep mandatory functions at the beginning of the file!
 
+function is_blank(str) {
+    return (!str || /^\s*$/.test(str));
+}
+
 function get_id_marker() {
     return "marker_" + ("" + Math.random()).slice(2);
 }
@@ -155,6 +201,7 @@ function insert_node_at_caret(node) {
             }
 		}
 }
+
 
 function goto_marker(id) {
     var range = document.createRange()
