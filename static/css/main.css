@@ -14,7 +14,7 @@ body {
 	padding: 0;
 	background: #e3e8ea;
 }
- 
+
 .doc {
 	width: 900px;
 	margin: 0 auto;
@@ -93,7 +93,9 @@ aside {
 article {
 	float:right;
 	width: 78%;
+	height: 98%;
 	top: 25px;
+	overflow: scroll;
 }
 
 #top_menu {
