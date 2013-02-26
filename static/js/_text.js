@@ -37,6 +37,28 @@ function text_keypress(event) {
 	} else if(event.which === 13 && event.ctrlKey) {				// Enter
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub, event.target.id]);
 		return false
+	} else if(event.which === 13) { // Enter without modifier
+		var id = get_id_marker();
+		insert_node_at_caret(marker_from_id(id));
+		var elem = document.getElementById(id).parentNode
+		goto_marker(id)
+				console.log('ENTER', elem.tagName, elem.firstChild.data)
+		if(elem.tagName == 'LI' && elem.firstChild.data == undefined) {
+			console.log('enter pressed on empty list item')
+			
+			// build node to be inserted
+			var id2 = get_id_marker();
+			var el = document.createElement("span");
+			el.id = id2;
+            
+            // insert node, set cursor, remove empty LI
+			elem.parentNode.parentNode.insertBefore(el, elem.parentNode.nextSibling); // works even if nextSibling is null
+			goto_marker(id2)
+			elem.parentNode.removeChild(elem)
+			return false;
+		} else {
+			return true
+		}
 	} else if(event.which === 109 && event.ctrlKey && !event.altKey) {				// m
 		insert_math('inline', event.target)
 		return false
