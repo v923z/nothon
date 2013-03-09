@@ -291,6 +291,38 @@ article {
 	border-width: 0 10px 0 0;	
 }
 
+.timeline_year {
+	background-color: 	#ddbbaa;
+	margin-top: 8px;
+	margin-left: 5px;
+	border-radius: 2px;
+	width: 80%;
+	border-top: 2px solid #ac9;
+    border-bottom: 2px solid #ac9;	
+    font-size: 	16pt;
+	font-weight: 	bold;
+}
+
+.timeline_month {
+	font-size: 	14pt;
+	background: 	#d3e8da;
+	font-weight: 	bold;
+}
+
+.timeline_day {
+	font-size: 	12pt;
+	font-weight: bold;	
+	background: #eeffee;
+	margin-top: 1px;
+}
+
+.timeline_entry {
+	font-size: 	12pt;
+	font-weight: normal;
+	background: #eeffee;	
+	margin-left:40px;
+}
+
 .trash {
 	display: 	none;
 	background:	#ffe699;

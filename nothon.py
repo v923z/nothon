@@ -7,6 +7,7 @@ import simplejson
 import traceback
 import tempfile
 import time
+import calendar
 
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename
@@ -50,7 +51,7 @@ def dir_html(tree):
 			tree_string += dir_html(n[1])
 		else:
 			tree_string += '<li id="%s">%s</a>\n'%(n, n)
-			
+
 	return tree_string + '</ul>\n'
 
 def update_js():
@@ -105,6 +106,44 @@ def parse_note(fn):
 		note_str += str(div)
 		
 	note['content'] = {'content' : note_str}
+	return note
+
+def extract_headers(fn):
+	output = "<div class='timeline_entry'>"
+	with open(fn, 'r') as fin:
+		data = simplejson.load(fin)
+		
+	content = data['notebook']
+	
+	for element in content:
+		if 'text_header' in element['content']:
+			output += '<p>' + element['content']['text_header']['content'] + '</p>'
+		
+	return output + '</div>'
+
+def make_timeline():
+	note = {}
+	note['title'] = {'content' : "Timeline"}
+	note['directory'] = {'content' : os.getcwd()}
+	
+	# create the html output from the directory tree
+	tree = dir_tree('Calendar')
+	print tree
+	str_tl = ''
+	for year in reversed(tree):
+		str_tl += "<div class='timeline_year'>%s"%year[0]
+		for month in reversed(year[1]):
+			str_tl += "<div class='timeline_month'>%s"%(calendar.month_name[int(month[0])])
+			for day in reversed(month[1]):
+				d = day.replace('.note','')
+				dayofweek = time.strftime("%A",datetime.date(int(year[0]),int(month[0]),int(d)).timetuple())
+				str_tl += "<div class='timeline_day'><a href='?name=Calendar/%s/%s/%s'>%s</a>"%(year[0],month[0],day,str(dayofweek) + ' ' + d)
+				str_tl += extract_headers('Calendar/%s/%s/%s'%(year[0],month[0],day))
+				str_tl += '</div>'
+			str_tl += '</div>'
+		str_tl += '</div>'
+	note['content'] = {'content' : str_tl}
+	
 	return note
 
 def head_handler(message):	
@@ -266,16 +305,20 @@ class Index(object):
 	def GET(self):
 		link = web.input(name='test.note')
 		print link
-		if not os.path.exists(link.name): 
-			title = os.path.basename(link.name).replace('.note', '')
-			path = os.path.join(os.getcwd(),os.path.dirname(link.name))
-			if not os.path.exists(path):
-				os.makedirs(path)
-			with open(link.name, 'w') as fout:
-				fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"saved" : "", \n"nothon version" : 1.1, \n"notebook" : []\n}'%(title, os.getcwd()))
-				
-		aside = {"tree" : dir_html(dir_tree('.'))}
-		return 	render.document(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
+		if link.name == '__timeline':
+			aside = {"tree" : dir_html(dir_tree('.'))}
+			return 	render.document(link.name, aside, make_timeline(), list_handler_functions(), list_create_functions())
+		else:
+			if not os.path.exists(link.name):
+				title = os.path.basename(link.name).replace('.note', '')
+				path = os.path.join(os.getcwd(),os.path.dirname(link.name))
+				if not os.path.exists(path):
+					os.makedirs(path)
+				with open(link.name, 'w') as fout:
+					fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"saved" : "", \n"nothon version" : 1.1, \n"notebook" : []\n}'%(title, os.getcwd()))
+					
+			aside = {"tree" : dir_html(dir_tree('.'))}
+			return 	render.document(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 
 	def POST(self):
 		message = simplejson.loads(web.data())
