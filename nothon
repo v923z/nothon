@@ -2,7 +2,7 @@
 
 python nothon.py &
 server_pid=$!
-sleep 0.2
+sleep 0.5
 
 if [ $# -ge 1 ]; then
 	firefox 127.0.0.1:8080?name=$1

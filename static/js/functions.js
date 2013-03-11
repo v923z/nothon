@@ -250,9 +250,10 @@ $(document).ready(function () {
 	
 	$(function() {
 		$("#document_tree").dynatree({
+			persist: true,
 			onActivate: function(node) {
 				save()
-				docmain_render(node.getKeyPath().slice(1))
+				window.location.href = "?name=" + node.getKeyPath().slice(1)
 				return false
 			}
 		});

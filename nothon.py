@@ -50,7 +50,7 @@ def dir_html(tree):
 			tree_string += '<li id="%s" class="folder">%s\n'%(n[0], n[0])
 			tree_string += dir_html(n[1])
 		else:
-			tree_string += '<li id="%s">%s</a>\n'%(n, n)
+			tree_string += '<li id="%s"><a href="?name=%s">%s</a>\n'%(n, n, n)
 
 	return tree_string + '</ul>\n'
 
@@ -128,7 +128,7 @@ def make_timeline():
 	
 	# create the html output from the directory tree
 	tree = dir_tree('Calendar')
-	print tree
+	print 'tree:', tree
 	str_tl = ''
 	for year in reversed(tree):
 		str_tl += "<div class='timeline_year'>%s"%year[0]
@@ -264,7 +264,6 @@ def save_handler(message):
 	with open(message['outfile'], 'w') as fout:
 		fout.write('{\n"title" : "%s",\n'%(message["title"]))
 		fout.write('"directory" : "%s",\n'%(message["directory"].strip('\n')))
-		#fout.write('{\n"directory" : "%s",\n'%(message["directory"].strip('\n')))
 		fout.write('"saved" : "%s",\n'%(message["saved"]))
 		fout.write('"nothon version" : 1.1,\n')
 		fout.write('"notebook" : %s\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))
