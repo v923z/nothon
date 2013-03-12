@@ -5,7 +5,7 @@ $ hid = 'div_head_header_%s'%(id)
 $ bid = 'div_head_body_%s'%(id)
 
 <div id='$mid' class='head_main' onclick='head_onclick(event);' data-type='head'>
-<div id='$hid' class='head_header' contenteditable='true' onkeypress='return head_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props=''>$:safe_content(content, "head_header")</div>
+<div id='$hid' class='head_header' contenteditable='true' onkeypress='return head_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props='intoc;'>$:safe_content(content, "head_header")</div>
 <div id='$did' class='head_date' data-nothon='save;' data-props=''>$safe_content(content, "head_date")</div>
 <div id='$bid' class='head_body' data-nothon='save;' data-props='searchable;'>$:safe_content(content, "head_body")</div>
 </div>

@@ -6,7 +6,7 @@ $ bid = 'div_code_body_%s'%(id)
 $ cid = 'div_code_container_%s'%(id)
 		
 <div id='$mid' class='code_main' onclick='code_onclick(event);' data-type='code'>
-<div id='$hid' class='code_header' contenteditable='true' onkeypress='return code_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props=''>$safe_content(content, "code_header")</div>
+<div id='$hid' class='code_header' contenteditable='true' onkeypress='return code_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props='intoc;'>$safe_content(content, "code_header")</div>
 <div id='$did' class='code_date' data-nothon='save;' data-props=''>$safe_content(content, "code_date")</div>
 <div id='$bid' class='code_body' data-nothon='' data-props=''>$:safe_content(content, "code_body")</div>
 <div id='$cid' class='code_container' data-nothon='save;' data-props=''>$safe_content(content, "code_container")</div>

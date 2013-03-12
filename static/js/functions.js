@@ -146,19 +146,39 @@ function block_content(elem) {
 	$(elem).children().each( function() {
 		if($(this).parent().get(0) === $(elem).get(0)) {
 			var nothon = $(this).data('nothon')
+			var props = $(this).data('props')
 			if(nothon) {
-				if(nothon.indexOf('save;') !== -1) {
+				if(check_tag(nothon, 'save')) {
 					var sub_block = new Object()
-					sub_block["content"] = $(this).html()
-					sub_block["props"]= 'placeholder;'
+					sub_block['content'] = $(this).html()
+					if($(this).css('display') == 'none') props = add_tag(props, 'collapsed')
+					sub_block['props']= props
 					block.content[$(this).attr('class')] = sub_block
-					// We should implement tracking of hidden/collapsed properties, and so on
 				}
 			}
 		}
 	})
 	eval('block = ' + block.type + '_sanitise(block)')
 	return block
+}
+
+function check_tag(where, tag) {
+	if(where.length == 0) return false
+	var tags = where.split(';')
+	for(i=0; i < tags.length; i++) {
+		if($.trim(tags[i]) === tag) return true
+	}
+	return false
+}
+
+function add_tag(where, tag) {
+	if(where.length == 0) return tag + ';'
+	var tags = where.split(';')
+	for(i=0; i < tags.length; i++) {
+		if($.trim(tags[i]) === tag) return where
+	}
+	if(where.charAt(where.length - 1) == ';') return where + tag + ';'
+	return where + ';' + tag + ';'
 }
 
 function get_divs() {
