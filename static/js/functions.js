@@ -163,7 +163,7 @@ function block_content(elem) {
 }
 
 function check_tag(where, tag) {
-	if(where.length == 0) return false
+	if(!where || where.length == 0) return false
 	var tags = where.split(';')
 	for(i=0; i < tags.length; i++) {
 		if($.trim(tags[i]) === tag) return true
@@ -281,6 +281,13 @@ $(document).ready(function () {
 	
 	$("#document_tree").bind("contextmenu", function(e) {
 		return false;
+	});
+	
+	$(function() {
+		$("div").each( function() {
+			var props = $(this).data('props')
+			if(check_tag(props, 'collapsed')) $(this).hide()
+		});
 	});
 });
 
