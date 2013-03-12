@@ -41,5 +41,6 @@ function code_data(div_data) {
 }
 
 function code_sanitise(block) {
+	block.content.code_header.content = $.trim(block.content.code_header.content)
 	return block
 }

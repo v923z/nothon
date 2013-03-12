@@ -43,5 +43,6 @@ function head_data(div_data) {
 }
 
 function head_sanitise(block) {
+	block.content.head_header.content = $.trim(block.content.head_header.content)
 	return block
 }
