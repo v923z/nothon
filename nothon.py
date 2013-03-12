@@ -303,10 +303,9 @@ class Index(object):
 	
 	def GET(self):
 		link = web.input(name='test.note')
-		print link
+		aside = {"tree" : dir_html(dir_tree('.'))}
 		if link.name == '__timeline':
-			aside = {"tree" : dir_html(dir_tree('.'))}
-			return 	render.document(link.name, aside, make_timeline(), list_handler_functions(), list_create_functions())
+			return 	render.notebook(link.name, aside, make_timeline(), list_handler_functions(), list_create_functions())
 		else:
 			if not os.path.exists(link.name):
 				title = os.path.basename(link.name).replace('.note', '')
@@ -316,8 +315,7 @@ class Index(object):
 				with open(link.name, 'w') as fout:
 					fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"saved" : "", \n"nothon version" : 1.1, \n"notebook" : []\n}'%(title, os.getcwd()))
 					
-			aside = {"tree" : dir_html(dir_tree('.'))}
-			return 	render.document(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
+			return 	render.notebook(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 
 	def POST(self):
 		message = simplejson.loads(web.data())
