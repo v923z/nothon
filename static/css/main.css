@@ -82,7 +82,6 @@ aside {
 	padding: 		0 0;
 	background: 	#36677c;
 	color: 			#98dbcc;
-	vertical-align: middle;
 	font-weight:	bold;
 }
 
@@ -95,7 +94,7 @@ article {
 	width: 78%;
 	height: 98%;
 	top: 25px;
-	overflow: scroll;
+	overflow-y: scroll;
 }
 
 #top_menu {

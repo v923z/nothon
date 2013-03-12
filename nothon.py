@@ -134,7 +134,7 @@ def make_timeline():
 		str_tl += "<div class='timeline_year'>%s"%year[0]
 		for month in reversed(year[1]):
 			str_tl += "<div class='timeline_month'>%s"%(calendar.month_name[int(month[0])])
-			for day in reversed(month[1]):
+			for day in reversed(month[1]):	
 				d = day.replace('.note','')
 				dayofweek = time.strftime("%A",datetime.date(int(year[0]),int(month[0]),int(d)).timetuple())
 				str_tl += "<div class='timeline_day'><a href='?name=Calendar/%s/%s/%s'>%s</a>"%(year[0],month[0],day,str(dayofweek) + ' ' + d)
