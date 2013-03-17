@@ -4,10 +4,14 @@ python nothon.py &
 server_pid=$!
 sleep 0.5
 
+echo "-----------------------------------------------"
+echo "Please create a profile named nothon in firefox"
+echo "-----------------------------------------------"
+
 if [ $# -ge 1 ]; then
-	firefox 127.0.0.1:8080?name=$1
+	firefox firefox -no-remote -P "nothon" 127.0.0.1:8080?name=$1
 else
-	firefox 127.0.0.1:8080?name=main.note
+	firefox firefox -no-remote -P "nothon" 127.0.0.1:8080?name=main.note
 fi
 
 kill $server_pid
