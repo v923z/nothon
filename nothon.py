@@ -121,6 +121,32 @@ def extract_headers(fn):
 		
 	return output + '</div>'
 
+def is_year(year):
+	if isinstance(year,basestring) or len(year) != 2:
+		return False;
+	try:
+		y = int(year[0])
+	except ValueError:
+		return False
+	return True
+
+def is_month(month):
+	if isinstance(month,basestring) or len(month) != 2:
+		return False
+	try: 
+		m = int(month[0])
+		if m < 1 or m > 12:
+			return False
+	except ValueError:
+		return False
+	return True
+
+def is_day(day):
+	if day.isdigit() and int(day) > 0 and int(day) <= 31:
+		return True
+	else:
+		return False
+
 def make_timeline():
 	note = {}
 	note['title'] = {'content' : "Timeline"}
@@ -131,20 +157,25 @@ def make_timeline():
 	print 'tree:', tree
 	str_tl = ''
 	for year in reversed(tree):
-		str_tl += "<div class='timeline_year'>%s"%year[0]
-		for month in reversed(year[1]):
-			str_tl += "<div class='timeline_month'>%s"%(calendar.month_name[int(month[0])])
-			for day in reversed(month[1]):	
-				d = day.replace('.note','')
-				dayofweek = time.strftime("%A",datetime.date(int(year[0]),int(month[0]),int(d)).timetuple())
-				str_tl += "<div class='timeline_day'><a href='?name=Calendar/%s/%s/%s'>%s</a>"%(year[0],month[0],day,str(dayofweek) + ' ' + d)
-				str_tl += extract_headers('Calendar/%s/%s/%s'%(year[0],month[0],day))
-				str_tl += '</div>'
+		if is_year(year):  # only include proper calendar entries
+			str_tl += "<div class='timeline_year'>%s"%year[0]
+			for month in reversed(year[1]):
+				if is_month(month): # only include proper calendar entries
+					str_tl += "<div class='timeline_month'>%s"%(calendar.month_name[int(month[0])])
+					for day in reversed(month[1]):	
+						d = day.replace('.note','')
+						if is_day(d):
+							dayofweek = time.strftime("%A",datetime.date(int(year[0]),int(month[0]),int(d)).timetuple())
+							str_tl += "<div class='timeline_day'><a href='?name=Calendar/%s/%s/%s'>%s</a>"%(year[0],month[0],day,str(dayofweek) + ' ' + d)
+							str_tl += extract_headers('Calendar/%s/%s/%s'%(year[0],month[0],day))
+							str_tl += '</div>'
+					str_tl += '</div>'
 			str_tl += '</div>'
-		str_tl += '</div>'
 	note['content'] = {'content' : str_tl}
 	
 	return note
+
+
 
 def head_handler(message):	
 	head = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n')
