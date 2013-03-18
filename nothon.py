@@ -336,7 +336,7 @@ class Index(object):
 		link = web.input(name='test.note')
 		aside = {"tree" : dir_html(dir_tree('.'))}
 		if link.name == '__timeline':
-			return 	render.notebook(link.name, aside, make_timeline(), list_handler_functions(), list_create_functions())
+			return 	render.timeline(link.name, aside, make_timeline())
 		else:
 			if not os.path.exists(link.name):
 				title = os.path.basename(link.name).replace('.note', '')
