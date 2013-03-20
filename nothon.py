@@ -294,7 +294,9 @@ def save_handler(message):
 	" Writes the stipped document content to disc "
 	with open(message['outfile'], 'w') as fout:
 		fout.write('{\n"title" : "%s",\n'%(message["title"]))
-		fout.write('"directory" : "%s",\n'%(message["directory"].strip('\n')))
+		fout.write('"type": "%s",\n'%(message['type']))
+		if message['type'] in ('notebook'):
+			fout.write('"directory" : "%s",\n'%(message["directory"].strip('\n')))
 		fout.write('"date" : "%s",\n'%(message["date"]))
 		fout.write('"nothon version" : 1.1,\n')
 		fout.write('"notebook" : %s\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))

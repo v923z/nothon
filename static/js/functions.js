@@ -193,7 +193,9 @@ function get_divs() {
 }
 
 function save() {
+	if(window.location.href.indexOf('?name=__timeline') > 0) return
 	var message = create_message('', "save")
+	message.type = $('body').data('type')
 	message.outfile = document.title
 	message.title = document.getElementById("div_title").innerHTML
 	message.directory = document.getElementById("div_dir").innerHTML
