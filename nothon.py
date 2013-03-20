@@ -295,7 +295,7 @@ def save_handler(message):
 	with open(message['outfile'], 'w') as fout:
 		fout.write('{\n"title" : "%s",\n'%(message["title"]))
 		fout.write('"directory" : "%s",\n'%(message["directory"].strip('\n')))
-		fout.write('"saved" : "%s",\n'%(message["saved"]))
+		fout.write('"date" : "%s",\n'%(message["date"]))
 		fout.write('"nothon version" : 1.1,\n')
 		fout.write('"notebook" : %s\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))
 		
@@ -344,7 +344,7 @@ class Index(object):
 				if not os.path.exists(path):
 					os.makedirs(path)
 				with open(link.name, 'w') as fout:
-					fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"saved" : "", \n"nothon version" : 1.1, \n"notebook" : []\n}'%(title, os.getcwd()))
+					fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"date" : "", \n"nothon version" : 1.1, \n"notebook" : []\n}'%(title, os.getcwd()))
 					
 			return 	render.notebook(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 

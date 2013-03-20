@@ -198,7 +198,7 @@ function save() {
 	message.title = document.getElementById("div_title").innerHTML
 	message.directory = document.getElementById("div_dir").innerHTML
 	message.content = get_divs()
-	message.saved = Date()
+	message.date = Date()
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 
