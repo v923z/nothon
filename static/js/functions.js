@@ -109,7 +109,7 @@ function create_and_insert(className) {
 
 function create_message(div_data, message_type) {
 	var message = new Object()
-	message.type = message_type
+	message.command = message_type
 	message.id = div_data.id
 	message.content = div_data.innerHTML
 	message.directory = document.getElementById("div_dir").innerHTML

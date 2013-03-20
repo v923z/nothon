@@ -351,8 +351,8 @@ class Index(object):
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['type'] in ('plot', 'head', 'code', 'text', 'save', 'savehtml', 'docmain_render'):
-			exec('result = %s_handler(message)'%(message['type']))
+		if message['command'] in ('plot', 'head', 'code', 'text', 'save', 'savehtml', 'docmain_render'):
+			exec('result = %s_handler(message)'%(message['command']))
 			return result
 			
 		else:
