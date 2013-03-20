@@ -86,7 +86,7 @@ def head_update_dict(dictionary):
 
 def code_update_dict(dictionary):
 	lexer = get_lexer_for_filename(dictionary['content']['code_header']['content'])
-	dictionary['content']['code_body'] = {'content' : highlight(dictionary['content']['code_container']['content'], lexer, HtmlFormatter())}
+	dictionary['content']['code_body'] = {'content' : highlight(dictionary['content']['code_body']['content'], lexer, HtmlFormatter())}
 	return dictionary
 
 def parse_note(fn):	

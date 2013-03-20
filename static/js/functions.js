@@ -113,7 +113,7 @@ function create_message(div_data, message_type) {
 	message.id = div_data.id
 	message.content = div_data.innerHTML
 	message.directory = document.getElementById("div_dir").innerHTML
-	console.log(message.content)
+	//console.log(message.content)
 	return message
 }
 
@@ -193,7 +193,9 @@ function get_divs() {
 }
 
 function save() {
+	console.log('saving', window.location.href)
 	if(window.location.href.indexOf('?name=__timeline') > 0) return
+	console.log('saving')
 	var message = create_message('', "save")
 	message.type = $('body').data('type')
 	message.outfile = document.title

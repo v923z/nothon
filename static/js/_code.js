@@ -42,5 +42,6 @@ function code_data(div_data) {
 
 function code_sanitise(block) {
 	block.content.code_header.content = $.trim(block.content.code_header.content)
+	block.content.code_body.content = jQuery(block.content.code_body.content).text()
 	return block
 }
