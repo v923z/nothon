@@ -263,7 +263,6 @@ def code_handler(message):
 		linenos=True		
 	return simplejson.dumps({message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
 							message['body'] : highlight(code, lexer, HtmlFormatter(linenos=linenos)),
-							message['container'] : code,
 							"scroller" : message['body']})
 
 def write_to_temp(string):
