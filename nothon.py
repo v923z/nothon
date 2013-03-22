@@ -8,6 +8,7 @@ import traceback
 import tempfile
 import time
 import calendar
+import sys
 
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename
@@ -16,8 +17,14 @@ from pygments.formatters import HtmlFormatter
 # http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
 # http://www.codinghorror.com/blog/2009/11/parsing-html-the-cthulhu-way.html
 # http://stackoverflow.com/questions/9662346/python-code-to-remove-html-tags-from-a-string
-#import helper
+
 from pylab import *
+
+sys.path.insert(0, './python')
+import resource
+from code_handling import *
+
+nothon_resource = resource.NothonResource()
 
 def safe_content(dictionary, key):
 	if not dictionary or key not in dictionary:
@@ -175,8 +182,6 @@ def make_timeline():
 	
 	return note
 
-
-
 def head_handler(message):	
 	head = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n')
 	sp = head.split(' ')
@@ -246,25 +251,14 @@ def plot_handler(message):
 	
 def code_handler(message):
 	print message
-	sp = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n').split(' ')
+	#sp = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n').split(' ')
 
-	fn = sp[0]
-	if not os.path.exists(fn): 
-		return simplejson.dumps({message['body'] : '<span class="code_error">File doesn\'t exist!</span>'})
-	
-	# TODO: this breaks, if unknown filetype
-	lexer = get_lexer_for_filename(fn)
-	fin = open(fn, 'r')
-	code = fin.read()
-	fin.close()
-	# TODO: read lines between limits, and also between tags
-	linenos=False
-	if '-lineno' in sp:
-		linenos=True		
+	fn, tag, linenos, include = code_arguments(message['content'])
+	out = code_formatter(fn, (nothon_resource.code_delimiter_left, nothon_resource.code_delimiter_right), tag, linenos, include)
 	return simplejson.dumps({message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
-							message['body'] : highlight(code, lexer, HtmlFormatter(linenos=linenos)),
-							"scroller" : message['body']})
-
+						message['body'] : out,
+						"scroller" : message['body']})
+						
 def write_to_temp(string):
 	_, tmp = tempfile.mkstemp()
 	with open(tmp, 'w') as fout:
