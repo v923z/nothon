@@ -254,7 +254,7 @@ def code_handler(message):
 	#sp = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n').split(' ')
 
 	fn, tag, linenos, include = code_arguments(message['content'])
-	out = code_formatter(fn, (nothon_resource.code_delimiter_left, nothon_resource.code_delimiter_right), tag, linenos, include)
+	out = code_formatter(fn, nothon_resource.code_delimiter, tag, linenos, include)
 	return simplejson.dumps({message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
 						message['body'] : out,
 						"scroller" : message['body']})
