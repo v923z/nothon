@@ -251,8 +251,6 @@ def plot_handler(message):
 	
 def code_handler(message):
 	print message
-	#sp = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n').split(' ')
-
 	fn, tag, linenos, include = code_arguments(message['content'])
 	out = code_formatter(fn, nothon_resource.code_delimiter, tag, linenos, include)
 	return simplejson.dumps({message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
