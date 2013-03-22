@@ -252,9 +252,8 @@ def plot_handler(message):
 def code_handler(message):
 	print message
 	fn, tag, linenos, include = code_arguments(message['content'])
-	out = code_formatter(fn, nothon_resource.code_delimiter, tag, linenos, include)
 	return simplejson.dumps({message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
-						message['body'] : out,
+						message['body'] : code_formatter(fn, nothon_resource.code_delimiter, tag, linenos, include), 
 						"scroller" : message['body']})
 						
 def write_to_temp(string):
