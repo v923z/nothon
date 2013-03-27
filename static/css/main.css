@@ -290,6 +290,25 @@ article {
 	border-width: 0 10px 0 0;	
 }
 
+.TOC {
+	background: #eeffee;	
+	margin-top: 8px;
+	margin-left: 5px;
+	border-radius: 2px;
+	width: 80%;
+	border-top: 2px solid #ac9;
+    border-bottom: 2px solid #ac9;	
+    font-size: 	12pt;
+	font-weight: 	bold;
+}
+
+.toc_entry {
+	font-size: 	12pt;
+	font-weight: normal;
+	background: #eeffee;	
+	margin-left:40px;
+}
+
 .timeline_year {
 	background-color: 	#ddbbaa;
 	margin-top: 8px;
