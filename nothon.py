@@ -123,8 +123,10 @@ def extract_headers(fn):
 	content = data['notebook']
 	
 	for element in content:
-		if 'text_header' in element['content']:
-			output += '<p>' + element['content']['text_header']['content'] + '</p>'
+		for cell_name in element['content']:
+			cell = element['content'][cell_name]
+			if 'intoc' in cell['props'].split(';'):
+				output += '<p>' + cell['content'] + '</p>'
 		
 	return output + '</div>'
 
