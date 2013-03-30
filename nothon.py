@@ -273,7 +273,9 @@ def plot_handler(message):
 	
 	if code.startswith('#gnuplot') or code.startswith('# gnuplot'):
 		with open(message['filename'] + '.gp', 'w') as fout:
-			fout.write("set term png; set out '%s.png'\n"%(pwd + '/' + message['filename']) + code + "\nset term pdfcairo; set out '%s.pdf'\n replot\n"%(pwd + '/' + message['filename']))
+			fout.write("set term png; set out '%s.png'\n"%(pwd + '/' + message['filename']) + code)				
+			if nothon_resource.plot_pdf_output:
+				fout.write("\nset term pdfcairo; set out '%s.pdf'\n replot\n"%(pwd + '/' + message['filename']))
 		os.system("gnuplot %s.gp"%(message['filename']))
 		os.system("rm %s.gp -f"%(message['filename']))
 		
@@ -282,7 +284,8 @@ def plot_handler(message):
 		try:
 			exec(code)
 			savefig(pwd + '/' + message['filename'] + '.png')
-			savefig(pwd + '/' + message['filename'] + '.pdf')
+			if nothon_resource.plot_pdf_output: 
+				savefig(pwd + '/' + message['filename'] + '.pdf')
 			close()
 		except:
 			exit_status = traceback.format_exc().replace('\n', '<br>')
