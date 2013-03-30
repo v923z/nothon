@@ -273,32 +273,26 @@ def plot_handler(message):
 	
 	if code.startswith('#gnuplot') or code.startswith('# gnuplot'):
 		with open(message['filename'] + '.gp', 'w') as fout:
-			fout.write("set term png; set out '%s'\n"%(pwd + '/' + message['filename']) + code)
+			fout.write("set term png; set out '%s.png'\n"%(pwd + '/' + message['filename']) + code + "\nset term pdfcairo; set out '%s.pdf'\n replot\n"%(pwd + '/' + message['filename']))
 		os.system("gnuplot %s.gp"%(message['filename']))
 		os.system("rm %s.gp -f"%(message['filename']))
-
-	#else if code.statswith('%matlab') or code.statswith('% matlab'):
-		#with open(message['filename'] + '.matlab', 'w') as fout:
-			#fout.write("set term png; set out '%s'\n"%(message['filename']) + code)
-		#os.system("matlab %s.matlab"%(message['filename']))
-		#os.system("rm %s.matlab -f"%(message['filename']))
-		#exit_status = read_plot(message['filename'])
 		
 	else:
 		x = linspace(-10, 10, 100)
 		try:
 			exec(code)
-			savefig(pwd + '/' + message['filename'])
+			savefig(pwd + '/' + message['filename'] + '.png')
+			savefig(pwd + '/' + message['filename'] + '.pdf')
 			close()
 		except:
 			exit_status = traceback.format_exc().replace('\n', '<br>')
 
 	os.chdir(pwd)
 	if not exit_status:
-		exit_status = read_plot(message['filename'])
+		exit_status = read_plot(message['filename'] + '.png')
 
 	return simplejson.dumps({ "scroller" : message['body'],
-						message['title'] : message['filename'], 
+						message['title'] : message['filename'] + '.png', 
 						message['body'] : exit_status})
 	
 def code_handler(message):
