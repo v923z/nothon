@@ -32,9 +32,19 @@ def safe_content(dictionary, key):
 	else:
 		return dictionary[key]['content']
 
+def safe_props(dictionary, key):
+	if not dictionary or key not in dictionary:
+		return ""
+	elif 'props' in dictionary[key]:
+		print 'DICT', dictionary[key]
+		return dictionary[key]['props']
+	else:
+		return ""	
+
 urls = ('/',  'Index')
 render = web.template.render('templates/')
 web.template.Template.globals['safe_content'] = safe_content
+web.template.Template.globals['safe_props'] = safe_props
 app = web.application(urls, globals())
 
 def dir_tree(dir):
@@ -107,7 +117,7 @@ def parse_note(fn):
 	note['title'] = {'content' : data['title']}
 	
 	for element in content:
-		print element
+		#print 'HERE', element['content']
 		exec('element = %s_update_dict(element)'%(element['type']))	
 		exec('div = render.%s_html(%s, %s)'%(element['type'], element['id'], element['content']))
 		note_str += str(div)

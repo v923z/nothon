@@ -165,6 +165,8 @@ function block_content(elem) {
 function check_tag(where, tag) {
 	if(!where || where.length == 0) return false
 	var tags = where.split(';')
+	tags = $.unique(tags)
+	console.log(tags)
 	for(i=0; i < tags.length; i++) {
 		if($.trim(tags[i]) === tag) return true
 	}
@@ -183,7 +185,7 @@ function add_tag(where, tag) {
 
 function get_divs() {
 	var content = new Array()
-	content[0] = {"title" : document.title }	
+	content[0] = {"title" : document.title }
 	$("#docmain").children("div[class*='_main']").each( function() {			
 			content.push(block_content($(this)))
 		}
@@ -198,7 +200,7 @@ function save() {
 	var message = create_message('', "save")
 	message.type = $('body').data('type')
 	message.outfile = document.title
-	message.title = document.getElementById("div_title").innerHTML
+	message.title = $.trim(document.getElementById("div_title").innerHTML)
 	message.directory = document.getElementById("div_dir").innerHTML
 	message.content = get_divs()
 	message.date = Date()
@@ -289,6 +291,7 @@ $(document).ready(function () {
 	$(function() {
 		$("div").each( function() {
 			var props = $(this).data('props')
+			console.log(props)
 			if(check_tag(props, 'collapsed')) $(this).hide()
 		});
 	});
