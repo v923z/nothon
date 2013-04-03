@@ -152,6 +152,7 @@ function block_content(elem) {
 					var sub_block = new Object()
 					sub_block['content'] = $(this).html()
 					if($(this).css('display') == 'none') props = add_tag(props, 'collapsed')
+					else props = remove_tag(props, 'collapsed')
 					sub_block['props']= props
 					block.content[$(this).attr('class')] = sub_block
 				}
@@ -166,7 +167,6 @@ function check_tag(where, tag) {
 	if(!where || where.length == 0) return false
 	var tags = where.split(';')
 	tags = $.unique(tags)
-	console.log(tags)
 	for(i=0; i < tags.length; i++) {
 		if($.trim(tags[i]) === tag) return true
 	}
@@ -181,6 +181,11 @@ function add_tag(where, tag) {
 	}
 	if(where.charAt(where.length - 1) == ';') return where + tag + ';'
 	return where + ';' + tag + ';'
+}
+
+function remove_tag(where, tag) {
+	where.replace(tag + ';', '')
+	return where
 }
 
 function get_divs() {
