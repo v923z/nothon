@@ -154,12 +154,18 @@ article {
     border-bottom: 2px solid #ac9;
 }
 
-.plot_header, .plot_file, .plot_body {
+.plot_caption, .plot_header, .plot_file, .plot_body {
 	font-size: 12pt;
 	color: #000099;
 	background: #eeeeff;
 	border-radius: 2px;
 	width: 95%;
+}
+
+.plot_caption {
+	background: 	#d3e8da;
+	min-height:  	1.2em;
+	font-weight: 	bold;
 }
 
 .plot_header {
