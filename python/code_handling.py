@@ -1,6 +1,6 @@
 def code_formatter(fn, delimiters, tag=False, linenos=False, include=False):
 	from pygments import highlight
-	from pygments.lexers import get_lexer_for_filename,  get_lexer_by_name
+	from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
 	from pygments.formatters import HtmlFormatter    
 	try:
 		with open(fn, 'r') as fin: code_string = fin.readlines()
