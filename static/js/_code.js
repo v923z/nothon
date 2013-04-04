@@ -41,9 +41,7 @@ function code_data(div_data) {
 
 function code_sanitise(block) {
 	block.content.code_header.content = $.trim(block.content.code_header.content)
-	$('<div id="temp_div"/>').appendTo("#docmain")
-	$("#temp_div").hide()
-	$("#temp_div").html(block.content.code_body.content)
+	$('<div id="temp_div"/>').appendTo("#docmain").hide().html(block.content.code_body.content)
 	block.content.code_body.content = $('#temp_div').find('.highlight').text()
 	$("#temp_div").remove()	
 	return block
