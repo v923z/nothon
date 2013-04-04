@@ -53,5 +53,5 @@ def code_update_dict(dictionary):
 	except:
 		lexer = get_lexer_by_name('text')
 		
-	dictionary['content']['code_body'] = {'content' : highlight(dictionary['content']['code_body']['content'], lexer, HtmlFormatter())}
+	dictionary['content']['code_body'] = {'content' : highlight(dictionary['content']['code_body']['content'], lexer, HtmlFormatter(linenos=linenos))}
 	return dictionary
