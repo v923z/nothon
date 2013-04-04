@@ -151,10 +151,8 @@ function block_content(elem) {
 				if(check_tag(nothon, 'save')) {
 					var sub_block = new Object()
 					sub_block['content'] = $(this).html()
-					console.log('here', props, $(this).css('display'))
-					if($(this).is(':visible')) props.replace('collapsed;', 'asdasd')
+					if($(this).is(':visible')) props.replace('collapsed;', '')
 					else props = add_tag(props, 'collapsed')
-					console.log('removed', props)
 					sub_block['props']= props
 					block.content[$(this).attr('class')] = sub_block
 				}
@@ -183,11 +181,6 @@ function add_tag(where, tag) {
 	}
 	if(where.charAt(where.length - 1) == ';') return where + tag + ';'
 	return where + ';' + tag + ';'
-}
-
-function remove_tag(where, tag) {
-	where.replace(tag + ';', '')
-	return where
 }
 
 function get_divs() {
