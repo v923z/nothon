@@ -33,14 +33,9 @@ def safe_content(dictionary, key):
 		return dictionary[key]['content']
 
 def safe_props(dictionary, key):
-	try:
-		print 'DDD', dictionary[key]
-	except:
-		pass
 	if not dictionary or key not in dictionary:
 		return ""
 	elif 'props' in dictionary[key]:
-		print 'DICT', dictionary[key]
 		return dictionary[key]['props']
 	else:
 		return ""	
