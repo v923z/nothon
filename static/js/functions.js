@@ -151,8 +151,10 @@ function block_content(elem) {
 				if(check_tag(nothon, 'save')) {
 					var sub_block = new Object()
 					sub_block['content'] = $(this).html()
-					if($(this).css('display') == 'none') props = add_tag(props, 'collapsed')
-					else props = remove_tag(props, 'collapsed')
+					console.log('here', props, $(this).css('display'))
+					if($(this).is(':visible')) props.replace('collapsed;', 'asdasd')
+					else props = add_tag(props, 'collapsed')
+					console.log('removed', props)
 					sub_block['props']= props
 					block.content[$(this).attr('class')] = sub_block
 				}

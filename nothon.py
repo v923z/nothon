@@ -101,11 +101,6 @@ def text_update_dict(dictionary):
 def head_update_dict(dictionary):
 	return dictionary
 
-def code_update_dict(dictionary):
-	lexer = get_lexer_for_filename(dictionary['content']['code_header']['content'])
-	dictionary['content']['code_body'] = {'content' : highlight(dictionary['content']['code_body']['content'], lexer, HtmlFormatter())}
-	return dictionary
-
 def parse_note(fn):	
 	note = {}
 	note_str = ''

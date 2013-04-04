@@ -1,7 +1,8 @@
+from pygments import highlight
+from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
+from pygments.formatters import HtmlFormatter   
+
 def code_formatter(fn, delimiters, tag=False, linenos=False, include=False):
-	from pygments import highlight
-	from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
-	from pygments.formatters import HtmlFormatter    
 	try:
 		with open(fn, 'r') as fin: code_string = fin.readlines()
 	except IOError:
@@ -44,3 +45,13 @@ def code_arguments(string):
 	if '-include' in sp: include = True
 		
 	return fn, tag, linenos, include
+
+def code_update_dict(dictionary):
+	fn, tag, linenos, include = code_arguments(dictionary['content']['code_header']['content'])
+	try:
+		lexer = get_lexer_for_filename(fn)
+	except:
+		lexer = get_lexer_by_name('text')
+		
+	dictionary['content']['code_body'] = {'content' : highlight(dictionary['content']['code_body']['content'], lexer, HtmlFormatter())}
+	return dictionary
