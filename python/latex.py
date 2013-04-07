@@ -49,7 +49,7 @@ def latex_code(dictionary, template):
 	
 def latex_plot(dictionary, template):
 	text = template['plot']
-	text = text.replace('~plot.header', latexify(dictionary['content']['plot_header']['content'].replace('<p>', '\\ ').replace('</p>', '')))
+	text = text.replace('~plot.header', dictionary['content']['plot_header']['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n'))
 	text = text.replace('~plot.file', dictionary['content']['plot_file']['content'].replace('.png', '.pdf'))
 	text = text.replace('~plot.caption', dictionary['content']['plot_caption']['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n'))
 	text = text.replace('~plot.label', dictionary['content']['plot_file']['content'].replace('.png', ''))
