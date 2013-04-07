@@ -40,7 +40,7 @@ function plot_data(div_data) {
 }
 
 function plot_sanitise(block) {
-	block.content.plot_caption.content = $.trim(block.content.plot_caption.content)
+	block.content.plot_caption.content = block.content.plot_caption.content.replace('<br>', '')
 	block.content.plot_header.content = $.trim(block.content.plot_header.content)
 	return block
 }

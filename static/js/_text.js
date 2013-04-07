@@ -183,7 +183,7 @@ function text_handler(req) {
 
 function text_sanitise(block) {
 	block.content.text_body.content = strip_mathjax(block.content.text_body.content)
-	block.content.text_header.content = $.trim(block.content.text_header.content)
+	block.content.text_header.content = block.content.text_header.content.replace('<br>', '')
 	return block
 }
 

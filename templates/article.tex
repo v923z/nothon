@@ -1,0 +1,48 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{hyperref}
+\usepackage{fancyvrb}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage[linewidth=1pt, skipabove=10pt]{mdframed}
+
+\textwidth 17 cm
+\hoffset -2 cm
+
+\definecolor{darkgreen}{RGB}{0, 128, 0}
+\definecolor{lightgreen}{RGB}{0, 170, 0}
+\definecolor{darkblue}{RGB}{0, 0, 128}
+\definecolor{lightgray}{RGB}{230, 230, 240}
+\definecolor{lightergray}{RGB}{240, 240, 255}
+
+\newmdenv[linewidth=1pt,
+		frametitlerule=true,
+		innertopmargin=10pt,
+		frametitlebackgroundcolor=lightgray,
+		backgroundcolor=lightergray,
+		]{codebox}
+
+\newmdenv[linewidth=1pt,
+		frametitlerule=true,
+		innertopmargin=10pt,
+		frametitlebackgroundcolor=lightgray,
+		backgroundcolor=lightergray,
+		]{headbox}
+
+\newmdenv[linewidth=1pt,
+		frametitlerule=true,
+		innertopmargin=10pt,
+		frametitlebackgroundcolor=lightgray,
+		]{plotbox}
+		
+~article.defs
+
+\author{Zoltán Vörös}
+\title{~article.title}
+\date{~article.date}
+
+\begin{document}
+\maketitle
+~article.content
+\end{document}
