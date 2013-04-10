@@ -1,0 +1,201 @@
+{
+"title" : "Comments on using the nothon notebook<br>",
+"type": "notebook",
+"directory" : "/home/v923z/sandbox/nothon/notebooks/",
+"date" : "Wed Apr 10 2013 21:24:03 GMT+0200 (CEST)",
+"nothon version" : 1.2,
+"notebook" : [
+    {
+        "content": {
+            "text_body": {
+                "content": "Arbitrary code residing on the hard disc can conveniently be displayed. All one has to do is give the file name in a code cell.<br>",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Code segments 1.",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 4,
+        "type": "text"
+    },
+    {
+        "content": {
+            "code_body": {
+                "content": "import os\n\ndef retreive_header(args):\n\thead = args.split('<br>')\n\tsp = head[0].split(' ')\n\tif not os.path.exists(sp[0]): \n\t\treturn \"File doesn't exist\"\n\tif len(sp) == 1: n = 10\n\t# TODO: elif sp[1] == '#':\t\n\telse: n = int(sp[1])\n\tfin = open(sp[0], 'r')\t\n\t# *- function_something \n\tif n > 0:\n\t\tlines = []\n\t\tit = 0\n\t\tfor line in fin:\n\t\t\tlines.append(line.rstrip('\\n\\r'))\n\t\t\tit += 1\n\t\t\tif it >= n: break\n\t# function_something -*\n\tif n < 0:\n\t\tlines = fin.readlines()\n\t\tlines = lines[-10:]\n\tfin.close()\t\n\treturn '<br>'.join([x.rstrip('\\n\\r') for x in lines])\n",
+                "props": ""
+            },
+            "code_date": {
+                "content": "Created: Fri Mar 22 21:05:47 2013, modified: Fri Mar 22 21:05:47 2013",
+                "props": ""
+            },
+            "code_header": {
+                "content": "helper.py",
+                "props": "intoc;"
+            }
+        },
+        "id": 1,
+        "type": "code"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "Code lines can be numbered by adding -lineno on the command line. In addition, if a start and end tag are defined in the source file, the code highlighter can be made to display only the segment between the two strings. If -include is specified on the command line, the tags are also included in the highlit code. This can be useful when one wants to emphasise that we are dealing with a code segment only.<br>",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Working with code 2.",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 5,
+        "type": "text"
+    },
+    {
+        "content": {
+            "code_body": {
+                "content": "\t# *- function_something \n\tif n > 0:\n\t\tlines = []\n\t\tit = 0\n\t\tfor line in fin:\n\t\t\tlines.append(line.rstrip('\\n\\r'))\n\t\t\tit += 1\n\t\t\tif it >= n: break\n\t# function_something -*\n",
+                "props": ""
+            },
+            "code_date": {
+                "content": "Created: Fri Mar 22 21:05:47 2013, modified: Fri Mar 22 21:05:47 2013",
+                "props": ""
+            },
+            "code_header": {
+                "content": "helper.py -lineno -tag function_something -include",
+                "props": "intoc;"
+            }
+        },
+        "id": 2,
+        "type": "code"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "This functionality might be handy, if one wants to list the content of some file. We only have to enter the file name, and press enter. Additionally, an argument can be supplied, in which case, only the first or last n lines will be printed.<br>",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Working with headers 1.",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 2,
+        "type": "text"
+    },
+    {
+        "content": {
+            "head_body": {
+                "content": "# comment 1<br># comment 2<br>12 3<br>23 22<br>2132 123<br>55 99",
+                "props": "searchable;"
+            },
+            "head_date": {
+                "content": "Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012",
+                "props": ""
+            },
+            "head_header": {
+                "content": "test.dat",
+                "props": "intoc;"
+            }
+        },
+        "id": 1,
+        "type": "head"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "If we supply an argument, we can print the first or last n lines as follows<br>",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Working with headers 2.",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 3,
+        "type": "text"
+    },
+    {
+        "content": {
+            "head_body": {
+                "content": "# comment 1<br># comment 2",
+                "props": "searchable;"
+            },
+            "head_date": {
+                "content": "Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012",
+                "props": ""
+            },
+            "head_header": {
+                "content": "test.dat 2",
+                "props": "intoc;"
+            }
+        },
+        "id": 2,
+        "type": "head"
+    },
+    {
+        "content": {
+            "head_body": {
+                "content": "2132 123<br>55 99",
+                "props": "searchable;"
+            },
+            "head_date": {
+                "content": "Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012",
+                "props": ""
+            },
+            "head_header": {
+                "content": "test.dat -2",
+                "props": "intoc;"
+            }
+        },
+        "id": 3,
+        "type": "head"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "Plots can easily be included in a notebook. A plot cell has three usable subcells. The first one is the caption/title of the plot. This will be included in the table of contents, and this will also be used as the caption, when one converts the notebook to pdf via LaTeX. <br><br>The second cell is the matplotlib code that generates the plot. At the time of writing this, this code is going to be included in the pdf output, while in the notebook, it can be made hidden by clicking on the gray area next to it. <br><br>The third subcell is the plot itself. In case the plot cannot be generated (e.g., due to a syntax error in the code), the traceback will be returned instead. <br><br>Note that gnuplot also can be used as the plotting backend by adding #gnuplot or # gnuplot on the first line of the code.<br>",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Adding plots",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 6,
+        "type": "text"
+    },
+    {
+        "content": {
+            "plot_caption": {
+                "content": "Time evolution of the displacement of a harmonic oscillator",
+                "props": "searchable;"
+            },
+            "plot_file": {
+                "content": "notebooks/nothon.note_plot_1.png",
+                "props": ""
+            },
+            "plot_header": {
+                "content": "plot(sin(x), 'ro')<br>xlabel('Time [s]')<br>ylabel('Displacement [a.u.]')<br>",
+                "props": ""
+            }
+        },
+        "id": 1,
+        "type": "plot"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline).<br>If we wanted to solve the quadratic equation<br><br>\\[<br>      a\\cdot x^2 + b\\cdot x + c = 0      <br>\\]then you would have to look up the solution formula, <br><br>\\[<br>      x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}      <br>\\]<br><br>",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "This is a text box with some LaTeX code",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 1,
+        "type": "text"
+    }
+]
+}
