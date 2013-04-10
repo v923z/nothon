@@ -23,6 +23,7 @@ from pylab import *
 sys.path.insert(0, './python')
 import resource
 from code_handling import *
+from fileutils import *
 
 nothon_resource = resource.NothonResource()
 
@@ -45,30 +46,6 @@ render = web.template.render('templates/')
 web.template.Template.globals['safe_content'] = safe_content
 web.template.Template.globals['safe_props'] = safe_props
 app = web.application(urls, globals())
-
-def dir_tree(dir):
-	tree = []
-	for item in os.listdir(dir):
-		path = os.path.join(dir, item)
-		if os.path.isdir(path):
-			subtree = dir_tree(path)
-			if len(subtree) > 0:
-				tree.append((item,subtree))
-		elif item.endswith('.note'):
-			tree.append(item)
-	tree.sort()
-	return tree
-
-def dir_html(tree):
-	tree_string = '<ul>'
-	for n in tree:
-		if isinstance(n,tuple):
-			tree_string += '<li id="%s" class="folder">%s\n'%(n[0], n[0])
-			tree_string += dir_html(n[1])
-		else:
-			tree_string += '<li id="%s"><a href="?name=%s">%s</a>\n'%(n, n, n)
-
-	return tree_string + '</ul>\n'
 
 def update_js():
 	list_of_files = [file.split('.')[0] for file in os.listdir('templates/') if file.endswith('_html.html')]
@@ -378,7 +355,7 @@ class Index(object):
 	
 	def GET(self):
 		link = web.input(name='test.note')
-		aside = {"tree" : dir_html(dir_tree('.'))}
+		aside = {"tree" : dir_html(dir_tree('.'), nothon_resource.dirlisting_style)}
 		if link.name == '__timeline':
 			return 	render.timeline(link.name, aside, make_timeline())
 		elif link.name == '__toc':
