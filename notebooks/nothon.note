@@ -2,9 +2,51 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Wed Apr 10 2013 21:28:11 GMT+0200 (CEST)",
+"date" : "Wed Apr 10 2013 22:10:16 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
+    {
+        "content": {
+            "text_body": {
+                "content": "The most recent version of the source code resides at https://github.com/v923z/nothon<br><br>After starting nothon.py, the notebook can be accessed at address <br><br>http://127.0.0.1:8080/?name=somenotebook.note<br><br>If the notebook exists (this should be a JSON file), then its content will be rendered in the browser. <br>If it doesn't exist, then a new notebook with that name will be created. When saving this notebook, its <br>content will be written to disc under the name somenotebook.note. <br><br>Once in the browser, a new div can be added by clicking on the appropriate label under the + sign on the <br>right hand side. The active div's parent (always indicated by a thick right-hand-side border) can be <br>removed by clicking on remove. This operation moves the divide to the trash, which is part of the document, <br>but is hidden. (The trash can be made visible by clicking on the trashbin icon on the lower right corner.) <br>By clicking on recover, either the active block of the trashbin, or if that does not exist, then the last <br>block in the trash is restored to the visible part of the document, and is inserted as the last divide. <br>Blocks of the document can be moved up or down by clicking on the up or down arrow on the right hand side. <br>",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Beginning with nothon<span id=\"marker_5116815878351775\"></span>",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 7,
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "Headers in text, code, and head blocks are evaluated by pressing `Enter`. This moves the cursor to the body of a text header, or send a request to the server to execute and return the output of the corresponding handler function. <br><br>Units can be \"executed\" by pressing `Cntr+Enter`. This will render mathematical formulae in a text block, or execute a plot. If `Shift+Enter` is pressed, a new block of the same type is also inserted into the notebook.",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Usage in general terms",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 8,
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "The visual appearance of a notebook can be influenced by changing the appropriate parameters in the cascaded style sheet. These modifications do not change the behaviour of the server or the client. <br><br>Several aspects of the behaviour of the server can be customised in a resource file. (In future versions, this will be extended to the client, too.) By default, only png files are created, when the user plots in the notebook. By changing the value of the variable self.plot_pdf_output to True, the plotting backend will generate pdf output, too. This output can later be included in latex files. <br><br>The ordering of the directory tree can be customised. By default, the server sends the tree ordered linux style, i.e., in each folder, the files are listed first, and then the folders. By setting the variable self.dirlisting_style to \"windows\", folders will be shown first, and then files.<br><br>When working with code (see below), it might be useful to include only a function or a segment of a code file. This can be done by defining a start and end tag in the source code, and supplying that to the code handler. In order for the code highlighter to know what amounts to the beginning/ending of a code segment, the tag is prepended and appended with a beginning/closing string. This can be defined in the variable self.code_delimiter. E.g., if self.code_delimiter = ('*-', '-*'), then the code should be enclosed between the tags <br><br>&nbsp;&nbsp;&nbsp; *- some_tag<br>&nbsp;&nbsp;&nbsp; .... code ....<br>&nbsp;&nbsp; some_tag -*<br><br>The user can define arbitrary tag combination. <br>",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Customisation",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 9,
+        "type": "text"
+    },
     {
         "content": {
             "text_body": {
@@ -186,7 +228,7 @@
     {
         "content": {
             "text_body": {
-                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline).<br>If we wanted to solve the quadratic equation<br><br>\\[<br>      a\\cdot x^2 + b\\cdot x + c = 0      <br>\\]then you would have to look up the solution formula, <br><br>\\[<br>      x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}      <br>\\]<br>Some markup can be added to text. <b>Cntr-I</b> is going to make the text <i>italic</i>, <b>Cntr-B</b> turns it <b>boldface</b>,<b> Cntr-O</b> adds <span style=\"background-color: rgb(255, 255, 0);\">highlighting</span>.<br>",
+                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline).<br>If we wanted to solve the quadratic equation<br><br>\\[<br>      a\\cdot x^2 + b\\cdot x + c = 0      <br>\\]then you would have to look up the solution formula, <br><br>\\[<br>      x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}      <br>\\]<br>Some markup can be added to text. <b>Cntr-I</b> is going to make the text <i>italic</i>, <b>Cntr-B</b> turns it <b>boldface</b>,<b> Cntr-O</b> adds <span style=\"background-color: rgb(255, 255, 0);\">highlighting</span>, while <b>Cntr-U</b> will <u>underline</u> the text.<br><br>Notebooks can be converted to pdf via LaTeX by calling python/latex.py with the notebook file as the single argument. Customisation of the latex file should be done through the templates in templates/. If pdf output is needed, self.plot_pdf_output has to be set to True in the resource file.<br>",
                 "props": "searchable;"
             },
             "text_header": {
