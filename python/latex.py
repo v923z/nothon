@@ -9,7 +9,8 @@ from pygments.formatters import LatexFormatter
 from code_handling import *
 
 def latexify(text):
-	return text.replace('_', '\_').replace('#', '\#').replace('&', '\&{}').replace('%', '\%').replace('<br>', '\n\\\\ ')
+	text.replace('&nbsp;', '\quad').replace('_', '\_').replace('#', '\#').replace('&amp;', '\&{}')
+	return text.replace('&lt;', '<').replace('&gt;', '>').replace('%', '\%').replace('<br>', '\n\\\\ ')
 	
 class Latex(object):
 	
