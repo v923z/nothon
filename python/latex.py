@@ -1,5 +1,6 @@
 import simplejson
 import os
+import sys
 import code_handling
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
@@ -21,6 +22,7 @@ class Latex(object):
 
 		with open(filename, 'r') as fin:
 			data = simplejson.load(fin)
+			
 		self.content = data["notebook"]
 		self.date = data["date"]
 		self.title = latexify(data['title'].replace('<br>', '\n'))
@@ -63,15 +65,30 @@ def latex_head(dictionary, template):
 	return text
 
 def latex_text(dictionary, template):
+	# TODO: we should latexify only those segments of the text that are outside a LaTeX environment!
 	text = template['text']
-	text = text.replace('~text.header', latexify(dictionary['content']['text_header']['content']))
-	text = text.replace('~text.body', latexify(dictionary['content']['text_body']['content']))
+	header = replace_html_markups(latexify(dictionary['content']['text_header']['content']))
+	body = replace_html_markups(latexify(dictionary['content']['text_body']['content']))
+	text = text.replace('~text.header', header)
+	text = text.replace('~text.body', body)
+	return text
+
+def replace_html_markups(text):
+	text.replace('<b>', '\textbf{').replace('</b>', '}')
+	text.replace('<i>', '\textit{').replace('</i>', '}')
+	# TODO: we should be able to get the color from the span, and insert it, in case the user used something else
+	text.replace('<span style=\"background-color: rgb(255, 255, 0);\">', '\colorbox{yellor}{').replace('</span>', '}')
 	return text
 
 if __name__=="__main__":
-	fn = Latex('test12.note')
+	if not os.path.exists(sys.argv[1]):
+		print 'Input file %s does not exist!'%(sys.argv[1])
+		sys.exit()
+		
+	fn = Latex(sys.argv[1])		 
 	fn.parse_note();
 	formatter = LatexFormatter()
 	defs = formatter.get_style_defs()
-	print fn.template['article'].replace('~article.title', fn.title).replace('~article.content', str(fn.note)).replace('~article.defs', str(defs)).replace('~article.date', str(fn.date))
-	#print fn.note
+	out = fn.template['article'].replace('~article.title', fn.title).replace('~article.content', str(fn.note)).replace('~article.defs', str(defs)).replace('~article.date', str(fn.date))
+	with open(sys.argv[1].split('.')[0] + '.tex', "w") as fout:
+		fout.write(out)

@@ -2,7 +2,7 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Wed Apr 10 2013 21:24:03 GMT+0200 (CEST)",
+"date" : "Wed Apr 10 2013 21:28:11 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
     {
@@ -186,7 +186,7 @@
     {
         "content": {
             "text_body": {
-                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline).<br>If we wanted to solve the quadratic equation<br><br>\\[<br>      a\\cdot x^2 + b\\cdot x + c = 0      <br>\\]then you would have to look up the solution formula, <br><br>\\[<br>      x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}      <br>\\]<br><br>",
+                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline).<br>If we wanted to solve the quadratic equation<br><br>\\[<br>      a\\cdot x^2 + b\\cdot x + c = 0      <br>\\]then you would have to look up the solution formula, <br><br>\\[<br>      x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}      <br>\\]<br>Some markup can be added to text. <b>Cntr-I</b> is going to make the text <i>italic</i>, <b>Cntr-B</b> turns it <b>boldface</b>,<b> Cntr-O</b> adds <span style=\"background-color: rgb(255, 255, 0);\">highlighting</span>.<br>",
                 "props": "searchable;"
             },
             "text_header": {
