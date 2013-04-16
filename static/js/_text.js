@@ -39,6 +39,7 @@ function text_keypress(event) {
 		return false
 	} else if(event.which === 13) { // Enter without modifier
 		var id = get_id_marker();
+		// Check, whether the call came from the header!!!
 		insert_node_at_caret(marker_from_id(id));
 		var elem = document.getElementById(id).parentNode
 		goto_marker(id)

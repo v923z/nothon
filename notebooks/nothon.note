@@ -2,13 +2,13 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Wed Apr 10 2013 22:10:16 GMT+0200 (CEST)",
+"date" : "Sat Apr 13 2013 09:13:22 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
     {
         "content": {
             "text_body": {
-                "content": "The most recent version of the source code resides at https://github.com/v923z/nothon<br><br>After starting nothon.py, the notebook can be accessed at address <br><br>http://127.0.0.1:8080/?name=somenotebook.note<br><br>If the notebook exists (this should be a JSON file), then its content will be rendered in the browser. <br>If it doesn't exist, then a new notebook with that name will be created. When saving this notebook, its <br>content will be written to disc under the name somenotebook.note. <br><br>Once in the browser, a new div can be added by clicking on the appropriate label under the + sign on the <br>right hand side. The active div's parent (always indicated by a thick right-hand-side border) can be <br>removed by clicking on remove. This operation moves the divide to the trash, which is part of the document, <br>but is hidden. (The trash can be made visible by clicking on the trashbin icon on the lower right corner.) <br>By clicking on recover, either the active block of the trashbin, or if that does not exist, then the last <br>block in the trash is restored to the visible part of the document, and is inserted as the last divide. <br>Blocks of the document can be moved up or down by clicking on the up or down arrow on the right hand side. <br>",
+                "content": "The most recent version of the source code resides at https://github.com/v923z/nothon<br><br>After starting nothon.py, the notebook can be accessed at address <br><br>http://127.0.0.1:8080/?name=somenotebook.note<br><br>If the notebook exists (this should be a JSON file), then its content will be rendered in the browser. If it doesn't exist, then a new notebook with that name will be created. When saving this notebook, its content will be written to disc under the name somenotebook.note. <br><br>Once in the browser, a new div can be added by clicking on the appropriate label under the + sign on the right hand side. The active div's parent (always indicated by a thick right-hand-side border) can be removed by clicking on remove. This operation moves the divide to the trash, which is part of the document, but is hidden. (The trash can be made visible by clicking on the trashbin icon on the lower right corner.) By clicking on recover, either the active block of the trashbin, or if that does not exist, then the last block in the trash is restored to the visible part of the document, and is inserted as the last divide. Blocks of the document can be moved up or down by clicking on the up or down arrow on the right hand side. <br>",
                 "props": "searchable;"
             },
             "text_header": {
@@ -228,7 +228,35 @@
     {
         "content": {
             "text_body": {
-                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline).<br>If we wanted to solve the quadratic equation<br><br>\\[<br>      a\\cdot x^2 + b\\cdot x + c = 0      <br>\\]then you would have to look up the solution formula, <br><br>\\[<br>      x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}      <br>\\]<br>Some markup can be added to text. <b>Cntr-I</b> is going to make the text <i>italic</i>, <b>Cntr-B</b> turns it <b>boldface</b>,<b> Cntr-O</b> adds <span style=\"background-color: rgb(255, 255, 0);\">highlighting</span>, while <b>Cntr-U</b> will <u>underline</u> the text.<br><br>Notebooks can be converted to pdf via LaTeX by calling python/latex.py with the notebook file as the single argument. Customisation of the latex file should be done through the templates in templates/. If pdf output is needed, self.plot_pdf_output has to be set to True in the resource file.<br>",
+                "content": "",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 10,
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 11,
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline).<br>If we wanted to solve the quadratic equation<br>\\[<br>             a\\cdot x^2 + b\\cdot x + c = 0             <br>\\]then you would have to look up the solution formula, <br>\\[<br>             x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}             <br>\\]<br>Some markup can be added to text. <b>Cntr-I</b> is going to make the text <i>italic</i>, <b>Cntr-B</b> turns it <b>boldface</b>,<b> Cntr-O</b> adds <span style=\"background-color: rgb(255, 255, 0);\">highlighting</span>, while <b>Cntr-U</b> will <u>underline</u> the text.<br><br>Notebooks can be converted to pdf via LaTeX by calling python/latex.py with the notebook file as the single argument. Customisation of the latex file should be done through the templates in templates/. If pdf output is needed, self.plot_pdf_output has to be set to True in the resource file.<br><br>\\[<br>     \\begin{eqnarray} a &=& 123 \\\\ b &=& 122 \\end{eqnarray}     <br>\\]<br>",
                 "props": "searchable;"
             },
             "text_header": {
