@@ -15,7 +15,7 @@ def shuffle_dir(dirlist):
 	for n in dirlist:
 		if isinstance(n, tuple): break
 		i += 1    
-	return dirlist[i:] + dirlist[0:i]
+	return dirlist[i:] + dirlist[:i]
 
 def dir_tree(dir):
 	tree = []
