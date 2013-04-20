@@ -12,7 +12,7 @@
                 "props": "searchable;"
             },
             "text_header": {
-                "content": "Beginning with nothon<span id=\"marker_5116815878351775\"></span>",
+                "content": "Beginning with nothon",
                 "props": "searchable;intoc;"
             }
         },
@@ -214,7 +214,7 @@
                 "props": "searchable;"
             },
             "plot_file": {
-                "content": "notebooks/nothon.note_plot_1.png",
+                "content": "nothon.note_plot_1.png",
                 "props": ""
             },
             "plot_header": {

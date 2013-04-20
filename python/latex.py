@@ -9,9 +9,47 @@ from pygments.formatters import LatexFormatter
 from code_handling import *
 
 def latexify(text):
-	text.replace('&nbsp;', '\quad').replace('_', '\_').replace('#', '\#').replace('&amp;', '\&{}')
+	text = text.replace('&nbsp;', '\quad').replace('_', '\_').replace('#', '\#').replace('&amp;', '\&{}')
 	return text.replace('&lt;', '<').replace('&gt;', '>').replace('%', '\%').replace('<br>', '\n\\\\ ')
-	
+
+def text_cell_latex(text):
+	out = []
+	text = text.replace('<br>', '\n')
+	while len(text) > 0:
+		round_bracket = text.find('\\(')
+		square_bracket = text.find('\\[')
+		if square_bracket == -1 and round_bracket == -1:
+			out.append({'content' : text, 'type' : 'text'})
+			text = ''
+		elif round_bracket > -1:
+			if round_bracket < square_bracket or square_bracket == -1:
+				out.append({'content' : text[:round_bracket], 'type' : 'text'})                
+				second = text.find('\\)')
+				out.append({'content' : text[round_bracket+2:second].strip(), 'type' : 'inline_math'})
+				text = text[second+2:]
+		elif square_bracket > -1:
+			if round_bracket > square_bracket or round_bracket == -1:
+				out.append({'content' : text[:square_bracket], 'type' : 'text'})
+				second = text.find('\\]')
+				out.append({'content' : text[square_bracket+2:second].strip(), 'type' : 'display_math'})
+				text = text[second+2:]
+	return out
+
+def latex_dict_to_string(dic):
+	out_string = ''
+	for elem in dic:
+		if elem['type'] == 'text':
+			out_string += latexify(elem['content'])
+		if elem['type'] == 'inline_math':
+			out_string += '$' + elem['content'] + '$'
+		if elem['type'] == 'display_math':
+			if elem['content'].startswith('\\begin{'):
+				out_string += elem['content']
+			else:
+				out_string += '\n\[\n' + elem['content'] + '\n\]\n'
+				
+	return out_string
+    
 class Latex(object):
 	
 	def __init__(self, filename):
@@ -68,19 +106,24 @@ def latex_head(dictionary, template):
 def latex_text(dictionary, template):
 	# TODO: we should latexify only those segments of the text that are outside a LaTeX environment!
 	text = template['text']
-	header = replace_html_markups(latexify(dictionary['content']['text_header']['content']))
-	body = replace_html_markups(latexify(dictionary['content']['text_body']['content']))
+	body = text_cell_latex(dictionary['content']['text_body']['content'])
+	body = replace_html_markups(latex_dict_to_string(body))
+	
+	header = text_cell_latex(dictionary['content']['text_header']['content'])
+	header = replace_html_markups(latex_dict_to_string(header))
+	
+	#header = replace_html_markups(latexify(dictionary['content']['text_header']['content']))
+	#body = replace_html_markups(latexify(dictionary['content']['text_body']['content']))
 	text = text.replace('~text.header', header)
 	text = text.replace('~text.body', body)
 	return text
 
 def replace_html_markups(text):
-	text.replace('<b>', '\textbf{').replace('</b>', '}')
-	text.replace('<i>', '\textit{').replace('</i>', '}')
-	text.replace('<u>', '\underline{').replace('</u>', '}')
+	text = text.replace('<b>', '\\textbf{').replace('</b>', '}')
+	text = text.replace('<i>', '\\textit{').replace('</i>', '}')
+	text = text.replace('<u>', '\\underline{').replace('</u>', '}')
 	# TODO: we should be able to get the color from the span, and insert it, in case the user used something else
-	text.replace('<span style=\"background-color: rgb(255, 255, 0);\">', '\colorbox{yellor}{').replace('</span>', '}')
-	return text
+	return text.replace('<span style=\"background-color: rgb(255, 255, 0);\">', '\\colorbox{yellow}{').replace('</span>', '}')
 
 if __name__=="__main__":
 	if not os.path.exists(sys.argv[1]):
