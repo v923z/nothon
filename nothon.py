@@ -65,13 +65,11 @@ def text_update_dict(dictionary):
 def head_update_dict(dictionary):
 	return dictionary
 
-def parse_note(fn):	
+def parse_note(fn):
 	note = {}
 	note_str = ''
-	with open(fn, 'r') as fin:
-		data = simplejson.load(fin)
 		
-	content = data['notebook']
+	content = get_notebook_content(fn)
 	note['directory'] = {'content' : data['directory']}
 	note['title'] = {'content' : data['title']}
 	
@@ -114,7 +112,6 @@ def head_handler(message):
 
 def plot_handler(message):
 	code = message['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
-	print code
 	exit_status = False
 	pwd = os.getcwd()
 	print message['directory']

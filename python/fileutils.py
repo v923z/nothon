@@ -1,5 +1,10 @@
 import os
 
+def get_notebook_content(fn):
+	with open(fn, 'r') as fin:
+		data = simplejson.load(fin)
+	return data['notebook']
+
 def shuffle_dir(dirlist):
 	if not isinstance(dirlist[-1], tuple): return dirlist
 	i = 0
@@ -35,12 +40,9 @@ def dir_html(tree, dirlisting_style):
 
 
 def extract_headers(fn):
-	#output = "<div class='timeline_entry'>"
 	output = ""
-	with open(fn, 'r') as fin:
-		data = simplejson.load(fin)
 			
-	content = data['notebook']
+	content = get_notebook_content(fn)
 	for element in content:
 		print element
 		for cell_name in element['content']:
@@ -49,7 +51,6 @@ def extract_headers(fn):
 			if 'props' in cell and 'intoc' in cell['props'].split(';'):
 				output += '<p>' + cell['content'] + '</p>'
 			
-	#return output + '</div>'
 	return output
 
 def is_year(year):
