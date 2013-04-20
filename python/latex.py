@@ -104,16 +104,13 @@ def latex_head(dictionary, template):
 	return text
 
 def latex_text(dictionary, template):
-	# TODO: we should latexify only those segments of the text that are outside a LaTeX environment!
 	text = template['text']
 	body = text_cell_latex(dictionary['content']['text_body']['content'])
 	body = replace_html_markups(latex_dict_to_string(body))
 	
 	header = text_cell_latex(dictionary['content']['text_header']['content'])
 	header = replace_html_markups(latex_dict_to_string(header))
-	
-	#header = replace_html_markups(latexify(dictionary['content']['text_header']['content']))
-	#body = replace_html_markups(latexify(dictionary['content']['text_body']['content']))
+
 	text = text.replace('~text.header', header)
 	text = text.replace('~text.body', body)
 	return text
