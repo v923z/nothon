@@ -228,34 +228,6 @@
     {
         "content": {
             "text_body": {
-                "content": "",
-                "props": "searchable;"
-            },
-            "text_header": {
-                "content": "",
-                "props": "searchable;intoc;"
-            }
-        },
-        "id": 10,
-        "type": "text"
-    },
-    {
-        "content": {
-            "text_body": {
-                "content": "",
-                "props": "searchable;"
-            },
-            "text_header": {
-                "content": "",
-                "props": "searchable;intoc;"
-            }
-        },
-        "id": 11,
-        "type": "text"
-    },
-    {
-        "content": {
-            "text_body": {
                 "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline).<br>If we wanted to solve the quadratic equation<br>\\[<br>             a\\cdot x^2 + b\\cdot x + c = 0             <br>\\]then you would have to look up the solution formula, <br>\\[<br>             x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}             <br>\\]<br>Some markup can be added to text. <b>Cntr-I</b> is going to make the text <i>italic</i>, <b>Cntr-B</b> turns it <b>boldface</b>,<b> Cntr-O</b> adds <span style=\"background-color: rgb(255, 255, 0);\">highlighting</span>, while <b>Cntr-U</b> will <u>underline</u> the text.<br><br>Notebooks can be converted to pdf via LaTeX by calling python/latex.py with the notebook file as the single argument. Customisation of the latex file should be done through the templates in templates/. If pdf output is needed, self.plot_pdf_output has to be set to True in the resource file.<br><br>\\[<br>     \\begin{eqnarray} a &=& 123 \\\\ b &=& 122 \\end{eqnarray}     <br>\\]<br>",
                 "props": "searchable;"
             },
