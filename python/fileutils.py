@@ -1,9 +1,13 @@
 import os
+import simplejson
+import calendar
+import datetime
+import time
 
-def get_notebook_content(fn):
+def get_notebook(fn):
 	with open(fn, 'r') as fin:
 		data = simplejson.load(fin)
-	return data['notebook']
+	return data
 
 def shuffle_dir(dirlist):
 	if not isinstance(dirlist[-1], tuple): return dirlist
@@ -41,8 +45,8 @@ def dir_html(tree, dirlisting_style):
 
 def extract_headers(fn):
 	output = ""
-			
-	content = get_notebook_content(fn)
+	data = get_notebook(fn)
+	content = data['notebook']
 	for element in content:
 		print element
 		for cell_name in element['content']:

@@ -7,7 +7,6 @@ import simplejson
 import traceback
 import tempfile
 import time
-import calendar
 import sys
 
 from pygments import highlight
@@ -69,7 +68,8 @@ def parse_note(fn):
 	note = {}
 	note_str = ''
 		
-	content = get_notebook_content(fn)
+	data = get_notebook(fn)
+	content = data['notebook']
 	note['directory'] = {'content' : data['directory']}
 	note['title'] = {'content' : data['title']}
 	
