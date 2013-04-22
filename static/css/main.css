@@ -144,7 +144,7 @@ article {
 	min-height:			20px;
 }
 
-.plot_main, .head_main, .code_main, .text_main {
+.plot_main, .head_main, .code_main, .text_main, .paragraph_main {
 	background-color: rgba(0, 0, 0, 0.05);
 	margin-top: 8px;
 	margin-left: 5px;
@@ -265,7 +265,7 @@ article {
 	width: 				95%;
 }
 
-.text_header, .text_body {
+.text_header, .text_body, .paragraph_body {
 	font-size: 12pt;
 	color: #008800;
 	border-radius: 2px;
@@ -278,7 +278,7 @@ article {
 	font-weight: 	bold;
 }
 
-.text_body {
+.text_body, .paragraph_body {
 	background: #eeffee;
 	margin-top: 1px;
 	min-height:  1.2em;
@@ -292,6 +292,11 @@ article {
 }
 
 .text_body:focus {
+	border: solid green;
+	border-width: 0 10px 0 0;	
+}
+
+.paragraph_body:focus {
 	border: solid green;
 	border-width: 0 10px 0 0;	
 }

@@ -1,4 +1,5 @@
 import os
+import web
 
 def update_js():
 	list_of_files = [file.split('.')[0] for file in os.listdir('templates/') if file.endswith('_html.html')]

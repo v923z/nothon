@@ -64,6 +64,9 @@ def text_update_dict(dictionary):
 def head_update_dict(dictionary):
 	return dictionary
 
+def paragraph_update_dict(dictionary):
+	return dictionary
+
 def parse_note(fn):
 	note = {}
 	note_str = ''
@@ -174,6 +177,9 @@ def text_handler(message):
 	else:
 		return simplejson.dumps({'target' : message['id'], 'success' : 'success', 'result' : result.split('$$')[1]})
 
+def paragraph_handler(message):
+	return text_handler(message)
+
 def save_handler(message):
 	print message
 	" Writes the stipped document content to disc "
@@ -240,7 +246,7 @@ class Index(object):
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['command'] in ('plot', 'head', 'code', 'text', 'save', 'savehtml', 'docmain_render'):
+		if message['command'] in ('plot', 'head', 'code', 'text', 'paragraph', 'save', 'savehtml', 'docmain_render'):
 			exec('result = %s_handler(message)'%(message['command']))
 			return result
 			
