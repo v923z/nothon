@@ -122,6 +122,13 @@ def latex_text(dictionary, template):
 	text = text.replace('~text.body', body)
 	return text
 
+def latex_paragraph(dictionary, template):
+	text = template['paragraph']
+	body = text_cell_latex(dictionary['content']['paragraph_body']['content'])
+	body = replace_html_markups(latex_dict_to_string(body))
+	text = text.replace('~paragraph.body', body)
+	return text
+
 if __name__=="__main__":
 	if not os.path.exists(sys.argv[1]):
 		print 'Input file %s does not exist!'%(sys.argv[1])
