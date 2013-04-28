@@ -26,7 +26,6 @@ function text_onclick(event) {
 
 function text_keypress(event) {
 	console.log(event.which)
-	console.log(event.target.innerHTML)
 	if(event.which === 13 && event.target.id.indexOf('_header_') > -1) {
 		active_div = document.getElementById(event.target.id.replace('_header_', '_body_'))
 		active_div.focus()
