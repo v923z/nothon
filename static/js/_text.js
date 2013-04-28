@@ -26,7 +26,7 @@ function text_onclick(event) {
 
 function text_keypress(event) {
 	console.log(event.which)
-
+	console.log(event.target.innerHTML)
 	if(event.which === 13 && event.target.id.indexOf('_header_') > -1) {
 		active_div = document.getElementById(event.target.id.replace('_header_', '_body_'))
 		active_div.focus()
@@ -66,7 +66,11 @@ function text_keypress(event) {
 	} else if(event.which === 109 && event.ctrlKey && event.altKey) {	// M
 		insert_math('display', event.target)
 		return false
-	} else if(event.which === 98 && event.ctrlKey) {				// b
+	} else if(event.which === 97 && event.ctrlKey) {				// a
+		insert_note(event.target)
+		return false
+	}
+	else if(event.which === 98 && event.ctrlKey) {				// b
 		document.execCommand("bold", false, false)
 		return false
 	} else if(event.which === 105 && event.ctrlKey) {				// i
@@ -357,4 +361,26 @@ function insert_time(target) {
     var t = document.getElementById(target.id)
 	t.innerHTML = t.innerHTML.replace('_date_inserted_', '<span id="_date_marker_"></span>')
 	goto_marker("_date_marker_")
+}
+
+function insert_note(target) {
+    var sel, range
+    var selectedText
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            selectedText = range.toString();
+            range.deleteContents();
+			range.insertNode(document.createTextNode('_note_open_inserted_' + selectedText + '_note_close_inserted_'))
+        }
+    }
+    else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange()
+        selectedText = document.selection.createRange().text + ""
+		range.text = '_note_open_inserted_' + selectedText + '_note_close_inserted_'
+    }
+    var t = document.getElementById(target.id)
+	t.innerHTML = t.innerHTML.replace('_note_open_inserted_', '<span class="note"><button class="note_button" onclick="note_toggle(this);">Note</button>').replace('_note_close_inserted_', '<span><span id="_note_marker_"></span></span></span> ')
+	goto_marker("_note_marker_")
 }

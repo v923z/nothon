@@ -327,3 +327,7 @@ document.addEventListener("keydown", function(e) {
   }
   
 }, false)
+
+function note_toggle(id) {
+	$(id).siblings().toggle()
+}

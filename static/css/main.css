@@ -301,6 +301,17 @@ article {
 	border-width: 0 10px 0 0;	
 }
 
+.note {
+	background:	#eeee55;
+}
+
+.note_button {
+	background:		#eeee88;
+	font-weight: 	bold;
+	padding:		2px;
+	border: 		solid #003366 0px;
+}
+
 .TOC {
 	background: #eeffee;	
 	margin-top: 8px;
