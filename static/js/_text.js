@@ -383,3 +383,7 @@ function insert_note(target) {
 	t.innerHTML = t.innerHTML.replace('_note_open_inserted_', '<span class="note"><button class="note_button" onclick="note_toggle(this);">Note</button>').replace('_note_close_inserted_', '<span><span id="_note_marker_"></span></span></span> ')
 	goto_marker("_note_marker_")
 }
+
+function note_toggle(id) {
+	$(id).siblings().toggle()
+}
