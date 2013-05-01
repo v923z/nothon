@@ -325,7 +325,6 @@ function strip_mathjax2(target) {
 			else $(this).replaceWith('<span class="nothon_math">\\(' + (this).innerHTML + '\\)</span>')
 		}
 	})
-	console.log(target.innerHTML)
 }
 
 function insert_math(mode, target) {
