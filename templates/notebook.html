@@ -9,8 +9,10 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 <link rel="stylesheet" href="/static/css/jquery.datepick.css" type="text/css" /> 
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+   MathJax.Hub.Config({
+    styles: { ".MathJax": { color: "#0000ee", "background-color": "#bbbbee" } }
+  });
 </script>
-
 <script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="/static/js/jquery.datepick.js"></script>
 <script type="text/javascript" src="/static/js/jquery-ui.custom.js"></script>
