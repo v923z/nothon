@@ -34,6 +34,7 @@ function text_keypress(event) {
 		create_and_insert('text_main')
 		return false
 	} else if(event.which === 13 && event.ctrlKey) {				// Enter
+		$(event.target).find('.nothon_math').each( function() { $(this).contents().unwrap() })
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub, event.target.id]);
 		return false
 	} else if(event.which === 13) { // Enter without modifier
@@ -42,7 +43,7 @@ function text_keypress(event) {
 		insert_node_at_caret(marker_from_id(id));
 		var elem = document.getElementById(id).parentNode
 		goto_marker(id)
-				console.log('ENTER', elem.tagName, elem.firstChild.data)
+		console.log('ENTER', elem.tagName, elem.firstChild.data)
 		if(elem.tagName == 'LI' && elem.firstChild.data == undefined) {
 			console.log('enter pressed on empty list item')
 			
@@ -86,7 +87,8 @@ function text_keypress(event) {
 		return false
 	} else if(event.which === 108 && event.ctrlKey) {						// l
 		// retrieve raw text
-		event.target.innerHTML = strip_mathjax(event.target.innerHTML)
+		strip_mathjax2(event.target)
+		//event.target.innerHTML = strip_mathjax(event.target.innerHTML)
 		return false
 	} else if(event.which === 38) {			// &
 		// evaluate math expression 
@@ -311,6 +313,21 @@ function strip_mathjax(div_text) {
 	return div_text
 }
 
+function strip_mathjax2(target) {
+	// This works for immediate children only!
+	$(target).children('.MathJax_Preview').remove()
+	var jaxs = $(MathJax.Hub.getAllJax(target))
+	scripts = $(target).find('script')
+	$.each(jaxs, function() { (this).Remove() })
+	$.each(scripts, function() {
+		if((this).type.indexOf('math/tex') >= 0) {
+			if((this).type.indexOf('display') >= 0) $(this).replaceWith('<span class="nothon_math">\\[<br>' + (this).innerHTML + '<br>\\]<br></span>')
+			else $(this).replaceWith('<span class="nothon_math">\\(' + (this).innerHTML + '\\)</span>')
+		}
+	})
+	console.log(target.innerHTML)
+}
+
 function insert_math(mode, target) {
     var sel, range
     var selectedText
@@ -330,10 +347,10 @@ function insert_math(mode, target) {
     }
     var t = document.getElementById(target.id)
 	if (mode === 'inline') {
-		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '\\(').replace('_math_close_inserted_', '<span id="_math_marker_"></span>\\)')
+		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<span class="nothon_math">\\(').replace('_math_close_inserted_', '<span id="_math_marker_"></span></span>\\)')
 	}
 	if (mode === 'display') {
-		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<br>\\[<br>').replace('_math_close_inserted_', '<span id="_math_marker_"></span><br>\\]<br>')
+		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<br><span class="nothon_math">\\[<br>').replace('_math_close_inserted_', '<span id="_math_marker_"></span><br>\\]<br></span>')
 	}
 	goto_marker("_math_marker_")
 }

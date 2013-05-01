@@ -151,6 +151,7 @@ function block_content(elem) {
 				if(check_tag(nothon, 'save')) {
 					var sub_block = new Object()
 					sub_block['content'] = $(this).html()
+					sub_block['id'] = $(this).id
 					if($(this).is(':visible')) props.replace('collapsed;', '')
 					else props = add_tag(props, 'collapsed')
 					sub_block['props']= props
