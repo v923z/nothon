@@ -320,7 +320,7 @@ function strip_mathjax2(target) {
 	$.each(jaxs, function() { (this).Remove() })
 	$.each(scripts, function() {
 		if((this).type.indexOf('math/tex') >= 0) {
-			if((this).type.indexOf('display') >= 0) $(this).replaceWith('<span class="nothon_math">\\[<br>' + (this).innerHTML + '<br>\\]<br></span>')
+			if((this).type.indexOf('display') >= 0) $(this).replaceWith('<span class="nothon_math">\\[<br>' + $.trim((this).innerHTML) + '<br>\\]<br></span>')
 			else $(this).replaceWith('<span class="nothon_math">\\(' + (this).innerHTML + '\\)</span>')
 		}
 	})
