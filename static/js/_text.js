@@ -314,8 +314,7 @@ function strip_mathjax(div_text) {
 }
 
 function strip_mathjax2(target) {
-	// This works for immediate children only!
-	$(target).children('.MathJax_Preview').remove()
+	$(target).find('.MathJax_Preview').remove()
 	var jaxs = $(MathJax.Hub.getAllJax(target))
 	scripts = $(target).find('script')
 	$.each(jaxs, function() { (this).Remove() })
