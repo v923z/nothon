@@ -346,10 +346,10 @@ function insert_math(mode, target) {
     }
     var t = document.getElementById(target.id)
 	if (mode === 'inline') {
-		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<span class="nothon_math">\\(').replace('_math_close_inserted_', '<span id="_math_marker_"></span></span>\\)')
+		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<span class="nothon_math">\\(').replace('_math_close_inserted_', '<span id="_math_marker_"></span>\\)</span> ')
 	}
 	if (mode === 'display') {
-		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<br><span class="nothon_math">\\[<br>').replace('_math_close_inserted_', '<span id="_math_marker_"></span><br>\\]<br></span>')
+		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<br><span class="nothon_math">\\[<br>').replace('_math_close_inserted_', '<span id="_math_marker_"></span><br>\\]</span><br>')
 	}
 	goto_marker("_math_marker_")
 }
