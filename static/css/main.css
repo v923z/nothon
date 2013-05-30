@@ -98,15 +98,21 @@ article {
 }
 
 #top_menu {
-	position: fixed;
-	top: 0;
-	left:	20%;
-	float: right;
-	width: 80%;
+	position: 	fixed;
+	top: 		0;
+	left:		20%;
+	float: 		right;
+	width: 		80%;
 	background: #116688;
-	padding: 0 0;
-	height: 25px;
-	display: block;
+	padding: 	0 0;
+	height: 	25px;
+	display: 	block;
+}
+
+#doc_toplevel {
+	position:	fixed;
+	top:		25px;
+	width:		75%;
 }
 
 .head_container, .code_container, .text_container {
@@ -114,13 +120,13 @@ article {
 }
 
 #div_title {
-	font-size: 24pt;
-	background-color: #8899aa;
-	margin-top: 5px;
-	margin-left: 5px;
-	border-radius: 2px;
-	width: 80%;
-	text-align: center;
+	font-size: 			24pt;
+	background-color: 	#8899aa;
+	margin-top: 		0px;
+	margin-left: 		5px;
+	border-radius: 		2px;
+	width: 				80%;
+	text-align: 		center;
 }
 
 #dir_container {
@@ -147,11 +153,21 @@ article {
 #context_menu {
 	font-size: 			12pt;
 	position: 			absolute;
-	right:				5%;
-	width: 				10%;
-	min-height:			200px;
-	background:		 	#0000ff;
+	right:				4%;
+	top:				0px;
+	width: 				12%;
+	height:				100%;
+	background:		 	rgba(0, 0, 1, 0.2);
 }
+
+.context_menu_list {
+	list-style: 		none;
+}
+
+.context_menu_list li:hover {
+	background: 		#ffffff;
+}
+
 
 .plot_main, .head_main, .code_main, .text_main, .paragraph_main {
 	background-color: rgba(0, 0, 0, 0.05);
@@ -395,31 +411,32 @@ article {
 }
 
 #menucontainer-right {
-	position: fixed;
-	bottom: 50%;
-	right: 0;
+	position: 					fixed;
+	bottom: 					50%;
+	right:						0;
 }
 
 .menu {
-	border-bottom-left-radius: 10px;
-	border-top-left-radius: 10px;
-	color: #0a0a0a;
-	padding: 2px;
-	margin: 5px 0px 5px 5px;
-	background: #1c4f63;
+	border-bottom-left-radius: 	10px;
+	border-top-left-radius: 	10px;
+	color: 						#0a0a0a;
+	padding: 					2px;
+	margin: 					5px 0px 5px 5px;
+	background: 				#1c4f63;
+	width:						40px;
 }
 
 .menu:hover {
-	background: #ffffff;
+	background: 				#ffffff;
 }
 
 .menu ul {
-	background: #8899aa;
-	font-size: 24px;	
-	display: none;
-	position: absolute;
-	right: 70px;
-	top: 30px;
+	background: 				#8899aa;
+	font-size: 					24px;
+	display: 					none;
+	position: 					absolute;
+	right: 						30px;
+	top: 						30px;
 }
 
 .menu ul li {

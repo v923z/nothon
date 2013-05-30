@@ -39,11 +39,13 @@ $for f in create_funcs + handler_funcs:
 </aside>
 <article id='article'>
 <div class="aside_switch" id="aside_switch" onclick="toggle_document_tree()"><<</div>
-<div class="trash_image" id="trash_image" onclick="toggle_show_hide(event);">
-</div>
+<div class="trash_image" id="trash_image" onclick="toggle_show_hide(event);"></div>
+<!--
+<div id="doc_toplevel">
+-->
 <div id="menucontainer-right">
-<div class="menu" onclick="move('up');"><img src="/static/css/up-arrow.png"  width="40%"></div>
-<div id="menu" class="menu"><img src="/static/css/add.png" width="40%">
+<div class="menu" onclick="move('up');"><img src="/static/css/up-arrow.png"  width="60%"></div>
+<div id="menu" class="menu"><img src="/static/css/add.png" width="60%">
 <ul>
 $for f in create_funcs:
 	$ value = "%s"%(f.split("_")[0])
@@ -55,7 +57,7 @@ $for f in create_funcs:
 <li onclick="recover_block();">recover</li>
 </ul>
 </div>
-<div class="menu" onclick="move('down');"><img src="/static/css/down-arrow.png" width="40%"></div>
+<div class="menu" onclick="move('down');"><img src="/static/css/down-arrow.png" width="60%"></div>
 </div>
 <div id='context_menu'></div>
 <div id="div_title" contenteditable='true'>$:safe_content(content, "title")</div>
@@ -65,8 +67,11 @@ $for f in create_funcs:
 
 <div id="docmain">$:safe_content(content, "content")
 </div>
-<div id="trash" class="trash">
 </div>
+<div id="trash" class="trash">
+<!--
+</div>
+-->
 </article>
 </body>
 </html>

@@ -1,10 +1,46 @@
 function text_activate(id) {
 	active_div = document.getElementById('div_text_header_' + id)
 	active_div.focus()
+	text_context_menu()
+}
+
+function text_context_menu() {
+	var menu = '<ul class="context_menu_list">\
+		<li alt="insertUnorderedList" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Unordered list</li>\
+		<li alt="insertOrderedList" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Ordered list</li>\
+		<li alt="bold" onmousedown="return mouse_down(this, null);" onmouseup="return false;"><b>Bold</b></li>\
+		<li alt="italic" onmousedown="return mouse_down(this, null);" onmouseup="return false;"><i>Italic</i></li>\
+		<li alt="underline" onmousedown="return mouse_down(this, null);" onmouseup="return false;"><u>Underline</u></li>\
+		<li alt="strikeThrough" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Strikethrough</li>\
+		<li alt="indent" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Indent</li>\
+		<li alt="outdent" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Outdent</li>\
+		<li onmousedown="return insert_date();" onmouseup="return false;">Date</li>\
+		<li onmousedown="return insert_image();" onmouseup="return false;">Image</li>\
+		<li alt="insertHorizontalRule" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Line</li>\
+	</ul>'
+	$('#context_menu').html(menu)
+}
+
+function insert_image() {
+	document.execCommand('insertImage', false, './test.note_plot_4.png')
+	return false
+}
+
+function insert_date() {
+	var date = new Date()
+	document.execCommand('insertText', false, date.toString() + '\n')
+	return false	
+}
+
+function mouse_down(id, extraarg) {
+	var command = $(id).attr('alt')
+	document.execCommand(command, false, extraarg)
+	return false
 }
 
 function text_onclick(event) {
 	var elem = event.target
+	text_context_menu()
 	if(elem.id.indexOf('_main_') === -1) return
 	var text_body = document.getElementById(elem.id.replace('_main_', '_body_'))
 	var text_header = document.getElementById(elem.id.replace('_main_', '_header_'))
@@ -37,29 +73,6 @@ function text_keypress(event) {
 		$(event.target).find('.nothon_math').each( function() { $(this).contents().unwrap() })
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub, event.target.id]);
 		return false
-	} else if(event.which === 13) { // Enter without modifier
-		var id = get_id_marker();
-		// Check, whether the call came from the header!!!
-		insert_node_at_caret(marker_from_id(id));
-		var elem = document.getElementById(id).parentNode
-		goto_marker(id)
-		console.log('ENTER', elem.tagName, elem.firstChild.data)
-		if(elem.tagName == 'LI' && elem.firstChild.data == undefined) {
-			console.log('enter pressed on empty list item')
-			
-			// build node to be inserted
-			var id2 = get_id_marker();
-			var el = document.createElement("span");
-			el.id = id2;
-            
-            // insert node, set cursor, remove empty LI
-			elem.parentNode.parentNode.insertBefore(el, elem.parentNode.nextSibling); // works even if nextSibling is null
-			goto_marker(id2)
-			elem.parentNode.removeChild(elem)
-			return false;
-		} else {
-			return true
-		}
 	} else if(event.which === 109 && event.ctrlKey && !event.altKey) {				// m
 		insert_math('inline', event.target)
 		return false
@@ -87,8 +100,8 @@ function text_keypress(event) {
 		return false
 	} else if(event.which === 108 && event.ctrlKey) {						// l
 		// retrieve raw text
-		strip_mathjax2(event.target)
-		//event.target.innerHTML = strip_mathjax(event.target.innerHTML)
+		strip_mathjax(event.target)
+		//event.target.innerHTML = strip_mathjax2(event.target.innerHTML)
 		return false
 	} else if(event.which === 38) {			// &
 		// evaluate math expression 
@@ -100,9 +113,12 @@ function text_keypress(event) {
 	} else if(event.which === 49 && event.altKey) {				// 1
 		document.execCommand('insertOrderedList', false, false)
 		return false
-	} else if(event.which === 93) { // ]
+	} /*else if(event.which === 93) { // ]
 		return insert_if_linestarts('<input type="checkbox" />');
 	} else if(event.keyCode === 38) { // arrow key up
+		var ran = window.getSelection().getRangeAt(0)
+		console.log(window.getSelection().getRangeAt(0).startOffset)
+		console.log('compare: ' + ran.comparePoint(event.target, 0))
 		var id = get_id_marker();
 		insert_node_at_caret(marker_from_id(id));
 		var elem_child = document.getElementById(id)
@@ -144,7 +160,7 @@ function text_keypress(event) {
 		} else {
 			goto_marker(id)
 		}		
-	}
+	}*/
 	return true
 }
 
@@ -170,7 +186,7 @@ function text_handler(req) {
 }
 
 function text_sanitise(block) {
-	block.content.text_body.content = strip_mathjax(block.content.text_body.content)
+	block.content.text_body.content = strip_mathjax2(block.content.text_body.content)
 	block.content.text_header.content = block.content.text_header.content.replace('<br>', '')
 	return block
 }
@@ -270,7 +286,7 @@ function get_math_code(target) {
 	}
 }
 
-function strip_mathjax(div_text) {
+function strip_mathjax2(div_text) {
 	var offset, scr
 	var first = div_text.indexOf('<span class="MathJax_Preview">')
 	if(first > 0) {
@@ -290,12 +306,12 @@ function strip_mathjax(div_text) {
 			offset = '</script>'.length
 			div_text = div_text.slice(0, scr) + '<br>\\]' + div_text.slice(scr + offset, div_text.length)			
 		}
-		div_text = strip_mathjax(div_text)
+		div_text = strip_mathjax2(div_text)
 	}
 	return div_text
 }
 
-function strip_mathjax2(target) {
+function strip_mathjax(target) {
 	$(target).find('.MathJax_Preview').remove()
 	var jaxs = $(MathJax.Hub.getAllJax(target))
 	scripts = $(target).find('script')
@@ -333,30 +349,6 @@ function insert_math(mode, target) {
 		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<br><span class="nothon_math">\\[<br>').replace('_math_close_inserted_', '<span id="_math_marker_"></span><br>\\]</span><br>')
 	}
 	goto_marker("_math_marker_")
-}
-
-function insert_time(target) {
-	var date = new Date()
-	
-	var sel, range
-    var selectedText
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            selectedText = range.toString();
-            range.deleteContents();
-			range.insertNode(document.createTextNode(date.toString()) + '_date_inserted_')
-        }
-    }
-    else if (document.selection && document.selection.createRange) {
-        range = document.selection.createRange()
-        selectedText = document.selection.createRange().text + ""
-		range.text = date.toString() + '_date_inserted_'
-    }
-    var t = document.getElementById(target.id)
-	t.innerHTML = t.innerHTML.replace('_date_inserted_', '<span id="_date_marker_"></span>')
-	goto_marker("_date_marker_")
 }
 
 function insert_note(target) {
