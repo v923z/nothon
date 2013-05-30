@@ -1,9 +1,14 @@
 function paragraph_activate(id) {
 	active_div = document.getElementById('div_paragraph_body_' + id)
 	active_div.focus()
+	text_context_menu()
 }
 
-function text_onclick(event) {
+function paragraph_onclick(event) {
+}
+
+function paragraph_context_menu() {
+	text_context_menu()	
 }
 
 function paragraph_keypress(event) {

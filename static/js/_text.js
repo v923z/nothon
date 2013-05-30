@@ -81,6 +81,7 @@ function text_keypress(event) {
 		return false
 	} else if(event.which === 97 && event.ctrlKey) {				// a
 		insert_note(event.target)
+		//insert_note2()
 		return false
 	}
 	else if(event.which === 98 && event.ctrlKey) {				// b
@@ -373,6 +374,12 @@ function insert_note(target) {
 	goto_marker("_note_marker_")
 }
 
+function insert_note2() {
+	document.execCommand('insertHTML', '<span class="note"><button class="note_button" onclick="note_toggle(this);">Note</button><span><span id="_note_marker_"></span></span></span> ')
+	goto_marker("_note_marker_")
+}
+
 function note_toggle(id) {
 	$(id).siblings().toggle()
+	// We might have to activete the parent element here!
 }
