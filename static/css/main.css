@@ -144,6 +144,15 @@ article {
 	min-height:			20px;
 }
 
+#context_menu {
+	font-size: 			12pt;
+	position: 			absolute;
+	right:				5%;
+	width: 				10%;
+	min-height:			200px;
+	background:		 	#0000ff;
+}
+
 .plot_main, .head_main, .code_main, .text_main, .paragraph_main {
 	background-color: rgba(0, 0, 0, 0.05);
 	margin-top: 8px;
@@ -331,47 +340,47 @@ article {
 }
 
 .toc_entry {
-	font-size: 	12pt;
-	font-weight: normal;
-	background: #eeffee;	
-	margin-left:40px;
+	font-size: 		12pt;
+	font-weight: 	normal;
+	background: 	#eeffee;	
+	margin-left:	40px;
 }
 
 .timeline_year {
 	background-color: 	#ddbbaa;
-	margin-top: 8px;
-	margin-left: 5px;
-	border-radius: 2px;
-	width: 80%;
-	border-top: 2px solid #ac9;
-    border-bottom: 2px solid #ac9;	
-    font-size: 	16pt;
-	font-weight: 	bold;
+	margin-top: 		8px;
+	margin-left: 		5px;
+	border-radius: 		2px;
+	width: 				80%;
+	border-top: 		2px solid #ac9;
+    border-bottom: 		2px solid #ac9;	
+    font-size: 			16pt;
+	font-weight: 		bold;
 }
 
 .timeline_month {
-	font-size: 	14pt;
+	font-size: 		14pt;
 	background: 	#d3e8da;
 	font-weight: 	bold;
 }
 
 .timeline_day {
-	font-size: 	12pt;
-	font-weight: bold;	
-	background: #eeffee;
-	margin-top: 1px;
+	font-size: 		12pt;
+	font-weight: 	bold;	
+	background: 	#eeffee;
+	margin-top: 	1px;
 }
 
 .timeline_entry {
-	font-size: 	12pt;
-	font-weight: normal;
-	background: #eeffee;	
-	margin-left:40px;
+	font-size: 		12pt;
+	font-weight: 	normal;
+	background: 	#eeffee;	
+	margin-left:	40px;
 }
 
 .trash {
-	display: 	none;
-	background:	#ffe699;
+	display: 		none;
+	background:		#ffe699;
 }
 
 .trash_image {
