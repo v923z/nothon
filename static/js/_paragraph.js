@@ -26,6 +26,6 @@ function paragraph_handler(req) {
 }
 
 function paragraph_sanitise(block) {
-	block.content.paragraph_body.content = strip_mathjax(block.content.paragraph_body.content)
+	block.content.paragraph_body.content = strip_mathjax2(block.content.paragraph_body.content)
 	return block
 }
