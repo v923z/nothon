@@ -162,6 +162,7 @@ function text_keypress(event) {
 			goto_marker(id)
 		}		
 	}*/
+	latex_helper()
 	return true
 }
 
@@ -382,4 +383,12 @@ function insert_note2() {
 function note_toggle(id) {
 	$(id).siblings().toggle()
 	// We might have to activete the parent element here!
+}
+
+function latex_helper(){
+	var sel = $(window.getSelection().focusNode.parentNode)
+	var type = $(sel).attr('class')
+	if(type === 'nothon_math') {
+		console.log(type)
+	}
 }
