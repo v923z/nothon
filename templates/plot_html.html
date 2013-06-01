@@ -6,8 +6,8 @@ $ hid = 'div_plot_header_%s'%(id)
 $ bid = 'div_plot_body_%s'%(id)
 
 <div id='$mid' class='plot_main' onclick='plot_onclick(event);' data-type='plot'>
-<div id='$cid' class='plot_caption' contenteditable='true' data-nothon='save;' data-props='searchable;'>$:safe_content(content, "plot_caption")</div>
-<div id='$hid' class='plot_header' contenteditable='true' onkeypress='return plot_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props='$safe_props(content, "plot_header")'>$:safe_content(content, "plot_header")</div>
+<div id='$cid' class='plot_caption' contenteditable='true' data-type='plot' data-nothon='save;' data-props='searchable;'>$:safe_content(content, "plot_caption")</div>
+<div id='$hid' class='plot_header' contenteditable='true' data-type='plot' onkeypress='return plot_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props='$safe_props(content, "plot_header")'>$:safe_content(content, "plot_header")</div>
 <div id='$tid' class='plot_file' data-nothon='save;' data-props=''>$safe_content(content, "plot_file")</div>
 <div id='$bid' class='plot_body' data-nothon='' data-props=''>$:safe_content(content, "plot_body")</div>
 </div>

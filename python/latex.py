@@ -11,7 +11,7 @@ from code_handling import *
 def replace_html_markups(text):
 	text = text.replace('<b>', '\\textbf{').replace('</b>', '}')
 	text = text.replace('<i>', '\\textit{').replace('</i>', '}')
-	text = text.replace('<u>', '\\underline{').replace('</u>', '}')
+	text = text.replace('<u>', '\\underline{').replace('</u>', '}')	
 	# TODO: we should be able to get the color from the span, and insert it, in case the user used something else
 	return text.replace('<span style=\"background-color: rgb(255, 255, 0);\">', '\\colorbox{yellow}{').replace('</span>', '}')
 

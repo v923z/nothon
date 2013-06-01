@@ -1,61 +1,61 @@
 html, body {
-	overflow: hidden;
+	overflow: 			hidden;
 }
 header, section, footer, aside, nav, article {
-	display: block;
+	display: 			block;
 }
  
 body {
-	background: #fff;
-	font-size: 12px;
-	font-color: #444;
-	font-family: Verdana, Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background: #e3e8ea;
+	background: 		#fff;
+	font-size: 			12px;
+	font-color: 		#444;
+	font-family: 		Verdana, Arial, sans-serif;
+	margin: 			0;
+	padding: 			0;
+	background: 		#e3e8ea;
 }
 
 .doc {
-	width: 900px;
-	margin: 0 auto;
+	width: 				900px;
+	margin: 			0 auto;
 }
  
 #header {
-	background: #333;
-	padding: 0 15px;
+	background: 		#333;
+	padding: 			0 15px;
 }
  
 #header h1 {
-	margin: 0;
-	padding: 15px 0;
-	color: #A5A5A5;
+	margin: 			0;
+	padding: 			15px 0;
+	color: 				#A5A5A5;
 }
  
 #header nav ul {
-	list-style-type: none;
-	font-weight: bold;
-	margin: 0;
-	padding: 0;
+	list-style-type: 	none;
+	font-weight: 		bold;
+	margin: 			0;
+	padding: 			0;
 }
  
 #header nav ul li {
-	display: inline;
-	margin: 0;
-	padding: 0;
+	display: 			inline;
+	margin: 			0;
+	padding: 			0;
 }
  
 #header nav ul li a {
-	display: inline-block;
-	padding: 2px 10px;
-	color: #fff;
-	background-color: #CC3366;
-	text-decoration: none;
+	display: 			inline-block;
+	padding: 			2px 10px;
+	color: 				#fff;
+	background-color: 	#CC3366;
+	text-decoration: 	none;
 }
  
 #header nav ul li.active a,
 #header nav ul li a:hover {
-	background-color: #fff;
-	color: #444;
+	background-color: 	#fff;
+	color: 				#444;
 }
 
 aside {
@@ -86,37 +86,37 @@ aside {
 }
 
 .aside_switch:hover {
-	background: 	#133f52;
+	background: 		#133f52;
 }
 
 article {
-	float:right;
-	width: 78%;
-	height: 98%;
-	top: 25px;
-	overflow-y: scroll;
+	float:				right;
+	width: 				78%;
+	height: 			98%;
+	top: 				25px;
+	overflow-y: 		scroll;
 }
 
 #top_menu {
-	position: 	fixed;
-	top: 		0;
-	left:		20%;
-	float: 		right;
-	width: 		80%;
-	background: #116688;
-	padding: 	0 0;
-	height: 	25px;
-	display: 	block;
+	position: 			fixed;
+	top: 				0;
+	left:				20%;
+	float: 				right;
+	width: 				80%;
+	background: 		#116688;
+	padding: 			0 0;
+	height: 			25px;
+	display: 			block;
 }
 
 #doc_toplevel {
-	position:	fixed;
-	top:		25px;
-	width:		75%;
+	position:			fixed;
+	top:				25px;
+	width:				75%;
 }
 
 .head_container, .code_container, .text_container {
-	display: none;
+	display: 			none;
 }
 
 #div_title {
@@ -170,115 +170,115 @@ article {
 
 
 .plot_main, .head_main, .code_main, .text_main, .paragraph_main {
-	background-color: rgba(0, 0, 0, 0.05);
-	margin-top: 8px;
-	margin-left: 5px;
-	border-radius: 2px;
-	width: 80%;
-	border-top: 2px solid #ac9;
-    border-bottom: 2px solid #ac9;
+	background-color: 	rgba(0, 0, 0, 0.05);
+	margin-top: 		8px;
+	margin-left: 		5px;
+	border-radius: 		2px;
+	width: 				80%;
+	border-top: 		2px solid #ac9;
+    border-bottom: 		2px solid #ac9;
 }
 
 .plot_caption, .plot_header, .plot_file, .plot_body {
-	font-size: 12pt;
-	color: #000099;
-	background: #eeeeff;
-	border-radius: 2px;
-	width: 95%;
+	font-size: 			12pt;
+	color: 				#000099;
+	background: 		#eeeeff;
+	border-radius: 		2px;
+	width: 				95%;
 }
 
 .plot_caption {
-	background: 	#d3e8da;
-	min-height:  	1.2em;
-	font-weight: 	bold;
+	background: 		#d3e8da;
+	min-height:  		1.2em;
+	font-weight: 		bold;
 }
 
 .plot_header {
-	background: #eeeeee;
-	min-height:  1.2em;
+	background: 		#eeeeee;
+	min-height:  		1.2em;
 }
 
 .plot_file {
-	background: rgba(0, 0, 0, 0.05)
+	background: 		rgba(0, 0, 0, 0.05)
 }
 
 .plot_header:focus {
-	border: solid blue;
-	border-width: 0 10px 0 0;
+	border: 			solid blue;
+	border-width: 		0 10px 0 0;
 }
 
 .plot_file:focus {
-	border: solid blue;
-	border-width: 0 10px 0 0;
+	border: 			solid blue;
+	border-width: 		0 10px 0 0;
 }
 
 .plot_body:focus {
-	border: solid blue;
-	border-width: 0 10px 0 0;
-	contenteditable: true;
+	border: 			solid blue;
+	border-width: 		0 10px 0 0;
+	contenteditable: 	true;
 }
 
 .plot_file {
 	/* This can be made hidden */
-	font-size: 10pt;
-	font-weight: bold;
+	font-size: 			10pt;
+	font-weight: 		bold;
 }
 
 .plot_image {
-	width: 60%;
+	width: 				60%;
 }
 
 .head_header, .head_body, .head_date {
-	font-size: 12pt;
-	color: #008800;
-	border-radius: 2px;
-	width: 95%;
+	font-size: 			12pt;
+	color: 				#008800;
+	border-radius: 		2px;
+	width: 				95%;
 }
 
 .head_header {
-	background: #d3e8da;
-	min-height:  1.2em;
+	background: 		#d3e8da;
+	min-height:  		1.2em;
 }
 
 .head_date {
-	font-weight: bold;
+	font-weight: 		bold;
 }
 
 .head_body {
-	background: #eeffee;
-	margin-top: 1px;
+	background: 		#eeffee;
+	margin-top: 		1px;
 }
 
 .head_header:focus {
-	border: solid green;
-	border-width: 0 10px 0 0;
+	border: 			solid green;
+	border-width: 		0 10px 0 0;
 }
 
 .code_header, .code_body {
-	font-size: 12pt;
-	color: #008800;
-	border-radius: 2px;
-	width: 95%;
+	font-size: 			12pt;
+	color: 				#008800;
+	border-radius: 		2px;
+	width: 				95%;
 }
 
 .code_header {
-	background: #d3e8da;
-	min-height:  1.2em;
+	background: 		#d3e8da;
+	min-height:  		1.2em;
 }
 
 .code_body {
-	background: #eeffee;
-	margin-top: 1px;
+	background: 		#eeffee;
+	margin-top: 		1px;
 }
 
 .code_header:focus {
-	border: solid green;
-	border-width: 0 10px 0 0;
+	border: 			solid green;
+	border-width: 		0 10px 0 0;
 }
 
 .code_error, .head_error {
-	color: #990000;
-	font-weight: bold;
+	color: 				#990000;
+	font-weight: 		bold;
 }
 
 .code_date {
@@ -291,50 +291,51 @@ article {
 }
 
 .text_header, .text_body, .paragraph_body {
-	font-size: 12pt;
-	color: #008800;
-	border-radius: 2px;
-	width: 95%;
+	font-size: 			12pt;
+	color: 				#008800;
+	border-radius: 		2px;
+	width: 				95%;
 }
 
 .text_header {
-	background: 	#d3e8da;
-	min-height:  	1.2em;
-	font-weight: 	bold;
+	background: 		#d3e8da;
+	min-height:  		1.2em;
+	font-weight: 		bold;
 }
 
 .text_body, .paragraph_body {
-	background: #eeffee;
-	margin-top: 1px;
-	min-height:  1.2em;
-	word-wrap: break-word;
+	background: 		#eeffee;
+	margin-top: 		1px;
+	min-height:  		1.2em;
+	word-wrap: 			break-word;
 }
 
 .text_header:focus {
-	border: solid green;
-	border-width: 0 10px 0 0;
+	border: 			solid green;
+	border-width: 		0 10px 0 0;
 	
 }
 
 .text_body:focus {
-	border: solid green;
-	border-width: 0 10px 0 0;	
+	border: 			solid green;
+	border-width: 		0 10px 0 0;	
 }
 
 .paragraph_body:focus {
-	border: solid green;
-	border-width: 0 10px 0 0;	
+	border: 			solid green;
+	border-width: 		0 10px 0 0;	
 }
 
 .note {
-	background:		#d9d900;
-	border:			solid #cd5c5c 1px;
+	background:			#d9d900;
+	border:				solid #cd5c5c 1px;
 }
 
 .note_button {
-	background:		#eeee88;
-	font-weight: 	bold;
-	border: 		solid 0px;
+	background:			#eeee88;
+	font-weight: 		bold;
+	border: 			solid 0px;
+	contenteditable: 	false;
 }
 
 .nothon_math {
@@ -440,14 +441,14 @@ article {
 }
 
 .menu ul li {
-	display: block;
+	display: 				block;
 }
 
 .menu ul li:hover {
-	background: #ffffff;
+	background: 			#ffffff;
 }
 
 p {
-  margin-top: 0em;
-  margin-bottom: 0em;
+  margin-top: 				0em;
+  margin-bottom: 			0em;
 }

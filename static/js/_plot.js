@@ -1,6 +1,14 @@
 function plot_activate(id) {
 	active_div = document.getElementById('div_plot_header_' + id)
 	active_div.focus()
+	plot_context_menu()
+}
+
+function plot_context_menu() {
+	var menu = '<ul class="context_menu_list">\
+		<li onmousedown="return false;" onmouseup="return false;">placeholder</li>\
+	</ul>'
+	$('#context_menu').html(menu)
 }
 
 function plot_onclick(event) {

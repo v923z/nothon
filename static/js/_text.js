@@ -16,6 +16,7 @@ function text_context_menu() {
 		<li alt="outdent" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Outdent</li>\
 		<li onmousedown="return insert_date();" onmouseup="return false;">Date</li>\
 		<li onmousedown="return insert_image();" onmouseup="return false;">Image</li>\
+		<li onmousedown="return insert_note();" onmouseup="return false;">Note</li>\
 		<li alt="insertHorizontalRule" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Line</li>\
 	</ul>'
 	$('#context_menu').html(menu)
@@ -80,11 +81,9 @@ function text_keypress(event) {
 		insert_math('display', event.target)
 		return false
 	} else if(event.which === 97 && event.ctrlKey) {				// a
-		insert_note(event.target)
-		//insert_note2()
+		insert_note()
 		return false
-	}
-	else if(event.which === 98 && event.ctrlKey) {				// b
+	} else if(event.which === 98 && event.ctrlKey) {				// b
 		document.execCommand("bold", false, false)
 		return false
 	} else if(event.which === 105 && event.ctrlKey) {				// i
@@ -97,7 +96,7 @@ function text_keypress(event) {
 		document.execCommand("hilitecolor", false, "#ffff00")
 		return false
 	} else if(event.which === 100 && event.altKey) {					// d
-		insert_time(event.target)
+		insert_date()
 		return false
 	} else if(event.which === 108 && event.ctrlKey) {						// l
 		// retrieve raw text
@@ -327,57 +326,19 @@ function strip_mathjax(target) {
 }
 
 function insert_math(mode, target) {
-    var sel, range
-    var selectedText
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            selectedText = range.toString();
-            range.deleteContents();
-			range.insertNode(document.createTextNode('_math_open_inserted_' + selectedText + '_math_close_inserted_'))
-        }
-    }
-    else if (document.selection && document.selection.createRange) {
-        range = document.selection.createRange()
-        selectedText = document.selection.createRange().text + ""
-		range.text = '_math_open_inserted_' + selectedText + '_math_close_inserted_'
-    }
-    var t = document.getElementById(target.id)
 	if (mode === 'inline') {
-		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<span class="nothon_math">\\(').replace('_math_close_inserted_', '<span id="_math_marker_"></span>\\)</span> ')
+		document.execCommand('insertHTML', false, '<span class="nothon_math">\\(<span id="_math_marker_"></span>\\)</span> ')
 	}
 	if (mode === 'display') {
-		t.innerHTML = t.innerHTML.replace('_math_open_inserted_', '<br><span class="nothon_math">\\[<br>').replace('_math_close_inserted_', '<span id="_math_marker_"></span><br>\\]</span><br>')
+		document.execCommand('insertHTML', false, '<br><span class="nothon_math">\\[<br><span id="_math_marker_"></span><br>\\]</span><br>')
 	}
 	goto_marker("_math_marker_")
 }
 
-function insert_note(target) {
-    var sel, range
-    var selectedText
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            selectedText = range.toString();
-            range.deleteContents();
-			range.insertNode(document.createTextNode('_note_open_inserted_' + selectedText + '_note_close_inserted_'))
-        }
-    }
-    else if (document.selection && document.selection.createRange) {
-        range = document.selection.createRange()
-        selectedText = document.selection.createRange().text + ""
-		range.text = '_note_open_inserted_' + selectedText + '_note_close_inserted_'
-    }
-    var t = document.getElementById(target.id)
-	t.innerHTML = t.innerHTML.replace('_note_open_inserted_', '<span class="note"><button class="note_button" onclick="note_toggle(this);">Note</button>').replace('_note_close_inserted_', '<span><span id="_note_marker_"></span></span></span> ')
+function insert_note() {
+	document.execCommand('insertHTML', false, '<span class="note"><button class="note_button" onclick="note_toggle(this);">Note</button><span><span id="_note_marker_"></span> </span></span> ')
 	goto_marker("_note_marker_")
-}
-
-function insert_note2() {
-	document.execCommand('insertHTML', '<span class="note"><button class="note_button" onclick="note_toggle(this);">Note</button><span><span id="_note_marker_"></span></span></span> ')
-	goto_marker("_note_marker_")
+	return false
 }
 
 function note_toggle(id) {
