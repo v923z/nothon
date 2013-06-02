@@ -39,26 +39,19 @@ function mouse_down(id, extraarg) {
 	return false
 }
 
-function text_onclick(event) {
-	var elem = event.target
-	text_context_menu()
-	if(elem.id.indexOf('_main_') === -1) return
-	var text_body = document.getElementById(elem.id.replace('_main_', '_body_'))
-	var text_header = document.getElementById(elem.id.replace('_main_', '_header_'))
-	
-	if(event.pageY - text_header.offsetTop > text_header.offsetHeight) {
-		text_body.innerHTML = strip_mathjax(text_body.innerHTML)
-		active_div = text_body
-	} else {
-		if(text_body.style.display == "block") {
-			text_body.style.display = "none"
-			active_div = text_header
-		} else {
-			text_body.style.display = "block"
-			active_div = text_body
-		}
+function text_onclick(id) {
+	var elem = document.getElementById(id)
+	if(elem.style.display == "block") {
+    	elem.style.display = "none"
+    	active_div = null
+		set_expand('#' + id.replace('div_text_body_', 'div_text_main_'))
+  	}
+	else {
+		elem.style.display = "block"
+		active_div = elem
+		active_div.focus()
+		set_collapse('#' + id.replace('div_text_body_', 'div_text_main_'))
 	}
-	active_div.focus()
 }
 
 function text_keypress(event) {

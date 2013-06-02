@@ -11,18 +11,18 @@ function plot_context_menu() {
 	$('#context_menu').html(menu)
 }
 
-function plot_onclick(event) {
-	var elem = event.target
-	if(elem.id.indexOf('_main_') === -1) return
-	var elem = document.getElementById(elem.id.replace('_main_', '_header_'))
+function plot_onclick(id) {
+	var elem = document.getElementById(id)
 	if(elem.style.display == "block") {
     	elem.style.display = "none"
     	active_div = null
+		set_expand('#' + id.replace('div_plot_header_', 'div_plot_main_'))
   	}
 	else {
 		elem.style.display = "block"
 		active_div = elem
 		active_div.focus()
+		set_collapse('#' + id.replace('div_plot_header_', 'div_plot_main_'))
 	}
 }
 

@@ -102,17 +102,23 @@ article {
 	top: 				0;
 	left:				20%;
 	float: 				right;
-	width: 				80%;
+	width: 				75%;
 	background: 		#116688;
 	padding: 			0 0;
-	height: 			25px;
+	height: 			20px;
 	display: 			block;
+	left-margin:		5px;
+	z-index:			100;
 }
 
 #doc_toplevel {
-	position:			fixed;
+	position:			relative;
 	top:				25px;
 	width:				75%;
+}
+
+#docmain {
+	width:				100%;
 }
 
 .head_container, .code_container, .text_container {
@@ -125,7 +131,7 @@ article {
 	margin-top: 		0px;
 	margin-left: 		5px;
 	border-radius: 		2px;
-	width: 				80%;
+	width: 				100%;
 	text-align: 		center;
 }
 
@@ -133,7 +139,7 @@ article {
 	background-color: 	#ddbbaa;
 	margin-left: 		5px;
 	margin-top:			8px;
-	width: 				80%;
+	width: 				100%;
 }
 
 #dir_tag {
@@ -152,9 +158,9 @@ article {
 
 #context_menu {
 	font-size: 			12pt;
-	position: 			absolute;
+	position: 			fixed;
 	right:				4%;
-	top:				0px;
+	top:				25px;
 	width: 				12%;
 	height:				100%;
 	background:		 	rgba(0, 0, 1, 0.2);
@@ -168,13 +174,12 @@ article {
 	background: 		#ffffff;
 }
 
-
 .plot_main, .head_main, .code_main, .text_main, .paragraph_main {
 	background-color: 	rgba(0, 0, 0, 0.05);
 	margin-top: 		8px;
 	margin-left: 		5px;
 	border-radius: 		2px;
-	width: 				80%;
+	width: 				100%;
 	border-top: 		2px solid #ac9;
     border-bottom: 		2px solid #ac9;
 }
@@ -200,6 +205,11 @@ article {
 
 .plot_file {
 	background: 		rgba(0, 0, 0, 0.05)
+}
+
+.plot_caption:focus {
+	border: 			solid blue;
+	border-width: 		0 10px 0 0;
 }
 
 .plot_header:focus {
@@ -451,4 +461,11 @@ article {
 p {
   margin-top: 				0em;
   margin-bottom: 			0em;
+}
+
+.button_expand {
+	float:					right;
+	float:					top;
+	height:					0px;
+	z-index:				100;
 }
