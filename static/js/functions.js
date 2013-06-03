@@ -346,3 +346,8 @@ function set_collapse(id) {
 		$(this).children().attr('src', '/static/icons/collapse.png')
 	})
 }
+
+function redirect(address) {
+	console.log('asdasd')
+	self.location = address
+}

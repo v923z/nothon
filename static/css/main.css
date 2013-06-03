@@ -100,20 +100,19 @@ article {
 #top_menu {
 	position: 			fixed;
 	top: 				0;
-	left:				20%;
-	float: 				right;
-	width: 				75%;
+	float: 				left;
+	width: 				80%;
 	background: 		#116688;
 	padding: 			0 0;
-	height: 			20px;
+	height: 			25px;
 	display: 			block;
-	left-margin:		5px;
+	left-padding:		5px;
 	z-index:			100;
 }
 
 #doc_toplevel {
 	position:			relative;
-	top:				25px;
+	top:				30px;
 	width:				75%;
 }
 
@@ -160,7 +159,7 @@ article {
 	font-size: 			12pt;
 	position: 			fixed;
 	right:				4%;
-	top:				25px;
+	top:				30px;
 	width: 				12%;
 	height:				100%;
 	background:		 	rgba(0, 0, 1, 0.2);
@@ -485,5 +484,17 @@ p {
 	resize:				both;
 	overflow:			hidden;
 	padding:			5px;
-	background:			rgba(0, 0, 0, 0.2)
+	background:			rgba(0, 0, 0, 0.2);
+}
+
+.top_menu_item {
+	font-size: 			16pt;
+	color:				#eeeeee;
+	padding-left:		5px;
+	padding-right:		5px;
+}
+
+.top_menu_item:hover {
+	background:			#ffffff;
+	color:				#116688;
 }
