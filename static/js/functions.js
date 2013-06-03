@@ -153,7 +153,7 @@ function block_content(elem) {
 				if(check_tag(nothon, 'save')) {
 					var sub_block = new Object()
 					sub_block['content'] = $(this).html()
-					sub_block['id'] = $(this).id
+					sub_block['id'] = $(this).attr('id')
 					if($(this).is(':visible')) props.replace('collapsed;', '')
 					else props = add_tag(props, 'collapsed')
 					sub_block['props']= props
@@ -297,6 +297,10 @@ $(document).ready(function () {
 			console.log(props)
 			if(check_tag(props, 'collapsed')) $(this).hide()
 		});
+	});
+	
+	$(function() {
+		$('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })
 	});
 });
 

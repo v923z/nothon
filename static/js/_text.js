@@ -64,14 +64,18 @@ function text_keypress(event) {
 		create_and_insert('text_main')
 		return false
 	} else if(event.which === 13 && event.ctrlKey) {				// Enter
-		$(event.target).find('.nothon_math').each( function() { $(this).contents().unwrap() })
+		$(event.target).find('.nothon_math').each( function() { console.log($(this).html())
+				$(this).attr('alt', $(this).html()) 
+		})
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub, event.target.id]);
 		return false
 	} else if(event.which === 109 && event.ctrlKey && !event.altKey) {				// m
-		insert_math('inline', event.target)
+		strip_mathjax(event.target)
+		insert_math('inline')
 		return false
 	} else if(event.which === 109 && event.ctrlKey && event.altKey) {	// M
-		insert_math('display', event.target)
+		strip_mathjax(event.target)
+		insert_math('display')
 		return false
 	} else if(event.which === 97 && event.ctrlKey) {				// a
 		insert_note()
@@ -94,7 +98,6 @@ function text_keypress(event) {
 	} else if(event.which === 108 && event.ctrlKey) {						// l
 		// retrieve raw text
 		strip_mathjax(event.target)
-		//event.target.innerHTML = strip_mathjax2(event.target.innerHTML)
 		return false
 	} else if(event.which === 38) {			// &
 		// evaluate math expression 
@@ -106,9 +109,7 @@ function text_keypress(event) {
 	} else if(event.which === 49 && event.altKey) {				// 1
 		document.execCommand('insertOrderedList', false, false)
 		return false
-	} /*else if(event.which === 93) { // ]
-		return insert_if_linestarts('<input type="checkbox" />');
-	} else if(event.keyCode === 38) { // arrow key up
+	} /* else if(event.keyCode === 38) { // arrow key up
 		var ran = window.getSelection().getRangeAt(0)
 		console.log(window.getSelection().getRangeAt(0).startOffset)
 		console.log('compare: ' + ran.comparePoint(event.target, 0))
@@ -180,8 +181,13 @@ function text_handler(req) {
 }
 
 function text_sanitise(block) {
-	block.content.text_body.content = strip_mathjax2(block.content.text_body.content)
+	var dtemp = $('<div/>', {'id': 'dtemp'}).appendTo('#trash')
+	$('#dtemp').html($('#' + block.content.text_body.id).html())
+	strip_mathjax_for_save($('#dtemp'))
+	console.log($('#dtemp').html())
+	block.content.text_body.content = $('#dtemp').html()
 	block.content.text_header.content = block.content.text_header.content.replace('<br>', '')
+	$('#dtemp').remove()
 	return block
 }
 
@@ -236,37 +242,6 @@ function goto_marker(id) {
     element.parentNode.removeChild(element)
 }
 
-function insert_if_linestarts(html) {
-	var id = get_id_marker();
-	insert_node_at_caret(marker_from_id(id));
-		
-	var elem = document.getElementById(id)
-	var children = elem.parentNode.childNodes;
-		
-	// determine the index
-	var i = 0;
-  	for (; i < children.length; i++)
-		if(children[i].id == elem.id)
-			break;
-		
-	if(i>0 && children[i-1].tagName == 'BR') {
-		goto_marker(id)
-		insert_node_at_caret(html + " ")
-		return false
-	} else {
-		goto_marker(id)
-		return true
-	}		
-}
-
-function less_than(a, b) {
-	if(a > 0 && b > 0 && a < b) return true
-	if(a > 0 && b < 0) return true
-	if(a > 0 && a < b) return true
-	if(a < 0 && b > 0) return false
-	if(a > 0 && a > b) return false
-}
-
 function get_math_code(target) {
 	var div_text = target.innerHTML
 	console.log('text', div_text)
@@ -280,50 +255,24 @@ function get_math_code(target) {
 	}
 }
 
-function strip_mathjax2(div_text) {
-	var offset, scr
-	var first = div_text.indexOf('<span class="MathJax_Preview">')
-	if(first > 0) {
-		var second = div_text.indexOf('type="math/tex">')
-		var third = div_text.indexOf('type="math/tex; mode=display">')
-		if(second > 0 && less_than(second, third)) {
-			offset = 'type="math/tex">'.length
-			div_text = div_text.slice(0, first) + '\\(' + div_text.slice(second + offset, div_text.length)
-			scr = div_text.indexOf('</script>')
-			offset = '</script>'.length
-			div_text = div_text.slice(0, scr) + '\\)' + div_text.slice(scr + offset, div_text.length)
-		}
-		else if(third > 0 && less_than(third, second)) {
-			offset = 'type="math/tex; mode=display">'.length
-			div_text = div_text.slice(0, first) + '\\[<br>' + div_text.slice(third + offset, div_text.length)
-			scr = div_text.indexOf('</script>')
-			offset = '</script>'.length
-			div_text = div_text.slice(0, scr) + '<br>\\]' + div_text.slice(scr + offset, div_text.length)			
-		}
-		div_text = strip_mathjax2(div_text)
-	}
-	return div_text
-}
-
 function strip_mathjax(target) {
-	$(target).find('.MathJax_Preview').remove()
-	var jaxs = $(MathJax.Hub.getAllJax(target))
-	scripts = $(target).find('script')
-	$.each(jaxs, function() { (this).Remove() })
-	$.each(scripts, function() {
-		if((this).type.indexOf('math/tex') >= 0) {
-			if((this).type.indexOf('display') >= 0) $(this).replaceWith('<span class="nothon_math">\\[<br>' + $.trim((this).innerHTML) + '<br>\\]<br></span>')
-			else $(this).replaceWith('<span class="nothon_math">\\(' + (this).innerHTML + '\\)</span>')
-		}
+	$(target).find('.nothon_math').each( function() { 
+		console.log($(this).attr('alt'))
+		$(this).html($(this).attr('alt'))
+		$(this).attr('alt', " ")
 	})
 }
 
-function insert_math(mode, target) {
+function strip_mathjax_for_save(target) {
+	$(target).find('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })
+}
+
+function insert_math(mode) {
 	if (mode === 'inline') {
-		document.execCommand('insertHTML', false, '<span class="nothon_math">\\(<span id="_math_marker_"></span>\\)</span> ')
+		document.execCommand('insertHTML', false, '<span class="nothon_math">\\(<span id="_math_marker_"></span>\\)</span>&nbsp;')
 	}
 	if (mode === 'display') {
-		document.execCommand('insertHTML', false, '<br><span class="nothon_math">\\[<br><span id="_math_marker_"></span><br>\\]</span><br>')
+		document.execCommand('insertHTML', false, '<br><div class="nothon_math">\\[<br><span id="_math_marker_"></span><br>\\]</div><br>')
 	}
 	goto_marker("_math_marker_")
 }
