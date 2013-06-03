@@ -478,3 +478,12 @@ p {
 	height:					0px;
 	z-index:				100;
 }
+
+.section_image {
+	margin:				0 auto;
+	width:				60%;
+	resize:				both;
+	overflow:			hidden;
+	padding:			5px;
+	background:			rgba(0, 0, 0, 0.2)
+}

@@ -22,8 +22,12 @@ function text_context_menu() {
 	$('#context_menu').html(menu)
 }
 
+function image_html(source) {
+	return '<br><div><div>Image Caption</div><div class="section_image"><img src="' + source + '"></div><br>'
+}
+
 function insert_image() {
-	document.execCommand('insertImage', false, './test.note_plot_4.png')
+	document.execCommand('insertHTML', false, image_html('/static/icons/expand.png'))
 	return false
 }
 
