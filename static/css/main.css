@@ -235,7 +235,16 @@ article {
 }
 
 .plot_image {
-	width: 				60%;
+	width: 				100%;
+}
+
+.plot_body {
+	margin:				0 auto;
+	width:				60%;
+	resize:				both;
+	overflow:			hidden;
+	padding:			5px;
+
 }
 
 .head_header, .head_body, .head_date {
