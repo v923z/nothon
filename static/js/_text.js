@@ -43,19 +43,20 @@ function mouse_down(id, extraarg) {
 	return false
 }
 
-function text_onclick(id) {
-	var elem = document.getElementById(id)
-	if(elem.style.display == "block") {
-    	elem.style.display = "none"
-    	active_div = null
-		set_expand('#' + id.replace('div_text_body_', 'div_text_main_'))
-  	}
-	else {
-		elem.style.display = "block"
-		active_div = elem
-		active_div.focus()
-		set_collapse('#' + id.replace('div_text_body_', 'div_text_main_'))
-	}
+function text_onclick(event) {
+	var main = $('#' + event.target.parentNode.parentNode.id)
+	//var elem = document.getElementById(event)
+	//if(elem.style.display == "block") {
+    	//elem.style.display = "none"
+    	//active_div = null
+		//set_expand('#' + id.replace('div_text_body_', 'div_text_main_'))
+  	//}
+	//else {
+		//elem.style.display = "block"
+		//active_div = elem
+		//active_div.focus()
+		//set_collapse('#' + id.replace('div_text_body_', 'div_text_main_'))
+	//}
 }
 
 function text_keypress(event) {
@@ -107,7 +108,12 @@ function text_keypress(event) {
 		// evaluate math expression 
 		get_math_code(event.target)
 		return true
-	} else if(event.which === 42 && event.altKey) {				// *
+	} else if(event.which === 35) {			// #
+		// insert tag 
+		insert_tag()
+		return false
+	}
+	else if(event.which === 42 && event.altKey) {				// *
 		document.execCommand('insertUnorderedList', false, false)
 		return false
 	} else if(event.which === 49 && event.altKey) {				// 1
@@ -296,6 +302,12 @@ function latex_helper(){
 	var sel = $(window.getSelection().focusNode.parentNode)
 	var type = $(sel).attr('class')
 	if(type === 'nothon_math') {
-		console.log(type)
+		//document.execCommand('insertHTML', false, '<span id="__placeholder__"></span> ')
+		//console.log($(sel).html())
 	}
+}
+
+function insert_tag() {
+	document.execCommand('insertHTML', false, '<a href="#" onClick="tag_clicked(this);">#<span id="_tag_marker_"></span></a>')
+	goto_marker("_tag_marker_")
 }
