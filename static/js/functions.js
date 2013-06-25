@@ -36,8 +36,11 @@ function xml_http_post(url, data, callback) {
 }
 
 function move(where) {
+	//jQuery("#element1").before(jQuery("#element2")); can be used for swapping
+	//jQuery("#element1").after(jQuery("#element2"));
 	if(!active_div) return
-	position = active_div.parentNode
+	position = active_div.parentNode // This should bubble till something like _main...
+	// This can be done with $(active_div).closest('[id$=_main]')
 	if(where == 'up' && document.getElementById('docmain').firstChild.id != position.id) {
 		position.parentNode.insertBefore(position, position.previousSibling)
 	}
@@ -113,7 +116,6 @@ function create_message(div_data, message_type) {
 	message.id = div_data.id
 	message.content = div_data.innerHTML
 	message.directory = document.getElementById("div_dir").innerHTML
-	//console.log(message.content)
 	return message
 }
 
@@ -350,4 +352,8 @@ function set_collapse(id) {
 function redirect(address) {
 	console.log('asdasd')
 	self.location = address
+}
+
+function toggle_context_menu() {
+	$('#context_menu').toggle()
 }

@@ -23,7 +23,7 @@ function text_context_menu() {
 }
 
 function image_html(source) {
-	return '<br><div><div>Image Caption</div><div class="section_image"><img src="' + source + '"></div><br>'
+	return '<br><div class="section_image"><div>Image Caption</div><div><img src="' + source + '"></div></div><br>'
 }
 
 function insert_image() {
