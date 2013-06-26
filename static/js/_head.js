@@ -3,18 +3,12 @@ function head_activate(id) {
 	active_div.focus()
 }
 
-function head_onclick(event) {
-	var elem = event.target
-	if(elem.id.indexOf('_main_') === -1) return
-	var elem = document.getElementById(elem.id.replace('_main_', '_body_'))
-	if(elem.style.display == "block") {
-    	elem.style.display = "none"
-    	active_div = null
-  	}
-	else {
-		elem.style.display = "block"
-		active_div = document.getElementById(elem.id.replace('_body_', '_header_'))
+function head_onclick(target) {
+	if(collapse_collapsible(target) == 'visible') {
+		active_div = $('#' + target.id.replace('expand_', '').replace('_main_', '_body_'))
 		active_div.focus()
+	} else {
+		active_div = null
 	}
 }
 
