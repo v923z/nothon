@@ -45,20 +45,12 @@ function mouse_down(id, extraarg) {
 }
 
 function text_onclick(target) {
-	collapse_collapsable(target)
-	//var main = $('#' + event.target.parentNode.parentNode.id)
-	//var elem = document.getElementById(event)
-	//if(elem.style.display == "block") {
-    	//elem.style.display = "none"
-    	//active_div = null
-		//set_expand('#' + id.replace('div_text_body_', 'div_text_main_'))
-  	//}
-	//else {
-		//elem.style.display = "block"
-		//active_div = elem
-		//active_div.focus()
-		//set_collapse('#' + id.replace('div_text_body_', 'div_text_main_'))
-	//}
+	if(collapse_collapsible(target) == 'visible') {
+		active_div = $('#' + target.id.replace('expand_', '').replace('_main_', '_body_'))
+		active_div.focus()
+	} else {
+		active_div = null
+	}
 }
 
 function text_keypress(event) {

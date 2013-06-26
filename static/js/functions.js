@@ -357,10 +357,21 @@ function toggle_context_menu() {
 	$('#context_menu').toggle()
 }
 
-function collapse_collapsable(target) {
+function collapse_collapsible(target) {
+	var state = 'visible'
 	$('#' + target.id.replace('expand_', '')).find('*').each(function() {
 		if($(this).data('expand') === target.id) {
 			$(this).toggle()
+			if(!$(this).is(':visible')) {
+				state = 'hidden'
+			}
 		}
 	})
+	if(state === 'hidden') {
+		$('#' + target.id).children().attr('src', '/static/icons/expand.png')
+	}
+	else {
+		$('#' + target.id).children().attr('src', '/static/icons/collapse.png')
+	}
+	return state
 }
