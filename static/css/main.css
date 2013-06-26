@@ -166,10 +166,6 @@ article {
 	background:		 	rgba(0, 0, 1, 0.2);
 }
 
-.context_menu_list {
-	list-style: 		none;
-}
-
 .context_menu_list li:hover {
 	background: 		#ffffff;
 }
@@ -530,4 +526,14 @@ p {
 #top_menu li ul li:hover {
 	background:			#116688;
 	color:				#eeeeee;
+}
+
+.context_menu_header {
+	text-align:			center;
+	font-weight: 		bold;
+	font-size:			14pt;
+}
+
+#context_menu li {
+	list-style: 		none;
 }

@@ -5,7 +5,8 @@ function text_activate(id) {
 }
 
 function text_context_menu() {
-	var menu = '<ul class="context_menu_list">\
+	var menu = '<div class="context_menu_header">Text</div>\
+		<ul class="context_menu_list">\
 		<li alt="insertUnorderedList" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Unordered list</li>\
 		<li alt="insertOrderedList" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Ordered list</li>\
 		<li alt="bold" onmousedown="return mouse_down(this, null);" onmouseup="return false;"><b>Bold</b></li>\

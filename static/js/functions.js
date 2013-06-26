@@ -350,7 +350,6 @@ function set_collapse(id) {
 }
 
 function redirect(address) {
-	console.log('asdasd')
 	self.location = address
 }
 
