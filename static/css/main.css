@@ -537,3 +537,8 @@ p {
 #context_menu li {
 	list-style: 		none;
 }
+
+#notebook_status {
+	float:				right;
+	color:				#ff0000;
+}
