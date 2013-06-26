@@ -356,3 +356,11 @@ function redirect(address) {
 function toggle_context_menu() {
 	$('#context_menu').toggle()
 }
+
+function collapse_collapsable(target) {
+	$('#' + target.id.replace('expand_', '')).find('*').each(function() {
+		if($(this).data('expand') === target.id) {
+			$(this).toggle()
+		}
+	})
+}

@@ -2,9 +2,10 @@ $def with (id, content)
 $ mid = 'div_text_main_%s'%(id)
 $ hid = 'div_text_header_%s'%(id)
 $ bid = 'div_text_body_%s'%(id)
+$ eid = 'expand_div_text_main_%s'%(id)
 
-<div id='$mid' class='text_main' onclick='text_onclick(event);' data-type='text'>
-<div class='button_expand' onmouseup='text_onclick(event);'><img src='/static/icons/collapse.png' height='18px'/></div>
+<div id='$mid' class='text_main' data-type='text'>
+<div class='button_expand' id='$eid' onmouseup='text_onclick(this);'><img src='/static/icons/collapse.png' height='18px'/></div>
 <div id='$hid' class='text_header' contenteditable='true' data-type='text' onkeypress='return text_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props='searchable;intoc;'>$safe_content(content, "text_header")</div>
-<div id='$bid' class='text_body' contenteditable='true' data-type='text' onkeypress='return text_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props='searchable;' + '$safe_props(content, "text_body")'>$:safe_content(content, "text_body")</div>
+<div id='$bid' class='text_body' contenteditable='true' data-type='text' data-expand='$eid' onkeypress='return text_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props='searchable;' + '$safe_props(content, "text_body")'>$:safe_content(content, "text_body")</div>
 </div>

@@ -44,8 +44,9 @@ function mouse_down(id, extraarg) {
 	return false
 }
 
-function text_onclick(event) {
-	var main = $('#' + event.target.parentNode.parentNode.id)
+function text_onclick(target) {
+	collapse_collapsable(target)
+	//var main = $('#' + event.target.parentNode.parentNode.id)
 	//var elem = document.getElementById(event)
 	//if(elem.style.display == "block") {
     	//elem.style.display = "none"
