@@ -14,10 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="expand.svg"
-   inkscape:export-filename="/home/v923z/sandbox/nothon/static/icons/collapse.png"
-   inkscape:export-xdpi="19.042566"
-   inkscape:export-ydpi="19.042566">
+   sodipodi:docname="expand.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -28,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="22.250173"
-     inkscape:cy="755.57157"
+     inkscape:cx="-4.2336571"
+     inkscape:cy="924.24359"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -59,24 +56,9 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="fill:none;stroke:#6f7c91;stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 90,244.86218 90,-57.6 90,57.6 0,0"
-       id="path2989"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#6f7c91;stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 90,269.76219 90,57.59999 90,-57.59999 0,0"
-       id="path2989-0"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#6f7c91;stroke-width:15;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 90,167.36218 180,0"
-       id="path3777"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#6f7c91;stroke-width:15;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 90,347.36218 180,0"
-       id="path3777-3"
+       style="fill:#6e6e6e;stroke:#6e6e6e;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="M 90,152.36218 270,62.362183 270,242.36218 z"
+       id="path2987"
        inkscape:connector-curvature="0" />
   </g>
 </svg>
