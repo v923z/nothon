@@ -2,17 +2,51 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Sat Apr 13 2013 09:13:22 GMT+0200 (CEST)",
+"date" : "Thu Jun 27 2013 21:42:23 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
     {
         "content": {
             "text_body": {
-                "content": "The most recent version of the source code resides at https://github.com/v923z/nothon<br><br>After starting nothon.py, the notebook can be accessed at address <br><br>http://127.0.0.1:8080/?name=somenotebook.note<br><br>If the notebook exists (this should be a JSON file), then its content will be rendered in the browser. If it doesn't exist, then a new notebook with that name will be created. When saving this notebook, its content will be written to disc under the name somenotebook.note. <br><br>Once in the browser, a new div can be added by clicking on the appropriate label under the + sign on the right hand side. The active div's parent (always indicated by a thick right-hand-side border) can be removed by clicking on remove. This operation moves the divide to the trash, which is part of the document, but is hidden. (The trash can be made visible by clicking on the trashbin icon on the lower right corner.) By clicking on recover, either the active block of the trashbin, or if that does not exist, then the last block in the trash is restored to the visible part of the document, and is inserted as the last divide. Blocks of the document can be moved up or down by clicking on the up or down arrow on the right hand side. <br>",
-                "props": "searchable;"
+                "content": "On the following pages, we would like to outline the rationale behind the creation of <i>nothon</i>, and give the user a couple of tips on efficient use of the notebook. At the end, we will also show how the behaviour of can be costumised, and how new features can easily be added. <br>",
+                "id": "div_text_body_10",
+                "props": "searchable;collapsed;"
+            },
+            "text_header": {
+                "content": "Introduction",
+                "id": "div_text_header_10",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 10,
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "Or, put differently, what is wrong with the wikis in general? There are several problems with the wiki approach. <br><ol><li>Extra content (images, sound etc.) has to be uploaded to a server, creating a storage/management overhead.</li><li>Formatting cannot be done, and formulae cannot be edited in-place: one has to invoke the editor mode for each section.</li><li>There is no way of creating content in the wiki page itself. <br></li></ol><p>The first of the problems was alleviated in the excellent zim-wiki project, which, exactly because it doesn't require a server, works with the underlying file system. In some respect, the third point was also addressed in zim, namely, there is a way of creating plots and formulae on the fly. However, formulae require a LaTeX system, which has its own problems.</p><hr>When we set out to develop nothon, we wanted to rectify the above-mentioned problems. However, since the desire was to create a system that can be used for documenting various projects (both experimental, and theoretical/numerical), we also wanted to include tools that would make project management easy. Thus, we envisaged the following features.<br><ol><li>Easy customisation: in terms of both adding extensions, and the lookout of the wiki. <br></li><li>Integration of a scientific plotting utility.&nbsp;</li><li>Some interaction with the file system. This would include accessing the content of data files, and retrieving and highlighting the content of software code.</li><li>Portability.<br></li></ol><p>As for the first point, the browser seemed to be a natural choice: given the HTML content, customisation can be done with the help of cascaded stylesheets. Resorting to the browser has the additional benefit that the content of a notebook can easily converted to a format that is widely used, and portability is not a problem.<br></p>",
+                "id": "div_text_body_11",
+                "props": "searchable;collapsed;"
+            },
+            "text_header": {
+                "content": "Why is there a need for another wiki?",
+                "id": "div_text_header_11",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 11,
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "The most recent version of the source code resides at https://github.com/v923z/nothon<br>The code has minimal dependencies, most of which are probably installed on any linux distribution. In order to have plotting, either matplotlib, or gnuplot has to be installed. Beyond this, the only dependency is web.py, in which the server is implemented. <br><br>After starting nothon.py, the notebook can be accessed from the browser at address <br><br>http://127.0.0.1:8080/?name=somenotebook.note<br><br>If the notebook exists (this should be a JSON file), then its content will be rendered in the browser. If it doesn't exist, then a new notebook with that name will be created. When saving this notebook, its content will be written to disc under the name somenotebook.note. <br><br>Once in the browser, a new divide (or cell) can be added by clicking on the appropriate label under the + sign on the right hand side. The active div's parent (indicated by a thick right-hand-side border, though, as stated above, visual features can be manipulated in the appropriate CSS file) can be removed by clicking on remove. This operation moves the divide to the trash, which is part of the document, but is hidden. (The trash can be made visible by clicking on the trashbin icon on the lower right corner.) By clicking on recover, either the active block of the trashbin, or if that does not exist, then the last block in the trash is restored to the visible part of the document, and is inserted as the last divide. Blocks of the document can be moved up or down by clicking on the up or down arrow on the right hand side. <br>",
+                "id": "div_text_body_7",
+                "props": "searchable;collapsed;"
             },
             "text_header": {
                 "content": "Beginning with nothon",
+                "id": "div_text_header_7",
                 "props": "searchable;intoc;"
             }
         },
@@ -22,11 +56,13 @@
     {
         "content": {
             "text_body": {
-                "content": "Headers in text, code, and head blocks are evaluated by pressing `Enter`. This moves the cursor to the body of a text header, or send a request to the server to execute and return the output of the corresponding handler function. <br><br>Units can be \"executed\" by pressing `Cntr+Enter`. This will render mathematical formulae in a text block, or execute a plot. If `Shift+Enter` is pressed, a new block of the same type is also inserted into the notebook.",
-                "props": "searchable;"
+                "content": "Headers in text, code, and head blocks are evaluated by pressing `Enter`. This moves the cursor to the body of a text header, or sends a request to the server to execute and return the output of the corresponding handler function. <br><br>Units can be \"executed\" by pressing `Cntr+Enter`. This will render mathematical formulae in a text block, or execute a plot. If `Shift+Enter` is pressed, a new block of the same type is also inserted into the notebook.",
+                "id": "div_text_body_8",
+                "props": "searchable;collapsed;"
             },
             "text_header": {
                 "content": "Usage in general terms",
+                "id": "div_text_header_8",
                 "props": "searchable;intoc;"
             }
         },
@@ -36,11 +72,13 @@
     {
         "content": {
             "text_body": {
-                "content": "The visual appearance of a notebook can be influenced by changing the appropriate parameters in the cascaded style sheet. These modifications do not change the behaviour of the server or the client. <br><br>Several aspects of the behaviour of the server can be customised in a resource file. (In future versions, this will be extended to the client, too.) By default, only png files are created, when the user plots in the notebook. By changing the value of the variable self.plot_pdf_output to True, the plotting backend will generate pdf output, too. This output can later be included in latex files. <br><br>The ordering of the directory tree can be customised. By default, the server sends the tree ordered linux style, i.e., in each folder, the files are listed first, and then the folders. By setting the variable self.dirlisting_style to \"windows\", folders will be shown first, and then files.<br><br>When working with code (see below), it might be useful to include only a function or a segment of a code file. This can be done by defining a start and end tag in the source code, and supplying that to the code handler. In order for the code highlighter to know what amounts to the beginning/ending of a code segment, the tag is prepended and appended with a beginning/closing string. This can be defined in the variable self.code_delimiter. E.g., if self.code_delimiter = ('*-', '-*'), then the code should be enclosed between the tags <br><br>&nbsp;&nbsp;&nbsp; *- some_tag<br>&nbsp;&nbsp;&nbsp; .... code ....<br>&nbsp;&nbsp; some_tag -*<br><br>The user can define arbitrary tag combination. <br>",
-                "props": "searchable;"
+                "content": "The visual appearance of a notebook can be influenced by changing the appropriate parameters in the cascaded style sheet. These modifications do not change the behaviour of the server or the client. <br><br>Several aspects of the behaviour of the server can be customised in a resource file. (In future versions, this will be extended to the client, too.) By default, only png files are created, when the user plots in the notebook. By changing the value of the variable self.plot_pdf_output to True, the plotting backend will generate pdf output, too. This output can later be included in latex files. <br><br>The ordering of the directory tree (on the left hand side of the browser window, although, again, the position of this can be modified in the CSS file) can be customised. By default, the server sends the tree ordered linux style, i.e., in each folder, the files are listed first, and then the folders. By setting the variable self.dirlisting_style to \"windows\", folders will be shown first, and then files.<br><br>When working with code (see below), it might be useful to include only a function or a segment of a code file. This can be done by defining a start and end tag in the source code, and supplying that to the code handler. In order for the code highlighter to know what amounts to the beginning/ending of a code segment, the tag is prepended and appended with a beginning/closing string. This can be defined in the variable self.code_delimiter. E.g., if self.code_delimiter = ('*-', '-*'), then the code should be enclosed between the tags <br><br>&nbsp;&nbsp;&nbsp; *- some_tag<br>&nbsp;&nbsp;&nbsp; .... code ....<br>&nbsp;&nbsp; some_tag -*<br><br>The user can define arbitrary tag combination. <br>",
+                "id": "div_text_body_9",
+                "props": "searchable;collapsed;"
             },
             "text_header": {
                 "content": "Customisation",
+                "id": "div_text_header_9",
                 "props": "searchable;intoc;"
             }
         },
@@ -50,11 +88,13 @@
     {
         "content": {
             "text_body": {
-                "content": "Arbitrary code residing on the hard disc can conveniently be displayed. All one has to do is give the file name in a code cell.<br>",
-                "props": "searchable;"
+                "content": "Arbitrary code residing on the hard disc can conveniently be displayed. All one has to do is give the file name in the header (the only editable div) of a code cell.<br>",
+                "id": "div_text_body_4",
+                "props": "searchable;collapsed;"
             },
             "text_header": {
                 "content": "Code segments 1.",
+                "id": "div_text_header_4",
                 "props": "searchable;intoc;"
             }
         },
@@ -65,14 +105,17 @@
         "content": {
             "code_body": {
                 "content": "import os\n\ndef retreive_header(args):\n\thead = args.split('<br>')\n\tsp = head[0].split(' ')\n\tif not os.path.exists(sp[0]): \n\t\treturn \"File doesn't exist\"\n\tif len(sp) == 1: n = 10\n\t# TODO: elif sp[1] == '#':\t\n\telse: n = int(sp[1])\n\tfin = open(sp[0], 'r')\t\n\t# *- function_something \n\tif n > 0:\n\t\tlines = []\n\t\tit = 0\n\t\tfor line in fin:\n\t\t\tlines.append(line.rstrip('\\n\\r'))\n\t\t\tit += 1\n\t\t\tif it >= n: break\n\t# function_something -*\n\tif n < 0:\n\t\tlines = fin.readlines()\n\t\tlines = lines[-10:]\n\tfin.close()\t\n\treturn '<br>'.join([x.rstrip('\\n\\r') for x in lines])\n",
-                "props": ""
+                "id": "div_code_body_1",
+                "props": "collapsed;"
             },
             "code_date": {
                 "content": "Created: Fri Mar 22 21:05:47 2013, modified: Fri Mar 22 21:05:47 2013",
+                "id": "div_code_date_1",
                 "props": ""
             },
             "code_header": {
                 "content": "helper.py",
+                "id": "div_code_header_1",
                 "props": "intoc;"
             }
         },
@@ -83,10 +126,12 @@
         "content": {
             "text_body": {
                 "content": "Code lines can be numbered by adding -lineno on the command line. In addition, if a start and end tag are defined in the source file, the code highlighter can be made to display only the segment between the two strings. If -include is specified on the command line, the tags are also included in the highlit code. This can be useful when one wants to emphasise that we are dealing with a code segment only.<br>",
-                "props": "searchable;"
+                "id": "div_text_body_5",
+                "props": "searchable;collapsed;"
             },
             "text_header": {
                 "content": "Working with code 2.",
+                "id": "div_text_header_5",
                 "props": "searchable;intoc;"
             }
         },
@@ -97,14 +142,17 @@
         "content": {
             "code_body": {
                 "content": "\t# *- function_something \n\tif n > 0:\n\t\tlines = []\n\t\tit = 0\n\t\tfor line in fin:\n\t\t\tlines.append(line.rstrip('\\n\\r'))\n\t\t\tit += 1\n\t\t\tif it >= n: break\n\t# function_something -*\n",
-                "props": ""
+                "id": "div_code_body_2",
+                "props": "collapsed;"
             },
             "code_date": {
                 "content": "Created: Fri Mar 22 21:05:47 2013, modified: Fri Mar 22 21:05:47 2013",
+                "id": "div_code_date_2",
                 "props": ""
             },
             "code_header": {
                 "content": "helper.py -lineno -tag function_something -include",
+                "id": "div_code_header_2",
                 "props": "intoc;"
             }
         },
@@ -115,10 +163,12 @@
         "content": {
             "text_body": {
                 "content": "This functionality might be handy, if one wants to list the content of some file. We only have to enter the file name, and press enter. Additionally, an argument can be supplied, in which case, only the first or last n lines will be printed.<br>",
-                "props": "searchable;"
+                "id": "div_text_body_2",
+                "props": "searchable;collapsed;"
             },
             "text_header": {
                 "content": "Working with headers 1.",
+                "id": "div_text_header_2",
                 "props": "searchable;intoc;"
             }
         },
@@ -129,14 +179,17 @@
         "content": {
             "head_body": {
                 "content": "# comment 1<br># comment 2<br>12 3<br>23 22<br>2132 123<br>55 99",
-                "props": "searchable;"
+                "id": "div_head_body_1",
+                "props": "searchable;collapsed;"
             },
             "head_date": {
                 "content": "Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012",
+                "id": "div_head_date_1",
                 "props": ""
             },
             "head_header": {
                 "content": "test.dat",
+                "id": "div_head_header_1",
                 "props": "intoc;"
             }
         },
@@ -147,10 +200,12 @@
         "content": {
             "text_body": {
                 "content": "If we supply an argument, we can print the first or last n lines as follows<br>",
-                "props": "searchable;"
+                "id": "div_text_body_3",
+                "props": "searchable;collapsed;"
             },
             "text_header": {
                 "content": "Working with headers 2.",
+                "id": "div_text_header_3",
                 "props": "searchable;intoc;"
             }
         },
@@ -161,14 +216,17 @@
         "content": {
             "head_body": {
                 "content": "# comment 1<br># comment 2",
-                "props": "searchable;"
+                "id": "div_head_body_2",
+                "props": "searchable;collapsed;"
             },
             "head_date": {
                 "content": "Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012",
+                "id": "div_head_date_2",
                 "props": ""
             },
             "head_header": {
                 "content": "test.dat 2",
+                "id": "div_head_header_2",
                 "props": "intoc;"
             }
         },
@@ -179,14 +237,17 @@
         "content": {
             "head_body": {
                 "content": "2132 123<br>55 99",
-                "props": "searchable;"
+                "id": "div_head_body_3",
+                "props": "searchable;collapsed;"
             },
             "head_date": {
                 "content": "Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012",
+                "id": "div_head_date_3",
                 "props": ""
             },
             "head_header": {
                 "content": "test.dat -2",
+                "id": "div_head_header_3",
                 "props": "intoc;"
             }
         },
@@ -196,11 +257,13 @@
     {
         "content": {
             "text_body": {
-                "content": "Plots can easily be included in a notebook. A plot cell has three usable subcells. The first one is the caption/title of the plot. This will be included in the table of contents, and this will also be used as the caption, when one converts the notebook to pdf via LaTeX. <br><br>The second cell is the matplotlib code that generates the plot. At the time of writing this, this code is going to be included in the pdf output, while in the notebook, it can be made hidden by clicking on the gray area next to it. <br><br>The third subcell is the plot itself. In case the plot cannot be generated (e.g., due to a syntax error in the code), the traceback will be returned instead. <br><br>Note that gnuplot also can be used as the plotting backend by adding #gnuplot or # gnuplot on the first line of the code.<br>",
-                "props": "searchable;"
+                "content": "Plots can easily be included in a notebook. A plot cell has three usable subcells. The first one is the caption/title of the plot. This will be included in the table of contents, and this will also be used as the caption, when one converts the notebook to pdf via LaTeX. <br><br>The second cell is the matplotlib code that generates the plot. At the time of writing this, this code is going to be included in the pdf output, while in the notebook, it can be made hidden by clicking on the gray arrow at the top. <br><br>The third subcell is the plot itself. In case the plot cannot be generated (e.g., due to a syntax error in the code), the traceback will be returned instead. A link to the file that was generated is also displayed. If this feature is not required, the corresponding div, .div_plot_file, can be set to <b>display: none;</b> in the CSS. This would still save the link in the json file, so that later on it can still be retrieved, but the content will not be displayed. <br><br>Note that gnuplot also can be used as the plotting backend by adding #gnuplot or # gnuplot on the first line of the code.<br>",
+                "id": "div_text_body_6",
+                "props": "searchable;collapsed;"
             },
             "text_header": {
                 "content": "Adding plots",
+                "id": "div_text_header_6",
                 "props": "searchable;intoc;"
             }
         },
@@ -211,15 +274,18 @@
         "content": {
             "plot_caption": {
                 "content": "Time evolution of the displacement of a harmonic oscillator",
+                "id": "div_plot_caption_1",
                 "props": "searchable;"
             },
             "plot_file": {
-                "content": "nothon.note_plot_1.png",
+                "content": "notebooks/nothon.note_plot_1.png",
+                "id": "div_plot_file_1",
                 "props": ""
             },
             "plot_header": {
                 "content": "plot(sin(x), 'ro')<br>xlabel('Time [s]')<br>ylabel('Displacement [a.u.]')<br>",
-                "props": ""
+                "id": "div_plot_header_1",
+                "props": "collapsed;"
             }
         },
         "id": 1,
@@ -228,11 +294,13 @@
     {
         "content": {
             "text_body": {
-                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline).<br>If we wanted to solve the quadratic equation<br>\\[<br>             a\\cdot x^2 + b\\cdot x + c = 0             <br>\\]then you would have to look up the solution formula, <br>\\[<br>             x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}             <br>\\]<br>Some markup can be added to text. <b>Cntr-I</b> is going to make the text <i>italic</i>, <b>Cntr-B</b> turns it <b>boldface</b>,<b> Cntr-O</b> adds <span style=\"background-color: rgb(255, 255, 0);\">highlighting</span>, while <b>Cntr-U</b> will <u>underline</u> the text.<br><br>Notebooks can be converted to pdf via LaTeX by calling python/latex.py with the notebook file as the single argument. Customisation of the latex file should be done through the templates in templates/. If pdf output is needed, self.plot_pdf_output has to be set to True in the resource file.<br><br>\\[<br>     \\begin{eqnarray} a &=& 123 \\\\ b &=& 122 \\end{eqnarray}     <br>\\]<br>",
-                "props": "searchable;"
+                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline). By default, formulae will be displayed with a bluish background, but this can be changed in the CSS file. <br>If we wanted to solve the quadratic equation <span alt=\"\\(ax^2 + bx + x = 0\\)\" class=\"nothon_math\">\\(ax^2 + bx + x = 0\\)</span>, then you would have to look up the solution formula, <br><div alt=\"\\[<br>x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2}<br>\\]\" class=\"nothon_math\">\\[<br>x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2}<br>\\]</div>Some markup can be added to text. <b>Cntr-I</b> is going to make the text <i>italic</i>, <b>Cntr-B</b> turns it <b>boldface</b>,<b> Cntr-O</b> adds <span style=\"background-color: rgb(255, 255, 0);\">highlighting</span>, while <b>Cntr-U</b> will <u>underline</u> the text.<br><br>Notebooks can be converted to pdf via LaTeX by calling python/latex.py with the notebook file as the single argument. Customisation of the latex file should be done through the templates in templates/. If pdf output is needed, self.plot_pdf_output has to be set to True in the resource file.<br><br>Sticky notes can also be added to a text cell. These are small yellow boxes that can be collapsed, so that they do not take up space. <span class=\"note\"><button class=\"note_button\" onclick=\"note_toggle(this);\">Note</button><span style=\"display: inline;\">A typical note cell looks like this.</span></span> By clicking on the 'Note' button, the content of the note will become hidden. <br>",
+                "id": "div_text_body_1",
+                "props": "searchable;collapsed;"
             },
             "text_header": {
                 "content": "This is a text box with some LaTeX code",
+                "id": "div_text_header_1",
                 "props": "searchable;intoc;"
             }
         },

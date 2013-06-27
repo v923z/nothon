@@ -389,3 +389,18 @@ function topmenu_over() {
 		$('#top_menu').css('top', '+=20px')
 	}
 }
+
+function expand_collapse_all(action) {
+	$('div[id^="expand_"]').each(function() {
+		var target = $(this).attr('id')
+		console.log(target)
+		if(action == 'expand') { $(this).children().attr('src', '/static/icons/collapse.png') }
+		else { $(this).children().attr('src', '/static/icons/expand.png') }
+		$('#' + target.replace('expand_', '')).find('*').each(function() {
+			if($(this).data('expand') == target) {
+				if(action == 'expand') { $(this).show() }
+				else { $(this).hide() }
+			}
+		})
+	})
+}
