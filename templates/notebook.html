@@ -32,7 +32,8 @@ $for f in create_funcs + handler_funcs:
 <article id='article'>
 <div class="aside_switch" id="aside_switch" onclick="toggle_document_tree()"><<</div>
 <div class="trash_image" id="trash_image" onclick="toggle_show_hide(event);"></div>
-<ul id="top_menu">
+<div id='top_menu' onmouseover='topmenu_over();'>
+<ul>
 	<li onmouseup='redirect("http://127.0.0.1:8080/?name=__toc");'>ToC</li>
 	<li onmouseup='redirect("http://127.0.0.1:8080/?name=__timeline");'>Timeline</li>
 	<li>Notebook
@@ -44,8 +45,10 @@ $for f in create_funcs + handler_funcs:
 		</ul>
 	</li>
 	<li onmouseup='toggle_context_menu();'>Menu</li>
-	<li id='notebook_status'>Status</li>
+	<li onmouseup='topmenu_hide();'>Hide</li>
+	<div id='notebook_status' >Status</div>
 </ul>
+</div>
 <div id="doc_toplevel">
 <div id="menucontainer-right">
 <div class="menu" onclick="move('up');"><img src="/static/css/up-arrow.png"  width="60%"></div>

@@ -375,3 +375,15 @@ function collapse_collapsible(target) {
 	}
 	return state
 }
+
+function topmenu_hide() {
+	if($('#top_menu').css('top') == '0px') {
+		$('#top_menu').css('top', '-=20px')
+	}
+}
+
+function topmenu_over() {
+	if($('#top_menu').css('top') == '-20px') {
+		$('#top_menu').css('top', '+=20px')
+	}
+}
