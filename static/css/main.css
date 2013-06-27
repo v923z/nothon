@@ -510,13 +510,13 @@ p {
 	z-index:			5;
 }
 
-#top_menu li:hover ul {
+#top_menu ul > li:hover ul {
 	background:			#eeeeee;
 	color:				#116688;
 	display:			block;
 }
 
-#top_menu li:hover {
+#top_menu ul > li:hover {
 	background:			#eeeeee;
 	color:				#116688;
 }
@@ -545,11 +545,9 @@ p {
 
 #notebook_status {
 	color:				#ff0000;
-	font-size: 			16pt;
+	font-size: 			14pt;
 	position:			relative;
 	margin-top:			0px;
-	padding:			0px;
-	right:				10%;
-	text-align:			center;
-	float:				right;
+	right:				2%;
+	text-align:			right;
 }

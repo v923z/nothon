@@ -200,6 +200,8 @@ function get_divs() {
 
 function save() {
 	console.log('saving', window.location.href)
+	var time = new Date()
+	$('#notebook_status').html('Saved at ' + time.toTimeString().split(' ')[0])
 	if(window.location.href.indexOf('?name=__timeline') > 0) return
 	console.log('saving')
 	var message = create_message('', "save")
