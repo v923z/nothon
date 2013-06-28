@@ -384,6 +384,14 @@ function topmenu_over() {
 	}
 }
 
+function topmenu_toggle() {
+	if($('#top_menu').css('top') == '0px') {
+		$('#top_menu').css('top', '-=20px')
+	} else {
+		$('#top_menu').css('top', '+=20px')
+	}
+}
+
 function expand_collapse_all(action) {
 	$('div[id^="expand_"]').each(function() {
 		var target = $(this).attr('id')
@@ -404,4 +412,11 @@ function trashbin_image_toggle() {
 
 function toggle_trashbin() {
 	$('#trash').toggle()
+}
+
+function toggle_all() {
+	trashbin_image_toggle()
+	topmenu_toggle()
+	toggle_context_menu()
+	toggle_document_tree()
 }
