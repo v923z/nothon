@@ -31,7 +31,7 @@ $for f in create_funcs + handler_funcs:
 </aside>
 <article id='article'>
 <div class="aside_switch" id="aside_switch" onclick="toggle_document_tree()"><<</div>
-<div class="trash_image" id="trash_image" onclick="toggle_show_hide(event);"></div>
+<div class="trash_image" id="trash_image" onclick="toggle_trashbin();"></div>
 <div id='top_menu' onmouseover='topmenu_over();'>
 <ul>
 	<li onmouseup='redirect("http://127.0.0.1:8080/?name=__toc");'>ToC</li>
@@ -55,8 +55,14 @@ $for f in create_funcs + handler_funcs:
 			<li>Head</li>
 		</ul>
 	</li>
-	<li onmouseup='toggle_context_menu();'>Menu</li>
-	<li onmouseup='topmenu_hide();'>Hide</li>
+	<li>Menu
+		<ul>
+			<li onmouseup='toggle_context_menu();'>Context</li>
+			<li onmouseup='topmenu_hide();'>Hide</li>
+			<li onmouseup='trashbin_image_toggle();'>Trashbin</li>
+			<li onmouseup='toggle_all();'>Toggle all</li>
+		</ul>
+	</li>
 	<div id='notebook_status'>Saved: never</div>
 </ul>
 </div>
@@ -85,8 +91,8 @@ $for f in create_funcs:
 
 <div id="docmain">$:safe_content(content, "content")
 </div>
+<div id="trash"></div>
 </div>
-<div id="trash" class="trash">
 </article>
 </body>
 </html>

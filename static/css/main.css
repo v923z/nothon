@@ -410,7 +410,7 @@ article {
 	margin-left:	40px;
 }
 
-.trash {
+#trash {
 	display: 		none;
 	background:		#ffe699;
 }

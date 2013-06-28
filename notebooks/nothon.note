@@ -2,7 +2,7 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Fri Jun 28 2013 13:44:17 GMT+0200 (CEST)",
+"date" : "Fri Jun 28 2013 13:52:38 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
     {
@@ -72,9 +72,9 @@
     {
         "content": {
             "text_body": {
-                "content": "As a general rule, all labels, buttons etc. of nothon can be hidden: they are there to help the user, but not to distract them. Therefore, when not needed, the user can hide everything except the notebook itself. <br><br>At the top of the notebook, a toolbar can be found. This contains links to various actions. <br><br>ToC and Timeline refer to the table of contents (a list of all content-manageable headers of the notebook), and an ordered list of all notebooks in the Calendar section. When pressing either button, the user is taken to a new page.<br><br>The Notebook button gives access to saving, and various converting functions (saving in HTML and PDF format), and collapsing/expanding all cells of the notebook.<br><br>The Cell button insert a new cell of the chosen type.<br><br>The Menu button toggles the context-dependent menu on the right hand side. This sidebar contains commands relevant to the currently active cell. On the top of the menu, the type of the currently active cell is also shown. <br>",
+                "content": "As a general rule, all labels, buttons etc. of nothon can be hidden: they are there to help the user, but not to distract them. Therefore, when not needed, the user can hide everything except the notebook itself. <br><br>At the top of the notebook, a toolbar can be found. This contains links to various actions. <br><br>ToC and Timeline refer to the table of contents (a list of all content-manageable headers of the notebook), and an ordered list of all notebooks in the Calendar section. When pressing either button, the user is taken to a new page.<br><br>The Notebook button gives access to saving, and various converting functions (saving in HTML and PDF format), and collapsing/expanding all cells of the notebook.<br><br>The Cell button insert a new cell of the chosen type.<br><br>The Menu button toggles the context-dependent menu on the right hand side. This sidebar contains commands relevant to the currently active cell. On the top of the menu, the type of the currently active cell is also shown. <br><br>The Hide button hides the toolbar. It can be made to reappear by moving the mouse to the very top of the page. <br>",
                 "id": "div_text_body_12",
-                "props": "searchable;"
+                "props": "searchable;collapsed;"
             },
             "text_header": {
                 "content": "Using the nothon menus",
@@ -310,9 +310,9 @@
     {
         "content": {
             "text_body": {
-                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline). By default, formulae will be displayed with a bluish background, but this can be changed in the CSS file. <br>If we wanted to solve the quadratic equation <span alt=\"\\(ax^2 + bx + x = 0\\)\" class=\"nothon_math\">\\(ax^2 + bx + x = 0\\)</span>, then you would have to look up the solution formula, <br><div alt=\"\\[<br>x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2}<br>\\]\" class=\"nothon_math\">\\[<br>x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2}<br>\\]</div>Some markup can be added to text. <b>Cntr-I</b> is going to make the text <i>italic</i>, <b>Cntr-B</b> turns it <b>boldface</b>,<b> Cntr-O</b> adds <span style=\"background-color: rgb(255, 255, 0);\">highlighting</span>, while <b>Cntr-U</b> will <u>underline</u> the text.<br><br>Notebooks can be converted to pdf via LaTeX by calling python/latex.py with the notebook file as the single argument. Customisation of the latex file should be done through the templates in templates/. If pdf output is needed, self.plot_pdf_output has to be set to True in the resource file.<br><br>Sticky notes can also be added to a text cell. These are small yellow boxes that can be collapsed, so that they do not take up space. <span class=\"note\"><button class=\"note_button\" onclick=\"note_toggle(this);\">Note</button><span style=\"display: inline;\">A typical note cell looks like this.</span></span> By clicking on the 'Note' button, the content of the note will become hidden. <br>",
+                "content": "In addition to containing raw text, courtesy of MathJaX, a text box can also deal with LaTeX code. This can be inserted by pressing Cntr-Alt-M (display style), or Alt-M (inline). By default, formulae will be displayed with a bluish background, but this can be changed in the CSS file. <br>If we wanted to solve the quadratic equation <span alt=\"\\(ax^2 + bx + x = 0\\)\" class=\"nothon_math\">\\(ax^2 + bx + x = 0\\)</span>, we would then have to look up the solution formula, <br><div alt=\"\\[<br>x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2}<br>\\]\" class=\"nothon_math\">\\[<br>x_{1,2} = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2}<br>\\]</div>Some markup can be added to text. <b>Cntr-I</b> is going to make the text <i>italic</i>, <b>Cntr-B</b> turns it <b>boldface</b>,<b> Cntr-O</b> adds <span style=\"background-color: rgb(255, 255, 0);\">highlighting</span>, while <b>Cntr-U</b> will <u>underline</u> the text.<br><br>Notebooks can be converted to pdf via LaTeX by calling python/latex.py with the notebook file as the single argument. Customisation of the latex file should be done through the templates in templates/. If pdf output is needed, self.plot_pdf_output has to be set to True in the resource file.<br><br>Sticky notes can also be added to a text cell. These are small yellow boxes that can be collapsed, so that they do not take up space. <span class=\"note\"><button class=\"note_button\" onclick=\"note_toggle(this);\">Note</button><span style=\"display: inline;\">A typical note cell looks like this.</span></span> By clicking on the 'Note' button, the content of the note will become hidden. <br>",
                 "id": "div_text_body_1",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "This is a text box with some LaTeX code",

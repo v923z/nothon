@@ -83,12 +83,6 @@ function get_max_index(className) {
 	return num
 }
 
-function get_mouse_pos(event) {
-	if(event.target.id.indexOf('_main_') != -1) {
-		toggle_show_hide(event)
-	}
-}
-
 function create_and_insert(className) {
 	$("#menu > ul").fadeOut("slow"); 
 	if(active_div) {
@@ -402,4 +396,12 @@ function expand_collapse_all(action) {
 			}
 		})
 	})
+}
+
+function trashbin_image_toggle() {
+	$('#trash_image').toggle()
+}
+
+function toggle_trashbin() {
+	$('#trash').toggle()
 }
