@@ -2,7 +2,7 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Thu Jun 27 2013 21:42:23 GMT+0200 (CEST)",
+"date" : "Fri Jun 28 2013 13:44:17 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
     {
@@ -24,7 +24,7 @@
     {
         "content": {
             "text_body": {
-                "content": "Or, put differently, what is wrong with the wikis in general? There are several problems with the wiki approach. <br><ol><li>Extra content (images, sound etc.) has to be uploaded to a server, creating a storage/management overhead.</li><li>Formatting cannot be done, and formulae cannot be edited in-place: one has to invoke the editor mode for each section.</li><li>There is no way of creating content in the wiki page itself. <br></li></ol><p>The first of the problems was alleviated in the excellent zim-wiki project, which, exactly because it doesn't require a server, works with the underlying file system. In some respect, the third point was also addressed in zim, namely, there is a way of creating plots and formulae on the fly. However, formulae require a LaTeX system, which has its own problems.</p><hr>When we set out to develop nothon, we wanted to rectify the above-mentioned problems. However, since the desire was to create a system that can be used for documenting various projects (both experimental, and theoretical/numerical), we also wanted to include tools that would make project management easy. Thus, we envisaged the following features.<br><ol><li>Easy customisation: in terms of both adding extensions, and the lookout of the wiki. <br></li><li>Integration of a scientific plotting utility.&nbsp;</li><li>Some interaction with the file system. This would include accessing the content of data files, and retrieving and highlighting the content of software code.</li><li>Portability.<br></li></ol><p>As for the first point, the browser seemed to be a natural choice: given the HTML content, customisation can be done with the help of cascaded stylesheets. Resorting to the browser has the additional benefit that the content of a notebook can easily converted to a format that is widely used, and portability is not a problem.<br></p>",
+                "content": "Or, put differently, what is wrong with wikis in general? There are several problems with the wiki approach. <br><ol><li>Extra content (images, sound etc.) has to be uploaded to a server, creating a storage/management overhead.</li><li>Formatting cannot be done, and formulae cannot be edited in-place: one has to invoke the editor mode for each section.</li><li>There is no way of creating content in the wiki page itself.<br></li></ol><p>The first of the problems was alleviated in the excellent zim-wiki project, which, exactly because it doesn't require a server, works with the underlying file system. In some respect, the third point was also addressed in zim, namely, there is a way of creating plots and formulae on the fly. However, formulae require a LaTeX system, which has its own problems, while the script that generates a plot is hidden. This can be an advantage or disadvantage, depending on the particular situation. <br></p><hr>When we set out to develop nothon, we wanted to rectify the above-mentioned problems. However, since the desire was to create a system that can be used for documenting various projects (both experimental, and theoretical/numerical), we also wanted to include tools that would make project management easy. Thus, we envisaged the following features.<br><ol><li>Easy customisation: in terms of both adding extensions, and the lookout of the wiki. We also thought that customisation is a rather important subject in the sense that we cannot possibly think of all uses, and we wanted to implement a wiki in a way that can be modified via a plug-in infrastructure. <br></li><li>Integration of a scientific plotting utility.&nbsp;</li><li>Some interaction with the file system. This would include accessing the content of data files, and retrieving and highlighting the content of software code. On can also think about saving particular cells of a document. E.g., the script producing a figure could be saved as a stand-alone file. <br></li><li>Portability.<br></li></ol><p>As for the first point, the browser seemed to be a natural choice: given the HTML content, customisation can be done with the help of cascaded stylesheets. In this way, not only could we completely decouple the content from the presentation, but the decoupling would work at the level of the code, too. In other words, the server-client separation naturally lends itself to a double-headed implementation: the server can deal with access to the file system, plotting and the like, while the browser's responsibility is to handle the user interaction.&nbsp; Resorting to the browser has the additional benefit that the content of a notebook can easily converted to a format that is widely used, and portability is not a problem either. <br></p>",
                 "id": "div_text_body_11",
                 "props": "searchable;collapsed;"
             },
@@ -67,6 +67,22 @@
             }
         },
         "id": 8,
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "As a general rule, all labels, buttons etc. of nothon can be hidden: they are there to help the user, but not to distract them. Therefore, when not needed, the user can hide everything except the notebook itself. <br><br>At the top of the notebook, a toolbar can be found. This contains links to various actions. <br><br>ToC and Timeline refer to the table of contents (a list of all content-manageable headers of the notebook), and an ordered list of all notebooks in the Calendar section. When pressing either button, the user is taken to a new page.<br><br>The Notebook button gives access to saving, and various converting functions (saving in HTML and PDF format), and collapsing/expanding all cells of the notebook.<br><br>The Cell button insert a new cell of the chosen type.<br><br>The Menu button toggles the context-dependent menu on the right hand side. This sidebar contains commands relevant to the currently active cell. On the top of the menu, the type of the currently active cell is also shown. <br>",
+                "id": "div_text_body_12",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Using the nothon menus",
+                "id": "div_text_header_12",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 12,
         "type": "text"
     },
     {
