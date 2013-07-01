@@ -1,14 +1,16 @@
 function paragraph_activate(id) {
 	active_div = document.getElementById('div_paragraph_body_' + id)
 	active_div.focus()
-	text_context_menu()
+	paragraph_context_menu()
 }
 
 function paragraph_onclick(event) {
 }
 
 function paragraph_context_menu() {
-	text_context_menu()	
+	text_context_menu()
+	$('#context_menu').children(':first').replaceWith('<div class="context_menu_header">Paragraph</div>')
+	$('#context_menu > ul').children(':last').replaceWith('<li onmouseup="create_and_insert2(this);">New paragraph</li>')
 }
 
 function paragraph_keypress(event) {
