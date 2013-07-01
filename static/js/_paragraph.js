@@ -4,9 +4,6 @@ function paragraph_activate(id) {
 	paragraph_context_menu()
 }
 
-function paragraph_onclick(event) {
-}
-
 function paragraph_context_menu() {
 	text_context_menu()
 	$('#context_menu').children(':first').replaceWith('<div class="context_menu_header">Paragraph</div>')

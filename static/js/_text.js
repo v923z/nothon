@@ -21,6 +21,8 @@ function text_context_menu() {
 		<li onmousedown="return insert_note();" onmouseup="return false;">Note</li>\
 		<li alt="insertHorizontalRule" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Line</li>\
 		<hr>\
+		<li alt="raw" onmouseup="strip_mathjax(active_div); return false;">Raw content</li>\
+		<li alt="lock" onmouseup="return lock_cell(active_div);">Lock cell</li>\
 		<li alt="new" onmouseup="create_and_insert2(this);">New text cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
@@ -62,6 +64,15 @@ function text_onclick(target) {
 	}
 }
 
+function render_mathjax(target) {
+	$(target).find('.nothon_math').each( function() {
+			if($(this).attr('alt').length == 0) {
+				$(this).attr('alt', $(this).html())
+			}
+	})
+	MathJax.Hub.Queue(["Typeset", MathJax.Hub, target.id]);
+}
+
 function text_keypress(event) {
 	console.log(event.which)
 	if(event.which === 13 && event.target.id.indexOf('_header_') > -1) {
@@ -69,13 +80,11 @@ function text_keypress(event) {
 		active_div.focus()
 		return false
 	} else if(event.which === 13 && event.shiftKey) {					// Enter
+		render_mathjax(event.target)
 		create_and_insert('text_main')
 		return false
 	} else if(event.which === 13 && event.ctrlKey) {				// Enter
-		$(event.target).find('.nothon_math').each( function() { console.log($(this).html())
-				$(this).attr('alt', $(this).html()) 
-		})
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub, event.target.id]);
+		render_mathjax(event.target)
 		return false
 	} else if(event.which === 109 && event.ctrlKey && !event.altKey) {				// m
 		strip_mathjax(event.target)
@@ -197,7 +206,6 @@ function text_sanitise(block) {
 	var dtemp = $('<div/>', {'id': 'dtemp'}).appendTo('#trash')
 	$('#dtemp').html($('#' + block.content.text_body.id).html())
 	strip_mathjax_for_save($('#dtemp'))
-	console.log($('#dtemp').html())
 	block.content.text_body.content = $('#dtemp').html()
 	block.content.text_header.content = block.content.text_header.content.replace('<br>', '')
 	$('#dtemp').remove()
@@ -269,10 +277,11 @@ function get_math_code(target) {
 }
 
 function strip_mathjax(target) {
-	$(target).find('.nothon_math').each( function() { 
-		console.log($(this).attr('alt'))
-		$(this).html($(this).attr('alt'))
-		$(this).attr('alt', " ")
+	$(target).find('.nothon_math').each( function() {
+		if($(this).attr('alt') !== '') {
+			$(this).html($(this).attr('alt'))
+			$(this).attr('alt', '')
+		}
 	})
 }
 
@@ -282,10 +291,10 @@ function strip_mathjax_for_save(target) {
 
 function insert_math(mode) {
 	if (mode === 'inline') {
-		document.execCommand('insertHTML', false, '<span class="nothon_math">\\(<span id="_math_marker_"></span>\\)</span>&nbsp;')
+		document.execCommand('insertHTML', false, '<span class="nothon_math" alt="">\\(<span id="_math_marker_"></span>\\)</span>&nbsp;')
 	}
 	if (mode === 'display') {
-		document.execCommand('insertHTML', false, '<br><div class="nothon_math">\\[<br><span id="_math_marker_"></span><br>\\]</div><br>')
+		document.execCommand('insertHTML', false, '<br><div class="nothon_math" alt="">\\[<br><span id="_math_marker_"></span><br>\\]</div><br>')
 	}
 	goto_marker("_math_marker_")
 }

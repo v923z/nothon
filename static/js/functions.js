@@ -424,3 +424,7 @@ function toggle_all() {
 function create_and_insert2(target) {
 	console.log(target.innerHTML.toLowerCase())
 }
+
+function lock_cell() {
+	return false
+}

@@ -2,7 +2,7 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Mon Jul 01 2013 15:55:38 GMT+0200 (CEST)",
+"date" : "Mon Jul 01 2013 17:28:39 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
     {
@@ -321,6 +321,54 @@
             }
         },
         "id": 1,
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "",
+                "id": "div_text_body_15",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "",
+                "id": "div_text_header_15",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 15,
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "",
+                "id": "div_text_body_14",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "",
+                "id": "div_text_header_14",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 14,
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "",
+                "id": "div_text_body_13",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "",
+                "id": "div_text_header_13",
+                "props": "searchable;intoc;"
+            }
+        },
+        "id": 13,
         "type": "text"
     }
 ]
