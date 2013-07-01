@@ -1,7 +1,7 @@
 function code_activate(id) {
 	active_div = document.getElementById('div_code_header_' + id)
 	active_div.focus()
-	code__context_menu()
+	code_context_menu()
 }
 
 function code_onclick(target) {
