@@ -2,7 +2,7 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Fri Jun 28 2013 13:52:38 GMT+0200 (CEST)",
+"date" : "Mon Jul 01 2013 15:55:38 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
     {
@@ -10,7 +10,7 @@
             "text_body": {
                 "content": "On the following pages, we would like to outline the rationale behind the creation of <i>nothon</i>, and give the user a couple of tips on efficient use of the notebook. At the end, we will also show how the behaviour of can be costumised, and how new features can easily be added. <br>",
                 "id": "div_text_body_10",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Introduction",
@@ -26,7 +26,7 @@
             "text_body": {
                 "content": "Or, put differently, what is wrong with wikis in general? There are several problems with the wiki approach. <br><ol><li>Extra content (images, sound etc.) has to be uploaded to a server, creating a storage/management overhead.</li><li>Formatting cannot be done, and formulae cannot be edited in-place: one has to invoke the editor mode for each section.</li><li>There is no way of creating content in the wiki page itself.<br></li></ol><p>The first of the problems was alleviated in the excellent zim-wiki project, which, exactly because it doesn't require a server, works with the underlying file system. In some respect, the third point was also addressed in zim, namely, there is a way of creating plots and formulae on the fly. However, formulae require a LaTeX system, which has its own problems, while the script that generates a plot is hidden. This can be an advantage or disadvantage, depending on the particular situation. <br></p><hr>When we set out to develop nothon, we wanted to rectify the above-mentioned problems. However, since the desire was to create a system that can be used for documenting various projects (both experimental, and theoretical/numerical), we also wanted to include tools that would make project management easy. Thus, we envisaged the following features.<br><ol><li>Easy customisation: in terms of both adding extensions, and the lookout of the wiki. We also thought that customisation is a rather important subject in the sense that we cannot possibly think of all uses, and we wanted to implement a wiki in a way that can be modified via a plug-in infrastructure. <br></li><li>Integration of a scientific plotting utility.&nbsp;</li><li>Some interaction with the file system. This would include accessing the content of data files, and retrieving and highlighting the content of software code. On can also think about saving particular cells of a document. E.g., the script producing a figure could be saved as a stand-alone file. <br></li><li>Portability.<br></li></ol><p>As for the first point, the browser seemed to be a natural choice: given the HTML content, customisation can be done with the help of cascaded stylesheets. In this way, not only could we completely decouple the content from the presentation, but the decoupling would work at the level of the code, too. In other words, the server-client separation naturally lends itself to a double-headed implementation: the server can deal with access to the file system, plotting and the like, while the browser's responsibility is to handle the user interaction.&nbsp; Resorting to the browser has the additional benefit that the content of a notebook can easily converted to a format that is widely used, and portability is not a problem either. <br></p>",
                 "id": "div_text_body_11",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Why is there a need for another wiki?",
@@ -42,7 +42,7 @@
             "text_body": {
                 "content": "The most recent version of the source code resides at https://github.com/v923z/nothon<br>The code has minimal dependencies, most of which are probably installed on any linux distribution. In order to have plotting, either matplotlib, or gnuplot has to be installed. Beyond this, the only dependency is web.py, in which the server is implemented. <br><br>After starting nothon.py, the notebook can be accessed from the browser at address <br><br>http://127.0.0.1:8080/?name=somenotebook.note<br><br>If the notebook exists (this should be a JSON file), then its content will be rendered in the browser. If it doesn't exist, then a new notebook with that name will be created. When saving this notebook, its content will be written to disc under the name somenotebook.note. <br><br>Once in the browser, a new divide (or cell) can be added by clicking on the appropriate label under the + sign on the right hand side. The active div's parent (indicated by a thick right-hand-side border, though, as stated above, visual features can be manipulated in the appropriate CSS file) can be removed by clicking on remove. This operation moves the divide to the trash, which is part of the document, but is hidden. (The trash can be made visible by clicking on the trashbin icon on the lower right corner.) By clicking on recover, either the active block of the trashbin, or if that does not exist, then the last block in the trash is restored to the visible part of the document, and is inserted as the last divide. Blocks of the document can be moved up or down by clicking on the up or down arrow on the right hand side. <br>",
                 "id": "div_text_body_7",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Beginning with nothon",
@@ -58,7 +58,7 @@
             "text_body": {
                 "content": "Headers in text, code, and head blocks are evaluated by pressing `Enter`. This moves the cursor to the body of a text header, or sends a request to the server to execute and return the output of the corresponding handler function. <br><br>Units can be \"executed\" by pressing `Cntr+Enter`. This will render mathematical formulae in a text block, or execute a plot. If `Shift+Enter` is pressed, a new block of the same type is also inserted into the notebook.",
                 "id": "div_text_body_8",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Usage in general terms",
@@ -74,7 +74,7 @@
             "text_body": {
                 "content": "As a general rule, all labels, buttons etc. of nothon can be hidden: they are there to help the user, but not to distract them. Therefore, when not needed, the user can hide everything except the notebook itself. <br><br>At the top of the notebook, a toolbar can be found. This contains links to various actions. <br><br>ToC and Timeline refer to the table of contents (a list of all content-manageable headers of the notebook), and an ordered list of all notebooks in the Calendar section. When pressing either button, the user is taken to a new page.<br><br>The Notebook button gives access to saving, and various converting functions (saving in HTML and PDF format), and collapsing/expanding all cells of the notebook.<br><br>The Cell button insert a new cell of the chosen type.<br><br>The Menu button toggles the context-dependent menu on the right hand side. This sidebar contains commands relevant to the currently active cell. On the top of the menu, the type of the currently active cell is also shown. <br><br>The Hide button hides the toolbar. It can be made to reappear by moving the mouse to the very top of the page. <br>",
                 "id": "div_text_body_12",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Using the nothon menus",
@@ -90,7 +90,7 @@
             "text_body": {
                 "content": "The visual appearance of a notebook can be influenced by changing the appropriate parameters in the cascaded style sheet. These modifications do not change the behaviour of the server or the client. <br><br>Several aspects of the behaviour of the server can be customised in a resource file. (In future versions, this will be extended to the client, too.) By default, only png files are created, when the user plots in the notebook. By changing the value of the variable self.plot_pdf_output to True, the plotting backend will generate pdf output, too. This output can later be included in latex files. <br><br>The ordering of the directory tree (on the left hand side of the browser window, although, again, the position of this can be modified in the CSS file) can be customised. By default, the server sends the tree ordered linux style, i.e., in each folder, the files are listed first, and then the folders. By setting the variable self.dirlisting_style to \"windows\", folders will be shown first, and then files.<br><br>When working with code (see below), it might be useful to include only a function or a segment of a code file. This can be done by defining a start and end tag in the source code, and supplying that to the code handler. In order for the code highlighter to know what amounts to the beginning/ending of a code segment, the tag is prepended and appended with a beginning/closing string. This can be defined in the variable self.code_delimiter. E.g., if self.code_delimiter = ('*-', '-*'), then the code should be enclosed between the tags <br><br>&nbsp;&nbsp;&nbsp; *- some_tag<br>&nbsp;&nbsp;&nbsp; .... code ....<br>&nbsp;&nbsp; some_tag -*<br><br>The user can define arbitrary tag combination. <br>",
                 "id": "div_text_body_9",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Customisation",
@@ -106,7 +106,7 @@
             "text_body": {
                 "content": "Arbitrary code residing on the hard disc can conveniently be displayed. All one has to do is give the file name in the header (the only editable div) of a code cell.<br>",
                 "id": "div_text_body_4",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Code segments 1.",
@@ -143,7 +143,7 @@
             "text_body": {
                 "content": "Code lines can be numbered by adding -lineno on the command line. In addition, if a start and end tag are defined in the source file, the code highlighter can be made to display only the segment between the two strings. If -include is specified on the command line, the tags are also included in the highlit code. This can be useful when one wants to emphasise that we are dealing with a code segment only.<br>",
                 "id": "div_text_body_5",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Working with code 2.",
@@ -180,7 +180,7 @@
             "text_body": {
                 "content": "This functionality might be handy, if one wants to list the content of some file. We only have to enter the file name, and press enter. Additionally, an argument can be supplied, in which case, only the first or last n lines will be printed.<br>",
                 "id": "div_text_body_2",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Working with headers 1.",
@@ -196,7 +196,7 @@
             "head_body": {
                 "content": "# comment 1<br># comment 2<br>12 3<br>23 22<br>2132 123<br>55 99",
                 "id": "div_head_body_1",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "head_date": {
                 "content": "Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012",
@@ -217,7 +217,7 @@
             "text_body": {
                 "content": "If we supply an argument, we can print the first or last n lines as follows<br>",
                 "id": "div_text_body_3",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Working with headers 2.",
@@ -233,7 +233,7 @@
             "head_body": {
                 "content": "# comment 1<br># comment 2",
                 "id": "div_head_body_2",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "head_date": {
                 "content": "Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012",
@@ -254,7 +254,7 @@
             "head_body": {
                 "content": "2132 123<br>55 99",
                 "id": "div_head_body_3",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "head_date": {
                 "content": "Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012",
@@ -275,7 +275,7 @@
             "text_body": {
                 "content": "Plots can easily be included in a notebook. A plot cell has three usable subcells. The first one is the caption/title of the plot. This will be included in the table of contents, and this will also be used as the caption, when one converts the notebook to pdf via LaTeX. <br><br>The second cell is the matplotlib code that generates the plot. At the time of writing this, this code is going to be included in the pdf output, while in the notebook, it can be made hidden by clicking on the gray arrow at the top. <br><br>The third subcell is the plot itself. In case the plot cannot be generated (e.g., due to a syntax error in the code), the traceback will be returned instead. A link to the file that was generated is also displayed. If this feature is not required, the corresponding div, .div_plot_file, can be set to <b>display: none;</b> in the CSS. This would still save the link in the json file, so that later on it can still be retrieved, but the content will not be displayed. <br><br>Note that gnuplot also can be used as the plotting backend by adding #gnuplot or # gnuplot on the first line of the code.<br>",
                 "id": "div_text_body_6",
-                "props": "searchable;collapsed;"
+                "props": "searchable;"
             },
             "text_header": {
                 "content": "Adding plots",

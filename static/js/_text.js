@@ -13,14 +13,22 @@ function text_context_menu() {
 		<li alt="italic" onmousedown="return mouse_down(this, null);" onmouseup="return false;"><i>Italic</i></li>\
 		<li alt="underline" onmousedown="return mouse_down(this, null);" onmouseup="return false;"><u>Underline</u></li>\
 		<li alt="strikeThrough" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Strikethrough</li>\
+		<li alt="hilitecolor" onmousedown="return highlight();" onmouseup="return false;">Highlight</li>\
 		<li alt="indent" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Indent</li>\
 		<li alt="outdent" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Outdent</li>\
 		<li onmousedown="return insert_date();" onmouseup="return false;">Date</li>\
 		<li onmousedown="return insert_image();" onmouseup="return false;">Image</li>\
 		<li onmousedown="return insert_note();" onmouseup="return false;">Note</li>\
 		<li alt="insertHorizontalRule" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Line</li>\
+		<hr>\
+		<li alt="new" onmouseup="create_and_insert2(this);">New text cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
+}
+
+function highlight() {
+	document.execCommand("hilitecolor", false, "#ffff00")
+	return false
 }
 
 function image_html(source) {
@@ -40,6 +48,7 @@ function insert_date() {
 
 function mouse_down(id, extraarg) {
 	var command = $(id).attr('alt')
+	console.log(command)
 	document.execCommand(command, false, extraarg)
 	return false
 }

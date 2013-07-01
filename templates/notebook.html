@@ -48,11 +48,14 @@ $for f in create_funcs + handler_funcs:
 	</li>
 	<li>Cell
 		<ul>
-			<li>Section</li>
-			<li>Paragraph</li>
-			<li>Plot</li>
-			<li>Code</li>
-			<li>Head</li>
+			<li onmouseup='create_and_insert2(this);'>Section</li>
+			<li onmouseup='create_and_insert2(this);'>Paragraph</li>
+			<li onmouseup='create_and_insert2(this);'>Plot</li>
+			<li onmouseup='create_and_insert2(this);'>Code</li>
+			<li onmouseup='create_and_insert2(this);'>Head</li>
+			<hr>
+			<li onmouseup='delete_block();'>Delete</li>
+			<li onmouseup='recover_block();'>Recover</li>			
 		</ul>
 	</li>
 	<li>Menu

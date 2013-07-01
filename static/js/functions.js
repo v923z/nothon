@@ -420,3 +420,7 @@ function toggle_all() {
 	toggle_context_menu()
 	toggle_document_tree()
 }
+
+function create_and_insert2(target) {
+	console.log(target.innerHTML.toLowerCase())
+}
