@@ -1,6 +1,7 @@
 function head_activate(id) {
 	active_div = document.getElementById('div_head_header_' + id)
 	active_div.focus()
+	head_context_menu()
 }
 
 function head_onclick(target) {
@@ -10,6 +11,14 @@ function head_onclick(target) {
 	} else {
 		active_div = null
 	}
+}
+
+function head_context_menu() {
+	var menu = '<div class="context_menu_header">Head</div>\
+		<ul class="context_menu_list">\
+		<li onmousedown="return false;" onmouseup="return false;">New head cell</li>\
+	</ul>'
+	$('#context_menu').html(menu)
 }
 
 function head_keypress(event) {

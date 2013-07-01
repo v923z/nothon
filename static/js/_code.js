@@ -1,6 +1,7 @@
 function code_activate(id) {
 	active_div = document.getElementById('div_code_header_' + id)
 	active_div.focus()
+	code__context_menu()
 }
 
 function code_onclick(target) {
@@ -10,6 +11,14 @@ function code_onclick(target) {
 	} else {
 		active_div = null
 	}
+}
+
+function code_context_menu() {
+	var menu = '<div class="context_menu_header">Code</div>\
+		<ul class="context_menu_list">\
+		<li onmousedown="return false;" onmouseup="return false;">New code cell</li>\
+	</ul>'
+	$('#context_menu').html(menu)
 }
 
 function code_keypress(event) {

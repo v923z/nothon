@@ -5,8 +5,9 @@ function plot_activate(id) {
 }
 
 function plot_context_menu() {
-	var menu = '<ul class="context_menu_list">\
-		<li onmousedown="return false;" onmouseup="return false;">placeholder</li>\
+	var menu = '<div class="context_menu_header">Plot</div>\
+		<ul class="context_menu_list">\
+		<li onmousedown="return false;" onmouseup="return false;">New plot cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
 }
