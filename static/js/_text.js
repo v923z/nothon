@@ -64,15 +64,6 @@ function text_onclick(target) {
 	}
 }
 
-function render_mathjax(target) {
-	$(target).find('.nothon_math').each( function() {
-			if($(this).attr('alt').length == 0) {
-				$(this).attr('alt', $(this).html())
-			}
-	})
-	MathJax.Hub.Queue(["Typeset", MathJax.Hub, target.id]);
-}
-
 function text_keypress(event) {
 	console.log(event.which)
 	if(event.which === 13 && event.target.id.indexOf('_header_') > -1) {
@@ -287,6 +278,15 @@ function strip_mathjax(target) {
 
 function strip_mathjax_for_save(target) {
 	$(target).find('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })
+}
+
+function render_mathjax(target) {
+	$(target).find('.nothon_math').each( function() {
+			if($(this).attr('alt').length == 0) {
+				$(this).attr('alt', $(this).html())
+			}
+	})
+	MathJax.Hub.Queue(["Typeset", MathJax.Hub, target.id]);
 }
 
 function insert_math(mode) {
