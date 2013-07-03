@@ -2,13 +2,13 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Mon Jul 01 2013 17:28:39 GMT+0200 (CEST)",
+"date" : "Mon Jul 01 2013 20:43:57 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
     {
         "content": {
             "text_body": {
-                "content": "On the following pages, we would like to outline the rationale behind the creation of <i>nothon</i>, and give the user a couple of tips on efficient use of the notebook. At the end, we will also show how the behaviour of can be costumised, and how new features can easily be added. <br>",
+                "content": "On the following pages, we would like to outline the rationale behind the creation of <i>nothon</i>, and give the user a couple of tips on efficient use of the notebook. At the end, we will also show how the behaviour of can be costumised, and how new features can easily be added.",
                 "id": "div_text_body_10",
                 "props": "searchable;"
             },
@@ -29,7 +29,7 @@
                 "props": "searchable;"
             },
             "text_header": {
-                "content": "Why is there a need for another wiki?",
+                "content": "Why another wiki?",
                 "id": "div_text_header_11",
                 "props": "searchable;intoc;"
             }

@@ -7,9 +7,21 @@ function plot_activate(id) {
 function plot_context_menu() {
 	var menu = '<div class="context_menu_header">Plot</div>\
 		<ul class="context_menu_list">\
+		<li onmousedown="return false;" onmouseup="return copy_plot_cell();">Copy cell</li>\
 		<li onmousedown="return false;" onmouseup="return false;">New plot cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
+}
+
+function copy_plot_cell() {
+	var plot_main = $(active_div).closest('div[id^="div_plot_main_"]')
+	var num = get_max_index('plot_main') + 1
+	var new_div = document.createElement("div")
+	new_div.innerHTML = plot_html(num)
+	$(new_div).children('*').eq(0).children('.plot_header').eq(0).html($(plot_main).children('.plot_header').eq(0).html())
+	$(new_div).children('*').eq(0).children('.plot_caption').eq(0).html($(plot_main).children('.plot_caption').eq(0).html())
+	$(new_div).children('*').eq(0).insertAfter(plot_main)
+	return false
 }
 
 function plot_onclick(target) {

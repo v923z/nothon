@@ -98,8 +98,7 @@ function text_keypress(event) {
 		document.execCommand("underline", false, false)
 		return false
 	} else if(event.which === 111 && event.ctrlKey) {					// o
-		document.execCommand("hilitecolor", false, "#ffff00")
-		return false
+		return highlight()
 	} else if(event.which === 100 && event.altKey) {					// d
 		insert_date()
 		return false
