@@ -426,5 +426,9 @@ function create_and_insert2(target) {
 }
 
 function lock_cell() {
+	var _main = $(active_div).closest('div[id*="_main_"]')
+	$(_main).find('*').each( function() {
+		
+	})
 	return false
 }

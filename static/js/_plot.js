@@ -7,6 +7,7 @@ function plot_activate(id) {
 function plot_context_menu() {
 	var menu = '<div class="context_menu_header">Plot</div>\
 		<ul class="context_menu_list">\
+		<li alt="lock" onmouseup="return lock_cell(active_div);">Lock cell</li>\
 		<li onmousedown="return false;" onmouseup="return copy_plot_cell();">Copy cell</li>\
 		<li onmousedown="return false;" onmouseup="return false;">New plot cell</li>\
 	</ul>'

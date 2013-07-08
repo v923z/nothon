@@ -5,6 +5,7 @@ import code_handling
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
 from pygments.formatters import LatexFormatter
+from bs4 import BeautifulSoup
 
 from code_handling import *
 
@@ -19,6 +20,30 @@ def latexify(text):
 	text = text.replace('&nbsp;', '\quad').replace('_', '\_').replace('#', '\#').replace('&amp;', '\&{}')
 	return text.replace('&lt;', '<').replace('&gt;', '>').replace('%', '\%').replace('<br>', '\n\\\\ ')
 
+def preserve_markup(elem):
+	return ''.join(['%s'%x for x in elem.contents])
+	
+def text_cell_latex2(text):
+	soup = BeautifulSoup(text)
+	for b in soup.find_all('br'):
+		b.replace_with('\n')
+	for b in soup.find_all('span', 'nothon_math'):
+		b.replace_with('$%s$'%(b.text.lstrip('\\(').rstrip('\\)')))
+	for b in soup.find_all('div', 'nothon_math'):
+		b.replace_with('\n\begin{equation}%s\end{equation}'%(b.text.lstrip('\\[').rstrip('\\]')))
+	for b in soup.find_all('span', 'note'):
+		b.replace_with('\n\\begin{comment}\n  %s\n\\end{comment}\n'%preserve_markup(b))
+	for b in soup.find_all('b'):
+		b.replace_with('\\textbf{%s}\n'%preserve_markup(b))
+	for b in soup.find_all('i'):
+		b.replace_with('\\textit{%s}\n'%preserve_markup(b))
+	for b in soup.find_all('u'):
+		b.replace_with('\\underline{%s}\n'%preserve_markup(b))
+	for b in soup.find_all('hr'):
+		b.replace_with('\\hrulefile')
+
+	return soup.text
+	
 def text_cell_latex(text):
 	out = []
 	text = text.replace('<br>', '\n')
