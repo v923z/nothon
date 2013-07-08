@@ -53,7 +53,7 @@ def extract_headers(fn):
 			cell = element['content'][cell_name]
 			print cell
 			if 'props' in cell and 'intoc' in cell['props'].split(';'):
-				output += '<p>' + cell['content'] + '</p>'
+				output += '<p><a href="?name=%s#%s">'%(fn,cell['id']) + cell['content'] + '</a></p>'
 			
 	return output
 

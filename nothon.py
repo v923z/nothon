@@ -233,6 +233,12 @@ class Index(object):
 		elif link.name == '__toc':
 			return 	render.toc(link.name, aside, make_toc())			
 		else:
+			print 'OUT!!!!!!!!!!!', link.name
+			sp = link.name.split('#')
+			link.name = sp[0]
+			sublink = ''
+			if len(sp)>1:
+				sublink = sp[1]
 			if not os.path.exists(link.name):
 				title = os.path.basename(link.name).replace('.note', '')
 				path = os.path.join(os.getcwd(),os.path.dirname(link.name))
