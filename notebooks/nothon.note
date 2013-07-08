@@ -2,7 +2,7 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Mon Jul 08 2013 22:48:11 GMT+0200 (CEST)",
+"date" : "Mon Jul 08 2013 22:58:04 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
     {
@@ -291,7 +291,7 @@
             "plot_caption": {
                 "content": "Time evolution of the displacement of a harmonic oscillator",
                 "id": "div_plot_caption_1",
-                "props": "searchable;"
+                "props": "searchable;intoc;"
             },
             "plot_file": {
                 "content": "notebooks/nothon.note_plot_1.png",
