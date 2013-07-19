@@ -51,7 +51,7 @@ def extract_headers(fn):
 		for cell_name in element['content']:
 			cell = element['content'][cell_name]
 			if 'props' in cell and 'intoc' in cell['props'].split(';'):
-				output += '<p><a href="?name=%s#div_%s_main_%s">'%(fn, element['type'], element['id']) + cell['content'] + '</a></p>'
+				output += '<p><a onmouseup="toc_link_onclick(event);" href="?name=%s#div_%s_main_%s">'%(fn, element['type'], element['id']) + cell['content'] + '</a></p>'
 			
 	return output
 
