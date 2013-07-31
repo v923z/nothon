@@ -23,10 +23,23 @@ function text_context_menu() {
 		<hr>\
 		<li alt="raw" onmouseup="strip_mathjax(active_div); return false;">Raw content</li>\
 		<li alt="lock" onmouseup="return lock_cell(active_div);">Lock cell</li>\
-		<li alt="new" onmouseup="create_and_insert2(this);">New text cell</li>\
+		<li alt="new" onmousedown="return false;" onmouseup="create_and_insert(\'text_main\');">New text cell</li>\
+		<li alt="copy" onmousedown="return false;" onmouseup="return copy_text_cell();">Copy cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
 }
+
+function copy_text_cell() {
+	var text_main = $(active_div).closest('div[id^="div_text_main_"]')
+	var num = get_max_index('text_main') + 1
+	var new_div = document.createElement("div")
+	new_div.innerHTML = text_html(num)
+	$(new_div).children('*').eq(0).children('.text_header').eq(0).html($(text_main).children('.text_header').eq(0).html())
+	$(new_div).children('*').eq(0).children('.text_body').eq(0).html($(text_main).children('.text_body').eq(0).html())
+	$(new_div).children('*').eq(0).insertAfter(text_main)
+	return false
+}
+
 
 function highlight() {
 	document.execCommand("hilitecolor", false, "#ffff00")
