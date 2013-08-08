@@ -330,7 +330,7 @@ function create_new_notebook() {
 function open_new_notebook_dialog() {
 	$('#new_notebook_dialog').dialog('open')
 }
- 
+
 function new_notebook_keypress(event) {
 	if(event.which === 13) {
 		create_new_notebook()
