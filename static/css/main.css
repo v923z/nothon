@@ -551,3 +551,16 @@ p {
 	right:				2%;
 	text-align:			right;
 }
+
+.no-close .ui-dialog-titlebar-close {
+	display: none;
+}
+.ui-dialog-titlebar {
+	background: 		#ccccff;
+	text-align:			center;
+	font-weight: 		bold;
+	font-size:			14pt;
+}
+.ui-dialog {
+	background:		 	rgba(0, 0, 1, 0.4);
+}

@@ -15,10 +15,13 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 </script>
 <script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="/static/js/jquery.datepick.js"></script>
-<script type="text/javascript" src="/static/js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="/static/js/ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="/static/js/jquery.dynatree-1.2.4.js"></script>
 <script type="text/javascript" src="/static/js/functions.js"></script>
+<script type="text/javascript" src="/static/js/math.min.js"></script>
+<script type="text/javascript" src="/static/js/calculator.js"></script>
+
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
 	<script type="text/javascript" src="$js_src"></script>
@@ -66,6 +69,8 @@ $for f in create_funcs + handler_funcs:
 			<li onmouseup='toggle_all();'>Toggle all</li>
 		</ul>
 	</li>
+	<li onmouseup='open_calculator();'>Calculator
+	</li>
 	<div id='notebook_status'>Saved: never</div>
 </ul>
 </div>
@@ -95,6 +100,10 @@ $for f in create_funcs:
 <div id="docmain">$:safe_content(content, "content")
 </div>
 <div id="trash"></div>
+</div>
+<div id='calculator_dialog'>
+	<div contenteditable=false id='calculator_result' style='width: 100%; height: 200px; overflow-y: scroll;'></div>
+	<input id='calculator_string' type='text' style='width: 100%; position: absolute; top: 250px;' onkeydown='return eval_calculator(event);'></input>
 </div>
 </article>
 </body>
