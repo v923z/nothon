@@ -17,7 +17,7 @@ function text_context_menu() {
 		<li alt="indent" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Indent</li>\
 		<li alt="outdent" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Outdent</li>\
 		<li onmousedown="return insert_date();" onmouseup="return false;">Date</li>\
-		<li onmousedown="return insert_image();" onmouseup="return false;">Image</li>\
+		<li onmousedown="open_image_dialog(); return false;" onmouseup="return false;">Image</li>\
 		<li onmousedown="return insert_note();" onmouseup="return false;">Note</li>\
 		<li alt="insertHorizontalRule" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Line</li>\
 		<hr>\

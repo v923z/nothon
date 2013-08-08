@@ -193,11 +193,9 @@ function get_divs() {
 }
 
 function save() {
-	console.log('saving', window.location.href)
 	var time = new Date()
 	$('#notebook_status').html('Saved at ' + time.toTimeString().split(' ')[0])
 	if(window.location.href.indexOf('?name=__timeline') > 0 || window.location.href.indexOf('?name=__toc') > 0) return
-	console.log('saving')
 	var message = create_message('', "save")
 	message.type = $('body').data('type')
 	message.outfile = document.title
@@ -460,6 +458,7 @@ function toggle_all() {
 
 function create_and_insert2(target) {
 	console.log(target.innerHTML.toLowerCase())
+	
 }
 
 function lock_cell() {

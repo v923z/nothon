@@ -21,6 +21,7 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 <script type="text/javascript" src="/static/js/functions.js"></script>
 <script type="text/javascript" src="/static/js/math.min.js"></script>
 <script type="text/javascript" src="/static/js/calculator.js"></script>
+<script type="text/javascript" src="/static/js/image.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
@@ -114,6 +115,9 @@ $for f in create_funcs:
 </div>
 <div id='new_notebook_dialog'>
 	<input id='new_notebook' type='text' style='width: 100%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'></input>
+</div>
+<div id='image_dialog'>
+	<input id='image_path' type='text' style='width: 100%; position: absolute; top: 50px;' onkeypress='return get_image(event);'></input>
 </div>
 </article>
 </body>
