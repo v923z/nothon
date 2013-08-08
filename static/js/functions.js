@@ -302,6 +302,43 @@ $(document).ready(function () {
 	});
 });
 
+$(function() {
+	$('#new_notebook_dialog').dialog({
+		dialogClass: 'no-close ui-dialog',
+		autoOpen: 	false,
+		height:		100,
+		width:		400,
+		modal:		true,
+		title:		'New notebook',
+		draggable:	true,
+		hide:		'fade',
+		buttons:	{
+			'Create' : function(){ create_new_notebook() },
+			'Cancel' : function(){ $(this).dialog('close')}
+		}
+	});
+});
+
+function create_new_notebook() {
+	var notebook_address = $('#new_notebook').val()
+	if(notebook_address.length == 0) return
+	if(notebook_address.indexOf('.note') != notebook_address.length - 6) notebook_address += '.note'
+	save()
+	window.location.href = "?name=" + notebook_address
+}
+
+function open_new_notebook_dialog() {
+	$('#new_notebook_dialog').dialog('open')
+}
+
+function new_notebook_keypress(event) {
+	if(event.which === 13) {
+		create_new_notebook()
+		return false
+	}
+	return true
+}
+
 function dir_keypress(event) {
 	if(event.which === 13) return false
 	else return true

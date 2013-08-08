@@ -41,8 +41,8 @@ $for f in create_funcs + handler_funcs:
 	<li onmouseup='redirect("http://127.0.0.1:8080/?name=__timeline");'>Timeline</li>
 	<li>Notebook
 		<ul>
-			<li>New</li>
-			<li>Save</li>
+			<li onmouseup='open_new_notebook_dialog()'>New</li>
+			<li onmouseup='save();'>Save</li>
 			<li onmouseup='expand_collapse_all("expand");'>Expand all</li>
 			<li onmouseup='expand_collapse_all("collapse");'>Collapse all</li>
 			<li>LaTeX</li>
@@ -111,6 +111,9 @@ $for f in create_funcs:
 <div id='calculator_dialog'>
 	<div contenteditable=false id='calculator_result' style='width: 100%; height: 200px; overflow-y: scroll;'></div>
 	<input id='calculator_string' type='text' style='width: 100%; position: absolute; top: 250px;' onkeydown='return eval_calculator(event);'></input>
+</div>
+<div id='new_notebook_dialog'>
+	<input id='new_notebook' type='text' style='width: 100%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'></input>
 </div>
 </article>
 </body>
