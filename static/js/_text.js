@@ -7,19 +7,20 @@ function text_activate(id) {
 function text_context_menu() {
 	var menu = '<div class="context_menu_header">Text</div>\
 		<ul class="context_menu_list">\
-		<li alt="insertUnorderedList" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Unordered list</li>\
-		<li alt="insertOrderedList" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Ordered list</li>\
-		<li alt="bold" onmousedown="return mouse_down(this, null);" onmouseup="return false;"><b>Bold</b></li>\
-		<li alt="italic" onmousedown="return mouse_down(this, null);" onmouseup="return false;"><i>Italic</i></li>\
-		<li alt="underline" onmousedown="return mouse_down(this, null);" onmouseup="return false;"><u>Underline</u></li>\
-		<li alt="strikeThrough" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Strikethrough</li>\
-		<li alt="hilitecolor" onmousedown="return highlight();" onmouseup="return false;">Highlight</li>\
-		<li alt="indent" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Indent</li>\
-		<li alt="outdent" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Outdent</li>\
-		<li onmousedown="return insert_date();" onmouseup="return false;">Date</li>\
-		<li onmousedown="open_image_dialog(); return false;" onmouseup="return false;">Image</li>\
-		<li onmousedown="return insert_note();" onmouseup="return false;">Note</li>\
-		<li alt="insertHorizontalRule" onmousedown="return mouse_down(this, null);" onmouseup="return false;">Line</li>\
+		<li alt="insertUnorderedList" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Unordered list</li>\
+		<li alt="insertOrderedList" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Ordered list</li>\
+		<li alt="link" onmouseup="return create_link();" onmousedown="return false;">Link</li>\
+		<li alt="bold" onmouseup="return mouse_down(this, null);" onmousedown="return false;"><b>Bold</b></li>\
+		<li alt="italic" onmouseup="return mouse_down(this, null);" onmousedown="return false;"><i>Italic</i></li>\
+		<li alt="underline" onmouseup="return mouse_down(this, null);" onmousedown="return false;"><u>Underline</u></li>\
+		<li alt="strikeThrough" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Strikethrough</li>\
+		<li alt="hilitecolor" onmouseup="return highlight();" onmousedowb="return false;">Highlight</li>\
+		<li alt="indent" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Indent</li>\
+		<li alt="outdent" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Outdent</li>\
+		<li onmouseup="return insert_date();" onmousedown="return false;">Date</li>\
+		<li onmouseup="open_image_dialog(); return false;" onmousedown="return false;">Image</li>\
+		<li onmouseup="return insert_note();" onmousedown="return false;">Note</li>\
+		<li alt="insertHorizontalRule" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Line</li>\
 		<hr>\
 		<li alt="raw" onmouseup="strip_mathjax(active_div); return false;">Raw content</li>\
 		<li alt="lock" onmouseup="return lock_cell(active_div);">Lock cell</li>\
@@ -66,6 +67,25 @@ function mouse_down(id, extraarg) {
 	console.log(command)
 	document.execCommand(command, false, extraarg)
 	return false
+}
+
+function create_link() {
+	var text = getSelectedText()
+	console.log(text)
+	if(text.length != 0) {
+		document.execCommand('insertHTML', false, '<a href="' + text + '">' + text + '</a>')
+	}
+	return false
+}
+
+function getSelectedText() {
+    var text = ''
+    if (window.getSelection) {
+        text = window.getSelection().toString()
+    } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text
+    }
+    return text
 }
 
 function text_onclick(target) {
@@ -312,8 +332,14 @@ function insert_math(mode) {
 }
 
 function insert_note() {
-	document.execCommand('insertHTML', false, '<span class="note"><button class="note_button" onclick="note_toggle(this);">Note</button><span><span id="_note_marker_"></span> </span></span> ')
-	goto_marker("_note_marker_")
+	var text = getSelectedText()
+	if(text.length == 0) {
+		document.execCommand('insertHTML', false, '<span class="note"><button class="note_button" onclick="note_toggle(this);">Note</button><span><span id="_note_marker_"></span> </span></span> ')
+		goto_marker("_note_marker_")
+	}
+	else {
+		document.execCommand('insertHTML', false, '<span class="note"><button class="note_button" onclick="note_toggle(this);">Note</button><span>' + text + '</span></span> ')		
+	}
 	return false
 }
 
