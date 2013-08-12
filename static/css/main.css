@@ -346,11 +346,19 @@ article {
 	border:				solid #cd5c5c 1px;
 }
 
-.note_button {
+.note_button, .link_button {
 	background:			#eeee88;
 	font-weight: 		bold;
 	border: 			solid 0px;
 	contenteditable: 	false;
+}
+
+.link_target {
+	color:				#000088;
+}
+
+.link_text {
+	font-weight:		bold;
 }
 
 .nothon_math {

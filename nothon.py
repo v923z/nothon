@@ -47,6 +47,15 @@ web.template.Template.globals['safe_content'] = safe_content
 web.template.Template.globals['safe_props'] = safe_props
 app = web.application(urls, globals())
 
+def fetch_image(fn):
+	try:
+		# TODO: figure out image size
+		with open(fn, "rb") as image_file:
+			# TODO: deal with jpeg, tiff, bmp
+			return '<div>Image Caption</div><img src="data:image/png;base64,' + base64.b64encode(image_file.read()) + '"/></div>'
+	except IOError:
+		return '<span class="code_error">Could not read file from disc</span>'
+		
 def read_plot(fn):
 	try:
 		with open(fn, "rb") as image_file:
@@ -59,6 +68,7 @@ def plot_update_dict(dictionary):
 	return dictionary
 	
 def text_update_dict(dictionary):
+	# TODO: parse image divs, and fetch the image file accordingly
 	return dictionary
 
 def head_update_dict(dictionary):
@@ -146,7 +156,10 @@ def plot_handler(message):
 	return simplejson.dumps({ "scroller" : message['body'],
 						message['title'] : message['filename'] + '.png', 
 						message['body'] : exit_status})
-	
+
+def image_handler(message):
+	return simplejson.dumps({message['target'] : fetch_image(message['filename'])})
+		
 def code_handler(message):
 	print message
 	fn, tag, linenos, include = code_arguments(message['content'])
@@ -227,6 +240,7 @@ class Index(object):
 	
 	def GET(self):
 		link = web.input(name='test.note')
+		if link.name.endswith('.html'): readfile(link.name)
 		aside = {"tree" : dir_html(dir_tree('.'), nothon_resource.dirlisting_style)}
 		if link.name == '__timeline':
 			return 	render.timeline(link.name, aside, make_timeline())
@@ -236,9 +250,6 @@ class Index(object):
 			print 'OUT!!!!!!!!!!!', link.name
 			sp = link.name.split('#')
 			link.name = sp[0]
-			sublink = ''
-			if len(sp)>1:
-				sublink = sp[1]
 			if not os.path.exists(link.name):
 				title = os.path.basename(link.name).replace('.note', '')
 				path = os.path.join(os.getcwd(),os.path.dirname(link.name))

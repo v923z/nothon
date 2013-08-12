@@ -18,7 +18,7 @@ function text_context_menu() {
 		<li alt="indent" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Indent</li>\
 		<li alt="outdent" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Outdent</li>\
 		<li onmouseup="return insert_date();" onmousedown="return false;">Date</li>\
-		<li onmouseup="open_image_dialog(); return false;" onmousedown="return false;">Image</li>\
+		<li onmouseup="return insert_image();" onmousedown="return false;">Image</li>\
 		<li onmouseup="return insert_note();" onmousedown="return false;">Note</li>\
 		<li alt="insertHorizontalRule" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Line</li>\
 		<hr>\
@@ -41,18 +41,8 @@ function copy_text_cell() {
 	return false
 }
 
-
 function highlight() {
 	document.execCommand("hilitecolor", false, "#ffff00")
-	return false
-}
-
-function image_html(source) {
-	return '<br><div class="section_image"><div>Image Caption</div><div><img src="' + source + '"></div></div><br>'
-}
-
-function insert_image() {
-	document.execCommand('insertHTML', false, image_html('/static/icons/expand.png'))
 	return false
 }
 
@@ -66,15 +56,6 @@ function mouse_down(id, extraarg) {
 	var command = $(id).attr('alt')
 	console.log(command)
 	document.execCommand(command, false, extraarg)
-	return false
-}
-
-function create_link() {
-	var text = getSelectedText()
-	console.log(text)
-	if(text.length != 0) {
-		document.execCommand('insertHTML', false, '<a href="' + text + '">' + text + '</a>')
-	}
 	return false
 }
 
@@ -111,12 +92,28 @@ function text_keypress(event) {
 		render_mathjax(event.target)
 		return false
 	} else if(event.which === 109 && event.ctrlKey && !event.altKey) {				// m
-		strip_mathjax(event.target)
-		insert_math('inline')
+		var text = getSelectedText()
+		if(text.length != 0) {
+			document.execCommand('insertHTML', false, '<span class="nothon_math" alt="">\\(' + text + '\\)</span> <span id="_math_marker_"></span>')
+			goto_marker("_math_marker_")
+			render_mathjax(event.target)
+		}
+		else {
+			strip_mathjax(event.target)
+			insert_math('inline')
+		}
 		return false
 	} else if(event.which === 109 && event.ctrlKey && event.altKey) {	// M
-		strip_mathjax(event.target)
-		insert_math('display')
+		var text = getSelectedText()
+		if(text.length != 0) {
+			document.execCommand('insertHTML', false, '<br><div class="nothon_math" alt="">\\[' + text + '\\]</div><br> <span id="_math_marker_"></span>')
+			goto_marker("_math_marker_")
+			render_mathjax(event.target)
+		}
+		else {
+			strip_mathjax(event.target)
+			insert_math('display')
+		}
 		return false
 	} else if(event.which === 97 && event.ctrlKey) {				// a
 		insert_note()
@@ -345,7 +342,7 @@ function insert_note() {
 
 function note_toggle(id) {
 	$(id).siblings().toggle()
-	// We might have to activete the parent element here!
+	// We might have to activate the parent element here!
 }
 
 function latex_helper(){
@@ -360,4 +357,28 @@ function latex_helper(){
 function insert_tag() {
 	document.execCommand('insertHTML', false, '<a href="#" onClick="tag_clicked(this);">#<span id="_tag_marker_"></span></a>')
 	goto_marker("_tag_marker_")
+}
+
+function create_link() {
+	var text = getSelectedText()
+	if(text.length != 0) {
+		document.execCommand('insertHTML', false, '<span><button class="link_button" onclick="link_toggle(this);">Link</button><a href="' + text + '">' + text + '</a></span> <span id="_marker_"></span> ')
+		goto_marker('_marker_')
+	}
+	return false
+}
+
+function link_toggle(id) {
+	if($(id).siblings().length == 1) { // the link is collapsed
+		var href = $(id).siblings('a').attr('href')
+		var text = $(id).siblings('a').text()
+		$(id).siblings().remove()
+		$(id).after('<span class="link_target">' + href + '</span>&nbsp;<span class="link_text">' + text + '</span>')
+	}
+	else if($(id).siblings().length == 2) { // the link is expanded
+		var href = $(id).siblings(':first').text()
+		var text = $(id).siblings(':last').text()
+		$(id).nextAll().remove()
+		$(id).after('<a href="' + href + '">' + text + '</a>')
+	}
 }

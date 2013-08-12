@@ -35,11 +35,11 @@ function eval_calculator(event) {
 }
 
 function insert_calculator_result() {
-	console.log(calculator_result)
+	document.execCommand('insertText', false, calculator_result)
 }
 
 function insert_calculator_expression() {
-	console.log(calculator_history[calculator_history.length-1] + '=' + calculator_result)
+	document.execCommand('insertText', false, calculator_history[calculator_history.length-1] + '=' + calculator_result)
 }
 
 
@@ -58,9 +58,6 @@ $(function() {
 			'Insert expression' : function(){ insert_calculator_expression() },
 			'Cancel' : function(){ $(this).dialog('close')}
 		}
-	});
-	$('#open-calculator').button().click(function() {
-		open_calculator()
 	});
 });
 

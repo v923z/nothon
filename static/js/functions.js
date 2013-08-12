@@ -4,6 +4,7 @@
 // http://forums.phpfreaks.com/topic/268622-place-cursor-at-end-of-line-in-editable-div/
 
 var active_div = null
+var focused = null
 
 function xml_http_post(url, data, callback) {
     var req = false;
@@ -115,7 +116,6 @@ function create_message(div_data, message_type) {
 
 function message_handler(req) {
 	var message = JSON.parse(req.responseText)
-//	console.log(message)
 	for(i in message) {
 		var elem = document.getElementById(i)
 		if(elem && i != "scroller") {
@@ -467,4 +467,8 @@ function lock_cell() {
 		
 	})
 	return false
+}
+
+function usage() {
+	window.open('help.html', 'nothon quick help', 'left=20, top=20, width=500, height=500, toolbar=0, location=0, menubar=0, resizable=0')
 }
