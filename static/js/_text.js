@@ -362,29 +362,32 @@ function insert_tag() {
 function create_link() {
 	var text = getSelectedText()
 	if(text.length != 0) {
-		document.execCommand('insertHTML', false, '<span><button class="link_button" onclick="link_toggle(this);">Link</button><a href="' + text + '">' + text + '</a></span> <span id="_marker_"></span> ')
+		document.execCommand('insertHTML', false, '<span><button class="link_button" onmouseup="link_toggle(this);">Link</button><a href="' + text + '">' + text + '</a></span> <span id="_marker_"></span> ')
 		goto_marker('_marker_')
 	}
 	else {
 		var id = '_' + Math.floor(Math.random()*1000000)
-		document.execCommand('insertHTML', false, '<span><button class="link_button" onclick="link_toggle(this);">Link</button>Target: <input id="' + id + '" type="text" value=""></input>&nbsp; Text:<input type="text" value=""></input>')
+		document.execCommand('insertHTML', false, '<span><button class="link_button" onmouseup="link_toggle(this);">Link</button>Target: <input id="' + id + '" type="text" value=""></input>&nbsp; Text:<input type="text" value=""></input>')
 		$('#' + id).focus()
 	}
 	return false
 }
 
 function link_toggle(id) {
+	//active_div = $(id).closest('[class$="_main"]')
 	if($(id).siblings().length == 1) { // the link is collapsed
 		var href = $(id).siblings('a').attr('href')
 		var text = $(id).siblings('a').text()
 		var tid = '_' + Math.floor(Math.random()*1000000)
 		$(id).parent().html('<button class="link_button" onclick="link_toggle(this);">Link</button>Target: <input id="' + tid + '" type="text" value="' + href + '"></input>&nbsp; Text:<input type="text" value="' + text + '"></input>')
 		$('#' + tid).focus()
-
 	}
 	else if($(id).siblings().length == 2) { // the link is expanded
 		var href = $(id).siblings(':first').val()
 		var text = $(id).siblings(':last').val()
+		$(id).parent().after(' <span id="_marker_"></span>')
 		$(id).parent().html('<button class="link_button" onclick="link_toggle(this);">Link</button><a href="' + href + '">' + text + '</a></span>')
+		goto_marker('_marker_')
+		active_div.focus()
 	}
 }
