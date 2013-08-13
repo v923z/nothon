@@ -353,14 +353,6 @@ article {
 	contenteditable: 	false;
 }
 
-.link_target {
-	color:				#000088;
-}
-
-.link_text {
-	font-weight:		bold;
-}
-
 .nothon_math {
 	background:			#bbbbee;
 	color: 				#0000ee;
