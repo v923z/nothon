@@ -368,7 +368,7 @@ function create_link() {
 	else {
 		var id = '_' + Math.floor(Math.random()*1000000)
 		document.execCommand('insertHTML', false, '<span><button class="link_button" onclick="link_toggle(this);">Link</button>Target: <input id="' + id + '" type="text" value=""></input>&nbsp; Text:<input type="text" value=""></input>')
-		$(id).focus()
+		$('#' + id).focus()
 	}
 	return false
 }
@@ -379,13 +379,12 @@ function link_toggle(id) {
 		var text = $(id).siblings('a').text()
 		var tid = '_' + Math.floor(Math.random()*1000000)
 		$(id).parent().html('<button class="link_button" onclick="link_toggle(this);">Link</button>Target: <input id="' + tid + '" type="text" value="' + href + '"></input>&nbsp; Text:<input type="text" value="' + text + '"></input>')
-		$(tid).focus()
+		$('#' + tid).focus()
 
 	}
 	else if($(id).siblings().length == 2) { // the link is expanded
 		var href = $(id).siblings(':first').val()
 		var text = $(id).siblings(':last').val()
 		$(id).parent().html('<button class="link_button" onclick="link_toggle(this);">Link</button><a href="' + href + '">' + text + '</a></span>')
-		$(id).closest('[id$=_main]').focus()
 	}
 }

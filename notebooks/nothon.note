@@ -2,13 +2,13 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "/home/v923z/sandbox/nothon/notebooks/",
-"date" : "Tue Aug 13 2013 09:18:38 GMT+0200 (CEST)",
+"date" : "Tue Aug 13 2013 13:10:07 GMT+0200 (CEST)",
 "nothon version" : 1.2,
 "notebook" : [
     {
         "content": {
             "text_body": {
-                "content": "On the following pages, we would like to outline the rationale behind the creation of <i>nothon</i>, and give the user a couple of tips on the efficient use of the notebook. At the end, we will also show how the behaviour of nothon can be customised, and how new features can easily be added.<br><br>",
+                "content": "On the following pages, we would like to outline the rationale behind the creation of <i>nothon</i>, and give the user a couple of tips on the efficient use of the notebook. At the end, we will also show how the behaviour of nothon can be customised, and how new features can easily be added.<br>",
                 "id": "div_text_body_10",
                 "props": "searchable;"
             },
