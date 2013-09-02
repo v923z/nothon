@@ -52,7 +52,7 @@ def fetch_image(fn):
 		# TODO: figure out image size
 		with open(fn, "rb") as image_file:
 			# TODO: deal with jpeg, tiff, bmp
-			return '<div>Image Caption</div><img src="data:image/png;base64,' + base64.b64encode(image_file.read()) + '"/></div>'
+			return '<img src="data:image/png;base64,' + base64.b64encode(image_file.read()) + '"/>'
 	except IOError:
 		return '<span class="code_error">Could not read file from disc</span>'
 		
@@ -158,7 +158,8 @@ def plot_handler(message):
 						message['body'] : exit_status})
 
 def image_handler(message):
-	return simplejson.dumps({message['target'] : fetch_image(message['filename'])})
+	# TODO: check whether the filename is absolute or relative
+	return simplejson.dumps({message['id'] : fetch_image(message['filename'])})
 		
 def code_handler(message):
 	print message
@@ -268,7 +269,7 @@ class Index(object):
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['command'] in ('plot', 'head', 'code', 'text', 'paragraph', 'save', 'savehtml', 'docmain_render'):
+		if message['command'] in ('plot', 'head', 'code', 'text', 'paragraph', 'save', 'savehtml', 'docmain_render', 'image'):
 			exec('result = %s_handler(message)'%(message['command']))
 			return result
 			

@@ -142,6 +142,7 @@ function text_keypress(event) {
 		return true
 	} else if(event.which === 35) {			// #
 		// insert tag 
+		// TODO: check, if text is selected. If so, turn it into a tag.
 		insert_tag()
 		return false
 	}
