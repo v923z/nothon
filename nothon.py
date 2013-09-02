@@ -240,7 +240,12 @@ class Index(object):
 	
 	def GET(self):
 		link = web.input(name='test.note')
-		if link.name.endswith('.html'): readfile(link.name)
+		print link.name
+		if link.name.endswith('.html'): 
+			fin = open(link.name, 'r')
+			html = fin.read()
+			fin.close()
+			return html
 		aside = {"tree" : dir_html(dir_tree('.'), nothon_resource.dirlisting_style)}
 		if link.name == '__timeline':
 			return 	render.timeline(link.name, aside, make_timeline())
