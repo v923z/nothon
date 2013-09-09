@@ -4,6 +4,12 @@ import calendar
 import datetime
 import time
 
+def get_file_path(fn, base_path):
+	# This function returns the filepath, based on, whether the user intended an absolute, or a relative path
+	if fn.startswith('/'): return fn
+	elif fn.startswith('./'): return os.path.join(base_path, fn)
+	else: return fn
+	
 def get_notebook(fn):
 	with open(fn, 'r') as fin:
 		data = simplejson.load(fin)
