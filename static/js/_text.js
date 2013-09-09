@@ -227,6 +227,7 @@ function text_sanitise(block) {
 	var dtemp = $('<div/>', {'id': 'dtemp'}).appendTo('#trash')
 	$('#dtemp').html($('#' + block.content.text_body.id).html())
 	strip_mathjax_for_save($('#dtemp'))
+	strip_images_for_save($('#dtemp'))
 	block.content.text_body.content = $('#dtemp').html()
 	block.content.text_header.content = block.content.text_header.content.replace('<br>', '')
 	$('#dtemp').remove()
@@ -308,6 +309,12 @@ function strip_mathjax(target) {
 
 function strip_mathjax_for_save(target) {
 	$(target).find('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })
+}
+
+function strip_images_for_save(target) {
+	$(target).find('.section_image').each( function() { 
+		$(this).children('.image_image').html(' ') 
+	})
 }
 
 function render_mathjax(target) {
