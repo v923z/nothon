@@ -1,0 +1,19 @@
+$def with (id, content)
+
+$ cid = 'image_control_%s'%(id)
+$ pid = 'image_path_%s'%(id)
+$ iid = 'image_info_%s'%(id)
+$ bid = 'image_button_%s'%(id)
+$ mid = 'image_%s'%(id)
+
+<br>
+<div class='section_image'>
+<div id='$cid'>
+<input type='button' class='image_chooser_button' onmouseup='fetch_image($id);' value='Fetch'></input>
+<input class='image_path' id='$pid' type='text'>$:safe_content(content, "image_path")</input>
+</div>
+<div class='image_info' id='$iid'><input class='image_button' id='$bid' type='button' value='Open'></input>Image info:</div>
+<div class='image_image' id='$mid'>$:safe_content(content, "image_data") </div>
+<div class='image_caption'>$:safe_content(content, "image_caption")</div>
+</div>
+<br>
