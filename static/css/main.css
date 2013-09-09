@@ -346,11 +346,15 @@ article {
 	border:				solid #cd5c5c 1px;
 }
 
-.note_button, .link_button {
+.note_button, .link_button, .image_button, .image_chooser_button {
 	background:			#eeee88;
 	font-weight: 		bold;
 	border: 			solid 0px;
 	contenteditable: 	false;
+}
+
+.image_button, .image_chooser_button {
+	background:			#a9bcf5;
 }
 
 .nothon_math {
@@ -480,22 +484,19 @@ p {
 	width:				60%;
 	resize:				both;
 	overflow:			hidden;
-	padding:			5px;
+	padding:			0px;
 	background:			rgba(0, 0, 0, 0.2);
 }
 
-/*
 .image_image {
 	width:				100%;
-	position:			relative;
 }
-*/
 
 .image_info {
 	background:			rgba(0, 0, 0, 0.1);	
-	width:				100%;
+	width:				60%;
 	height:				20px;
-	position:			relative;
+	position:			absolute;
 	display:			none;
 	z-index:			100;
 }

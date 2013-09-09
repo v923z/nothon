@@ -13,10 +13,6 @@ from pygments import highlight
 from pygments.lexers import get_lexer_for_filename
 from pygments.formatters import HtmlFormatter
 
-# http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
-# http://www.codinghorror.com/blog/2009/11/parsing-html-the-cthulhu-way.html
-# http://stackoverflow.com/questions/9662346/python-code-to-remove-html-tags-from-a-string
-
 from pylab import *
 
 sys.path.insert(0, './python')
@@ -238,7 +234,6 @@ def list_create_functions():
 
 class Index(object):
 	update_js()
-	
 	def GET(self):
 		link = web.input(name='test.note')
 		print link.name

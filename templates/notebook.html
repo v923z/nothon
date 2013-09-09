@@ -21,7 +21,6 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 <script type="text/javascript" src="/static/js/functions.js"></script>
 <script type="text/javascript" src="/static/js/math.min.js"></script>
 <script type="text/javascript" src="/static/js/calculator.js"></script>
-<script type="text/javascript" src="/static/js/image.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
