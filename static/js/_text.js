@@ -312,8 +312,23 @@ function strip_mathjax_for_save(target) {
 }
 
 function strip_images_for_save(target) {
-	$(target).find('.section_image').each( function() { 
-		$(this).children('.image_image').html(' ') 
+	$(target).find('.section_image').each( function() {
+		
+		var $pointer = $(this)
+		$pointer.find('.image_path').each( function() {
+			// For some reason, $(this).val() doesn't work...
+			$pointer.attr('data-path', $('#' + $(this).attr('id')).val())
+		})
+		$pointer.find('.image_caption').each( function() {
+			// The same problem here...
+			$pointer.attr('data-caption', $('#' + $(this).attr('id')).html())
+		})
+		$pointer.find('img').each( function() {
+			$pointer.attr('data-x', $('#' + $(this).attr('id')).width())
+			$pointer.attr('data-y', $('#' + $(this).attr('id')).height())
+		})
+		
+		$pointer.html(' ')
 	})
 }
 

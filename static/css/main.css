@@ -357,6 +357,10 @@ article {
 	background:			#a9bcf5;
 }
 
+.image_caption {
+	min-height:			20px;
+}
+
 .nothon_math {
 	background:			#bbbbee;
 	color: 				#0000ee;

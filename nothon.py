@@ -43,14 +43,14 @@ web.template.Template.globals['safe_content'] = safe_content
 web.template.Template.globals['safe_props'] = safe_props
 app = web.application(urls, globals())
 
-def fetch_image(fn, directory):
+def fetch_image(ID, fn, directory):
 	try:
 		fn = get_file_path(fn, directory)
 		# TODO: figure out image size, deal with SVG files
 		ext = os.path.splitext(fn)[1]
 		if ext.lower() in ('.png', '.jpg', '.jpeg', '.bmp', '.tiff'):
 			with open(fn, "rb") as image_file:
-				return '<img src="data:image/' + ext + ';base64,' + base64.b64encode(image_file.read()) + '"/>'
+				return '<img id="img_' + ID + '" src="data:image/' + ext + ';base64,' + base64.b64encode(image_file.read()) + '"/>'
 	except IOError:
 		return '<span class="code_error">Could not read file from disc</span>'
 		
@@ -156,8 +156,10 @@ def plot_handler(message):
 						message['body'] : exit_status})
 
 def image_handler(message):
-	# TODO: check whether the filename is absolute or relative
-	return simplejson.dumps({message['id'] : fetch_image(message['filename'], message['directory'].strip('\n'))})
+	ID = message['id'].split('_')[-1]
+	fn = message['filename']
+	directory = message['directory'].strip('\n')
+	return simplejson.dumps({message['id'] : fetch_image(ID, fn, message)})
 		
 def code_handler(message):
 	print message

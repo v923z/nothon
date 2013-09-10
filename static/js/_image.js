@@ -8,12 +8,14 @@ function fetch_image(id) {
 	else {
 		image_data(document.getElementById('image_' + id), filename)
 		$('#image_control_' + id).hide()
+		//$('#image_caption_' + id).focus()
 	}
 	return false
 }
 
 function insert_image() {
 	var id = Math.floor(Math.random()*1000000)
+	console.log(image_html(id))
 	document.execCommand('insertHTML', false, image_html(id))
 	$('.image_button').click( function() {
 			var id = $(this).attr('id').replace('image_button_', '')
