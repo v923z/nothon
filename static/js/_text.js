@@ -313,7 +313,6 @@ function strip_mathjax_for_save(target) {
 
 function strip_images_for_save(target) {
 	$(target).find('.section_image').each( function() {
-		
 		var $pointer = $(this)
 		$pointer.find('.image_path').each( function() {
 			// For some reason, $(this).val() doesn't work...
@@ -327,7 +326,6 @@ function strip_images_for_save(target) {
 			$pointer.attr('data-x', $('#' + $(this).attr('id')).width())
 			$pointer.attr('data-y', $('#' + $(this).attr('id')).height())
 		})
-		
 		$pointer.html(' ')
 	})
 }

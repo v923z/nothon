@@ -43,7 +43,7 @@ web.template.Template.globals['safe_content'] = safe_content
 web.template.Template.globals['safe_props'] = safe_props
 app = web.application(urls, globals())
 
-def fetch_image(ID, fn, directory):
+def fetch_image(ID, fn, directory, width='100%', height='100%'):
 	try:
 		fn = get_file_path(fn, directory)
 		# TODO: figure out image size, deal with SVG files

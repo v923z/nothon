@@ -361,6 +361,11 @@ article {
 	min-height:			20px;
 }
 
+.image_image img {
+	height: 			100%;
+	width: 				100%;
+}
+
 .nothon_math {
 	background:			#bbbbee;
 	color: 				#0000ee;
@@ -494,15 +499,16 @@ p {
 
 .image_image {
 	width:				100%;
+	position:			relative;
 }
 
 .image_info {
 	background:			rgba(0, 0, 0, 0.1);	
-	width:				60%;
 	height:				20px;
-	position:			absolute;
+	position:			relative;
 	display:			none;
 	z-index:			100;
+	width: 				100%;
 }
 
 #top_menu li ul {
