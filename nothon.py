@@ -56,7 +56,7 @@ def update_image(content, directory):
 		dic['image_data'] = {'content' : fetch_image(ID, img['data-path'], directory)}
 		dic['image_caption'] = {'content' : img['data-caption']}
 		print 'herer', str(render.image_html(ID, dic))
-		img.replace_with('<div>soup</div>') #str(render.image_html(ID, dic)))
+		img.replace_with(str(render.image_html(ID, dic)))
         
 	print 'soup', soup
 	soup.html.unwrap()
