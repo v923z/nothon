@@ -109,8 +109,7 @@ def parse_note(fn):
 	for element in content:
 		exec('element = %s_update_dict(element)'%(element['type']))	
 		exec('div = render.%s_html(%s, %s)'%(element['type'], element['id'], element['content']))
-		if element['type'] == 'text':
-			print div
+		if element['type'] in ('text', 'paragraph'):
 			div = update_image(div, note['directory'])
 		note_str += str(div)
 		
