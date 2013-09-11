@@ -357,10 +357,6 @@ article {
 	background:			#a9bcf5;
 }
 
-.image_caption {
-	min-height:			20px;
-}
-
 .image_image img {
 	height: 			100%;
 	width: 				100%;
@@ -509,6 +505,11 @@ p {
 	display:			none;
 	z-index:			100;
 	width: 				100%;
+}
+
+.image_caption {
+	width: 				100%;
+	min-height:			20px;
 }
 
 #top_menu li ul {
