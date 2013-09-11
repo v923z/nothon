@@ -27,3 +27,11 @@ $(document).ready(function () {
 		console.log(message)
 	})
 })
+
+function paste_data(message)
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), paste_handler)
+}
+
+function paste_handler(req) {
+	var message = JSON.parse(req.responseText)
+}

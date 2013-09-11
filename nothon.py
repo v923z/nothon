@@ -21,6 +21,7 @@ import resource
 from code_handling import *
 from fileutils import *
 from jsutils import *
+from cell_utils import *
 
 nothon_resource = resource.NothonResource()
 
@@ -289,7 +290,7 @@ class Index(object):
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['command'] in ('plot', 'head', 'code', 'text', 'paragraph', 'save', 'savehtml', 'docmain_render', 'image'):
+		if message['command'] in ('plot', 'head', 'code', 'text', 'paragraph', 'save', 'savehtml', 'docmain_render', 'image', 'paste_cell'):
 			exec('result = %s_handler(message)'%(message['command']))
 			return result
 			
