@@ -1,14 +1,29 @@
-//function copy_cells() {
-	
-//}
-
-//$('#checkboxes input:checked').each(function() {
-    //selected.push($(this).attr('name'));
-//});
-
 $(document).ready(function () {
-	alert('ready')
+	$(':checkbox').prop('checked', false)
 	$(':checkbox').change( function(e) {
-		console.log('clicked')
+		if($(this).prop('checked')) {
+			$(this).next().addClass('toc_copy')
+		}
+		else {
+			$(this).next().removeClass('toc_copy')
+		}
+		console.log($(this).next().attr('href'))
+	})
+	$('.toc_paste_button').mouseup( function(e) {
+		var message = new Object()
+		message.command = 'paste_cell'
+		message.target = $(this).prev().attr('href')
+		var addresses = new Array()
+		var counter = 0
+		console.log($(this).prev().attr('href'))
+		$('input:checked').each( function() {
+			$(this).next().removeClass('toc_copy')
+			$(this).prop('checked', false)
+			console.log($(this).next().attr('href'))
+			addresses[counter] = $(this).next().attr('href')
+			counter++
+		})
+		message.addresses = addresses
+		console.log(message)
 	})
 })

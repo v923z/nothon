@@ -57,7 +57,7 @@ def extract_headers(fn):
 		for cell_name in element['content']:
 			cell = element['content'][cell_name]
 			if 'props' in cell and 'intoc' in cell['props'].split(';'):
-				output += '<p><input type="checkbox"/><a href="?name=%s#div_%s_main_%s">'%(fn, element['type'], element['id']) + cell['content'] + '</a></p>'
+				output += '<p><input type="checkbox"/><a href="?name=%s#div_%s_main_%s" class="toc_link">'%(fn, element['type'], element['id']) + cell['content'] + '</a></p>'
 			
 	return output
 
@@ -132,7 +132,7 @@ def rec_toc(tree, path, level):
 			except simplejson.decoder.JSONDecodeError:
 				print('WARNING: could not decode JSON (most probably this is not a proper nothon file) - %s/%s'%(path,elem))
 			if h != None:
-				str_tl += "<li><a href='?name=%s/%s'>%s</a>"%(path,elem,elem)
+				str_tl += "<li><a href='?name=%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(path,elem,elem)
 				str_tl += "<div class='toc_entry'>"
 				str_tl += h
 				str_tl += "</div>"

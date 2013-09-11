@@ -400,23 +400,42 @@ article {
 }
 
 .timeline_month {
-	font-size: 		14pt;
-	background: 	#d3e8da;
-	font-weight: 	bold;
+	font-size: 			14pt;
+	background: 		#d3e8da;
+	font-weight: 		bold;
 }
 
 .timeline_day {
-	font-size: 		12pt;
-	font-weight: 	bold;	
-	background: 	#eeffee;
-	margin-top: 	1px;
+	font-size: 			12pt;
+	font-weight: 		bold;	
+	background: 		#eeffee;
+	margin-top: 		1px;
 }
 
 .timeline_entry {
-	font-size: 		12pt;
-	font-weight: 	normal;
-	background: 	#eeffee;	
-	margin-left:	40px;
+	font-size: 			12pt;
+	font-weight: 		normal;
+	background: 		#eeffee;	
+	margin-left:		40px;
+}
+
+.timeline_link, .toc_link {
+	text-decoration:	none;
+}
+
+.toc_copy {
+	color:				#990000;
+}
+
+.toc_pasted {
+	background:			#444499;
+}
+
+.toc_undo_button, .toc_paste_button {
+	background:			#eeee88;
+	font-weight: 		bold;
+	border: 			solid 0px;
+	contenteditable: 	false;
 }
 
 #trash {
