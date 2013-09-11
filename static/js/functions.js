@@ -304,6 +304,7 @@ $(document).ready(function () {
 			$('#image_control_' + id).show()
 			$('#image_path_' + id).focus()
 	});
+	
 	$('.image_image').hover( function() {
 		var id = $(this).attr('id').replace('image_', 'image_info_')
 		$('#' + id).show()
@@ -311,12 +312,14 @@ $(document).ready(function () {
 		var id = $(this).attr('id').replace('image_', 'image_info_')
 		$('#' + id).hide()
 	});
+	
 	$('.image_path').keypress(function (e) {
 		if (e.which == 13) {
 			fetch_image($(this).attr('id').replace('image_path_', ''))
 			return false;
 		}
 	});
+	
 	$('.image_control').hide()
 });
 
