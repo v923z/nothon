@@ -12,7 +12,7 @@ $def with (title, aside, content)
 
 <script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <script type="text/javascript" src="/static/js/jquery.datepick.js"></script>
-<script type="text/javascript" src="/static/js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="/static/js/ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="/static/js/jquery.dynatree-1.2.4.js"></script>
 <script type="text/javascript" src="/static/js/functions.js"></script>
@@ -26,6 +26,8 @@ $def with (title, aside, content)
 <article id='article'>
 <div class="aside_switch" id="aside_switch" onclick="toggle_document_tree()"><<</div>
 <div id="docmain">$:safe_content(content, "content")
+<div id='new_notebook_dialog'>
+	<input id='new_notebook' type='text' style='width: 100%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'>
 </div>
 </article>
 </body>

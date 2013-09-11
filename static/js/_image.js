@@ -71,3 +71,8 @@ function connect_image() {
 		}
 	});
 }
+
+$(document).ready(function() {
+	connect_image()
+	$('.image_control').hide()
+})

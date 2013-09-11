@@ -298,9 +298,6 @@ $(document).ready(function () {
 	$(function() {
 		$('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })
 	});
-	
-	connect_image()
-	$('.image_control').hide()
 });
 
 $(function() {

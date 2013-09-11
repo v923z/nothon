@@ -1,17 +1,14 @@
-function copy_cells() {
+//function copy_cells() {
 	
-}
+//}
 
-function toc_link_onclick(event) {
-	console.log('target: ' + event.target + ' + ' + event.which)
-	if(event.ctrlKey) {
-			console.log('CNTRL')
-			event.stopPropagation()
-			return true
-	}
-	return false
-}
+//$('#checkboxes input:checked').each(function() {
+    //selected.push($(this).attr('name'));
+//});
 
 $(document).ready(function () {
-	
+	alert('ready')
+	$(':checkbox').change( function(e) {
+		console.log('clicked')
+	})
 })
