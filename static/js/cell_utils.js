@@ -24,11 +24,13 @@ $(document).ready(function () {
 			counter++
 		})
 		message.addresses = addresses
+		paste_data(message)
 		console.log(message)
 	})
 })
 
-function paste_data(message)
+function paste_data(message) {
+	console.log('pasted')
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), paste_handler)
 }
 
