@@ -16,11 +16,10 @@ $def with (title, aside, content)
 <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="/static/js/jquery.dynatree-1.2.4.js"></script>
 <script type="text/javascript" src="/static/js/functions.js"></script>
+<script type="text/javascript" src="/static/js/cell_utils.js"></script>
 </head>
-<body>
+<body data-type='timeline'>
 <aside id='aside'>
-<a href="http://127.0.0.1:8080/?name=__timeline" style="font-size: 24px;">Timeline</a>
-<a href="http://127.0.0.1:8080/?name=__toc" style="font-size: 24px;">Toc</a>
 <div id="calendar"></div>
 <div id="document_tree">$:aside['tree']</div>
 </aside>
