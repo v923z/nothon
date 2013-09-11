@@ -47,7 +47,6 @@ app = web.application(urls, globals())
 def update_image(content, directory):
 	# Parses the content for images, fetches them from disc, and inserts them accordingly
 	soup = BeautifulSoup(str(content))
-	print soup.prettify();
 	dic = {}
 	for img in soup.find_all(class_='section_image'):
 		ID = img['id'].split('_')[-1]
