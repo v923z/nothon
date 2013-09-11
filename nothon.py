@@ -50,12 +50,10 @@ def update_image(content, directory):
 	print soup.prettify();
 	dic = {}
 	for img in soup.find_all(class_='section_image'):
-		print img['id']
 		ID = img['id'].split('_')[-1]
 		dic['style'] = {'content' : img['style']}
 		dic['image_data'] = {'content' : fetch_image(ID, img['data-path'], directory)}
 		dic['image_caption'] = {'content' : img['data-caption']}
-		print 'herer', str(render.image_html(ID, dic))
 		s = BeautifulSoup(str(render.image_html(ID, dic)))
 		s.html.unwrap()
 		s.body.unwrap()
