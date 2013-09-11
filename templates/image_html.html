@@ -8,7 +8,7 @@ $ bid = 'image_button_%s'%(id)
 $ mid = 'image_%s'%(id)
 $ sid = 'section_image_%s'%(id)
 <div id='$sid' class='section_image' style='$:safe_content(content, "style")' data-x='' data-y='' data-path='' data-caption=''>
-<div id='$cid'>
+<div class='image_control' id='$cid'>
 <input type='button' class='image_chooser_button' onmouseup='fetch_image($id);' value='Fetch'/>
 <input class='image_path' id='$pid' type='text' value='$:safe_content(content, "image_path")'/>
 </div>

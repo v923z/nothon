@@ -298,6 +298,7 @@ $(document).ready(function () {
 	$(function() {
 		$('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })
 	});
+	
 	$('.image_button').click( function() {
 			var id = $(this).attr('id').replace('image_button_', '')
 			$('#image_control_' + id).show()
@@ -316,6 +317,7 @@ $(document).ready(function () {
 			return false;
 		}
 	});
+	$('.image_control').hide()
 });
 
 $(function() {
