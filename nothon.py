@@ -8,6 +8,7 @@ import traceback
 import tempfile
 import time
 import sys
+from bs4 import BeautifulSoup
 
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename
@@ -43,7 +44,26 @@ web.template.Template.globals['safe_content'] = safe_content
 web.template.Template.globals['safe_props'] = safe_props
 app = web.application(urls, globals())
 
-def fetch_image(ID, fn, directory, width='100%', height='100%'):
+def update_image(content, directory):
+	# Parses the content for images, fetches them from disc, and inserts them accordingly
+	soup = BeautifulSoup(str(content))
+	print soup.prettify();
+	dic = {}
+	for img in soup.find_all(class_='section_image'):
+		print img['id']
+		ID = img['id'].split('_')[-1]
+		dic['style'] = {'content' : img['style']}
+		dic['image_data'] = {'content' : fetch_image(ID, img['data-path'], directory)}
+		dic['image_caption'] = {'content' : img['data-caption']}
+		print 'herer', str(render.image_html(ID, dic))
+		img.replace_with('<div>soup</div>') #str(render.image_html(ID, dic)))
+        
+	print 'soup', soup
+	soup.html.unwrap()
+	soup.body.unwrap()
+	return content
+
+def fetch_image(ID, fn, directory):
 	try:
 		fn = get_file_path(fn, directory)
 		# TODO: figure out image size, deal with SVG files
@@ -66,7 +86,7 @@ def plot_update_dict(dictionary):
 	return dictionary
 	
 def text_update_dict(dictionary):
-	# TODO: parse image divs, and fetch the image file accordingly
+	#update_image(dictionary['content']['text_body']['content'], '/home/v923z/sandbox/nothon/')
 	return dictionary
 
 def head_update_dict(dictionary):
@@ -87,6 +107,9 @@ def parse_note(fn):
 	for element in content:
 		exec('element = %s_update_dict(element)'%(element['type']))	
 		exec('div = render.%s_html(%s, %s)'%(element['type'], element['id'], element['content']))
+		if element['type'] == 'text':
+			print div
+			div = update_image(div, note['directory'])
 		note_str += str(div)
 		
 	note['content'] = {'content' : note_str}
