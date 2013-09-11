@@ -298,6 +298,24 @@ $(document).ready(function () {
 	$(function() {
 		$('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })
 	});
+	$('.image_button').click( function() {
+			var id = $(this).attr('id').replace('image_button_', '')
+			$('#image_control_' + id).show()
+			$('#image_path_' + id).focus()
+	});
+	$('.image_image').hover( function() {
+		var id = $(this).attr('id').replace('image_', 'image_info_')
+		$('#' + id).show()
+	}, function() {
+		var id = $(this).attr('id').replace('image_', 'image_info_')
+		$('#' + id).hide()
+	});
+	$('.image_path').keypress(function (e) {
+		if (e.which == 13) {
+			fetch_image($(this).attr('id').replace('image_path_', ''))
+			return false;
+		}
+	});
 });
 
 $(function() {
