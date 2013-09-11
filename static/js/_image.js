@@ -15,31 +15,14 @@ function fetch_image(id) {
 
 function insert_image() {
 	var id = Math.floor(Math.random()*1000000)
-	console.log(image_html(id))
 	document.execCommand('insertHTML', false, image_html(id))
-	$('.image_button').click( function() {
-			var id = $(this).attr('id').replace('image_button_', '')
-			$('#image_control_' + id).show()
-			$('#image_path_' + id).focus()
-	});
-	$('.image_image').hover( function() {
-		var id = $(this).attr('id').replace('image_', 'image_info_')
-		$('#' + id).show()
-	}, function() {
-		var id = $(this).attr('id').replace('image_', 'image_info_')
-		$('#' + id).hide()
-	});
-	$('.image_path').keypress(function (e) {
-		if (e.which == 13) {
-			fetch_image($(this).attr('id').replace('image_path_', ''))
-			return false;
-		}
-	});
+	connect_image()
 	$('#image_path_' + id).focus()
 	return false
 }
 
 function image_data(div_data, filename) {
+	console.log(div_data.id)
 	var message = create_message(div_data, "image")
 	message.filename = filename
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), image_handler)
@@ -66,4 +49,25 @@ function strip_images_for_save(target) {
 		})
 		$pointer.html(' ')
 	})
+}
+
+function connect_image() {
+	$('.image_button').click( function() {
+			var id = $(this).attr('id').replace('image_button_', '')
+			$('#image_control_' + id).show()
+			$('#image_path_' + id).focus()
+	});
+	$('.image_image').hover( function() {
+		var id = $(this).attr('id').replace('image_', 'image_info_')
+		$('#' + id).show()
+	}, function() {
+		var id = $(this).attr('id').replace('image_', 'image_info_')
+		$('#' + id).hide()
+	});
+	$('.image_path').keypress(function (e) {
+		if (e.which == 13) {
+			fetch_image($(this).attr('id').replace('image_path_', ''))
+			return false;
+		}
+	});
 }
