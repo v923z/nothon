@@ -22,6 +22,7 @@ from code_handling import *
 from fileutils import *
 from jsutils import *
 from cell_utils import *
+from new_notebook import *
 
 nothon_resource = resource.NothonResource()
 
@@ -106,7 +107,7 @@ def parse_note(fn):
 	
 	for element in content:
 		exec('element = %s_update_dict(element)'%(element['type']))	
-		exec('div = render.%s_html(%s, %s)'%(element['type'], element['id'], element['content']))
+		exec('div = render.%s_html(%s, %s)'%(element['type'], element['count'], element['content']))
 		if element['type'] in ('text', 'section', 'paragraph'):
 			div = update_image(div, note['directory'])
 		note_str += str(div)
@@ -225,7 +226,7 @@ def save_handler(message):
 		if message['type'] in ('notebook'):
 			fout.write('"directory" : "%s",\n'%(message["directory"].strip('\n')))
 		fout.write('"date" : "%s",\n'%(message["date"]))
-		fout.write('"nothon version" : 1.2,\n')
+		fout.write('"nothon version" : 1.3,\n')
 		fout.write('"notebook" : %s\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))
 		
 	return  simplejson.dumps({'success' : 'success'})
@@ -274,7 +275,6 @@ class Index(object):
 		elif link.name == '__toc':
 			return 	render.toc(link.name, aside, make_toc())			
 		else:
-			print 'OUT!!!!!!!!!!!', link.name
 			sp = link.name.split('#')
 			link.name = sp[0]
 			if not os.path.exists(link.name):
@@ -283,8 +283,10 @@ class Index(object):
 				if not os.path.exists(path):
 					os.makedirs(path)
 				with open(link.name, 'w') as fout:
-					fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"date" : "", \n"nothon version" : 1.2, \n"notebook" : []\n}'%(title, os.getcwd()))
+					fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"date" : "", \n"nothon version" : 1.3, \n"notebook" : []\n}'%(title, os.getcwd()))
+				#new_notebook(link.name)
 					
+			print render.notebook(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 			return 	render.notebook(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 
 	def POST(self):

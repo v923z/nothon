@@ -1,6 +1,6 @@
 import os
 import simplejson
-from fileutils import get_notebook_content
+from fileutils import get_notebook
 
 def find_notes(dir):
 	fn = []

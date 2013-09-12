@@ -139,7 +139,8 @@ function block_content(elem) {
 	var block = new Object()
 
 	block.type = $(elem).data('type')
-	block.id = get_index($(elem).attr('id'))
+	block.count = get_index($(elem).attr('id'))
+	block.id = $(elem).attr('id')
 	block.content = {}
 	$(elem).children().each( function() {
 		if($(this).parent().get(0) === $(elem).get(0)) {
