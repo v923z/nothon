@@ -284,9 +284,10 @@ class Index(object):
 					os.makedirs(path)
 				with open(link.name, 'w') as fout:
 					fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"date" : "", \n"nothon version" : 1.3, \n"notebook" : []\n}'%(title, os.getcwd()))
-				#new_notebook(link.name)
+					# We have to re-generate the directory tree, for there is a new item here...
+					aside = {"tree" : dir_html(dir_tree('.'), nothon_resource.dirlisting_style)}
+				new_notebook(link.name)
 					
-			print render.notebook(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 			return 	render.notebook(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 
 	def POST(self):
