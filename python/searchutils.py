@@ -19,7 +19,7 @@ def find_string_in_file(filelist, string):
 	return flist
 
 def inspect_file(fn, string):
-	content = get_notebook_content(fn)
+	content = get_notebook(fn)
 	for element in content:
 		for cell_name in element['content']:
 			cell = element['content'][cell_name]
