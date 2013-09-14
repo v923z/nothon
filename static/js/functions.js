@@ -200,8 +200,8 @@ function save() {
 	var message = create_message('', "save")
 	message.type = $('body').data('type')
 	message.outfile = document.title
-	message.title = $.trim(document.getElementById("div_title").innerHTML)
-	message.directory = document.getElementById("div_dir").innerHTML
+	message.title = $('#div_title').html()
+	message.directory = $('#div_dir').html()
 	message.content = get_divs()
 	message.date = Date()
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)

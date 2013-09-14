@@ -1,0 +1,111 @@
+{
+"title" : "Ideas",
+"type": "notebook",
+"directory" : "/home/v923z/sandbox/nothon",
+"date" : "Sat Sep 14 2013 11:51:47 GMT+0200 (CEST)",
+"nothon version" : 1.3,
+"notebook" : [
+    {
+        "content": {
+            "text_body": {
+                "content": "Or, in other words, where are we heading? These ideas concern mainly the front-end.<br>",
+                "id": "div_text_body_1",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "A couple of ideas on nothon",
+                "id": "div_text_header_1",
+                "props": "searchable;intoc;"
+            }
+        },
+        "count": 1,
+        "id": "div_text_main_1",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "The title speaks for itself.<br>",
+                "id": "div_text_body_6",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Autosave",
+                "id": "div_text_header_6",
+                "props": "searchable;intoc;"
+            }
+        },
+        "count": 6,
+        "id": "div_text_main_6",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "This should bring up an info box showing the<br><ol><li>ID of the box</li><li>Word count. This would require stripping the content of images (we might have to keep the image caption, and the content of links, and notes, but we could skip formulae.)</li></ol><p><br></p>",
+                "id": "div_text_body_2",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Hovering on section-collapse button",
+                "id": "div_text_header_2",
+                "props": "searchable;intoc;"
+            }
+        },
+        "count": 2,
+        "id": "div_text_main_2",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "This should bring up an info box showing <br><ol><li>The image ID (file name)</li><li>Size?</li><li>Any other info that might be useful.</li></ol><p><br></p>",
+                "id": "div_text_body_3",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Hovering on plot",
+                "id": "div_text_header_3",
+                "props": "searchable;intoc;"
+            }
+        },
+        "count": 3,
+        "id": "div_text_main_3",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "This could be a button in the menu bar, and it should display<br><ol><li>The number of cells in the notebook, counted by type</li><li>Word count. Here we should think about what to do with non-textual cells, e.g., code, head/tail, plots, etc.</li></ol><p><br></p>",
+                "id": "div_text_body_4",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Hovering over \"notebook info\"",
+                "id": "div_text_header_4",
+                "props": "searchable;intoc;"
+            }
+        },
+        "count": 4,
+        "id": "div_text_main_4",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "There should be options for <br><ol><li>Copying cells across notebooks</li><li>Undoing cell copy. This could be done by marking copied cells with some CSS style, and if required, the styled cells could be removed.</li><li>Delete cells? A bit problematic, because the user could then irrevocably remove content without actually seeing it.</li><li>Hover function for links to cells: this could render the cell alone, and bring up the content in an info box. One could then see what is in that cell without having to navigate to the notebook. This would be rather handy, given leaving the TOC would remove all CSS markup, and there is no way of recovering that (unless we save that on disc somehow).<br></li></ol><br>",
+                "id": "div_text_body_5",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "Menu in TOC/timeline",
+                "id": "div_text_header_5",
+                "props": "searchable;intoc;"
+            }
+        },
+        "count": 5,
+        "id": "div_text_main_5",
+        "type": "text"
+    }
+]
+}
