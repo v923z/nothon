@@ -18,6 +18,23 @@ def paste_cell_handler(message, resource):
 	
 	return simplejson.dumps({'target' : message['target'], 'id' : message['id'], 'links' : zip(labels, new_cells)})
 
+def remove_cell_handler(message, resource):
+	target_nb = get_notebook(message['target'])
+	addresses = message['addresses']
+	for address in addresses:
+		cell = address.split('#')[1]
+		remove_cell(target_nb, cell)
+
+	with open(message['target'], 'w') as fout:
+		fout.write(print_notebook(target_nb, resource.notebook_item_order))
+	
+	return simplejson.dumps({'success' : 'success'})
+
+def remove_cell(nb, cell_id):
+	for cell in nb['notebook']:
+		if cell['id'] == cell_id:
+			nb['notebook'].remove(cell)
+	
 def insert_cell(target_nb, source, cell_id):
 	source_nb = get_notebook(source)
 	for cell in source_nb['notebook']:

@@ -7,7 +7,6 @@ $(document).ready(function () {
 		else {
 			$(this).next().removeClass('toc_copy')
 		}
-		console.log($(this).next().attr('href'))
 	})
 	$('.toc_paste_button').mouseup( function(e) {
 		// TODO: bail out immediately, if we are trying to paste to the same notebook!
@@ -16,7 +15,6 @@ $(document).ready(function () {
 		message.command = 'paste_cell'
 		message.target = $(this).prev().attr('href').replace('?name=', '')
 		message.id = $(this).closest('li').attr('id')
-		console.log($(this).closest('li').attr('id'))
 		var addresses = new Array()
 		var labels = new Array()
 		var counter = 0
@@ -30,12 +28,27 @@ $(document).ready(function () {
 		message.addresses = addresses
 		message.labels = labels
 		paste_data(message)
+	})
+	$('.toc_undo_button').mouseup( function(e) {
+		var message = new Object()
+		message.command = 'remove_cell'
+		message.target = $(this).prev().prev().attr('href').replace('?name=', '')
+		var addresses = new Array()
+		var counter = 0
+		console.log($(this).parent().attr('id'))
+		$(this).parent().find('.toc_pasted').each( function() {
+			console.log($(this).html())
+			addresses[counter] = $(this).attr('href').replace('?name=', '')
+			$(this).closest('p').remove()
+			counter++
+		})
+		message.addresses = addresses
+		undo_data(message)
 		console.log(message)
 	})
 })
 
 function paste_data(message) {
-	console.log('pasted')
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), paste_handler)
 }
 
@@ -43,10 +56,14 @@ function paste_handler(req) {
 	var message = JSON.parse(req.responseText)
 	var links = message['links']
 	var id = message['id']
-	console.log(id)
 	for(i=0; i < links.length; i++) {
-		console.log("<p><input type='checkbox'/><a href='?name=" + message['target'] + '#' + links[i][1] + " class='toc_pasted'>")
 		$('#' + id).find('.toc_entry').prepend("<p><input type='checkbox'/><a href='?name=" + message['target'] + '#' + links[i][1] + "' class='toc_link toc_pasted'>" + links[i][0] + "</a>")
-		console.log('?name=' + message['target'] + '#' + links[i][1])
 	}
+}
+
+function undo_data(message) {
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), undo_handler)
+}
+
+function undo_handler(req) {
 }
