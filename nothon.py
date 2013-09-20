@@ -115,7 +115,7 @@ def parse_note(fn):
 	note['content'] = {'content' : note_str}
 	return note
 
-def head_handler(message):	
+def head_handler(message, resource):
 	head = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n')
 	sp = head.split(' ')
 	fn = sp[0]
@@ -144,12 +144,12 @@ def head_handler(message):
 							message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),  
 							message['body'] : '<br>'.join([x.rstrip('\n\r') for x in lines])})
 
-def plot_handler(message):
+def plot_handler(message, resource):
 	code = message['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
 	exit_status = False
 	pwd = os.getcwd()
 	print message['directory']
-	if message['directory']: os.chdir(message['directory'].strip('\n'))
+	if message['directory']: os.chdir(message['directory'].strip('<br>'))
 	
 	if code.startswith('#gnuplot') or code.startswith('# gnuplot'):
 		with open(message['filename'] + '.gp', 'w') as fout:
@@ -178,13 +178,13 @@ def plot_handler(message):
 						message['title'] : message['filename'] + '.png', 
 						message['body'] : exit_status})
 
-def image_handler(message):
+def image_handler(message, resource):
 	ID = message['id'].split('_')[-1]
 	fn = message['filename']
 	directory = message['directory'].strip('\n')
 	return simplejson.dumps({message['id'] : fetch_image(ID, fn, message)})
 		
-def code_handler(message):
+def code_handler(message, resource):
 	print message
 	fn, tag, linenos, include = code_arguments(message['content'])
 	return simplejson.dumps({message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
@@ -206,7 +206,7 @@ def maxima_execute(max_string):
 	os.remove(tmp + '.out')
 	return result
 	
-def text_handler(message):
+def text_handler(message, resource):
 	print message["content"]
 	result = maxima_execute(message["content"])
 	if result.find('$$') == -1:
@@ -214,10 +214,10 @@ def text_handler(message):
 	else:
 		return simplejson.dumps({'target' : message['id'], 'success' : 'success', 'result' : result.split('$$')[1]})
 
-def paragraph_handler(message):
-	return text_handler(message)
+def paragraph_handler(message, resource):
+	return text_handler(message, resource)
 
-def save_handler(message):
+def save_handler(message, resource):
 	print message
 	" Writes the stipped document content to disc "
 	with open(message['outfile'], 'w') as fout:
@@ -231,7 +231,7 @@ def save_handler(message):
 		
 	return  simplejson.dumps({'success' : 'success'})
 
-def savehtml_handler(message):
+def savehtml_handler(message, resource):
 	fin = open('static/css/main.css', 'r')
 	css = fin.read()
 	fin.close()
@@ -246,7 +246,7 @@ def savehtml_handler(message):
 	fout.close()
 	return  simplejson.dumps({'success' : 'success'})
 
-def docmain_render_handler(message):
+def docmain_render_handler(message, resource):
 	notebook = parse_note(message["address"])
 	return simplejson.dumps({'docmain' : notebook['content']['content'], 
 							'title' : notebook['title']['content'],
@@ -294,7 +294,7 @@ class Index(object):
 		message = simplejson.loads(web.data())
 		print message
 		if message['command'] in ('plot', 'head', 'code', 'text', 'paragraph', 'save', 'savehtml', 'docmain_render', 'image', 'paste_cell'):
-			exec('result = %s_handler(message)'%(message['command']))
+			exec('result = %s_handler(message, nothon_resource)'%(message['command']))
 			return result
 			
 		else:

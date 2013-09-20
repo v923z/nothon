@@ -110,7 +110,7 @@ function create_message(div_data, message_type) {
 	message.command = message_type
 	message.id = div_data.id
 	message.content = div_data.innerHTML
-	message.directory = document.getElementById("div_dir").innerHTML
+	message.directory = $('#div_dir').html().replace('<br>', '')
 	return message
 }
 
@@ -201,7 +201,7 @@ function save() {
 	message.type = $('body').data('type')
 	message.outfile = document.title
 	message.title = $('#div_title').html()
-	message.directory = $('#div_dir').html()
+	message.directory = $('#div_dir').html().replace('<br>', '')
 	message.content = get_divs()
 	message.date = Date()
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)

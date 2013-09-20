@@ -1,25 +1,26 @@
 import simplejson
+from fileutils import get_notebook
 
-def paste_cell_handler(message):
+def paste_cell_handler(message, resource):
 	target = message['target']
+	target_nb = get_notebook(target)
 	addresses = message['addresses']
 	for address in addresses:
-		notebook = address.strip('?name=').split('#')[0]
-		cell = address.strip('?name=').split('#')[1]
-		print target, address, notebook, cell
-	
+		source = address.split('#')[0]
+		cell = address.split('#')[1]
+		insert_cell(target_nb, source, cell)
+
+	with open(target, 'w') as fout:
+		fout.write(print_notebook(target_nb, resource.notebook_item_order))
 	return simplejson.dumps({message['command'] : message})
 
-def insert_cell(target, source, cell_id):
-	target_nb = get_notebook(target)
+def insert_cell(target_nb, source, cell_id):
 	source_nb = get_notebook(source)
 	for cell in source_nb['notebook']:
 		if cell['id'] == cell_id:
 			target_nb['notebook'].insert(0, prepare_cell(cell, locate_highest(target_nb, cell['type'])+1))
 			break
             
-	print simplejson.dumps(target_nb, sort_keys=True, indent=4)
-
 def locate_highest(nb, cell_type):
 	# Returns the highest "count" of a particular cell type
 	counts = [0]
@@ -40,9 +41,11 @@ def prepare_cell(cell, count):
 	return new_cell
 
 def print_notebook(nb, *objects):
-	nb_str = '{\n'
-	for obj in objects:
-		nb_str += '"%s" : %s,\n'%(obj, simplejson.dumps(nb[obj], sort_keys=True, indent=4))
-        
-	nb_str += '}'
+	def safe_notebook_cell(nb, obj):
+		if obj in nb: return simplejson.dumps(nb[obj], sort_keys=True, indent=4)
+		return ''
+	
+	nb_str = '{\n'	
+	nb_str += ',\n'.join(['"%s" : %s'%(obj, safe_notebook_cell(nb, obj)) for obj in objects])
+	nb_str += '\n}'
 	return nb_str
