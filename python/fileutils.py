@@ -3,6 +3,7 @@ import simplejson
 import calendar
 import datetime
 import time
+from random import randrange
 
 def get_file_path(fn, base_path):
 	# This function returns the filepath, based on, whether the user intended an absolute, or a relative path
@@ -132,7 +133,7 @@ def rec_toc(tree, path, level):
 			except simplejson.decoder.JSONDecodeError:
 				print('WARNING: could not decode JSON (most probably this is not a proper nothon file) - %s/%s'%(path,elem))
 			if h != None:
-				str_tl += "<li><a href='?name=%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(path,elem,elem)
+				str_tl += "<li id='li_%d_%d'><a href='?name=%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), path, elem, elem)
 				str_tl += "<div class='toc_entry'>"
 				str_tl += h
 				str_tl += "</div>"

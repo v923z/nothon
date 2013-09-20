@@ -2,24 +2,30 @@ import simplejson
 from fileutils import get_notebook
 
 def paste_cell_handler(message, resource):
-	target = message['target']
-	target_nb = get_notebook(target)
+	target_nb = get_notebook(message['target'])
 	addresses = message['addresses']
+	addresses.reverse()
+	labels = message['labels']
+	labels.reverse()
+	new_cells = []
 	for address in addresses:
 		source = address.split('#')[0]
 		cell = address.split('#')[1]
-		insert_cell(target_nb, source, cell)
+		new_cells.append(insert_cell(target_nb, source, cell))
 
-	with open(target, 'w') as fout:
+	with open(message['target'], 'w') as fout:
 		fout.write(print_notebook(target_nb, resource.notebook_item_order))
-	return simplejson.dumps({message['command'] : message})
+	
+	return simplejson.dumps({'target' : message['target'], 'id' : message['id'], 'links' : zip(labels, new_cells)})
 
 def insert_cell(target_nb, source, cell_id):
 	source_nb = get_notebook(source)
 	for cell in source_nb['notebook']:
 		if cell['id'] == cell_id:
-			target_nb['notebook'].insert(0, prepare_cell(cell, locate_highest(target_nb, cell['type'])+1))
+			new_cell = prepare_cell(cell, locate_highest(target_nb, cell['type'])+1)
+			target_nb['notebook'].insert(0, new_cell)
 			break
+	return new_cell['id']
             
 def locate_highest(nb, cell_type):
 	# Returns the highest "count" of a particular cell type
@@ -40,7 +46,7 @@ def prepare_cell(cell, count):
 		new_cell['content'][c]['id'] = new_id
 	return new_cell
 
-def print_notebook(nb, *objects):
+def print_notebook(nb, objects):
 	def safe_notebook_cell(nb, obj):
 		if obj in nb: return simplejson.dumps(nb[obj], sort_keys=True, indent=4)
 		return ''

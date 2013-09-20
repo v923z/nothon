@@ -15,17 +15,20 @@ $(document).ready(function () {
 		var message = new Object()
 		message.command = 'paste_cell'
 		message.target = $(this).prev().attr('href').replace('?name=', '')
+		message.id = $(this).closest('li').attr('id')
+		console.log($(this).closest('li').attr('id'))
 		var addresses = new Array()
+		var labels = new Array()
 		var counter = 0
-		console.log($(this).prev().attr('href'))
 		$('input:checked').each( function() {
 			$(this).next().removeClass('toc_copy')
 			$(this).prop('checked', false)
-			console.log($(this).next().attr('href'))
 			addresses[counter] = $(this).next().attr('href').replace('?name=', '')
+			labels[counter] = $(this).next().text()
 			counter++
 		})
 		message.addresses = addresses
+		message.labels = labels
 		paste_data(message)
 		console.log(message)
 	})
@@ -38,4 +41,12 @@ function paste_data(message) {
 
 function paste_handler(req) {
 	var message = JSON.parse(req.responseText)
+	var links = message['links']
+	var id = message['id']
+	console.log(id)
+	for(i=0; i < links.length; i++) {
+		console.log("<p><input type='checkbox'/><a href='?name=" + message['target'] + '#' + links[i][1] + " class='toc_pasted'>")
+		$('#' + id).find('.toc_entry').prepend("<p><input type='checkbox'/><a href='?name=" + message['target'] + '#' + links[i][1] + "' class='toc_link toc_pasted'>" + links[i][0] + "</a>")
+		console.log('?name=' + message['target'] + '#' + links[i][1])
+	}
 }
