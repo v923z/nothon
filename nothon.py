@@ -32,13 +32,13 @@ def safe_content(dictionary, key):
 	else:
 		return dictionary[key]['content']
 
-def safe_props(dictionary, key):
+def safe_props(dictionary, key, *props):
 	if not dictionary or key not in dictionary:
-		return ""
+		return ';'.join(props)
 	elif 'props' in dictionary[key]:
-		return dictionary[key]['props']
+		return ';'.join(set(dictionary[key]['props'].split(';') + list(props)))
 	else:
-		return ""	
+		return ';'.join(props)	
 
 urls = ('/',  'Index')
 render = web.template.render('templates/')

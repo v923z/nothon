@@ -153,6 +153,7 @@ function block_content(elem) {
 					sub_block['id'] = $(this).attr('id')
 					if($(this).is(':visible')) props.replace('collapsed;', '')
 					else props = add_tag(props, 'collapsed')
+					console.log(props)
 					sub_block['props']= props
 					block.content[$(this).attr('class')] = sub_block
 				}
@@ -291,8 +292,8 @@ $(document).ready(function () {
 	$(function() {
 		$("div").each( function() {
 			var props = $(this).data('props')
-			console.log(props)
 			if(check_tag(props, 'collapsed')) $(this).hide()
+			if(check_tag(props, 'locked')) $(this).attr('contenteditable', false)
 		});
 	});
 	
@@ -463,10 +464,13 @@ function create_and_insert2(target) {
 	
 }
 
-function lock_cell() {
-	var _main = $(active_div).closest('div[id*="_main_"]')
+function lock_cell(cell) {
+	var _main = $(cell).closest('div[id*="_main_"]')
 	$(_main).find('*').each( function() {
-		
+		if($(this).attr('contenteditable')) {
+			$(this).attr('contenteditable', false)
+			$(this).data('props', add_tag($(this).data('props'), 'locked'))
+		}
 	})
 	return false
 }

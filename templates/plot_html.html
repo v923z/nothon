@@ -5,11 +5,15 @@ $ tid = 'div_plot_file_%s'%(id)
 $ hid = 'div_plot_header_%s'%(id)
 $ bid = 'div_plot_body_%s'%(id)
 $ eid = 'expand_div_plot_main_%s'%(id)
+$ caption_props = safe_props(content, 'plot_caption', 'searchable', 'intoc')
+$ file_props = safe_props(content, 'plot_file')
+$ date_props = safe_props(content, 'plot_date')
+$ body_props = safe_props(content, 'plot_body')
 
 <div id='$mid' class='plot_main' data-type='plot'>
 <div class='button_expand' id='$eid' onclick='plot_onclick(this);'><img src='/static/icons/collapse.png' height='18px'/></div>
-<div id='$cid' class='plot_caption' contenteditable='true' data-type='plot' data-nothon='save;' data-props='searchable;intoc;' onfocus='set_active(this);'>$:safe_content(content, "plot_caption")</div>
-<div id='$hid' class='plot_header' contenteditable='true' data-type='plot' data-expand='$eid' onkeypress='return plot_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props='$safe_props(content, "plot_header")'>$:safe_content(content, "plot_header")</div>
-<div id='$tid' class='plot_file' data-type='plot' data-nothon='save;' data-props=''>$safe_content(content, "plot_file")</div>
-<div id='$bid' class='plot_body' data-type='plot' data-nothon='' data-props=''>$:safe_content(content, "plot_body")</div>
+<div id='$cid' class='plot_caption' contenteditable='true' data-type='plot' data-nothon='save;' data-props='$caption_props' onfocus='set_active(this);'>$:safe_content(content, "plot_caption")</div>
+<div id='$hid' class='plot_header' contenteditable='true' data-type='plot' data-expand='$eid' onkeypress='return plot_keypress(event);' onfocus='set_active(this);' data-nothon='save;' data-props='$head_props'>$:safe_content(content, "plot_header")</div>
+<div id='$tid' class='plot_file' data-type='plot' data-nothon='save;' data-props='$file_props'>$safe_content(content, "plot_file")</div>
+<div id='$bid' class='plot_body' data-type='plot' data-nothon='' data-props='$body_props'>$:safe_content(content, "plot_body")</div>
 </div>

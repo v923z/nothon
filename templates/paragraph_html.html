@@ -1,7 +1,8 @@
 $def with (id, content)
 $ mid = 'div_paragraph_main_%s'%(id)
 $ bid = 'div_paragraph_body_%s'%(id)
+$ body_props = safe_props(content, 'paragraph_body', 'searchable')
 
 <div id='$mid' class='paragraph_main' data-type='paragraph'>
-<div id='$bid' class='paragraph_body' contenteditable='true' onfocus='set_active(this);' onkeypress='return paragraph_keypress(event);' data-nothon='save;' data-props='searchable;' + '$safe_props(content, "paragraph_body")'>$:safe_content(content, "paragraph_body")</div>
+<div id='$bid' class='paragraph_body' contenteditable='true' onfocus='set_active(this);' onkeypress='return paragraph_keypress(event);' data-nothon='save;' data-props='$body_props'>$:safe_content(content, "paragraph_body")</div>
 </div>
