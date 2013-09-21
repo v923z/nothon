@@ -221,10 +221,13 @@ def save_handler(message, resource):
 	print message
 	" Writes the stipped document content to disc "
 	with open(message['outfile'], 'w') as fout:
+		#nb = message
+		#nb['nothon version'] = resource.nothon_version
+		#print print_notebook(nb, resource.notebook_item_order)
 		fout.write('{\n"title" : "%s",\n'%(message["title"]))
 		fout.write('"type": "%s",\n'%(message['type']))
 		if message['type'] in ('notebook'):
-			fout.write('"directory" : "%s",\n'%(message["directory"].strip('\n')))
+			fout.write('"directory" : "%s",\n'%(message["directory"].strip('<br>')))
 		fout.write('"date" : "%s",\n'%(message["date"]))
 		fout.write('"nothon version" : 1.3,\n')
 		fout.write('"notebook" : %s\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))
@@ -279,14 +282,14 @@ class Index(object):
 			link.name = sp[0]
 			if not os.path.exists(link.name):
 				title = os.path.basename(link.name).replace('.note', '')
-				path = os.path.join(os.getcwd(),os.path.dirname(link.name))
+				path = os.path.join(os.getcwd(),os.path	.dirname(link.name))
 				if not os.path.exists(path):
 					os.makedirs(path)
 				with open(link.name, 'w') as fout:
 					fout.write('{\n"title" : "%s", \n"directory" : "%s", \n"date" : "", \n"nothon version" : 1.3, \n"notebook" : []\n}'%(title, os.getcwd()))
 					# We have to re-generate the directory tree, for there is a new item here...
 					aside = {"tree" : dir_html(dir_tree('.'), nothon_resource.dirlisting_style)}
-				new_notebook(link.name)
+				new_notebook(link.name, nothon_resource)
 					
 			return 	render.notebook(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 

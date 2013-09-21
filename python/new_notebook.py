@@ -1,2 +1,2 @@
-def new_notebook(fn):
+def new_notebook(fn, resource):
 	pass
