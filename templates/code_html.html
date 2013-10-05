@@ -10,7 +10,7 @@ $ body_props = safe_props(content, 'code_body')
 
 <div id='$mid' class='code_main' data-type='code'>
 <div class='button_expand' id='$eid' onclick='code_onclick(this);'><img src='/static/icons/collapse.png' height='18px'/></div>
-<div id='$hid' class='code_header' contenteditable='true' onkeypress='return code_keypress(event);' onfocus='set_active(this);' data-type='code' data-nothon='save;' data-props='$header_props'>$safe_content(content, "code_header")</div>
+<div id='$hid' class='code_header' contenteditable='true' onkeypress='return code_keypress(event);' onfocus='set_active(this);' data-main='$mid' data-type='code' data-nothon='save;' data-props='$header_props'>$safe_content(content, "code_header")</div>
 <div id='$did' class='code_date' data-nothon='save;' data-props='$date_props'>$safe_content(content, "code_date")</div>
 <div id='$bid' class='code_body' data-expand='$eid' data-nothon='save;' data-props='$body_props'>$:safe_content(content, "code_body")</div>
 </div>
