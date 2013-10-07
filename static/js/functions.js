@@ -266,7 +266,10 @@ $(document).ready(function () {
 	$(function() {
 		$("div").each( function() {
 			var props = $(this).data('props')
-			if(check_tag(props, 'collapsed')) $(this).hide()
+			if(check_tag(props, 'collapsed')) {
+				$(this).hide()
+				set_collapse('#' + $(this).data('main'))
+			}
 			if(check_tag(props, 'locked')) $(this).attr('contenteditable', false)
 		});
 	});
@@ -345,15 +348,9 @@ document.addEventListener("keydown", function(e) {
   
 }, false)
 
-function set_expand(id) {
-	var elem = $(id).find('.button_expand').each(function() {
-		$(this).children().attr('src', '/static/icons/expand.png')
-	})
-}
-
 function set_collapse(id) {
 	var elem = $(id).find('.button_expand').each(function() {
-		$(this).children().attr('src', '/static/icons/collapse.png')
+		$(this).children().attr('src', '/static/icons/expand.png')
 	})
 }
 
