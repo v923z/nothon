@@ -246,6 +246,7 @@ $(document).ready(function () {
 	});
 	
 	$('#notebook_tab').tabs();
+	$(function() { generate_toc() })
 	
 	$(function() {
 		$("#document_tree").dynatree({
@@ -466,4 +467,23 @@ function activate_element(element) {
 	elem.focus()
 	$(elem).scrollTop()
 	return elem
+}
+
+function generate_toc() {
+	var code = '<ul>'
+	$('#docmain').children().each( function() {
+		$(this).children().each( function() {
+			var props = $(this).data('props')
+			if(check_tag(props, 'intoc')) {
+				code = code + '<li><a href="#' + $(this).attr('id') + '">' + cut_intoc($(this).text()) + '</a></li>'
+			}
+		})
+	})
+	code = code + '</ul>'
+	$('#document_contents').html(code)
+}
+
+function cut_intoc(string) {
+	if(string.length > 20) return string.slice(0, 20) + '...'
+	return string
 }
