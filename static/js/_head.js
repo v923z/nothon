@@ -1,7 +1,15 @@
-function head_activate(id) {
-	active_div = document.getElementById('div_head_header_' + id)
-	active_div.focus()
+function insert_head() {
+	var position = get_insertion_position()
+	var id = 1
+	if(!position) {
+		$('#docmain').prepend(head_html(id))
+	} else {
+		get_max_index('head_main') + 1
+		$('#' + position).after(head_html(id))	
+	}
 	head_context_menu()
+	active_div = activate_element('div_head_header_' + id)
+	return false
 }
 
 function head_onclick(target) {

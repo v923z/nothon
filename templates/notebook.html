@@ -3,29 +3,29 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 <head>
 <title>$title</title>
 <meta charset="utf-8">
-<link rel="stylesheet" href="/static/css/main.css" type="text/css" />
-<link rel="stylesheet" href="/static/css/highlight.css" type="text/css" />
-<link rel="stylesheet" href="/static/css/ui.dynatree.css" type="text/css" />
-<link rel="stylesheet" href="/static/css/dynatree_custom.css" type="text/css" />
-<link rel="stylesheet" href="/static/css/jquery.datepick.css" type="text/css" /> 
-<script type="text/javascript"
+<link rel="stylesheet" href="/static/css/main.css"/>
+<link rel="stylesheet" href="/static/css/highlight.css"/>
+<link rel="stylesheet" href="/static/css/ui.dynatree.css"/>
+<link rel="stylesheet" href="/static/css/dynatree_custom.css"/>
+<link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
+<script 
   src="/static/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
    MathJax.Hub.Config({
     styles: { ".MathJax": { color: "#0000ee", "background-color": "#bbbbee" } }
   });
 </script>
-<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-<script type="text/javascript" src="/static/js/jquery.datepick.js"></script>
-<script type="text/javascript" src="/static/js/ui/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="/static/js/jquery.dynatree-1.2.4.js"></script>
-<script type="text/javascript" src="/static/js/functions.js"></script>
-<script type="text/javascript" src="/static/js/math.min.js"></script>
-<script type="text/javascript" src="/static/js/calculator.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.datepick.js"></script>
+<script src="/static/js/ui/jquery-ui.min.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/jquery.dynatree-1.2.4.js"></script>
+<script src="/static/js/functions.js"></script>
+<script src="/static/js/math.min.js"></script>
+<script src="/static/js/calculator.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
-	<script type="text/javascript" src="$js_src"></script>
+	<script src="$js_src"></script>
 
 </head>
 <body data-type='notebook'>
@@ -55,11 +55,11 @@ $for f in create_funcs + handler_funcs:
 	</li>
 	<li>Cell
 		<ul>
-			<li onmouseup='create_and_insert2(this);'>Section</li>
-			<li onmouseup='create_and_insert2(this);'>Paragraph</li>
-			<li onmouseup='create_and_insert2(this);'>Plot</li>
-			<li onmouseup='create_and_insert2(this);'>Code</li>
-			<li onmouseup='create_and_insert2(this);'>Head</li>
+			<li onmouseup='insert_text();'>Section</li>
+			<li onmouseup='insert_paragraph();'>Paragraph</li>
+			<li onmouseup='insert_plot()'>Plot</li>
+			<li onmouseup='insert_code();'>Code</li>
+			<li onmouseup='insert_head();'>Head</li>
 			<hr>
 			<li onmouseup='delete_block();'>Delete</li>
 			<li onmouseup='recover_block();'>Recover</li>			
@@ -88,18 +88,6 @@ $for f in create_funcs + handler_funcs:
 <div id="doc_toplevel">
 <div id="menucontainer-right">
 <div class="menu" onclick="move('up');"><img src="/static/css/up-arrow.png"  width="60%"></div>
-<div id="menu" class="menu"><img src="/static/css/add.png" width="60%">
-<ul>
-$for f in create_funcs:
-	$ value = "%s"%(f.split("_")[0])
-	$ main_src = "%s_main"%(value)
-	<li onclick="create_and_insert('$main_src');">$value</li>
-<li onclick="save();">save</li>
-<li onclick="save_html();">html</li>
-<li onclick="delete_block();">remove</li>
-<li onclick="recover_block();">recover</li>
-</ul>
-</div>
 <div class="menu" onclick="move('down');"><img src="/static/css/down-arrow.png" width="60%"></div>
 </div>
 <div id='context_menu'></div>

@@ -1,7 +1,15 @@
-function plot_activate(id) {
-	active_div = document.getElementById('div_plot_header_' + id)
-	active_div.focus()
+function insert_plot() {
+	var position = get_insertion_position()
+	var id = 1
+	if(!position) {
+		$('#docmain').prepend(plot_html(id))
+	} else {
+		id = get_max_index('plot_main') + 1
+		$('#' + position).after(plot_html(id))
+	}
 	plot_context_menu()
+	active_div = activate_element('div_plot_header_' + id)
+	return false
 }
 
 function plot_context_menu() {

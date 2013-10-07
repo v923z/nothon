@@ -1,7 +1,15 @@
-function paragraph_activate(id) {
-	active_div = document.getElementById('div_paragraph_body_' + id)
-	active_div.focus()
+function insert_paragraph() {
+	var position = get_insertion_position()
+	var id = 1
+	if(!position) {
+		$('#docmain').prepend(paragraph_html(id))
+	} else {
+		id = get_max_index('paragraph_main') + 1
+		$('#' + position).after(paragraph_html(id))
+	}
 	paragraph_context_menu()
+	active_div = activate_element('div_paragraph_body_' + id)
+	return false
 }
 
 function paragraph_context_menu() {

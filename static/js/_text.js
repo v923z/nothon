@@ -1,7 +1,15 @@
-function text_activate(id) {
-	active_div = document.getElementById('div_text_header_' + id)
-	active_div.focus()
+function insert_text() {
+	var position = get_insertion_position()
+	var id = 1
+	if(!position) {
+		$('#docmain').prepend(text_html(id))
+	} else {
+		var id = get_max_index('text_main') + 1
+		$('#' + position).after(text_html(id))
+	}
 	text_context_menu()
+	active_div = activate_element('div_text_header_' + id)
+	return false
 }
 
 function text_context_menu() {

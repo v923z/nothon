@@ -74,7 +74,6 @@ function get_max_index(className) {
 	// TODO: using the className is probably not the best idea. 
 	// This should be done using the data-type tag!
 	var elems = document.getElementsByClassName(className)
-	console.log(elems.length)
 	var num = 0
 	for(i=0; i < elems.length; i++) {
 		if(num < get_num(elems[i])) {
@@ -82,27 +81,6 @@ function get_max_index(className) {
 		}
 	}
 	return num
-}
-
-function create_and_insert(className) {
-	$("#menu > ul").fadeOut("slow"); 
-	if(active_div) {
-		position = active_div.parentNode
-		if(position.parentNode.id == 'trash') {
-			position = document.getElementById('docmain').lastChild
-		}
-	}
-	else position = document.getElementById('docmain')
-	var num = get_max_index(className) + 1
-	var new_div = document.createElement("div")
-	new_div.innerHTML = eval(className.replace('_main', '_html') + '(' + num + ')')
-	var elem_id = new_div.firstChild.id
-	if(active_div) {
-		insertAfter(new_div.firstChild, position)
-	} else {
-		position.appendChild(new_div.firstChild)
-	}
-	eval(className.replace('_main', '_activate') + '(' + num + ')')
 }
 
 function create_message(div_data, message_type) {
@@ -477,4 +455,22 @@ function lock_cell(cell) {
 
 function usage() {
 	window.open('?name=help.html', 'nothon quick help', 'left=20, top=20, width=500, height=500, toolbar=0, location=0, menubar=0, resizable=0')
+}
+
+function get_insertion_position() {
+	if(active_div && $.contains($('#docmain')[0], active_div)) {
+		return $(active_div).data('main')
+	}
+	else {
+		if($('#docmain').is(':empty')) return false
+		return $('#docmain').children(':last').attr('id')
+	}
+}
+
+function activate_element(element) {
+	// This should pass jQuery reference instead!
+	var elem = document.getElementById(element)
+	elem.focus()
+	$(elem).scrollTop()
+	return elem
 }

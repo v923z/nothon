@@ -1,7 +1,15 @@
-function code_activate(id) {
-	active_div = document.getElementById('div_code_header_' + id)
-	active_div.focus()
+function insert_code() {
+	var position = get_insertion_position()
+	var id = 1
+	if(!position) {
+		$('#docmain').prepend(code_html(id))
+	} else {
+		id = get_max_index('code_main') + 1
+		$('#' + position).after(code_html(id))
+	}
 	code_context_menu()
+	active_div = activate_element('div_code_header_' + id)
+	return false
 }
 
 function code_onclick(target) {

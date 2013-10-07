@@ -1,8 +1,8 @@
 {
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
-"directory" : "Comments on using the nothon notebook&lt;br&gt;",
-"date" : "Fri Sep 27 2013 10:43:22 GMT+0200 (CEST)",
+"directory" : "",
+"date" : "Mon Oct 07 2013 19:00:36 GMT+0200 (CEST)",
 "nothon version" : 1.3,
 "notebook" : [
     {
@@ -66,7 +66,7 @@
             "text_header": {
                 "content": "Installing on an android device",
                 "id": "div_text_header_16",
-                "props": "searchable;intoc"
+                "props": "intoc;searchable"
             }
         },
         "count": 16,
@@ -244,7 +244,7 @@
     {
         "content": {
             "text_body": {
-                "content": "If we supply an argument, we can print the first or last n lines as follows<br>",
+                "content": "If we supply an argument, we can print the first or last n lines as follows.<br>",
                 "id": "div_text_body_3",
                 "props": ";searchable"
             },
