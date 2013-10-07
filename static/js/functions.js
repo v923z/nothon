@@ -233,14 +233,7 @@ function recover_block() {
 	}
 }
 
-$(document).ready(function () {
-	$("#menu").hover(function() {
-		$("#menu > ul").fadeIn("slow"); 
-	}, 
-	function() {
-		$("#menu > ul").fadeOut("slow"); 
-	});
-	
+$(document).ready(function () {	
 	$('#calendar').datepick({
 		dateFormat: 'yyyy-mm-dd',
 		onSelect: function(date) {
@@ -252,6 +245,8 @@ $(document).ready(function () {
 		}
 	});
 	
+	$('#notebook_tab').tabs();
+	
 	$(function() {
 		$("#document_tree").dynatree({
 			persist: true,
@@ -262,6 +257,7 @@ $(document).ready(function () {
 			}
 		});
 	});
+	$("#document_tree").removeClass().addClass('document_tree')
 	
 	$("#document_tree").bind("contextmenu", function(e) {
 		return false;

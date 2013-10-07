@@ -8,6 +8,7 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 <link rel="stylesheet" href="/static/css/ui.dynatree.css"/>
 <link rel="stylesheet" href="/static/css/dynatree_custom.css"/>
 <link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script 
   src="/static/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
    MathJax.Hub.Config({
@@ -30,8 +31,17 @@ $for f in create_funcs + handler_funcs:
 </head>
 <body data-type='notebook'>
 <aside id='aside'>
-<div id="calendar"></div>
-<div id="document_tree">$:aside['tree']</div>
+<div id='calendar'></div>
+<div id='notebook_tab'>
+	 <ul>
+		<li><a href='#document_tree'>Documents</a></li>
+		<li><a href='#document_contents'>Contents</a></li>
+		<li><a href='#tags'>Tags</a></li>
+	</ul>
+	<div id='document_tree'>$:aside['tree']</div>
+	<div id='document_contents'>Contents</div>
+	<div id='tags'>Tags</div>
+</div>
 </aside>
 <article id='article'>
 <div class="aside_switch" id="aside_switch" onclick="toggle_document_tree()"><<</div>

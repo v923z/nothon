@@ -613,3 +613,7 @@ p {
 .ui-dialog {
 	background:		 	rgba(0, 0, 1, 0.4);
 }
+
+.document_tree {
+	background: 	#1c4f63;
+}
