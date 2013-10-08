@@ -4,7 +4,6 @@
 // http://forums.phpfreaks.com/topic/268622-place-cursor-at-end-of-line-in-editable-div/
 
 var active_div = null
-var focused = null
 
 function xml_http_post(url, data, callback) {
     var req = false;
@@ -57,20 +56,14 @@ function get_index(obj) {
 }
 
 function get_num(divide) {
-	var num = divide.id.split("_")
-	return parseInt(num[num.length-1])
+	return get_index(divide.id)
 }
 
 function get_max_index(className) {
-	// TODO: using the className is probably not the best idea. 
-	// This should be done using the data-type tag!
-	var elems = document.getElementsByClassName(className)
 	var num = 0
-	for(i=0; i < elems.length; i++) {
-		if(num < get_num(elems[i])) {
-			num = get_num(elems[i])
-		}
-	}
+	$('.' + className).each( function() {
+		if(num < get_index($(this).attr('id'))) num = get_index($(this).attr('id'))
+	})
 	return num
 }
 
