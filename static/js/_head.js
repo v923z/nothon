@@ -25,7 +25,7 @@ function head_context_menu() {
 function head_keypress(event) {
 	if (event.which === 13 && event.shiftKey) {	// Enter
 		head_data(event.target)
-		create_and_insert('head_main')
+		insert_head()
 		return false
 	}
 	else if (event.which === 13) {				// Enter

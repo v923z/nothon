@@ -8,7 +8,7 @@ function insert_paragraph() {
 function paragraph_context_menu() {
 	text_context_menu()
 	$('#context_menu').children(':first').replaceWith('<div class="context_menu_header">Paragraph</div>')
-	$('#context_menu > ul').children(':last').replaceWith('<li onmouseup="create_and_insert2(this);">New paragraph</li>')
+	$('#context_menu > ul').children(':last').replaceWith('<li onmouseup="insert_paragraph()">New paragraph</li>')
 }
 
 function paragraph_keypress(event) {

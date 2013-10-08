@@ -10,7 +10,7 @@ function plot_context_menu() {
 		<ul class="context_menu_list">\
 		<li alt="lock" onmouseup="return lock_cell(active_div);">Lock cell</li>\
 		<li onmousedown="return false;" onmouseup="return copy_plot_cell();">Copy cell</li>\
-		<li onmousedown="return false;" onmouseup="create_and_insert(\'plot_main\');">New plot cell</li>\
+		<li onmousedown="return false;" onmouseup="return insert_plot()">New plot cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
 }
@@ -42,7 +42,7 @@ function plot_keypress(event) {
 	}
 	else if (event.which === 13 && event.shiftKey) {	// Enter
 		plot_data(event.target)
-		create_and_insert('plot_main')
+		insert_plot()
 		return false
 	}
 	return true

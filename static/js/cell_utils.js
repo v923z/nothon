@@ -35,7 +35,6 @@ $(document).ready(function () {
 		message.target = $(this).prev().prev().attr('href').replace('?name=', '')
 		var addresses = new Array()
 		var counter = 0
-		console.log($(this).parent().attr('id'))
 		$(this).parent().find('.toc_pasted').each( function() {
 			console.log($(this).html())
 			addresses[counter] = $(this).attr('href').replace('?name=', '')
@@ -44,7 +43,6 @@ $(document).ready(function () {
 		})
 		message.addresses = addresses
 		undo_data(message)
-		console.log(message)
 	})
 })
 

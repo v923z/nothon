@@ -25,7 +25,7 @@ function text_context_menu() {
 		<hr>\
 		<li alt="raw" onmouseup="strip_mathjax(active_div); return false;">Raw content</li>\
 		<li alt="lock" onmouseup="return lock_cell(active_div);">Lock cell</li>\
-		<li alt="new" onmousedown="return false;" onmouseup="create_and_insert(\'text_main\');">New text cell</li>\
+		<li alt="new" onmousedown="return false;" onmouseup="return insert_text();">New text cell</li>\
 		<li alt="copy" onmousedown="return false;" onmouseup="return copy_text_cell();">Copy cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
@@ -87,7 +87,7 @@ function text_keypress(event) {
 		return false
 	} else if(event.which === 13 && event.shiftKey) {					// Enter
 		render_mathjax(event.target)
-		create_and_insert('text_main')
+		insert_text()
 		return false
 	} else if(event.which === 13 && event.ctrlKey) {				// Enter
 		render_mathjax(event.target)

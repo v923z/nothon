@@ -431,11 +431,6 @@ function toggle_all() {
 	toggle_document_tree()
 }
 
-function create_and_insert2(target) {
-	console.log(target.innerHTML.toLowerCase())
-	
-}
-
 function lock_cell(cell) {
 	var _main = $(cell).closest('div[id*="_main_"]')
 	$(_main).find('*').each( function() {

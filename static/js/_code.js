@@ -25,7 +25,7 @@ function code_context_menu() {
 function code_keypress(event) {
 	if (event.which === 13 && event.shiftKey) {	// Enter
 		code_data(event.target)
-		create_and_insert('code_main')
+		insert_code()
 		return false
 	}
 	else if (event.which === 13) {				// Enter
