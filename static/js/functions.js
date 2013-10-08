@@ -51,15 +51,6 @@ function move(where) {
 	active_div.focus()
 }
 
-function insertAfter(newElement, targetElement) {
-	var parent = targetElement.parentNode;
-	if(parent.lastchild == targetElement) {
-		parent.appendChild(newElement)
-	} else {
-		parent.insertBefore(newElement, targetElement.nextSibling)
-	}
-}
-
 function get_index(obj) {
 	var num = obj.split("_")
 	return parseInt(num[num.length-1])

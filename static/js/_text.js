@@ -32,13 +32,11 @@ function text_context_menu() {
 }
 
 function copy_text_cell() {
-	var text_main = $(active_div).closest('div[id^="div_text_main_"]')
-	var num = get_max_index('text_main') + 1
-	var new_div = document.createElement("div")
-	new_div.innerHTML = text_html(num)
-	$(new_div).children('*').eq(0).children('.text_header').eq(0).html($(text_main).children('.text_header').eq(0).html())
-	$(new_div).children('*').eq(0).children('.text_body').eq(0).html($(text_main).children('.text_body').eq(0).html())
-	$(new_div).children('*').eq(0).insertAfter(text_main)
+	var num = get_num(document.getElementById($(active_div).data('main')))
+	var id = get_max_index('text_main') + 1
+	insert_text()
+	$('#div_text_header_' + id).html($('#div_text_header_' + num).html())
+	$('#div_text_body_' + id).html($('#div_text_body_' + num).html())
 	return false
 }
 

@@ -16,13 +16,11 @@ function plot_context_menu() {
 }
 
 function copy_plot_cell() {
-	var plot_main = $(active_div).closest('div[id^="div_plot_main_"]')
-	var num = get_max_index('plot_main') + 1
-	var new_div = document.createElement("div")
-	new_div.innerHTML = plot_html(num)
-	$(new_div).children('*').eq(0).children('.plot_header').eq(0).html($(plot_main).children('.plot_header').eq(0).html())
-	$(new_div).children('*').eq(0).children('.plot_caption').eq(0).html($(plot_main).children('.plot_caption').eq(0).html())
-	$(new_div).children('*').eq(0).insertAfter(plot_main)
+	var num = get_num(document.getElementById($(active_div).data('main')))
+	var id = get_max_index('plot_main') + 1
+	insert_plot()
+	$('#div_plot_header_' + id).html($('#div_plot_header_' + num).html())
+	$('#div_plot_caption_' + id).html($('#div_plot_caption_' + num).html())
 	return false
 }
 
