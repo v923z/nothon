@@ -36,16 +36,13 @@ function xml_http_post(url, data, callback) {
 }
 
 function move(where) {
-	//jQuery("#element1").before(jQuery("#element2")); can be used for swapping
-	//jQuery("#element1").after(jQuery("#element2"));
 	if(!active_div) return
-	position = active_div.parentNode // This should bubble till something like _main...
-	// This can be done with $(active_div).closest('[id$=_main]')
-	if(where == 'up' && document.getElementById('docmain').firstChild.id != position.id) {
-		position.parentNode.insertBefore(position, position.previousSibling)
+	var $pos = $('#' + $(active_div).data('main'))
+	if(where == 'up' && !$pos.is('#docmain :first')) {
+		$pos.after($pos.prev())
 	}
-	if(where == 'down' && document.getElementById('docmain').lastChild.id != position.id) {
-		position.nextSibling.parentNode.insertBefore(position.nextSibling, position)
+	if(where == 'down' && !$pos.is('#docmain :last')) {
+		$pos.before($pos.next())
 	}
 	active_div.focus()
 }
