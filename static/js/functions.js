@@ -86,8 +86,7 @@ function message_handler(req) {
 	}
 	// TODO: scrolling is not quite perfect
 	if(message["scroller"]) {
-		var elem = document.getElementById(message["scroller"])
-		if(elem) elem.scrollTop = elem.scrollHeight
+		$('#' + message["scroller"]).scrollTop()
 	}
 }
 
