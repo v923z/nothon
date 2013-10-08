@@ -32,7 +32,8 @@ function text_context_menu() {
 }
 
 function copy_text_cell() {
-	var num = get_num(document.getElementById($(active_div).data('main')))
+	if(!active_div) return
+	var num = get_index($(active_div).data('main'))
 	var id = get_max_index('text_main') + 1
 	insert_text()
 	$('#div_text_header_' + id).html($('#div_text_header_' + num).html())

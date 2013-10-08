@@ -16,7 +16,8 @@ function plot_context_menu() {
 }
 
 function copy_plot_cell() {
-	var num = get_num(document.getElementById($(active_div).data('main')))
+	if(!active_div) return
+	var num = get_index($(active_div).data('main'))
 	var id = get_max_index('plot_main') + 1
 	insert_plot()
 	$('#div_plot_header_' + id).html($('#div_plot_header_' + num).html())
