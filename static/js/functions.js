@@ -92,8 +92,7 @@ function message_handler(req) {
 
 function set_active(id) {
 	active_div = id
-	var type = $(id).data('type')
-	eval(type + '_context_menu()')
+	eval($(id).data('type') + '_context_menu()')
 }
 
 function block_content(elem) {
