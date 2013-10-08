@@ -1,14 +1,7 @@
 function insert_plot() {
-	var position = get_insertion_position()
-	var id = 1
-	if(!position) {
-		$('#docmain').prepend(plot_html(id))
-	} else {
-		id = get_max_index('plot_main') + 1
-		$('#' + position).after(plot_html(id))
-	}
+	var id = get_max_index('plot_main') + 1
+	insert_new_cell(plot_html(id), 'div_plot_header_' + id)
 	plot_context_menu()
-	active_div = activate_element('div_plot_header_' + id)
 	return false
 }
 

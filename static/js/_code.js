@@ -1,14 +1,7 @@
 function insert_code() {
-	var position = get_insertion_position()
-	var id = 1
-	if(!position) {
-		$('#docmain').prepend(code_html(id))
-	} else {
-		id = get_max_index('code_main') + 1
-		$('#' + position).after(code_html(id))
-	}
+	var id = get_max_index('code_main') + 1
+	insert_new_cell(code_html(id), 'div_code_header_' + id)
 	code_context_menu()
-	active_div = activate_element('div_code_header_' + id)
 	return false
 }
 

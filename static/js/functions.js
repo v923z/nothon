@@ -451,22 +451,20 @@ function usage() {
 	window.open('?name=help.html', 'nothon quick help', 'left=20, top=20, width=500, height=500, toolbar=0, location=0, menubar=0, resizable=0')
 }
 
-function get_insertion_position() {
+function insert_new_cell(html, to_activate) {
 	if(active_div && $.contains($('#docmain')[0], active_div)) {
-		return $(active_div).data('main')
+		$('#' + $(active_div).data('main')).after(html)		
 	}
 	else {
-		if($('#docmain').is(':empty')) return false
-		return $('#docmain').children(':last').attr('id')
+		if($('#docmain').is(':empty')) {
+			$('#docmain').prepend(html)
+		} else {
+			$('#docmain').children(':last').after(html)
+		}
 	}
-}
-
-function activate_element(element) {
-	// This should pass jQuery reference instead!
-	var elem = document.getElementById(element)
-	elem.focus()
-	$(elem).scrollTop()
-	return elem
+	active_div = document.getElementById(to_activate)
+	active_div.focus()
+	$(active_div).scrollTop()
 }
 
 function generate_toc() {

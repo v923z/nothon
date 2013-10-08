@@ -1,14 +1,7 @@
 function insert_paragraph() {
-	var position = get_insertion_position()
-	var id = 1
-	if(!position) {
-		$('#docmain').prepend(paragraph_html(id))
-	} else {
-		id = get_max_index('paragraph_main') + 1
-		$('#' + position).after(paragraph_html(id))
-	}
+	var id = get_max_index('paragraph_main') + 1
+	insert_new_cell(paragraph_html(id), 'div_paragraph_body_' + id)
 	paragraph_context_menu()
-	active_div = activate_element('div_paragraph_body_' + id)
 	return false
 }
 

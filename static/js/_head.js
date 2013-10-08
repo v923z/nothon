@@ -1,14 +1,7 @@
 function insert_head() {
-	var position = get_insertion_position()
-	var id = 1
-	if(!position) {
-		$('#docmain').prepend(head_html(id))
-	} else {
-		get_max_index('head_main') + 1
-		$('#' + position).after(head_html(id))	
-	}
+	var id = get_max_index('head_main') + 1
 	head_context_menu()
-	active_div = activate_element('div_head_header_' + id)
+	insert_new_cell(head_html(id), 'div_head_header_' + id)
 	return false
 }
 
