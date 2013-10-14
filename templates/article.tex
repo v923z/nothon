@@ -5,6 +5,8 @@
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{grffile}
+\usepackage{todonotes}
+\usepackage{float}
 \usepackage[linewidth=1pt, skipabove=10pt]{mdframed}
 
 \textwidth 17 cm
@@ -35,7 +37,9 @@
 		innertopmargin=10pt,
 		backgroundcolor=lightgray,
 		]{plotbox}
-					
+		
+\newcommand{\note}[1]{\todo[inline, color=yellow!60]{\textbf{NOTE:} #1}}
+			
 ~article.defs
 
 \author{Zoltán Vörös}

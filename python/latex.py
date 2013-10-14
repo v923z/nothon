@@ -23,65 +23,48 @@ def latexify(text):
 def preserve_markup(elem):
 	return ''.join(['%s'%x for x in elem.contents])
 	
-def text_cell_latex2(text):
-	soup = BeautifulSoup(text)
-	for b in soup.find_all('br'):
-		b.replace_with('\n')
-	for b in soup.find_all('span', 'nothon_math'):
-		b.replace_with('$%s$'%(b.text.lstrip('\\(').rstrip('\\)')))
-	for b in soup.find_all('div', 'nothon_math'):
-		b.replace_with('\n\begin{equation}%s\end{equation}'%(b.text.lstrip('\\[').rstrip('\\]')))
-	for b in soup.find_all('span', 'note'):
-		b.replace_with('\n\\begin{comment}\n  %s\n\\end{comment}\n'%preserve_markup(b))
-	for b in soup.find_all('b'):
-		b.replace_with('\\textbf{%s}\n'%preserve_markup(b))
-	for b in soup.find_all('i'):
-		b.replace_with('\\textit{%s}\n'%preserve_markup(b))
-	for b in soup.find_all('u'):
-		b.replace_with('\\underline{%s}\n'%preserve_markup(b))
-	for b in soup.find_all('hr'):
-		b.replace_with('\\hrulefile')
-
-	return soup.text
-	
 def text_cell_latex(text):
-	out = []
-	text = text.replace('<br>', '\n')
-	while len(text) > 0:
-		round_bracket = text.find('\\(')
-		square_bracket = text.find('\\[')
-		if square_bracket == -1 and round_bracket == -1:
-			out.append({'content' : text, 'type' : 'text'})
-			text = ''
-		elif round_bracket > -1:
-			if round_bracket < square_bracket or square_bracket == -1:
-				out.append({'content' : text[:round_bracket], 'type' : 'text'})                
-				second = text.find('\\)')
-				out.append({'content' : text[round_bracket+2:second].strip(), 'type' : 'inline_math'})
-				text = text[second+2:]
-		elif square_bracket > -1:
-			if round_bracket > square_bracket or round_bracket == -1:
-				out.append({'content' : text[:square_bracket], 'type' : 'text'})
-				second = text.find('\\]')
-				out.append({'content' : text[square_bracket+2:second].strip(), 'type' : 'display_math'})
-				text = text[second+2:]
-	return out
+	text = parse_lists(text)
+	soup = BeautifulSoup(text)
+	inline_math = []
+	display_math = []
+	for b in soup.find_all('span', {'style' : 'background-color: rgb(255, 255, 0);'}):
+		b.replace_with('\\colorbox{yellow}{%s}'%(b.text))
+	# We have to protect the math environments against the '_' -> '\_' replacement!
+	for i, b in enumerate(soup.find_all('span', 'nothon_math')):
+		inline_math.append('$%s$'%(b.text.lstrip('\\(').rstrip('\\)').replace('<br>', '')))
+		b.replace_with('~~~INLINEMATH%d~~~'%(i))
+	for i, b in enumerate(soup.find_all('div', 'nothon_math')):
+		display_math.append('\n\\begin{equation}\n%s\n\\end{equation}\n'%(b.text.lstrip('\\[').rstrip('\\]').replace('<br>', '')))
+		b.replace_with('~~~DISPLAYMATH%d~~~'%(i))
+	for b in soup.find_all('span', 'note'):
+		bb = b.find('span')
+		b.replace_with('\\note{%s}'%preserve_markup(bb))
+	for b in soup.find_all('span', 'link_span'):
+		bb = b.find('a')
+		b.replace_with('\\hyperref[%s]{%s}'%(bb.get('href'), bb.string))
+	for b in soup.find_all('b'):
+		b.replace_with('\\textbf{%s}'%preserve_markup(b))
+	for b in soup.find_all('i'):
+		b.replace_with('\\textit{%s}'%preserve_markup(b))
+	for b in soup.find_all('u'):
+		b.replace_with('\\underline{%s}'%preserve_markup(b))
+	for b in soup.find_all('hr'):
+		b.replace_with('\n\\hrulefill\n')
+	
+	text = latexify(soup.text)
+	for i, math in enumerate(display_math):
+		text = text.replace('~~~DISPLAYMATH%d~~~'%(i), display_math[i])
+	for i, math in enumerate(inline_math):
+		text = text.replace('~~~INLINEMATH%d~~~'%(i), inline_math[i])
+	return text
 
-def latex_dict_to_string(dic):
-	out_string = ''
-	for elem in dic:
-		if elem['type'] == 'text':
-			out_string += latexify(elem['content'])
-		if elem['type'] == 'inline_math':
-			out_string += '$' + elem['content'] + '$'
-		if elem['type'] == 'display_math':
-			if elem['content'].startswith('\\begin{'):
-				out_string += elem['content']
-			else:
-				out_string += '\n\[\n' + elem['content'] + '\n\]\n'
-				
-	return out_string
-    
+def parse_lists(text):
+	text = text.replace('<ol>', '\n\\begin{enumerate}\n').replace('</ol>', '\n\\end{enumerate}\n')
+	text = text.replace('<ul>', '\n\\begin{itemize}\n').replace('</ul>', '\n\\end{itemize}\n')
+	text = text.replace('<li>', '\n\\item ').replace('</li>', '')	
+	return text
+	    
 class Latex(object):
 	
 	def __init__(self, filename):
@@ -96,7 +79,7 @@ class Latex(object):
 			
 		self.content = data["notebook"]
 		self.date = data["date"]
-		self.title = latexify(data['title'].replace('<br>', '\n'))
+		self.title = latexify(data['title'].replace('<br>', ''))
 		self.note = ''
 		
 	def parse_note(self):
@@ -138,10 +121,7 @@ def latex_head(dictionary, template):
 def latex_text(dictionary, template):
 	text = template['text']
 	body = text_cell_latex(dictionary['content']['text_body']['content'])
-	body = replace_html_markups(latex_dict_to_string(body))
-	
 	header = text_cell_latex(dictionary['content']['text_header']['content'])
-	header = replace_html_markups(latex_dict_to_string(header))
 
 	text = text.replace('~text.header', header)
 	text = text.replace('~text.body', body)
@@ -150,7 +130,6 @@ def latex_text(dictionary, template):
 def latex_paragraph(dictionary, template):
 	text = template['paragraph']
 	body = text_cell_latex(dictionary['content']['paragraph_body']['content'])
-	body = replace_html_markups(latex_dict_to_string(body))
 	text = text.replace('~paragraph.body', body)
 	return text
 
@@ -163,6 +142,6 @@ if __name__=="__main__":
 	fn.parse_note();
 	formatter = LatexFormatter()
 	defs = formatter.get_style_defs()
-	out = fn.template['article'].replace('~article.title', fn.title).replace('~article.content', str(fn.note)).replace('~article.defs', str(defs)).replace('~article.date', str(fn.date))
+	out = fn.template['article'].replace('~article.title', fn.title).replace('~article.content', (fn.note).encode('utf-8')).replace('~article.defs', str(defs)).replace('~article.date', str(fn.date))
 	with open(sys.argv[1].split('.')[0] + '.tex', "w") as fout:
 		fout.write(out)

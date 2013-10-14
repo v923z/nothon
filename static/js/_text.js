@@ -152,7 +152,10 @@ function text_keypress(event) {
 	} else if(event.which === 49 && event.altKey) {				// 1
 		document.execCommand('insertOrderedList', false, false)
 		return false
-	} /* else if(event.keyCode === 38) { // arrow key up
+	} /* 
+		This could be done by using the function from 
+		* http://stackoverflow.com/questions/7451468/contenteditable-div-how-can-i-determine-if-the-cursor-is-at-the-start-or-end-o/7478420#7478420
+	else if(event.keyCode === 38) { // arrow key up
 		var ran = window.getSelection().getRangeAt(0)
 		console.log(window.getSelection().getRangeAt(0).startOffset)
 		console.log('compare: ' + ran.comparePoint(event.target, 0))
@@ -364,12 +367,12 @@ function insert_tag() {
 function create_link() {
 	var text = getSelectedText()
 	if(text.length != 0) {
-		document.execCommand('insertHTML', false, '<span><button class="link_button" onmouseup="link_toggle(this);">Link</button><a href="' + text + '">' + text + '</a></span> <span id="_marker_"></span> ')
+		document.execCommand('insertHTML', false, '<span class="link_span"><button class="link_button" onmouseup="link_toggle(this);">Link</button><a href="' + text + '">' + text + '</a></span> <span id="_marker_"></span> ')
 		goto_marker('_marker_')
 	}
 	else {
 		var id = '_' + Math.floor(Math.random()*1000000)
-		document.execCommand('insertHTML', false, '<span><button class="link_button" onmouseup="link_toggle(this);">Link</button>Target: <input id="' + id + '" type="text" value=""></input>&nbsp; Text:<input type="text" value=""></input>')
+		document.execCommand('insertHTML', false, '<span class="link_span"><button class="link_button" onmouseup="link_toggle(this);">Link</button>Target: <input id="' + id + '" type="text" value=""></input>&nbsp; Text:<input type="text" value=""></input>')
 		$('#' + id).focus()
 	}
 	return false
