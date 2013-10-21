@@ -10,12 +10,6 @@ import time
 import sys
 from bs4 import BeautifulSoup
 
-from pygments import highlight
-from pygments.lexers import get_lexer_for_filename
-from pygments.formatters import HtmlFormatter
-
-from pylab import *
-
 sys.path.insert(0, './python')
 import resource
 from code_handling import *
@@ -26,6 +20,21 @@ from new_notebook import *
 import latex
 
 nothon_resource = resource.NothonResource()
+
+# We have to check for non-standard packages, so that we can run on android
+try:
+	from pygments import highlight
+	from pygments.lexers import get_lexer_for_filename
+	from pygments.formatters import HtmlFormatter
+	nothon_resource.has_pygments = True
+except ImportError:
+	nothon_resource.has_pygments = False
+
+try:
+	from pylab import *
+except ImportError:
+	nothon_resource.has_matplotlib = False
+
 
 def safe_content(dictionary, key):
 	if not dictionary or key not in dictionary:
