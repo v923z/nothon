@@ -31,7 +31,6 @@ $for f in create_funcs + handler_funcs:
 </head>
 <body data-type='notebook'>
 <aside id='aside'>
-<div id='calendar_switch' onmouseup='hide_calendar()'>Hide</div>
 <div id='calendar'></div>
 <div id='notebook_tab'>
 	 <ul>
@@ -88,7 +87,11 @@ $for f in create_funcs + handler_funcs:
 			<li onmouseup='toggle_all();'>Toggle all</li>
 		</ul>
 	</li>
-	<li onmouseup='open_calculator(); return false;' onmousedown='return false;'>Calculator
+	<li>Tools
+		<ul>
+			<li onmouseup='toggle_calendar()'>Calendar</li>
+			<li onmouseup='open_calculator(); return false;' onmousedown='return false;'>Calculator</li>
+		</ul>
 	</li>
 	<li>Help
 		<ul>

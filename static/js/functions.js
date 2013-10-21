@@ -471,12 +471,6 @@ function cut_intoc(string) {
 	return string
 }
 
-function hide_calendar() {
-	if($('#calendar').is(':visible')) {
-		$('#calendar').hide()
-		$('#calendar_switch').html('Calendar')
-	} else {
-		$('#calendar').show()
-		$('#calendar_switch').html('Hide')
-	}
+function toggle_calendar() {
+	$('#calendar').toggle()
 }
