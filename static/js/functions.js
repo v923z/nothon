@@ -470,3 +470,13 @@ function cut_intoc(string) {
 	if(string.length > 20) return string.slice(0, 20) + '...'
 	return string
 }
+
+function hide_calendar() {
+	if($('#calendar').is(':visible')) {
+		$('#calendar').hide()
+		$('#calendar_switch').html('Calendar')
+	} else {
+		$('#calendar').show()
+		$('#calendar_switch').html('Hide')
+	}
+}
