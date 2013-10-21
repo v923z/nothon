@@ -2,7 +2,7 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "",
-"date" : "Tue Oct 08 2013 18:49:49 GMT+0200 (CEST)",
+"date" : "Mon Oct 21 2013 16:02:52 GMT+0200 (CEST)",
 "nothon version" : 1.3,
 "notebook" : [
     {
@@ -361,7 +361,7 @@
     {
         "content": {
             "text_body": {
-                "content": "The notebook features a simple scientific calculator, based on <a href=\"http://mathjs.org/\">http://mathjs.org/</a>. This is meant to be used as a scratch pad for quick, dirty, and disposable calculations. However, results and instructions can be inserted into a section/paragraph. The calculator history is preserved, even if the user navigates to another notebook.<span>&nbsp;&nbsp;&nbsp;&nbsp;</span> ",
+                "content": "The notebook features a simple scientific calculator, based on <a href=\"http://mathjs.org/\">http://mathjs.org/</a>. This is meant to be used as a scratch pad for quick, dirty, and disposable calculations. However, results and instructions can be inserted into a section/paragraph. The calculator history is preserved, even if the user navigates to another notebook.<span></span> ",
                 "id": "div_text_body_15",
                 "props": ";searchable"
             },

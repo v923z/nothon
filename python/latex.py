@@ -8,6 +8,9 @@ from pygments.formatters import LatexFormatter
 from bs4 import BeautifulSoup
 
 from code_handling import *
+import resource
+
+nothon_resource = resource.NothonResource()
 
 def replace_html_markups(text):
 	text = text.replace('<b>', '\\textbf{').replace('</b>', '}')
@@ -68,10 +71,11 @@ def parse_lists(text):
 class Latex(object):
 	
 	def __init__(self, filename):
-		templates = [file.split('.')[0] for file in os.listdir('../templates/') if file.endswith('.tex')]
+		template_dir = nothon_resource.base_path + '/templates/'
+		templates = [file.split('.')[0] for file in os.listdir(template_dir) if file.endswith('.tex')]
 		self.template = {}
 		for fn in templates:
-			with open('../templates/' + fn + '.tex', 'r') as fin: 
+			with open(template_dir + fn + '.tex', 'r') as fin:
 				self.template[fn] = fin.read()
 
 		with open(filename, 'r') as fin:
@@ -133,15 +137,18 @@ def latex_paragraph(dictionary, template):
 	text = text.replace('~paragraph.body', body)
 	return text
 
-if __name__=="__main__":
-	if not os.path.exists(sys.argv[1]):
-		print 'Input file %s does not exist!'%(sys.argv[1])
-		sys.exit()
-		
-	fn = Latex(sys.argv[1])		 
+def process_note(notefile):
+	fn = Latex(notefile)
 	fn.parse_note();
 	formatter = LatexFormatter()
 	defs = formatter.get_style_defs()
 	out = fn.template['article'].replace('~article.title', fn.title).replace('~article.content', (fn.note).encode('utf-8')).replace('~article.defs', str(defs)).replace('~article.date', str(fn.date))
-	with open(sys.argv[1].split('.')[0] + '.tex', "w") as fout:
+	with open(notefile.split('.')[0] + '.tex', "w") as fout:
 		fout.write(out)
+		
+if __name__=="__main__":
+	if not os.path.exists(sys.argv[1]):
+		print 'Input file %s does not exist!'%(sys.argv[1])
+		sys.exit()
+	
+	process_note(sys.argv[1])

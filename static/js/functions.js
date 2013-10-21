@@ -152,9 +152,18 @@ function get_divs() {
 }
 
 function save() {
+	var message = _save()
+    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
+}
+
+function save_handler(req) {
+	var message = JSON.parse(req.responseText)
+}
+
+function _save() {
+	if(window.location.href.indexOf('?name=__timeline') > 0 || window.location.href.indexOf('?name=__toc') > 0) false
 	var time = new Date()
 	$('#notebook_status').html('Saved at ' + time.toTimeString().split(' ')[0])
-	if(window.location.href.indexOf('?name=__timeline') > 0 || window.location.href.indexOf('?name=__toc') > 0) return
 	var message = create_message('', "save")
 	message.type = $('body').data('type')
 	message.outfile = document.title
@@ -162,11 +171,13 @@ function save() {
 	message.directory = $('#div_dir').html().replace('<br>', '')
 	message.content = get_divs()
 	message.date = Date()
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
+	return message
 }
 
-function save_handler(req) {
-	var message = JSON.parse(req.responseText)
+function savelatex() {
+	var message = _save()
+	message.command = 'savelatex'
+	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 
 function save_html() {
