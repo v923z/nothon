@@ -268,6 +268,9 @@ $(document).ready(function () {
 	$(function() {
 		$('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })
 	});
+	$('#docmain').delegate('.nothon_math', 'click', function() {
+		unwrap_math($(this))
+	})
 });
 
 $(function() {

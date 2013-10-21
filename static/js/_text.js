@@ -301,12 +301,16 @@ function get_math_code(target) {
 	}
 }
 
+function unwrap_math(target) {
+	if($(target).attr('alt') !== '') {
+		$(target).html($(target).attr('alt'))
+		$(target).attr('alt', '')
+	}	
+}
+
 function strip_mathjax(target) {
 	$(target).find('.nothon_math').each( function() {
-		if($(this).attr('alt') !== '') {
-			$(this).html($(this).attr('alt'))
-			$(this).attr('alt', '')
-		}
+		unwrap_math($(this))
 	})
 }
 
