@@ -32,6 +32,7 @@ except ImportError:
 
 try:
 	from pylab import *
+	nothon_resource.has_matplotlib = True
 except ImportError:
 	nothon_resource.has_matplotlib = False
 
@@ -168,6 +169,9 @@ def plot_handler(message, resource):
 				fout.write("\nset term pdfcairo; set out '%s.pdf'\n replot\n"%(pwd + '/' + message['filename']))
 		os.system("gnuplot %s.gp"%(message['filename']))
 		os.system("rm %s.gp -f"%(message['filename']))
+	
+	if not resource.has_matplotlib:
+		exit_status = 'Could not import matplotlib. Choose gnuplot as the plotting back-end.'
 		
 	else:
 		x = linspace(-10, 10, 100)

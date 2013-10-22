@@ -6,6 +6,5 @@ class NothonResource(object):
 		self.dirlisting_style = 'windows'
 		self.base_path = '/home/v923z/sandbox/nothon'
 		self.notebook_item_order = ['title', 'type', 'directory', 'date', 'nothon version', 'notebook']
-		self.plotting_backend = 'matplotlib'
 		self.has_matplotlib = False
-		self.has_pygments = True
+		self.has_pygments = False

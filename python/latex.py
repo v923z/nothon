@@ -109,7 +109,13 @@ def latex_code(dictionary, template):
 	
 def latex_plot(dictionary, template):
 	text = template['plot']
-	text = text.replace('~plot.header', dictionary['content']['plot_header']['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n'))
+	plot_code = dictionary['content']['plot_header']['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
+	if plot_code.startswith('#gnuplot') or plot_code.startswith('# gnuplot'):
+		lexer = get_lexer_by_name('text')
+	else:
+		lexer = get_lexer_by_name('python')
+		
+	text = text.replace('~plot.header', highlight(plot_code, lexer, LatexFormatter()))
 	text = text.replace('~plot.file', dictionary['content']['plot_file']['content'].replace('.png', '.pdf'))
 	text = text.replace('~plot.caption', dictionary['content']['plot_caption']['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n'))
 	text = text.replace('~plot.label', dictionary['content']['plot_file']['content'].replace('.png', ''))
