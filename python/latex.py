@@ -111,7 +111,7 @@ def latex_plot(dictionary, template):
 	text = template['plot']
 	plot_code = dictionary['content']['plot_header']['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
 	if plot_code.startswith('#gnuplot') or plot_code.startswith('# gnuplot'):
-		lexer = get_lexer_by_name('text')
+		lexer = get_lexer_by_name('gnuplot')
 	else:
 		lexer = get_lexer_by_name('python')
 		
