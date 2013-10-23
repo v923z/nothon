@@ -209,6 +209,7 @@ function delete_block() {
 		active_div = null
 	}
 	document.getElementById('trash_image').style.backgroundImage = 'url(static/css/trashbin_full.png)'
+	generate_toc()
 }
 
 function recover_block() {
@@ -450,6 +451,7 @@ function insert_new_cell(html, to_activate) {
 			$('#docmain').children(':last').after(html)
 		}
 	}
+	generate_toc()
 	active_div = document.getElementById(to_activate)
 	active_div.focus()
 	$(active_div).scrollTop()
@@ -461,7 +463,12 @@ function generate_toc() {
 		$(this).children().each( function() {
 			var props = $(this).data('props')
 			if(check_tag(props, 'intoc')) {
-				code = code + '<li><a href="#' + $(this).attr('id') + '">' + cut_intoc($(this).text()) + '</a></li>'
+				var text = $(this).text()
+				if(text.length > 0) {
+					code = code + '<li><a href="#' + $(this).attr('id') + '">' + cut_intoc(text) + '</a></li>'
+				} else {
+					code = code + '<li><a href="#' + $(this).attr('id') + '"><font color="red">' + $(this).attr('id') + '</font></a></li>'
+				}
 			}
 		})
 	})

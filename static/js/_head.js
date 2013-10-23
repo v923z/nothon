@@ -32,6 +32,7 @@ function head_keypress(event) {
 		head_data(event.target)
 		return false
 	}
+	generate_toc()
 	return true
 }
 

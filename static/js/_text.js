@@ -81,6 +81,7 @@ function text_onclick(target) {
 function text_keypress(event) {
 	console.log(event.which)
 	if(event.which === 13 && event.target.id.indexOf('_header_') > -1) {
+		generate_toc()
 		active_div = document.getElementById(event.target.id.replace('_header_', '_body_'))
 		active_div.focus()
 		return false

@@ -35,14 +35,21 @@ function plot_onclick(target) {
 }
 
 function plot_keypress(event) {
-	if (event.which === 13 && event.ctrlKey) {			// Enter
+	if (event.which === 13 && event.ctrlKey && event.target.id.indexOf('_plot_header_') > -1) {			// Enter
 		plot_data(event.target)
 		return false
-	}
-	else if (event.which === 13 && event.shiftKey) {	// Enter
+	} else if (event.which === 13 && event.shiftKey && event.target.id.indexOf('_plot_header_') > -1) {	// Enter
 		plot_data(event.target)
 		insert_plot()
+		generate_toc()
 		return false
+	} else if (event.which === 13 && event.shiftKey && event.target.id.indexOf('_plot_caption_') > -1) {	// Enter
+		generate_toc()
+		active_div = document.getElementById(event.target.id.replace('_plot_caption_', '_plot_header_'))
+		active_div.focus()
+		return false
+	} else if(event.which === 13 && event.target.id.indexOf('_plot_caption_') > -1) {
+		genereta_toc()
 	}
 	return true
 }

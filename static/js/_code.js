@@ -32,6 +32,7 @@ function code_keypress(event) {
 		code_data(event.target)
 		return false
 	}
+	generate_toc()
 	return true
 }
 
