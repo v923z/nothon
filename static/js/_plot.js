@@ -49,7 +49,7 @@ function plot_keypress(event) {
 		active_div.focus()
 		return false
 	} else if(event.which === 13 && event.target.id.indexOf('_plot_caption_') > -1) {
-		genereta_toc()
+		generate_toc()
 	}
 	return true
 }
