@@ -463,7 +463,7 @@ function insert_new_cell(html, to_activate) {
 }
 
 function generate_toc() {
-	var code = '<ul>'
+	var code = '<ul id="#contents_list">'
 	$('#docmain').children().each( function() {
 		$(this).children().each( function() {
 			var props = $(this).data('props')

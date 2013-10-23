@@ -622,7 +622,7 @@ p {
 	background:		 	rgba(0, 0, 1, 0.4);
 }
 
-.document_tree {
+#document_tree {
 	background: 		#1c4f63;
 }
 
@@ -644,4 +644,12 @@ a.contents_link:link {
 
 a.missing_title:link {
 	font-style:			italic;
+}
+
+#document_contents {
+	background: 				#1c4f63;
+}
+
+#document_contents ul {
+	list-style-type:			none;
 }
