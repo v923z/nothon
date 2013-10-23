@@ -623,8 +623,25 @@ p {
 }
 
 .document_tree {
-	background: 	#1c4f63;
+	background: 		#1c4f63;
 }
 
 .link_span {
+}
+
+a.currently_active:link { 
+	font-weight:		bold;
+	color:				#0000cc;
+}
+
+a.contents_link:hover { 
+	font-size:			120%; 
+}
+
+a.contents_link:link {
+	text-decoration:	none;
+}
+
+a.missing_title:link {
+	font-style:			italic;
 }

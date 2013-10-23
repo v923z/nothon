@@ -90,6 +90,11 @@ function message_handler(req) {
 function set_active(id) {
 	active_div = id
 	eval($(id).data('type') + '_context_menu()')
+	var main = '#' + $(id).data('main')
+	$('#document_contents').find('li > a').each(function() {
+		$(this).removeClass('currently_active')
+		if($(this).attr('href') == main) $(this).addClass('currently_active')
+	})
 }
 
 function block_content(elem) {
@@ -452,9 +457,9 @@ function insert_new_cell(html, to_activate) {
 		}
 	}
 	generate_toc()
-	active_div = document.getElementById(to_activate)
-	active_div.focus()
-	$(active_div).scrollTop()
+	set_active(document.getElementById(to_activate))
+	$('#' + to_activate).focus()
+	$('#' + to_activate).scrollTop()
 }
 
 function generate_toc() {
@@ -465,9 +470,9 @@ function generate_toc() {
 			if(check_tag(props, 'intoc')) {
 				var text = $(this).text()
 				if(text.length > 0) {
-					code = code + '<li><a href="#' + $(this).attr('id') + '">' + cut_intoc(text) + '</a></li>'
+					code = code + '<li><a class="contents_link" href="#' + $(this).data('main') + '">' + cut_intoc(text) + '</a></li>'
 				} else {
-					code = code + '<li><a href="#' + $(this).attr('id') + '"><font color="red">' + $(this).attr('id') + '</font></a></li>'
+					code = code + '<li><a class="contents_link missing_title" href="#' + $(this).data('main') + '">' + $(this).data('main') + '</a></li>'
 				}
 			}
 		})
