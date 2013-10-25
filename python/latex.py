@@ -12,13 +12,6 @@ import resource
 
 nothon_resource = resource.NothonResource()
 
-def replace_html_markups(text):
-	text = text.replace('<b>', '\\textbf{').replace('</b>', '}')
-	text = text.replace('<i>', '\\textit{').replace('</i>', '}')
-	text = text.replace('<u>', '\\underline{').replace('</u>', '}')	
-	# TODO: we should be able to get the color from the span, and insert it, in case the user used something else
-	return text.replace('<span style=\"background-color: rgb(255, 255, 0);\">', '\\colorbox{yellow}{').replace('</span>', '}')
-
 def latexify(text):
 	text = text.replace('&nbsp;', '\quad').replace('_', '\_').replace('#', '\#').replace('&amp;', '\&{}')
 	return text.replace('&lt;', '<').replace('&gt;', '>').replace('%', '\%').replace('<br>', '\n\\\\ ')
