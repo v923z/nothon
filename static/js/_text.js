@@ -306,7 +306,9 @@ function unwrap_math(target) {
 	if($(target).attr('alt') !== '') {
 		$(target).html($(target).attr('alt'))
 		$(target).attr('alt', '')
-	}	
+	} else {
+		render_mathjax(active_div)
+	}
 }
 
 function strip_mathjax(target) {
@@ -325,7 +327,15 @@ function render_mathjax(target) {
 				$(this).attr('alt', $(this).html())
 			}
 	})
-	MathJax.Hub.Queue(["Typeset", MathJax.Hub, target.id]);
+	MathJax.Hub.Queue(resetEquationNumbers, 
+		["PreProcess", MathJax.Hub, target.id],
+		["Reprocess", MathJax.Hub, target.id]);
+}
+
+function resetEquationNumbers() {
+	var AMS = MathJax.Extension["TeX/AMSmath"];
+	AMS.startNumber = 0;
+	AMS.labels = {};
 }
 
 function insert_math(mode) {
