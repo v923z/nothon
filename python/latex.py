@@ -28,10 +28,10 @@ def text_cell_latex(text):
 		b.replace_with('\\colorbox{yellow}{%s}'%(b.text))
 	# We have to protect the math environments against the '_' -> '\_' replacement!
 	for i, b in enumerate(soup.find_all('span', 'nothon_math')):
-		inline_math.append('$%s$'%(b.text.lstrip('\\(').rstrip('\\)').replace('<br>', '')))
+		inline_math.append('$%s$'%(b.text.replace('\\(', '').replace('\\)', '').replace('<br>', '')))
 		b.replace_with('~~~INLINEMATH%d~~~'%(i))
 	for i, b in enumerate(soup.find_all('div', 'nothon_math')):
-		display_math.append('\n\\begin{equation}\n%s\n\\end{equation}\n'%(b.text.lstrip('\\[').rstrip('\\]').replace('<br>', '')))
+		display_math.append('\n\\begin{equation}\n%s\n\\end{equation}\n'%(b.text.replace('\\[', '').replace('\\]', '').replace('<br>', '\n')))
 		b.replace_with('~~~DISPLAYMATH%d~~~'%(i))
 	for b in soup.find_all('span', 'note'):
 		bb = b.find('span')
