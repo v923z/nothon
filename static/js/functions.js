@@ -450,7 +450,7 @@ function insert_new_cell(html, to_activate) {
 		$('#' + $(active_div).data('main')).after(html)		
 	}
 	else {
-		if($('#docmain').is(':empty')) {
+		if($('#docmain').empty()) {
 			$('#docmain').prepend(html)
 		} else {
 			$('#docmain').children(':last').after(html)
