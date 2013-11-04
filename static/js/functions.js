@@ -283,7 +283,7 @@ $(function() {
 	$('#new_notebook_dialog').dialog({
 		dialogClass: 'no-close ui-dialog',
 		autoOpen: 	false,
-		height:		100,
+		height:		150,
 		width:		400,
 		modal:		true,
 		title:		'New notebook',

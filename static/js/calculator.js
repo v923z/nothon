@@ -47,7 +47,7 @@ $(function() {
 	$('#calculator_dialog').dialog({
 		dialogClass: 'no-close ui-dialog',
 		autoOpen: 	false,
-		height:		300,
+		height:		400,
 		width:		400,
 		modal:		true,
 		title:		'Calculator scratch pad',
