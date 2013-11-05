@@ -179,18 +179,20 @@ function _save() {
 	return message
 }
 
-function save_other_format(format) {
+function save_other_format(target, format) {
 	var message = _save()
 	message.command = format
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
+	$(target).parent().hide()
 }
 
-function save_html() {
+function save_html(target) {
 	var message = create_message('', "savehtml")
 	message.outfile = document.title
 	message.title = document.getElementById("div_title").innerHTML
 	message.content = document.getElementById('docmain').innerHTML
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), save_handler)
+    $(target).parent().hide()
 }
 
 function docmain_render(address) {
@@ -450,7 +452,7 @@ function insert_new_cell(html, to_activate) {
 		$('#' + $(active_div).data('main')).after(html)		
 	}
 	else {
-		if($('#docmain').empty()) {
+		if($('#docmain').is(':empty')) {
 			$('#docmain').prepend(html)
 		} else {
 			$('#docmain').children(':last').after(html)

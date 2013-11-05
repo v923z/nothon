@@ -59,9 +59,9 @@ As a general rule, all labels, buttons etc. of nothon can be hidden: they are th
 
 * Organise contains two functions with the help of which one can overview the notebook list. ToC and Timeline refer to the table of contents (a list of all content-manageable headers of all notebooks), and an ordered list of all notebooks in the Calendar section. When pressing either button, the user is taken to a new page, which is generated on the fly, and cannot be saved. 
 * The Notebook button gives access to saving, and various converting 
-functions (saving in HTML and LaTeX format), and collapsing/expanding all 
-cells of the notebook. The user has to convert the resulting LaTeX document on the command line. The reason for this is that it is not trivial to catch all the errors/warnings of LaTeX, and therefore, it would be hard to give a meaningful  report to the user. 
-* The Cell button insert a new cell of the chosen type. If there is an active cell in the notebook, this can be deleted, or the last cell or the active cell of the trashbin can be recovered here.
+functions (saving in HTML or LaTeX and markdown format), and collapsing/expanding all 
+cells of the notebook. As for LaTeX, the user has to convert the resulting .tex document on the command line. The reason for this is that it is not trivial to catch all the errors/warnings of LaTeX, and therefore, it would be hard to return a meaningful  report. 
+* The Cell button inserts a new cell of the chosen type. If there is an active cell in the notebook, this can be deleted, or the last cell or the active cell of the trashbin can be recovered here.
 * The Menu button toggles the context-dependent menu on the right hand 
 side. This sidebar contains commands relevant to the currently active 
 cell. On the top of the menu, the type of the currently active cell is 
