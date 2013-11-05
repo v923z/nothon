@@ -18,6 +18,7 @@ from jsutils import *
 from cell_utils import *
 from new_notebook import *
 import latex
+import markdown
 
 nothon_resource = resource.NothonResource()
 
@@ -254,6 +255,11 @@ def savelatex_handler(message, resource):
 	latex.process_note(message['outfile'])
 	return  simplejson.dumps({'success' : 'success'})
 	
+def savemarkdown_handler(message, resource):
+	_save(message)
+	markdown.process_note(message['outfile'])
+	return  simplejson.dumps({'success' : 'success'})
+	
 def savehtml_handler(message, resource):
 	fin = open('static/css/main.css', 'r')
 	css = fin.read()
@@ -316,7 +322,7 @@ class Index(object):
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['command'] in ('plot', 'head', 'code', 'text', 'paragraph', 'save', 'savehtml', 'savelatex', 'docmain_render', 'image', 'paste_cell', 'remove_cell'):
+		if message['command'] in ('plot', 'head', 'code', 'text', 'paragraph', 'save', 'savehtml', 'savelatex', 'savemarkdown', 'docmain_render', 'image', 'paste_cell', 'remove_cell'):
 			exec('result = %s_handler(message, nothon_resource)'%(message['command']))
 			return result
 			

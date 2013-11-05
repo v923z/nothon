@@ -179,9 +179,9 @@ function _save() {
 	return message
 }
 
-function savelatex() {
+function save_other_format(format) {
 	var message = _save()
-	message.command = 'savelatex'
+	message.command = format
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 
