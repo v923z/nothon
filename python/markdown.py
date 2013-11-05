@@ -86,7 +86,7 @@ def markdown_plot(dictionary):
 def markdown_head(dictionary):
 	text = '\n\n**%s**\n'%(dictionary['content']['head_header']['content'])
 	text += '\n**%s**\n\n'%(dictionary['content']['head_date']['content'])
-	text += dictionary['content']['head_body']['content'].replace('\n', '\n\t').replace('#', '\#') + '\n'
+	text += dictionary['content']['head_body']['content'].replace('<br>', '\n\t').replace('#', '\#') + '\n'
 	return text
 
 def markdown_text(dictionary):

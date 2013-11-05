@@ -183,7 +183,8 @@ function save_other_format(target, format) {
 	var message = _save()
 	message.command = format
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
-	$(target).parent().hide()
+	// This is broken for now...
+	//$(target).parent().hide()
 }
 
 function save_html(target) {
@@ -192,7 +193,8 @@ function save_html(target) {
 	message.title = document.getElementById("div_title").innerHTML
 	message.content = document.getElementById('docmain').innerHTML
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), save_handler)
-    $(target).parent().hide()
+	// This is broken for now...
+    //$(target).parent().hide()
 }
 
 function docmain_render(address) {

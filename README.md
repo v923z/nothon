@@ -41,7 +41,7 @@ One of our design considerations was from day one that one should be able to run
 
 ## Cells in nothon
 
-The content of a notebook is divided into cells, each cell type dealing with particular task. Currently five cell types are implemented, but it is easy to extend this.
+The content of a notebook is divided into cells, each cell type dealing with a particular task. Currently five cell types are implemented, but it is easy to extend this.
 
 * Section cell: contains text, with a header
 * Paragraph cell: contains text without a header
@@ -141,7 +141,12 @@ This functionality is handy, if one wants to list the content of some file. We o
 
 **Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012**
 
-\# comment 1<br>\# comment 2<br>12 3<br>23 22<br>2132 123<br>55 99
+\# comment 1
+	\# comment 2
+	12 3
+	23 22
+	2132 123
+	55 99
 
 
 ## Working with headers 2.
@@ -152,14 +157,16 @@ If we supply an argument, we can print the first or last n lines as follows.
 
 **Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012**
 
-\# comment 1<br>\# comment 2
+\# comment 1
+	\# comment 2
 
 
 **test.dat -2**
 
 **Created: Sat Dec 15 23:54:22 2012, modified: Sat Dec 15 23:53:33 2012**
 
-2132 123<br>55 99
+2132 123
+	55 99
 
 
 ## Adding plots

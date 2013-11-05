@@ -2,7 +2,7 @@
 "title" : "Comments on using the nothon notebook<br>",
 "type": "notebook",
 "directory" : "",
-"date" : "Tue Nov 05 2013 21:37:28 GMT+0100 (CET)",
+"date" : "Tue Nov 05 2013 22:05:37 GMT+0100 (CET)",
 "nothon version" : 1.3,
 "notebook" : [
     {
@@ -76,7 +76,7 @@
     {
         "content": {
             "text_body": {
-                "content": "The content of a notebook is divided into cells, each cell type dealing with particular task. Currently five cell types are implemented, but it is easy to extend this.<br><ol><li>Section cell: contains text, with a header<br></li><li>Paragraph cell: contains text without a header<br></li><li>Plot cell: contains a header (caption), the code that generates the plot, and the plot itself<br></li><li>Code cell: contains a header with a file name, and the listed code<br></li><li>Head cell: contains a header with a file name, and the listed file content.<br></li></ol>",
+                "content": "The content of a notebook is divided into cells, each cell type dealing with a particular task. Currently five cell types are implemented, but it is easy to extend this.<br><ol><li>Section cell: contains text, with a header<br></li><li>Paragraph cell: contains text without a header<br></li><li>Plot cell: contains a header (caption), the code that generates the plot, and the plot itself<br></li><li>Code cell: contains a header with a file name, and the listed code<br></li><li>Head cell: contains a header with a file name, and the listed file content.<br></li></ol>",
                 "id": "div_text_body_17",
                 "props": "searchable"
             },
