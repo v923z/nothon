@@ -1,6 +1,11 @@
-from pygments import highlight
-from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
-from pygments.formatters import HtmlFormatter   
+# We have to check for non-standard packages, so that we can run on android
+try:
+	from pygments import highlight
+	from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
+	from pygments.formatters import HtmlFormatter   
+	
+except ImportError:
+	print 'nothing to import'
 
 def code_formatter(fn, delimiters, tag=False, linenos=False, include=False):
 	try:

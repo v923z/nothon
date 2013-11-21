@@ -10,17 +10,16 @@ import time
 import sys
 from bs4 import BeautifulSoup
 
-sys.path.insert(0, './python')
-import resource
-from code_handling import *
-from fileutils import *
-from jsutils import *
-from cell_utils import *
-from new_notebook import *
-import latex
-import markdown
+from python.resource import NothonResource
+from python.code_handling import *
+from python.fileutils import *
+from python.jsutils import *
+from python.cell_utils import *
+from python.new_notebook import *
+import python.latex as latex
+import python.markdown as markdown
 
-nothon_resource = resource.NothonResource()
+nothon_resource = NothonResource()
 
 # We have to check for non-standard packages, so that we can run on android
 try:
