@@ -1,7 +1,10 @@
 import simplejson
 import os
 import sys
-from bs4 import BeautifulSoup
+try:
+	from bs4 import BeautifulSoup
+except ImportError:
+	from BeautifulSoup import BeautifulSoup
 
 def preserve_markup(elem):
 	return ''.join(['%s'%x for x in elem.contents])

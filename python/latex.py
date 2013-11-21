@@ -2,10 +2,18 @@ import simplejson
 import os
 import sys
 import code_handling
-from pygments import highlight
-from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
-from pygments.formatters import LatexFormatter
-from bs4 import BeautifulSoup
+try:
+	from pygments import highlight
+	from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
+	from pygments.formatters import LatexFormatter
+	
+except ImportError:
+	print 'nothing to import'
+	
+try:
+	from bs4 import BeautifulSoup
+except ImportError:
+	from BeautifulSoup import BeautifulSoup
 
 from code_handling import *
 import resource
