@@ -11,7 +11,6 @@ import sys
 from bs4 import BeautifulSoup
 
 from python.resource import NothonResource
-#from python.code_handling import *
 from python.fileutils import *
 from python.jsutils import *
 from python.cell_utils import *
@@ -112,13 +111,6 @@ def image_handler(message, resource):
 	fn = message['filename']
 	directory = message['directory'].strip('\n')
 	return simplejson.dumps({message['id'] : fetch_image(ID, fn, message)})
-		
-#def code_handler(message, resource):
-	#print message
-	#fn, tag, linenos, include = code_arguments(message['content'])
-	#return simplejson.dumps({message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
-						#message['body'] : code_formatter(fn, nothon_resource.code_delimiter, tag, linenos, include), 
-						#"scroller" : message['body']})
 						
 def write_to_temp(string):
 	_, tmp = tempfile.mkstemp()
