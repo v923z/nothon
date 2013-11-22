@@ -1,7 +1,7 @@
 import simplejson
 import os
 import sys
-import code_handling
+
 try:
 	from pygments import highlight
 	from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
@@ -13,9 +13,10 @@ except ImportError:
 try:
 	from bs4 import BeautifulSoup
 except ImportError:
+	# This should work on android
 	from BeautifulSoup import BeautifulSoup
 
-from code_handling import *
+from code_utils import code_arguments
 import resource
 
 nothon_resource = resource.NothonResource()

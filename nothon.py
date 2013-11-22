@@ -11,13 +11,19 @@ import sys
 from bs4 import BeautifulSoup
 
 from python.resource import NothonResource
-from python.code_handling import *
+#from python.code_handling import *
 from python.fileutils import *
 from python.jsutils import *
 from python.cell_utils import *
 from python.new_notebook import *
 import python.latex as latex
 import python.markdown as markdown
+
+from python.plot_utils import Plot
+from python.head_utils import Head
+from python.code_utils import Code
+
+from python.template_helpers import *
 
 nothon_resource = NothonResource()
 
@@ -35,21 +41,6 @@ try:
 	nothon_resource.has_matplotlib = True
 except ImportError:
 	nothon_resource.has_matplotlib = False
-
-
-def safe_content(dictionary, key):
-	if not dictionary or key not in dictionary:
-		return ""
-	else:
-		return dictionary[key]['content']
-
-def safe_props(dictionary, key, *props):
-	if not dictionary or key not in dictionary:
-		return ';'.join(props)
-	elif 'props' in dictionary[key]:
-		return ';'.join(set(dictionary[key]['props'].split(';') + list(props)))
-	else:
-		return ';'.join(props)	
 
 urls = ('/',  'Index')
 render = web.template.render('templates/')
@@ -85,23 +76,9 @@ def fetch_image(ID, fn, directory):
 				return '<img id="img_' + ID + '" src="data:image/' + ext + ';base64,' + base64.b64encode(image_file.read()) + '"/>'
 	except IOError:
 		return '<span class="code_error">Could not read file from disc</span>'
-		
-def read_plot(fn):
-	try:
-		with open(fn, "rb") as image_file:
-			return '<img class="plot_image" src="data:image/png;base64,' + base64.b64encode(image_file.read()) + '"/>'
-	except IOError:
-		return '<span class="code_error">Could not read file from disc</span>'
-
-def plot_update_dict(dictionary):
-	dictionary['content']['plot_body'] = {'content' : read_plot(dictionary['content']['plot_file']['content'])}
-	return dictionary
 	
 def text_update_dict(dictionary):
 	#update_image(dictionary['content']['text_body']['content'], '/home/v923z/sandbox/nothon/')
-	return dictionary
-
-def head_update_dict(dictionary):
 	return dictionary
 
 def paragraph_update_dict(dictionary):
@@ -117,80 +94,18 @@ def parse_note(fn):
 	note['title'] = {'content' : data['title']}
 	
 	for element in content:
-		exec('element = %s_update_dict(element)'%(element['type']))	
-		exec('div = render.%s_html(%s, %s)'%(element['type'], element['count'], element['content']))
-		if element['type'] in ('text', 'section', 'paragraph'):
-			div = update_image(div, note['directory'])
+		if element['type'] in ('plot', 'head', 'code'):
+			exec('obj = %s(None)'%(element['type'].title()))
+			div = obj.render(element, render)
+		else:
+			exec('element = %s_update_dict(element)'%(element['type']))	
+			exec('div = render.%s_html(%s, %s)'%(element['type'], element['count'], element['content']))
+			if element['type'] in ('text', 'section', 'paragraph'):
+				div = update_image(div, note['directory'])
 		note_str += str(div)
 		
 	note['content'] = {'content' : note_str}
 	return note
-
-def head_handler(message, resource):
-	head = message['content'].rstrip('<br>').rstrip('\t').rstrip('\n')
-	sp = head.split(' ')
-	fn = sp[0]
-	if not os.path.exists(fn): 
-		return simplejson.dumps({message['body'] : '<span class="head_error">File doesn\'t exist</span>', message['date'] : ''})
-	if len(sp) == 1: n = 10
-	# TODO: elif sp[1] == '#':	
-	else: n = int(sp[1])
-	fin = open(fn, 'r')	
-	if n > 0:
-		lines = []
-		it = 0
-		for line in fin:
-			lines.append(line.rstrip('\n\r'))
-			it += 1
-			if it >= n: break
-	
-	if n < 0:
-		# TODO: this is highly inefficient. 
-		# Check out http://code.activestate.com/recipes/157035-tail-f-in-python/
-		# http://stackoverflow.com/questions/136168/get-last-n-lines-of-a-file-with-python-similar-to-tail
-		lines = fin.readlines()
-		lines = lines[n:]
-	fin.close()	
-	return simplejson.dumps({"scroller" : message['body'],
-							message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),  
-							message['body'] : '<br>'.join([x.rstrip('\n\r') for x in lines])})
-
-def plot_handler(message, resource):
-	code = message['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
-	exit_status = False
-	pwd = os.getcwd()
-	print message['directory']
-	if message['directory']: os.chdir(message['directory'].strip('<br>'))
-	
-	if code.startswith('#gnuplot') or code.startswith('# gnuplot'):
-		with open(message['filename'] + '.gp', 'w') as fout:
-			fout.write("set term png; set out '%s.png'\n"%(pwd + '/' + message['filename']) + code)				
-			if nothon_resource.plot_pdf_output:
-				fout.write("\nset term pdfcairo; set out '%s.pdf'\n replot\n"%(pwd + '/' + message['filename']))
-		os.system("gnuplot %s.gp"%(message['filename']))
-		os.system("rm %s.gp -f"%(message['filename']))
-	
-	if not resource.has_matplotlib:
-		exit_status = 'Could not import matplotlib. Choose gnuplot as the plotting back-end.'
-		
-	else:
-		x = linspace(-10, 10, 100)
-		try:
-			exec(code)
-			savefig(pwd + '/' + message['filename'] + '.png')
-			if nothon_resource.plot_pdf_output: 
-				savefig(pwd + '/' + message['filename'] + '.pdf')
-			close()
-		except:
-			exit_status = traceback.format_exc().replace('\n', '<br>')
-
-	os.chdir(pwd)
-	if not exit_status:
-		exit_status = read_plot(message['filename'] + '.png')
-
-	return simplejson.dumps({ "scroller" : message['body'],
-						message['title'] : message['filename'] + '.png', 
-						message['body'] : exit_status})
 
 def image_handler(message, resource):
 	ID = message['id'].split('_')[-1]
@@ -198,12 +113,12 @@ def image_handler(message, resource):
 	directory = message['directory'].strip('\n')
 	return simplejson.dumps({message['id'] : fetch_image(ID, fn, message)})
 		
-def code_handler(message, resource):
-	print message
-	fn, tag, linenos, include = code_arguments(message['content'])
-	return simplejson.dumps({message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
-						message['body'] : code_formatter(fn, nothon_resource.code_delimiter, tag, linenos, include), 
-						"scroller" : message['body']})
+#def code_handler(message, resource):
+	#print message
+	#fn, tag, linenos, include = code_arguments(message['content'])
+	#return simplejson.dumps({message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
+						#message['body'] : code_formatter(fn, nothon_resource.code_delimiter, tag, linenos, include), 
+						#"scroller" : message['body']})
 						
 def write_to_temp(string):
 	_, tmp = tempfile.mkstemp()
@@ -321,7 +236,11 @@ class Index(object):
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['command'] in ('plot', 'head', 'code', 'text', 'paragraph', 'save', 'savehtml', 'savelatex', 'savemarkdown', 'docmain_render', 'image', 'paste_cell', 'remove_cell'):
+		if message['command'] in ('plot', 'head', 'code'):
+			exec('obj = %s(nothon_resource)'%(message['command'].title()))
+			return obj.handler(message)
+			
+		if message['command'] in ('text', 'paragraph', 'save', 'savehtml', 'savelatex', 'savemarkdown', 'docmain_render', 'image', 'paste_cell', 'remove_cell'):
 			exec('result = %s_handler(message, nothon_resource)'%(message['command']))
 			return result
 			

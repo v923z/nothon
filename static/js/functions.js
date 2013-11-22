@@ -219,6 +219,7 @@ function delete_block() {
 	}
 	document.getElementById('trash_image').style.backgroundImage = 'url(static/css/trashbin_full.png)'
 	generate_toc()
+	$('#context_menu').html('')
 }
 
 function recover_block() {
