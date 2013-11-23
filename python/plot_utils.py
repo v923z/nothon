@@ -1,6 +1,7 @@
 import simplejson
 import os
 import base64
+from fileutils import create_notebook_folder
 
 try:
 	from pylab import *
@@ -26,14 +27,16 @@ class Plot():
 		pwd = os.getcwd()
 		print message['directory']
 		if message['directory']: os.chdir(message['directory'].strip('<br>'))
-		
+		new_path = create_notebook_folder(message['doc_title'])
+		fn = message['filename'].replace('./', '')
+		print new_path, fn
 		if code.startswith('#gnuplot') or code.startswith('# gnuplot'):
 			with open(message['filename'] + '.gp', 'w') as fout:
-				fout.write("set term png; set out '%s.png'\n"%(pwd + '/' + message['filename']) + code)				
+				fout.write("set term png; set out '%s.png'\n"%(os.path.join(new_path, fn)) + code)
 				if self.resource.plot_pdf_output:
-					fout.write("\nset term pdfcairo; set out '%s.pdf'\n replot\n"%(pwd + '/' + message['filename']))
-			os.system("gnuplot %s.gp"%(message['filename']))
-			os.system("rm %s.gp -f"%(message['filename']))
+					fout.write("\nset term pdfcairo; set out '%s.pdf'\n replot\n"%(os.path.join(new_path, fn)))
+			os.system("gnuplot %s.gp"%(fn))
+			os.system("rm %s.gp -f"%(fn))
 		
 		if not self.resource.has_matplotlib:
 			exit_status = 'Could not import matplotlib. Choose gnuplot as the plotting back-end.'
@@ -42,19 +45,19 @@ class Plot():
 			x = linspace(-10, 10, 100)
 			try:
 				exec(code)
-				savefig(pwd + '/' + message['filename'] + '.png')
+				savefig(os.path.join(new_path, fn + '.png'))
 				if self.resource.plot_pdf_output: 
-					savefig(pwd + '/' + message['filename'] + '.pdf')
+					savefig(os.path.join(new_path, fn + '.pdf'))
 				close()
 			except:
 				exit_status = traceback.format_exc().replace('\n', '<br>')
 
 		os.chdir(pwd)
 		if not exit_status:
-			exit_status = self.read_plot(message['filename'] + '.png')
+			exit_status = self.read_plot(os.path.join(new_path, fn + '.png'))
 
 		return simplejson.dumps({ "scroller" : message['body'],
-							message['title'] : message['filename'] + '.png', 
+							message['title'] : os.path.join(new_path, fn + '.png'), 
 							message['body'] : exit_status})
 
 	def render(self, dictionary, render):

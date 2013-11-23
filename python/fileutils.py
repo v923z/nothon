@@ -5,6 +5,14 @@ import datetime
 import time
 from random import randrange
 
+def create_notebook_folder(fn):
+	# Creates the helper folder beginning with _fn
+	path, stem = os.path.split(fn)
+	new_path = os.path.join(path, '_' + stem.split('.')[0])
+	if not os.path.exists(new_path): 
+		os.makedirs(new_path)
+	return new_path
+	
 def get_file_path(fn, base_path):
 	# This function returns the filepath, based on, whether the user intended an absolute, or a relative path
 	if fn.startswith('/'): return fn
@@ -24,8 +32,15 @@ def shuffle_dir(dirlist):
 		i += 1    
 	return dirlist[i:] + dirlist[:i]
 
+def check_for_special_folder(dir, marker):
+	last_dir = dir.rstrip(os.sep).split(os.sep)[-1]
+	if last_dir.startswith(marker): return True
+	return False
+	
 def dir_tree(dir):
 	tree = []
+	if check_for_special_folder(dir, '_'): return tree
+	
 	for item in os.listdir(dir):
 		path = os.path.join(dir, item)
 		if os.path.isdir(path):

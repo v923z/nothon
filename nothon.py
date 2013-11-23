@@ -144,7 +144,7 @@ def save_handler(message, resource):
 
 def _save(message):	
 	" Writes the stipped document content to disc "
-	with open(message['outfile'], 'w') as fout:
+	with open(message['doc_title'], 'w') as fout:
 		#nb = message
 		#nb['nothon version'] = resource.nothon_version
 		#print print_notebook(nb, resource.notebook_item_order)
@@ -158,12 +158,12 @@ def _save(message):
 
 def savelatex_handler(message, resource):
 	_save(message)
-	latex.process_note(message['outfile'])
+	latex.process_note(message['doc_title'])
 	return  simplejson.dumps({'success' : 'success'})
 	
 def savemarkdown_handler(message, resource):
 	_save(message)
-	markdown.process_note(message['outfile'])
+	markdown.process_note(message['doc_title'])
 	return  simplejson.dumps({'success' : 'success'})
 	
 def savehtml_handler(message, resource):
@@ -222,7 +222,8 @@ class Index(object):
 					# We have to re-generate the directory tree, for there is a new item here...
 					aside = {"tree" : dir_html(dir_tree('.'), nothon_resource.dirlisting_style)}
 				new_notebook(link.name, nothon_resource)
-					
+			
+			create_notebook_folder(link.name)	
 			return 	render.notebook(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 
 	def POST(self):

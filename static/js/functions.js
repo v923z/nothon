@@ -69,6 +69,7 @@ function create_message(div_data, message_type) {
 	message.command = message_type
 	message.id = div_data.id
 	message.content = div_data.innerHTML
+	message.doc_title = document.title
 	message.directory = $('#div_dir').html().replace('<br>', '')
 	return message
 }
@@ -171,7 +172,7 @@ function _save() {
 	$('#notebook_status').html('Saved at ' + time.toTimeString().split(' ')[0])
 	var message = create_message('', "save")
 	message.type = $('body').data('type')
-	message.outfile = document.title
+	message.doc_title = document.title
 	message.title = $('#div_title').html()
 	message.directory = $('#div_dir').html().replace('<br>', '')
 	message.content = get_divs()
