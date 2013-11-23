@@ -95,7 +95,6 @@ def make_timeline():
 	
 	# create the html output from the directory tree
 	tree = dir_tree('Calendar')
-	print 'tree:', tree
 	str_tl = ''
 	for year in reversed(tree):
 		if is_year(year):  # only include proper calendar entries
@@ -113,11 +112,11 @@ def make_timeline():
 								print('WARNING: could not decode JSON (most probably this is not a proper nothon file)')
 							if h != None:
 								dayofweek = time.strftime("%A",datetime.date(int(year[0]),int(month[0]),int(d)).timetuple())
-								str_tl += "<div class='timeline_day'><a href='?name=Calendar/%s/%s/%s'>%s</a>"%(year[0],month[0],day,str(dayofweek) + ' ' + d)
-								str_tl += "<div class='timeline_entry'>"
+								str_tl += "<li id='li_%d_%d'><a href='?name=Calendar/%s/%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), year[0], month[0], day, str(dayofweek) + ' ' + d)
+								str_tl += "<div class='toc_entry'>"
 								str_tl += h
 								str_tl += "</div>"
-								str_tl += '</div>'
+								str_tl += '</li>'
 					str_tl += '</div>'
 			str_tl += '</div>'
 	note['content'] = {'content' : str_tl}
