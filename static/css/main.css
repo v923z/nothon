@@ -591,13 +591,17 @@ p {
 	padding-right:		0.2em;
 }
 
-
-#top_menu ul li ul li:hover ul li {
+#top_menu ul li ul li:hover ul {
 	background:			#eeeeee;
 	color:				#116688;
 	display:			block;
-	position:			relative;
+	position:			absolute;
 	left:				100%;
+	top:				0;
+}
+
+#top_menu ul li ul li:hover ul li {
+	display:			block;
 }
 
 #top_menu ul > li:hover {
