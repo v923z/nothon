@@ -67,10 +67,11 @@ $for f in create_funcs + handler_funcs:
 			<li onmouseup='save_other_format(this, "savelatex");'>LaTeX</li>
 			<li onmouseup='save_other_format(this, "savemarkdown");'>Markdown</li>
 			<li onmouseup='save_html(this);'>HTML</li>
-			<li>Compress
+			<li>Archive
 				<ul>
 					<li onmouseup='compress_notebook("zip");'>Zip</li>
-					<li onmouseup='compress_notebook("tar");'>Tar</li>
+					<li onmouseup='compress_notebook("targzip");'>Tar + gzip</li>
+					<li onmouseup='git();'>Git</li>
 				</ul>
 			</li>
 		</ul>
