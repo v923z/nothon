@@ -36,7 +36,7 @@ class Zip():
 		try:
 			import zipfile
 		except ImportError:
-			return 'Could not import zipfile'
+			return simplejson.dumps({'success' : 'Could not import module "zipfile".'})
 
 		def zipdir(path, zipper):
 			for root, dirs, files in os.walk(path):
@@ -50,10 +50,10 @@ class Zip():
 		zipper.write(fn)
 		if os.path.exists(folder): zipdir(folder, zipper)
 		zipper.close()
+		return simplejson.dumps({'success' : 'success'})
 		
 	def handler(self, message):
-		self.zip_notebook(message)
-		return  simplejson.dumps({'success' : 'success'})
+		return self.zip_notebook(message)
 
 class Tar():
 	
@@ -64,8 +64,8 @@ class Tar():
 		try:
 			import tarfile
 		except ImportError:
-			return 'Could not import tarfile'
-		
+			return simplejson.dumps({'success' : 'Could not import module "tarfile".'})
+
 		_save(message)
 		fn = message['notebook']
 		folder = notebook_folder(fn)
@@ -73,10 +73,10 @@ class Tar():
 		tar.add(fn)
 		if os.path.exists(folder): tar.add(folder)
 		tar.close()
+		return simplejson.dumps({'success' : 'success'})
 		
 	def handler(self, message):
-		self.tar_notebook(message)
-		return  simplejson.dumps({'success' : 'success'})
+		return self.tar_notebook(message)
 
 class Latex():
 	
