@@ -157,11 +157,6 @@ function get_divs() {
 	return content
 }
 
-function save() {
-	var message = _save()
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
-}
-
 function save_handler(req) {
 	var message = JSON.parse(req.responseText)
 }
@@ -181,13 +176,7 @@ function _save() {
 	return message
 }
 
-function save_other_format(format) {
-	var message = _save()
-	message.command = format
-	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
-}
-
-function archive_notebook(method) {
+function save_notebook(method) {
 	var message = _save()
 	message.command = method
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
