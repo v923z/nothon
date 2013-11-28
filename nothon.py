@@ -27,14 +27,6 @@ nothon_resource = NothonResource()
 
 # We have to check for non-standard packages, so that we can run on android
 try:
-	from pygments import highlight
-	from pygments.lexers import get_lexer_for_filename
-	from pygments.formatters import HtmlFormatter
-	nothon_resource.has_pygments = True
-except ImportError:
-	nothon_resource.has_pygments = False
-
-try:
 	from pylab import *
 	nothon_resource.has_matplotlib = True
 except ImportError:
