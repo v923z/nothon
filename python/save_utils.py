@@ -48,7 +48,8 @@ class Zip():
 		folder = notebook_folder(fn)
 		zipper = zipfile.ZipFile(fn.replace('.note', '.zip'), 'w')
 		zipper.write(fn)
-		zipdir(folder, zipper)
+		if os.path.exists(folder): zipdir(folder, zipper)
+		zipper.close()
 		
 	def handler(self, message):
 		self.zip_notebook(message)
@@ -70,7 +71,7 @@ class Tar():
 		folder = notebook_folder(fn)
 		tar = tarfile.open(fn.replace('.note', '.tgz'), 'w:gz')
 		tar.add(fn)
-		tar.add(folder)
+		if os.path.exists(folder): tar.add(folder)
 		tar.close()
 		
 	def handler(self, message):
