@@ -173,6 +173,7 @@ function _save() {
 	var message = create_message('', "save")
 	message.type = $('body').data('type')
 	message.doc_title = document.title
+	message.notebook = document.title	
 	message.title = $('#div_title').html()
 	message.directory = $('#div_dir').html().replace('<br>', '')
 	message.content = get_divs()
@@ -180,12 +181,16 @@ function _save() {
 	return message
 }
 
-function save_other_format(target, format) {
+function save_other_format(format) {
 	var message = _save()
 	message.command = format
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
-	// This is broken for now...
-	//$(target).parent().hide()
+}
+
+function archive_notebook(method) {
+	var message = _save()
+	message.command = method
+	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 
 function save_html(target) {

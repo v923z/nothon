@@ -15,13 +15,11 @@ from python.fileutils import *
 from python.jsutils import *
 from python.cell_utils import *
 from python.new_notebook import *
-import python.latex as latex
-import python.markdown as markdown
 
 from python.plot_utils import Plot
 from python.head_utils import Head
 from python.code_utils import Code
-from python.save_utils import Save
+from python.save_utils import Zip, Tar, Save, Latex, Markdown
 
 from python.template_helpers import *
 
@@ -138,34 +136,6 @@ def text_handler(message, resource):
 
 def paragraph_handler(message, resource):
 	return text_handler(message, resource)
-
-def save_handler(message, resource):
-	_save(message)		
-	return  simplejson.dumps({'success' : 'success'})
-
-def _save(message):	
-	" Writes the stipped document content to disc "
-	with open(message['doc_title'], 'w') as fout:
-		#nb = message
-		#nb['nothon version'] = resource.nothon_version
-		#print print_notebook(nb, resource.notebook_item_order)
-		fout.write('{\n"title" : "%s",\n'%(message["title"]))
-		fout.write('"type": "%s",\n'%(message['type']))
-		if message['type'] in ('notebook'):
-			fout.write('"directory" : "%s",\n'%(message["directory"].strip('<br>')))
-		fout.write('"date" : "%s",\n'%(message["date"]))
-		fout.write('"nothon version" : 1.3,\n')
-		fout.write('"notebook" : %s\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))
-
-def savelatex_handler(message, resource):
-	_save(message)
-	latex.process_note(message['doc_title'])
-	return  simplejson.dumps({'success' : 'success'})
-	
-def savemarkdown_handler(message, resource):
-	_save(message)
-	markdown.process_note(message['doc_title'])
-	return  simplejson.dumps({'success' : 'success'})
 	
 def savehtml_handler(message, resource):
 	fin = open('static/css/main.css', 'r')
@@ -230,11 +200,11 @@ class Index(object):
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['command'] in ('plot', 'head', 'code'):
+		if message['command'] in ('plot', 'head', 'code', 'zip', 'tar', 'save', 'latex', 'markdown'):
 			exec('obj = %s(nothon_resource)'%(message['command'].title()))
 			return obj.handler(message)
 			
-		if message['command'] in ('text', 'paragraph', 'save', 'savehtml', 'savelatex', 'savemarkdown', 'docmain_render', 'image', 'paste_cell', 'remove_cell'):
+		if message['command'] in ('text', 'paragraph', 'savehtml', 'docmain_render', 'image', 'paste_cell', 'remove_cell'):
 			exec('result = %s_handler(message, nothon_resource)'%(message['command']))
 			return result
 			

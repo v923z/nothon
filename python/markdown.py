@@ -55,7 +55,7 @@ def parse_lists(text):
 	text = text.replace('<li>', '\n* ').replace('</li>', '')	
 	return text
 	    
-class Markdown(object):
+class MarkdownClass(object):
 	
 	def __init__(self, filename):
 		with open(filename, 'r') as fin:
@@ -101,7 +101,7 @@ def markdown_paragraph(dictionary):
 	return dictionary['content']['paragraph_body']['content']
 
 def process_note(notefile):
-	fn = Markdown(notefile)
+	fn = MarkdownClass(notefile)
 	fn.parse_note();
 	with open(notefile.split('.')[0] + '.md', "w") as fout:
 		fout.write(fn.title.encode('utf-8') + fn.note.encode('utf-8'))

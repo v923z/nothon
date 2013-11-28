@@ -7,11 +7,14 @@ from random import randrange
 
 def create_notebook_folder(fn):
 	# Creates the helper folder beginning with _fn
-	path, stem = os.path.split(fn)
-	new_path = os.path.join(path, '_' + stem.split('.')[0])
+	new_path = notebook_folder(fn)
 	if not os.path.exists(new_path): 
 		os.makedirs(new_path)
 	return new_path
+
+def notebook_folder(fn):
+	path, stem = os.path.split(fn)
+	return os.path.join(path, '_' + stem.split('.')[0])
 	
 def get_file_path(fn, base_path):
 	# This function returns the filepath, based on, whether the user intended an absolute, or a relative path

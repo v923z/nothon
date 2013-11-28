@@ -70,7 +70,7 @@ def parse_lists(text):
 	text = text.replace('<li>', '\n\\item ').replace('</li>', '')	
 	return text
 	    
-class Latex(object):
+class LatexClass(object):
 	
 	def __init__(self, filename):
 		template_dir = nothon_resource.base_path + '/templates/'
@@ -146,7 +146,7 @@ def latex_paragraph(dictionary, template):
 	return text
 
 def process_note(notefile):
-	fn = Latex(notefile)
+	fn = LatexClass(notefile)
 	fn.parse_note();
 	formatter = LatexFormatter()
 	defs = formatter.get_style_defs()
