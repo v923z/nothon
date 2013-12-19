@@ -49,8 +49,15 @@ function query() {
 }
 
 function message_handler(req) {
-	var message = JSON.parse(req.responseText)
-	if(message["state"] == "started") { status = message }
-	else if(message["state"] == "stopped") { status = message }
-	if(message["state"] == "running") { status = message }
+	status = JSON.parse(req.responseText)
+	var placeholder = document.getElementById('placeholder')
+	if(status["status"] == "started") { 
+		placeholder.innerHTML = status['time']
+	}
+	else if(status["status"] == "stopped") { 
+		placeholder.innerHTML = status['time']
+	}
+	if(status["status"] == "queried") { 
+		placeholder.innerHTML = status['time']
+	}
 }

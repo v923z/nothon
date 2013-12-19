@@ -14,9 +14,14 @@ class Index(object):
 		return 	content
 
 	def POST(self):
-		print simplejson.loads(web.data())
-		return 	'<html><body><POST: Server queried at %s</body></html>'%(now())
-		
+		message = simplejson.loads(web.data())
+		print message
+		if message['command'] in ('start'):
+			return simplejson.dumps({'status' : 'started', 'time' : 'started: %s'%(datetime.datetime.now())})
+		if message['command'] in ('stop'):
+			return simplejson.dumps({'status' : 'stopped', 'time' : 'stopped: %s'%(datetime.datetime.now())})
+		if message['command'] in ('query'):
+			return simplejson.dumps({'status' : 'queried', 'time' : 'queried: %s'%(datetime.datetime.now())})
 
 if __name__ == "__main__": 
 	app = web.application(('/','Index'), globals())
