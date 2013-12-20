@@ -57,7 +57,7 @@ function message_handler(req) {
 	else if(status["status"] == "stopped") { 
 		placeholder.innerHTML = status['time']
 	}
-	if(status["status"] == "queried") { 
+	else if(status["status"] == "queried") {
 		placeholder.innerHTML = status['time']
 	}
 }
