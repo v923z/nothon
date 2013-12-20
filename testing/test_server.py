@@ -39,12 +39,15 @@ class Index(object):
 		print message
 		if message['command'] in ('start'):
 			a = Test(15)
-			a.start()
-			a.join(timeout=10)
 			# If we store the thread itself in the dictionary, we could kill it at will with 
 			# a._Thread__stop(). However, that doesn't guarantee that the stack will be cleaned up!
 			it['thread'] = a
-			return simplejson.dumps({'status' : 'started', 'time' : 'started: %s'%(datetime.datetime.now())})
+			a.start()
+			a.join(timeout=2)
+			if a.isAlive():
+				return simplejson.dumps({'status' : 'started', 'time' : 'still running'})
+			else: 
+				return simplejson.dumps({'status' : 'started', 'time' : 'finished'})
 		#if message['command'] in ('stop'):
 			#return simplejson.dumps({'status' : 'stopped', 'time' : 'stopped: %s'%(datetime.datetime.now())})
 		if message['command'] in ('query'):
