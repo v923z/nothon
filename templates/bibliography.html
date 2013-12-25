@@ -3,14 +3,14 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 <head>
 <title>$title</title>
 <meta charset="utf-8">
-<link rel="stylesheet" href="/static/css/main.css"/>
-<link rel="stylesheet" href="/static/css/bibliography.css"/>
 <link rel="stylesheet" href="/static/css/highlight.css"/>
 <link rel="stylesheet" href="/static/css/ui.dynatree.css"/>
 <link rel="stylesheet" href="/static/css/dynatree_custom.css"/>
 <link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
 <link rel="stylesheet" href="/static/css/jquery-ui-smoothness.css" />
 <link rel="stylesheet" href="/static/css/theme.default.css" />
+<link rel="stylesheet" href="/static/css/main.css"/>
+<link rel="stylesheet" href="/static/css/bibliography.css"/>
 
 <script 
   src="/static/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -47,7 +47,9 @@ $for f in create_funcs + handler_funcs:
 </div>
 </aside>
 <article id='article'>
-<div class="aside_switch" id="aside_switch" onclick="bibliography_side_switch()"><<</div>
+<div class="aside_switch" id="aside_switch">
+	<div id="aside_switch_container" onclick="bibliography_side_switch()"><<</div>
+</div>
 <div class="trash_image" id="trash_image" onclick="toggle_trashbin();"></div>
 <div id='top_menu' onmouseover='topmenu_over();'>
 <ul>
@@ -156,6 +158,7 @@ $for f in create_funcs + handler_funcs:
 	</li>
 	<li>Menu
 		<ul>
+			<li onmouseup='toggle_publication_list();'>Publication list</li>
 			<li onmouseup='toggle_context_menu();'>Context</li>
 			<li onmouseup='topmenu_hide();'>Hide</li>
 			<li onmouseup='trashbin_image_toggle();'>Trashbin</li>

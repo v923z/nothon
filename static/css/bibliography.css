@@ -1,14 +1,21 @@
 #publication_list {
-	width:				100%;
+	height:				100%;
 	top:				0px;
 	margin-left:		5px;
+	display:			block;
 }
 
-#publication_list > thead {
+#publication_list thead {
+	display:			block;
 	height: 			20px;
 }
 
-#publication_list > tr {
+#publication_list tbody {
+	display:			block;
+	overflow-y:			scroll;
+}
+
+#publication_list tr {
 	height: 			20px;
 }
 
@@ -17,5 +24,11 @@
 }
 
 #div_dir {
+	display:			none;
+}
+
+#notes_tab {
+	margin-left:		5px;
+	width:				100%;
 	display:			none;
 }
