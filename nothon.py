@@ -172,9 +172,11 @@ class Index(object):
 			return 	render.timeline(link.name, aside, make_timeline())
 		elif link.name == '__toc':
 			return 	render.toc(link.name, aside, make_toc())
+		elif link.name == '__bibliography':
+			return 	render.bib_list(link.name, aside, make_bibliography())
 		elif link.name.endswith('.bibnote'):
 			# TODO: do something, if the file doesn't exist
-			return render.bibliography(link.name, aside, parse_bibliography(link.name), list_handler_functions(), list_create_functions())
+			return render.bibliography(link.name, aside, parse_bibliography(link.name, nothon_resource), list_handler_functions(), list_create_functions())
 		else:
 			sp = link.name.split('#')
 			link.name = sp[0]

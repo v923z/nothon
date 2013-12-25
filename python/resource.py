@@ -8,3 +8,5 @@ class NothonResource(object):
 		self.notebook_item_order = ['title', 'type', 'directory', 'date', 'nothon version', 'notebook']
 		self.has_matplotlib = False
 		self.has_pygments = False
+		self.bibliography_bibtex_header = ['type', 'author', 'title', 'year', 'journal', 'page', 'key']
+		self.bibliography_nothon_header = ['type', 'author', 'title', 'year', 'journal', 'key', 'owner', 'timestamp']

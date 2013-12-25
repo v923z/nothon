@@ -40,8 +40,10 @@ $for f in create_funcs + handler_funcs:
 <div id='notebook_tab'>
 	 <ul>
 		<li><a href='#document_tree'>Documents</a></li>
+		<li><a href='#biblio_search'>Search</a></li>
 	</ul>
 	<div id='document_tree'>$:aside['tree']</div>
+	<div id='biblio_search'></div>
 </div>
 </aside>
 <article id='article'>
@@ -53,54 +55,55 @@ $for f in create_funcs + handler_funcs:
 		<ul>
 			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__toc");'>ToC</li>
 			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__timeline");'>Timeline</li>
+			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__bibliography");'>Bibliography</li>
 		</ul>
 	</li>
 	<li>Entry
 		<ul>
 			<li>New
 				<ul>
-					<li onmouseup='new_entry(this);'>Article</li>
-					<li onmouseup='new_entry(this);'>Book</li>
-					<li onmouseup='new_entry(this);'>Booklet</li>
-					<li onmouseup='new_entry(this);'>Conference</li>
-					<li onmouseup='new_entry(this);'>Electronic</li>
-					<li onmouseup='new_entry(this);'>Inbook</li>
-					<li onmouseup='new_entry(this);'>Incollection</li>
-					<li onmouseup='new_entry(this);'>Inproceedings</li>
-					<li onmouseup='new_entry(this);'>Manual</li>
-					<li onmouseup='new_entry(this);'>Masterthesis</li>
-					<li onmouseup='new_entry(this);'>Misc</li>
-					<li onmouseup='new_entry(this);'>Other</li>
-					<li onmouseup='new_entry(this);'>Patent</li>
-					<li onmouseup='new_entry(this);'>Periodical</li>
-					<li onmouseup='new_entry(this);'>PhdThesis</li>
-					<li onmouseup='new_entry(this);'>Proceedings</li>
-					<li onmouseup='new_entry(this);'>Standard</li>
-					<li onmouseup='new_entry(this);'>Techreport</li>
-					<li onmouseup='new_entry(this);'>Unpublished</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Article</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Book</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Booklet</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Conference</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Electronic</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Inbook</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Incollection</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Inproceedings</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Manual</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Masterthesis</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Misc</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Other</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Patent</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Periodical</li>
+					<li onmouseup='new_entry("#publication_list", this);'>PhdThesis</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Proceedings</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Standard</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Techreport</li>
+					<li onmouseup='new_entry("#publication_list", this);'>Unpublished</li>
 				</ul>
 			</li>
 			<li>Change to
 				<ul>
-					<li onmouseup='change_to_entry(this);'>Article</li>
-					<li onmouseup='change_to_entry(this);'>Book</li>
-					<li onmouseup='change_to_entry(this);'>Booklet</li>
-					<li onmouseup='change_to_entry(this);'>Conference</li>
-					<li onmouseup='change_to_entry(this);'>Electronic</li>
-					<li onmouseup='change_to_entry(this);'>Inbook</li>
-					<li onmouseup='change_to_entry(this);'>Incollection</li>
-					<li onmouseup='change_to_entry(this);'>Inproceedings</li>
-					<li onmouseup='change_to_entry(this);'>Manual</li>
-					<li onmouseup='change_to_entry(this);'>Masterthesis</li>
-					<li onmouseup='change_to_entry(this);'>Misc</li>
-					<li onmouseup='change_to_entry(this);'>Other</li>
-					<li onmouseup='change_to_entry(this);'>Patent</li>
-					<li onmouseup='change_to_entry(this);'>Periodical</li>
-					<li onmouseup='change_to_entry(this);'>PhdThesis</li>
-					<li onmouseup='change_to_entry(this);'>Proceedings</li>
-					<li onmouseup='change_to_entry(this);'>Standard</li>
-					<li onmouseup='change_to_entry(this);'>Techreport</li>
-					<li onmouseup='change_to_entry(this);'>Unpublished</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Article</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Book</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Booklet</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Conference</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Electronic</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Inbook</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Incollection</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Inproceedings</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Manual</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Masterthesis</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Misc</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Other</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Patent</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Periodical</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>PhdThesis</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Proceedings</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Standard</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Techreport</li>
+					<li onmouseup='change_to_entry("#publication_list", this);'>Unpublished</li>
 				</ul>
 			</li>
 		</ul>
@@ -111,6 +114,19 @@ $for f in create_funcs + handler_funcs:
 			<li onmouseup='save_notebook("save");'>Save</li>
 			<li onmouseup='rename_notebook();'>Rename</li>
 			<hr>
+			<li onmouseup='save_bibliography("bibtex");'>BibTeX</li>
+			<li onmouseup='save_bibliography("html");'>HTML</li>
+			<li>Archive
+				<ul>
+					<li onmouseup='save_notebook("zip");'>Zip</li>
+					<li onmouseup='save_notebook("tar");'>Tar + gzip</li>
+					<li onmouseup='git();'>Git</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>Notebook
+		<ul>
 			<li onmouseup='expand_collapse_all("expand");'>Expand all</li>
 			<li onmouseup='expand_collapse_all("collapse");'>Collapse all</li>
 			<hr>
@@ -171,20 +187,9 @@ $for f in create_funcs + handler_funcs:
 
 <div id='publication_div'>
 	<table id='publication_list' class='tablesorter'>
-		<thead>
-			<tr>
-				<th>#</th>
-				<th>Entry</th>
-				<th>Author</th>
-				<th>Title</th>
-				<th>Year</th>
-				<th>Journal</th>
-				<th>Owner</th>
-				<th>Timestamp</th>
-				<th>Key</th>
-			</tr>
+		<thead>$:content['table_header']
 		</thead>
-		<tbody>$:content['table_content']
+		<tbody>$:content['table_body']
 		</tbody>
 	</table>
 </div>

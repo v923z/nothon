@@ -40,17 +40,17 @@ def check_for_special_folder(dir, marker):
 	if last_dir.startswith(marker): return True
 	return False
 	
-def dir_tree(dir):
+def dir_tree(dir, ext='.note'):
 	tree = []
 	if check_for_special_folder(dir, '_'): return tree
 	
 	for item in os.listdir(dir):
 		path = os.path.join(dir, item)
 		if os.path.isdir(path):
-			subtree = dir_tree(path)
+			subtree = dir_tree(path, ext)
 			if len(subtree) > 0:
-				tree.append((item,subtree))
-		elif item.endswith('.note'):
+				tree.append((item, subtree))
+		elif item.endswith(ext):
 			tree.append(item)
 	tree.sort()
 	return tree
@@ -179,3 +179,25 @@ def make_toc():
 	
 	note['content'] = {'content' : str_tl}
 	return note
+
+def unwrap_bibtree(tree, path):
+	tree_str = ''
+	for elem in tree:
+		if isinstance(elem, basestring):  #file
+			tree_str += "<li><a href='?name=%s/%s'>%s</a>"%(path, elem, os.path.join(path, elem))
+		elif len(elem) == 2: 	# directory
+			tree_str += "<li>%s</li>"%(elem[0])
+			tree_str += '<ul>\n'
+			tree_str += unwrap_bibtree(elem[1], os.path.join(path, elem[0]))
+			tree_str += '</ul>\n'
+	return tree_str
+
+
+def make_bibliography():
+	tree = dir_tree('.', '.bibnote')
+	bib_str = "<div class='TOC'>"
+	bib_str += unwrap_bibtree(tree, '.')
+	bib_str += "</div>"
+	
+	return {'content' : {'content' : bib_str} }
+	
