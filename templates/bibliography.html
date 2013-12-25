@@ -1,0 +1,200 @@
+$def with (title, aside, content, handler_funcs, create_funcs)
+<html>
+<head>
+<title>$title</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/static/css/main.css"/>
+<link rel="stylesheet" href="/static/css/bibliography.css"/>
+<link rel="stylesheet" href="/static/css/highlight.css"/>
+<link rel="stylesheet" href="/static/css/ui.dynatree.css"/>
+<link rel="stylesheet" href="/static/css/dynatree_custom.css"/>
+<link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
+<link rel="stylesheet" href="/static/css/jquery-ui-smoothness.css" />
+<link rel="stylesheet" href="/static/css/theme.default.css" />
+<link rel="stylesheet" href="/static/css/jq.css" />
+
+
+<script 
+  src="/static/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+   MathJax.Hub.Config({
+    styles: { ".MathJax": { color: "#0000ee", "background-color": "#bbbbee" } },
+    TeX: { equationNumbers: { autoNumber: "all" } }
+  });
+</script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.datepick.js"></script>
+<script src="/static/js/ui/jquery-ui.min.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/jquery.dynatree-1.2.4.js"></script>
+<script src="/static/js/jquery.tablesorter.min.js"></script>
+<script src="/static/js/jquery.tablesorter.widgets.min.js"></script>
+<script src="/static/js/functions.js"></script>
+
+$for f in create_funcs + handler_funcs:
+	$ js_src = "/static/js/%s.js"%(f)
+	<script src="$js_src"></script>
+
+</head>
+<body data-type='bibliography'>
+<aside id='aside'>
+<div id='calendar'></div>
+<div id='notebook_tab'>
+	 <ul>
+		<li><a href='#document_tree'>Documents</a></li>
+	</ul>
+	<div id='document_tree'>$:aside['tree']</div>
+</div>
+</aside>
+<article id='article'>
+<div class="aside_switch" id="aside_switch" onclick="bibliography_side_switch()"><<</div>
+<div class="trash_image" id="trash_image" onclick="toggle_trashbin();"></div>
+<div id='top_menu' onmouseover='topmenu_over();'>
+<ul>
+	<li>Organise
+		<ul>
+			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__toc");'>ToC</li>
+			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__timeline");'>Timeline</li>
+		</ul>
+	</li>
+	<li>Entry
+		<ul>
+			<li>New
+				<ul>
+					<li onmouseup='new_entry(this);'>Article</li>
+					<li onmouseup='new_entry(this);'>Book</li>
+					<li onmouseup='new_entry(this);'>Booklet</li>
+					<li onmouseup='new_entry(this);'>Conference</li>
+					<li onmouseup='new_entry(this);'>Electronic</li>
+					<li onmouseup='new_entry(this);'>Inbook</li>
+					<li onmouseup='new_entry(this);'>Incollection</li>
+					<li onmouseup='new_entry(this);'>Inproceedings</li>
+					<li onmouseup='new_entry(this);'>Manual</li>
+					<li onmouseup='new_entry(this);'>Masterthesis</li>
+					<li onmouseup='new_entry(this);'>Misc</li>
+					<li onmouseup='new_entry(this);'>Other</li>
+					<li onmouseup='new_entry(this);'>Patent</li>
+					<li onmouseup='new_entry(this);'>Periodical</li>
+					<li onmouseup='new_entry(this);'>PhdThesis</li>
+					<li onmouseup='new_entry(this);'>Proceedings</li>
+					<li onmouseup='new_entry(this);'>Standard</li>
+					<li onmouseup='new_entry(this);'>Techreport</li>
+					<li onmouseup='new_entry(this);'>Unpublished</li>
+				</ul>
+			</li>
+			<li>Change to
+				<ul>
+					<li onmouseup='change_to_entry(this);'>Article</li>
+					<li onmouseup='change_to_entry(this);'>Book</li>
+					<li onmouseup='change_to_entry(this);'>Booklet</li>
+					<li onmouseup='change_to_entry(this);'>Conference</li>
+					<li onmouseup='change_to_entry(this);'>Electronic</li>
+					<li onmouseup='change_to_entry(this);'>Inbook</li>
+					<li onmouseup='change_to_entry(this);'>Incollection</li>
+					<li onmouseup='change_to_entry(this);'>Inproceedings</li>
+					<li onmouseup='change_to_entry(this);'>Manual</li>
+					<li onmouseup='change_to_entry(this);'>Masterthesis</li>
+					<li onmouseup='change_to_entry(this);'>Misc</li>
+					<li onmouseup='change_to_entry(this);'>Other</li>
+					<li onmouseup='change_to_entry(this);'>Patent</li>
+					<li onmouseup='change_to_entry(this);'>Periodical</li>
+					<li onmouseup='change_to_entry(this);'>PhdThesis</li>
+					<li onmouseup='change_to_entry(this);'>Proceedings</li>
+					<li onmouseup='change_to_entry(this);'>Standard</li>
+					<li onmouseup='change_to_entry(this);'>Techreport</li>
+					<li onmouseup='change_to_entry(this);'>Unpublished</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>Bibliography
+		<ul>
+			<li onmouseup='open_new_notebook_dialog()'>New</li>
+			<li onmouseup='save_notebook("save");'>Save</li>
+			<li onmouseup='rename_notebook();'>Rename</li>
+			<hr>
+			<li onmouseup='expand_collapse_all("expand");'>Expand all</li>
+			<li onmouseup='expand_collapse_all("collapse");'>Collapse all</li>
+			<hr>
+			<li onmouseup='save_notebook("latex");'>LaTeX</li>
+			<li onmouseup='save_notebook("markdown");'>Markdown</li>
+			<li onmouseup='save_html(this);'>HTML</li>
+			<li>Archive
+				<ul>
+					<li onmouseup='save_notebook("zip");'>Zip</li>
+					<li onmouseup='save_notebook("tar");'>Tar + gzip</li>
+					<li onmouseup='git();'>Git</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>Cell
+		<ul>
+			<li onmouseup='insert_text();'>Section</li>
+			<li onmouseup='insert_paragraph();'>Paragraph</li>
+			<li onmouseup='insert_plot()'>Plot</li>
+			<li onmouseup='insert_code();'>Code</li>
+			<li onmouseup='insert_head();'>Head</li>
+			<hr>
+			<li onmouseup='delete_block();'>Delete</li>
+			<li onmouseup='recover_block();'>Recover</li>			
+		</ul>
+	</li>
+	<li>Menu
+		<ul>
+			<li onmouseup='toggle_context_menu();'>Context</li>
+			<li onmouseup='topmenu_hide();'>Hide</li>
+			<li onmouseup='trashbin_image_toggle();'>Trashbin</li>
+			<li onmouseup='toggle_all();'>Toggle all</li>
+		</ul>
+	</li>
+	<li>Tools
+		<ul>
+			<li onmouseup='toggle_calendar()'>Calendar</li>
+			<li onmouseup='open_calculator(); return false;' onmousedown='return false;'>Calculator</li>
+		</ul>
+	</li>
+	<li>Help
+		<ul>
+			<li onmouseup='usage();'>Usage</li>
+			<li onmouseup='about();'>About</li>
+			<li><a href="https://github.com/v923z/nothon" target="_blank">nothon</a></li>
+		</ul>
+	</li>
+	<div id='notebook_status'>Saved: never</div>
+</ul>
+</div>
+<div id="doc_toplevel">
+<div id="menucontainer-right">
+<div class="menu" onclick="move('up');"><img src="/static/css/up-arrow.png"  width="60%"></div>
+<div class="menu" onclick="move('down');"><img src="/static/css/down-arrow.png" width="60%"></div>
+</div>
+<div id='context_menu'></div>
+
+<div id="publication_div">
+	<table id="publication_list" class="tablesorter">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Entry</th>
+				<th>Author</th>
+				<th>Title</th>
+				<th>Year</th>
+				<th>Journal</th>
+				<th>Owner</th>
+				<th>Timestamp</th>
+				<th>Key</th>
+			</tr>
+		</thead>
+		<tbody>$:content['table_content']
+		</tbody>
+	</table>
+</div>
+<div id="docmain"></div>
+<div id="trash"></div>
+</div>
+<div id='new_notebook_dialog'>
+	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'>
+</div>
+</article>
+</body>
+</html>

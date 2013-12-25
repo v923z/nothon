@@ -22,6 +22,7 @@ from python.code_utils import Code
 from python.save_utils import Zip, Tar, Save, Latex, Markdown
 
 from python.template_helpers import *
+from python.bibliography import *
 
 nothon_resource = NothonResource()
 
@@ -161,7 +162,6 @@ class Index(object):
 	update_js()
 	def GET(self):
 		link = web.input(name='test.note')
-		print link.name
 		if link.name.endswith('.html'): 
 			fin = open(link.name, 'r')
 			html = fin.read()
@@ -171,7 +171,10 @@ class Index(object):
 		if link.name == '__timeline':
 			return 	render.timeline(link.name, aside, make_timeline())
 		elif link.name == '__toc':
-			return 	render.toc(link.name, aside, make_toc())			
+			return 	render.toc(link.name, aside, make_toc())
+		elif link.name.endswith('.bibnote'):
+			# TODO: do something, if the file doesn't exist
+			return render.bibliography(link.name, aside, parse_bibliography(link.name), list_handler_functions(), list_create_functions())
 		else:
 			sp = link.name.split('#')
 			link.name = sp[0]

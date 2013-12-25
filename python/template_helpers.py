@@ -10,4 +10,4 @@ def safe_props(dictionary, key, *props):
 	elif 'props' in dictionary[key]:
 		return ';'.join(set(dictionary[key]['props'].split(';') + list(props)))
 	else:
-		return ';'.join(props)	
+		return ';'.join(props)
