@@ -11,8 +11,6 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 <link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
 <link rel="stylesheet" href="/static/css/jquery-ui-smoothness.css" />
 <link rel="stylesheet" href="/static/css/theme.default.css" />
-<link rel="stylesheet" href="/static/css/jq.css" />
-
 
 <script 
   src="/static/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -29,6 +27,7 @@ $def with (title, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/jquery.tablesorter.min.js"></script>
 <script src="/static/js/jquery.tablesorter.widgets.min.js"></script>
 <script src="/static/js/functions.js"></script>
+<script src="/static/js/bibliography.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
@@ -163,15 +162,15 @@ $for f in create_funcs + handler_funcs:
 	<div id='notebook_status'>Saved: never</div>
 </ul>
 </div>
-<div id="doc_toplevel">
-<div id="menucontainer-right">
-<div class="menu" onclick="move('up');"><img src="/static/css/up-arrow.png"  width="60%"></div>
-<div class="menu" onclick="move('down');"><img src="/static/css/down-arrow.png" width="60%"></div>
+<div id='doc_toplevel'>
+<div id='menucontainer-right'>
+<div class='menu' onclick='move("up");'><img src='/static/css/up-arrow.png'  width="60%"></div>
+<div class='menu' onclick='move("down");'><img src='/static/css/down-arrow.png' width="60%"></div>
 </div>
 <div id='context_menu'></div>
 
-<div id="publication_div">
-	<table id="publication_list" class="tablesorter">
+<div id='publication_div'>
+	<table id='publication_list' class='tablesorter'>
 		<thead>
 			<tr>
 				<th>#</th>
@@ -189,8 +188,8 @@ $for f in create_funcs + handler_funcs:
 		</tbody>
 	</table>
 </div>
-<div id="docmain"></div>
-<div id="trash"></div>
+<div id='docmain'></div>
+<div id='trash'></div>
 </div>
 <div id='new_notebook_dialog'>
 	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'>

@@ -276,7 +276,7 @@ $(document).ready(function () {
 	});
 	$('#docmain').delegate('.nothon_math', 'click', function() {
 		unwrap_math($(this))
-	})
+	})	
 });
 
 $(function() {
