@@ -1,18 +1,26 @@
 #publication_list {
+/*
 	height:				100%;
+*/
 	top:				0px;
 	margin-left:		5px;
 	display:			block;
 }
 
 #publication_list thead {
+/*
 	display:			block;
+*/
 	height: 			20px;
 }
 
 #publication_list tbody {
+/*
 	display:			block;
+*/
+/*
 	overflow-y:			scroll;
+*/
 }
 
 #publication_list tr {

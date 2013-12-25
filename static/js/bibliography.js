@@ -1,14 +1,13 @@
 $(document).ready(function () {
 	$(function(){
 		$('#publication_list').tablesorter({
-			widgets        : ['zebra', 'resizable', 'stickyHeaders', 'scroller'],
-			usNumberFormat : false,
-			sortReset      : true,
-			sortRestart    : true,
 			widthFixed		: true,
+			showProcessing: true,
+			headerTemplate : '{content} {icon}',
+			widgets        : ['zebra', 'scroller', 'filter'],
 			widgetOptions : {
 				scroller_height : 100,
-				scroller_width : 20,
+				scroller_width : 17,
 				scroller_jumpToHeader: true,
 				scroller_idPrefix : 's_'
 			}
@@ -19,8 +18,10 @@ $(document).ready(function () {
 	$('#notes_tab').tabs();
 	$('#aside_switch').click(function (event) {
 		var posY = $(this).position().top;
-		$('#publication_list > tbody').height(event.pageY - posY + $('#publication_list > theader').height())
-		$('#publication_list').height($('#publication_list > tbody').height() + $('#publication_list > thead').height())
+		//$('#publication_list > tbody').height(event.pageY - posY + $('#publication_list > theader').height() + 20)
+		$('#publication_list').height(100)
+		//$('#publication_list > tbody').height() + $('#publication_list > thead').height()+20)
+		// TODO: here we should check, whether the new size is larger than what we actually need...
 	});
 })
 
@@ -72,9 +73,11 @@ function new_entry(target, link) {
 }
 
 function activate_element(event) {
-	$('#notes_tab').show()
-	$('#publication_list').height(200)
+	//$('#notes_tab').show()
+	$('#publication_list').height(100)
+	//$('#publication_list > tbody').height($('#publication_list').height() - $('#publication_list > thead').height())
 	console.log($(event.target).parent().attr('id'))
+	// TODO: display the proper entry here.
 }
 
 function generate_uuid() {
