@@ -182,7 +182,7 @@ class Index(object):
 			link.name = sp[0]
 			if not os.path.exists(link.name):
 				title = os.path.basename(link.name).replace('.note', '')
-				path = os.path.join(os.getcwd(),os.path	.dirname(link.name))
+				path = os.path.join(os.getcwd(), os.path.dirname(link.name))
 				if not os.path.exists(path):
 					os.makedirs(path)
 				with open(link.name, 'w') as fout:

@@ -14,7 +14,7 @@ def create_notebook_folder(fn):
 
 def notebook_folder(fn):
 	path, stem = os.path.split(fn)
-	return os.path.join(path, '_' + stem.split('.')[0])
+	return os.path.join(path, '_' + stem.split('.')[0] + '_' + stem.split('.')[1])
 	
 def get_file_path(fn, base_path):
 	# This function returns the filepath, based on, whether the user intended an absolute, or a relative path

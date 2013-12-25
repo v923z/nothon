@@ -9,21 +9,22 @@ $(document).ready(function () {
 			activate_element(event)
 		});
 	});
+	$('#notes_tab').tabs();
 })
 
-//function bibliography_side_switch() {
-	//if($('#aside').css('display') == 'block') {
-		//$('#aside').css('display', 'none')
-		//// TODO: find out how to retrieve default properties
-		//$('#article').css('width', '98%')
-		//$('#aside_switch').html('>>')
-	//}
-	//else {
-		//$('#aside').css('display', 'block')
-		//$('#article').css('width', '78%')
-		//$('#aside_switch').html('<<')
-	//}
-//}
+function bibliography_side_switch() {
+	if($('#aside').css('display') == 'block') {
+		$('#aside').css('display', 'none')
+		// TODO: find out how to retrieve default properties
+		$('#article').css('width', '98%')
+		$('#aside_switch').html('>>')
+	}
+	else {
+		$('#aside').css('display', 'block')
+		$('#article').css('width', '78%')
+		$('#aside_switch').html('<<')
+	}
+}
 
 function add_row(target, type) {
 		$(target)

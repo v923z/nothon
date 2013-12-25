@@ -25,32 +25,33 @@ class Plot():
 		code = message['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
 		exit_status = False
 		pwd = os.getcwd()
-		print message['directory']
 		if message['directory']: os.chdir(message['directory'].strip('<br>'))
 		new_path = create_notebook_folder(message['doc_title'])
 		fn = message['filename'].replace('./', '')
 		print new_path, fn
 		if code.startswith('#gnuplot') or code.startswith('# gnuplot'):
-			with open(message['filename'] + '.gp', 'w') as fout:
+			with open(fn + '.gp', 'w') as fout:
+				# We should make this configurable from the resource
 				fout.write("set term png; set out '%s.png'\n"%(os.path.join(new_path, fn)) + code)
 				if self.resource.plot_pdf_output:
 					fout.write("\nset term pdfcairo; set out '%s.pdf'\n replot\n"%(os.path.join(new_path, fn)))
 			os.system("gnuplot %s.gp"%(fn))
 			os.system("rm %s.gp -f"%(fn))
-		
-		if not self.resource.has_matplotlib:
-			exit_status = 'Could not import matplotlib. Choose gnuplot as the plotting back-end.'
 			
 		else:
-			x = linspace(-10, 10, 100)
-			try:
-				exec(code)
-				savefig(os.path.join(new_path, fn + '.png'))
-				if self.resource.plot_pdf_output: 
-					savefig(os.path.join(new_path, fn + '.pdf'))
-				close()
-			except:
-				exit_status = traceback.format_exc().replace('\n', '<br>')
+			if not self.resource.has_matplotlib:
+				exit_status = 'Could not import matplotlib. Choose gnuplot as the plotting back-end.'
+				
+			else:
+				x = linspace(-10, 10, 100)
+				try:
+					exec(code)
+					savefig(os.path.join(new_path, fn + '.png'))
+					if self.resource.plot_pdf_output: 
+						savefig(os.path.join(new_path, fn + '.pdf'))
+					close()
+				except:
+					exit_status = traceback.format_exc().replace('\n', '<br>')
 
 		os.chdir(pwd)
 		if not exit_status:

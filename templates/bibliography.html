@@ -193,7 +193,17 @@ $for f in create_funcs + handler_funcs:
 		</tbody>
 	</table>
 </div>
-<div id='docmain'></div>
+
+<div id="div_dir">$safe_content(content, "directory")</div>
+<div id='notes_tab'>
+	 <ul>
+		<li><a href='#docmain'>Notes</a></li>
+		<li><a href='#bibtex_entry'>Bibtex</a></li>
+	</ul>
+	<div id='docmain'></div>
+	<div id='bibtex_entry'></div>
+</div>
+
 <div id='trash'></div>
 </div>
 <div id='new_notebook_dialog'>
