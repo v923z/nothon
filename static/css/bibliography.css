@@ -1,3 +1,7 @@
+#doc_toplevel {
+	width:				78%;
+}
+
 #publication_list {
 /*
 	height:				100%;
@@ -18,17 +22,19 @@
 /*
 	display:			block;
 */
-/*
 	overflow-y:			scroll;
+/*
+	height:				200px;
 */
 }
 
 #publication_list tr {
-	height: 			20px;
+	min-height:			20px;
 }
 
 #publication_div {
 	left:				20px;
+	height:				260px;
 }
 
 #div_dir {
@@ -37,6 +43,38 @@
 
 #notes_tab {
 	margin-left:		5px;
+	width:				99%;
+	display:			block;
+}
+
+.active_row {
+	color:				#ff0000;
+}
+
+.field_div {
 	width:				100%;
-	display:			none;
+	display:			table;
+}
+
+.field_label {
+	width:				5em;
+	padding:			0 0 0 0;
+	display:			table-cell;
+}
+
+.field_span {
+	display: 			table-cell;
+	padding: 			0 0 0 0;
+}
+
+#text_authors, #text_title, #text_journal, #text_key {
+	width:				100%;
+}
+
+#text_volume, #text_year {
+	width:				5em;
+}
+
+#text_pages {
+	width:				8em;
 }

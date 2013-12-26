@@ -176,7 +176,7 @@ class Index(object):
 			return 	render.bib_list(link.name, aside, make_bibliography())
 		elif link.name.endswith('.bibnote'):
 			# TODO: do something, if the file doesn't exist
-			return render.bibliography(link.name, aside, parse_bibliography(link.name, nothon_resource), list_handler_functions(), list_create_functions())
+			return render.bibliography(link.name, link.name, aside, parse_bibliography(link.name, nothon_resource), list_handler_functions(), list_create_functions())
 		else:
 			sp = link.name.split('#')
 			link.name = sp[0]
@@ -192,7 +192,7 @@ class Index(object):
 				new_notebook(link.name, nothon_resource)
 			
 			create_notebook_folder(link.name)	
-			return 	render.notebook(link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
+			return 	render.notebook(link.name, link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 
 	def POST(self):
 		message = simplejson.loads(web.data())

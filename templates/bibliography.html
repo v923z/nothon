@@ -1,4 +1,4 @@
-$def with (title, aside, content, handler_funcs, create_funcs)
+$def with (title, filename, aside, content, handler_funcs, create_funcs)
 <html>
 <head>
 <title>$title</title>
@@ -35,7 +35,7 @@ $for f in create_funcs + handler_funcs:
 	<script src="$js_src"></script>
 
 </head>
-<body data-type='bibliography'>
+<body data-type='bibliography' data-file='$filename'>
 <aside id='aside'>
 <div id='calendar'></div>
 <div id='notebook_tab'>
@@ -48,10 +48,10 @@ $for f in create_funcs + handler_funcs:
 </div>
 </aside>
 <article id='article'>
-<div class="aside_switch" id="aside_switch">
-	<div id="aside_switch_container" onclick="bibliography_side_switch()"><<</div>
+<div class='aside_switch' id='aside_switch'>
+	<div id='aside_switch_container' onclick='bibliography_side_switch()'><<</div>
 </div>
-<div class="trash_image" id="trash_image" onclick="toggle_trashbin();"></div>
+<div class='trash_image' id='trash_image' onclick='toggle_trashbin();'></div>
 <div id='top_menu' onmouseover='topmenu_over();'>
 <ul>
 	<li>Organise
@@ -188,6 +188,7 @@ $for f in create_funcs + handler_funcs:
 <div class='menu' onclick='move("down");'><img src='/static/css/down-arrow.png' width="60%"></div>
 </div>
 <div id='context_menu'></div>
+<div id="div_dir">$safe_content(content, "directory")</div>
 
 <div id='publication_div'>
 	<table id='publication_list' class='tablesorter'>
@@ -198,14 +199,31 @@ $for f in create_funcs + handler_funcs:
 	</table>
 </div>
 
-<div id="div_dir">$safe_content(content, "directory")</div>
 <div id='notes_tab'>
 	 <ul>
 		<li><a href='#docmain'>Notes</a></li>
+		<li><a href='#bibliography_fields'>Fields</a></li>
+		<li><a href='#bibliography_fields2'>Fields 2</a></li>		
 		<li><a href='#bibtex_entry'>Bibtex</a></li>
 	</ul>
 	<div id='docmain'></div>
-	<div id='bibtex_entry'></div>
+	<div id='bibliography_fields'>
+		<div class='field_div'><label class='field_label'>Authors</label><span class='field_span'><input id='text_author' type='text' /></span></div>
+		<div class='field_div'><label class='field_label'>Title</label><span class='field_span'><input id='text_title' type='text' /></span></div>
+		<div class='field_div'><label class='field_label'>Journal</label><span class='field_span'><input id='text_journal' type='text' /></span></div>
+		<div class='field_div'>
+			<label class='field_label'>Volume</label><span class='field_span'><input id='text_volume' type='text' /></span>
+			<label class='field_label'>Pages</label><span class='field_span'><input id='text_pages' type='text' /></span>
+			<label class='field_label'>Year</label><span class='field_span'><input id='text_year' type='text' /></span>
+			<label class='field_label'>Bibtex key</label><span class='field_span'><input id='text_key' type='text' /></span>
+		</div>
+	</div>
+	<div id='bibliography_fields2'></div>
+	<div id='bibtex_entry'>
+		<div>
+			<input id='textview_bibtex' type='textview' />
+		</div>
+	</div>
 </div>
 
 <div id='trash'></div>

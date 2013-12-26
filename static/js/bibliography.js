@@ -15,7 +15,9 @@ $(document).ready(function () {
 			activate_element(event)
 		});
 	});
-	$('#notes_tab').tabs();
+	$('#notes_tab').tabs({ 
+		activate: function(event, ui) { tabs_activated(event, ui) }
+	});
 	$('#aside_switch').click(function (event) {
 		var posY = $(this).position().top;
 		//$('#publication_list > tbody').height(event.pageY - posY + $('#publication_list > theader').height() + 20)
@@ -68,16 +70,22 @@ function count_rows(target) {
 	// We add one here, because otherwise papers are counted from 0!
 	return $(target + ' > tbody > tr').length+1;
 }
+
 function new_entry(target, link) {
 	add_row(target, link.innerHTML.toLowerCase())
 }
 
 function activate_element(event) {
-	//$('#notes_tab').show()
-	$('#publication_list').height(100)
-	//$('#publication_list > tbody').height($('#publication_list').height() - $('#publication_list > thead').height())
-	console.log($(event.target).parent().attr('id'))
+	$('#publication_list tr').each( function() {
+		$(this).removeClass('active_row')
+	})
+	$('#' + $(event.target).parent().attr('id')).addClass('active_row')
+	var message = bib_message()
+	
+	$('#notes_tab').tabs('option', 'active', 1)
+	
 	// TODO: display the proper entry here.
+	return false
 }
 
 function generate_uuid() {
@@ -89,4 +97,23 @@ function generate_uuid() {
 
 function toggle_publication_list() {
 	$('#publication_list').toggle()
+}
+
+function tabs_activated(event, ui) {
+	if(ui.oldTab.index() == 1) {
+		$('#bibliography_fields input').each( function() {
+			var id = $(this).attr('id').replace('text_', '')
+			console.log(id)
+		})
+	}
+}
+
+function bib_message(command) {
+	var message = new Object()
+	message.command = command
+	message.document_type = $(body).data('type')
+	message.file = $(body).data('file')
+	message.directory = $('#div_dir').html().replace('<br>', '')
+	message.doc_title = document.title
+	return message
 }
