@@ -1,4 +1,10 @@
 $(document).ready(function () {
+	$(function() {
+		var message = bib_message('bibliography')
+		message['sub_command'] = 'get_bibliography'
+		xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), get_bibliography_handler)
+	})
+
 	$(function(){
 		$('#publication_list').tablesorter({
 			widthFixed		: true,
@@ -54,8 +60,7 @@ function add_row(target, type) {
 		var header = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
 		if(header == 'type') {
 			row += '<td id="' + uuid + '-' + header + '">' + type + '</td>'
-		}
-		else {
+		} else {
 			row += '<td id="' + uuid + '-' + header + '"></td>'
 		}
 	}
@@ -83,12 +88,22 @@ function new_entry(target, link) {
 }
 
 function activate_element(event) {
-	$('#publication_list tr.active_row').removeClass('active_row')
-	$('#' + $(event.target).parent().attr('id')).addClass('active_row')
-	var message = bib_message()
+	// Bail out immediately, if clicked on header
+	if($('#publication_list thead').has(event.target)) return false
 	
-	$('#notes_tab').tabs('option', 'active', 1)
-	// TODO: display the proper entry here.
+	var uuid = $(event.target).parent().attr('id')
+	$('#publication_list tr.active_row').removeClass('active_row')
+	$('#' + uuid).addClass('active_row')
+	// TODO: send save to server
+	//var message = bib_message('save')
+	$('#bibliography_fields input').each( function() {
+		var id = $(this).attr('id').replace('text_', '')
+		if(bibliography[uuid][id]) {
+			$(this).val(bibliography[uuid][id])
+		} else {
+			$(this).val('')
+		}
+	})
 	return false
 }
 
@@ -105,24 +120,35 @@ function toggle_publication_list() {
 
 function tabs_activated(event, ui) {
 	if(ui.oldTab.index() == 1) {
-		var rowId = $('#publication_list tr.active_row').first().attr('id')
+		var uuid = $('#publication_list tr.active_row').first().attr('id')
+		for(i=2; i <= count_columns('#publication_list'); i++) {
+			var header = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
+			if($('#text_' + header)) {
+				var value = $('#text_' + header).val()
+			} else {
+				var value = ''
+			}
+			$('#' + uuid + '-' + header).html(value)
+		}
+
 		$('#bibliography_fields input').each( function() {
 			var id = $(this).attr('id').replace('text_', '')
-			console.log(id)
+			bibliography[uuid][id] = $(this).val()
 		})
 	}
-}
-
-function insert_in_row(rowId, columnId, what) {
-	
 }
 
 function bib_message(command) {
 	var message = new Object()
 	message.command = command
-	message.document_type = $(body).data('type')
-	message.file = $(body).data('file')
+	message.document_type = $('body').data('type')
+	message.file = $('body').data('file')
 	message.directory = $('#div_dir').html().replace('<br>', '')
 	message.doc_title = document.title
 	return message
+}
+
+function get_bibliography_handler(req) {
+	var message = JSON.parse(req.responseText)
+	bibliography = message['bibliography']
 }

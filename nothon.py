@@ -197,7 +197,7 @@ class Index(object):
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['command'] in ('plot', 'head', 'code', 'zip', 'tar', 'save', 'latex', 'markdown'):
+		if message['command'] in ('plot', 'head', 'code', 'zip', 'tar', 'save', 'latex', 'markdown', 'bibliography'):
 			exec('obj = %s(nothon_resource)'%(message['command'].title()))
 			return obj.handler(message)
 			

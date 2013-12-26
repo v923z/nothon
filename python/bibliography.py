@@ -2,6 +2,31 @@ import simplejson
 from fileutils import get_notebook
 import uuid
 
+class Bibliography():
+
+	def __init__(self, resource):
+		print 'init'
+		self.resource = resource
+	
+	def handler(self, message):
+		if message['sub_command'] in ('get_bibliography'):
+			try:
+				data = get_notebook(message['file'])
+				bibliography = data.get('bibliography')
+				new_bib = {}
+				for element in bibliography:
+					# TODO: note that this will miserably fail, if there is no uuid
+					# We would have to write that to disc in parse_bibliography
+					# TODO: this should be done a bit better: we should not bail out, if one entry is incorrect
+					element['author'] = ' and '.join(name['given'] + ' ' + name['family'] for name in element['author'])
+					new_bib[element['uuid']] = element
+				return simplejson.dumps({'success' : 'success', 'bibliography' : new_bib})
+			except:
+				return simplejson.dumps({'success' : 'failed', 'bibliography' : None})
+				
+		else: return simplejson.dumps({'success' : 'failed'})
+
+
 def parse_bibliography(fn, resource):
 	body_str = ''
 	data = get_notebook(fn)
@@ -16,6 +41,7 @@ def parse_bibliography(fn, resource):
 		for i, entry in enumerate(bibliography):
 			body_str += render_bibtex_entry(i, entry, resource)
 	note['table_body'] = body_str
+	note['bibliography'] = simplejson.dumps(bibliography)
 	return note
 
 def render_bibtex_entry(i, entry, resource):

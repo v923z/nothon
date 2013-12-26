@@ -70,6 +70,8 @@ function create_message(div_data, message_type) {
 	message.id = div_data.id
 	message.content = div_data.innerHTML
 	message.doc_title = document.title
+	message.document_type = $('body').data('type')
+	message.file = $('body').data('file')
 	message.directory = $('#div_dir').html().replace('<br>', '')
 	return message
 }
