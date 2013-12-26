@@ -9,7 +9,7 @@ def parse_bibliography(fn, resource):
 	
 	print resource.bibliography_nothon_header
 	header_str = '<tr><th>#</th>'
-	header_str += ''.join(['<th>%s</th>'%(elem) for elem in resource.bibliography_nothon_header])
+	header_str += ''.join(['<th>%s</th>'%(elem.title()) for elem in resource.bibliography_nothon_header])
 	header_str += '</tr>'
 	note = {'table_header' : header_str}
 	if bibliography:
@@ -23,9 +23,9 @@ def render_bibtex_entry(i, entry, resource):
 	table_entry = '\n\t\t\t\t\t<tr id="%s"><td>%d</td>'%(uid, i+1)
 	for element in resource.bibliography_nothon_header:
 		if element in ('author'):
-			table_entry += '<td>%s</td>'%(render_authors(entry))
+			table_entry += '<td id="%s-%s">%s</td>'%(uid, element, render_authors(entry))
 
-		else: table_entry += '<td>%s</td>'%(entry.get(element, ""))
+		else: table_entry += '<td id="%s-%s">%s</td>'%(uid, element, entry.get(element, ""))
 	table_entry += '</tr>'
 	
 	return table_entry

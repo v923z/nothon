@@ -34,7 +34,6 @@
 
 #publication_div {
 	left:				20px;
-	height:				260px;
 }
 
 #div_dir {
@@ -67,7 +66,7 @@
 	padding: 			0 0 0 0;
 }
 
-#text_authors, #text_title, #text_journal, #text_key {
+#text_author, #text_title, #text_journal, #text_key {
 	width:				100%;
 }
 

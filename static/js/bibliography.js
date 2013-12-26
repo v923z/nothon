@@ -45,21 +45,28 @@ function bibliography_side_position(event) {
 }
 
 function add_row(target, type) {
-		$(target)
-		.find('tbody')
-		.append(empty_row(target, type))
-		.trigger("applyWidgets") 
-		return false;
-}
-
-function empty_row(target, type) {
+	$('#publication_list tr.active_row').removeClass('active_row')
+	var uuid = generate_uuid()
 	var columns = count_columns(target)
-	var row = '<tr id="' + generate_uuid() + '"><td>' + count_rows(target) + '</td>' + '<td>' + type + '</td>' 
-	// TODO: find out, which one is the 'type' column
-	for(i=0; i < columns-2; i++) {
-		row += '<td></td>'
+	var row = '<tr id="' + uuid + '"><td>' + count_rows(target) + '</td>'
+	
+	for(i=2; i <= columns; i++) {
+		var header = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
+		if(header == 'type') {
+			row += '<td id="' + uuid + '-' + header + '">' + type + '</td>'
+		}
+		else {
+			row += '<td id="' + uuid + '-' + header + '"></td>'
+		}
 	}
-	return row + '</tr>'
+	row += '</tr>'
+	$(target)
+	.find('tbody')
+	.append(row)
+	.trigger("applyWidgets")
+	$('#' + uuid).addClass('active_row')
+	$('#notes_tab').tabs('option', 'active', 1)
+	return false;
 }
 
 function count_columns(target) {
@@ -76,14 +83,11 @@ function new_entry(target, link) {
 }
 
 function activate_element(event) {
-	$('#publication_list tr').each( function() {
-		$(this).removeClass('active_row')
-	})
+	$('#publication_list tr.active_row').removeClass('active_row')
 	$('#' + $(event.target).parent().attr('id')).addClass('active_row')
 	var message = bib_message()
 	
 	$('#notes_tab').tabs('option', 'active', 1)
-	
 	// TODO: display the proper entry here.
 	return false
 }
@@ -101,11 +105,16 @@ function toggle_publication_list() {
 
 function tabs_activated(event, ui) {
 	if(ui.oldTab.index() == 1) {
+		var rowId = $('#publication_list tr.active_row').first().attr('id')
 		$('#bibliography_fields input').each( function() {
 			var id = $(this).attr('id').replace('text_', '')
 			console.log(id)
 		})
 	}
+}
+
+function insert_in_row(rowId, columnId, what) {
+	
 }
 
 function bib_message(command) {
