@@ -55,19 +55,6 @@ def dir_tree(dir, ext='.note'):
 	tree.sort()
 	return tree
 
-def dir_html(tree, dirlisting_style):
-	tree_string = '<ul>'
-	if dirlisting_style == 'windows':  tree = shuffle_dir(tree)
-	for n in tree:
-		if isinstance(n, tuple):
-			tree_string += '<li id="%s" class="folder">%s\n'%(n[0], n[0])
-			tree_string += dir_html(n[1], dirlisting_style)
-		else:
-			tree_string += '<li id="%s"><a href="?name=%s">%s</a>\n'%(n, n, n)
-
-	return tree_string + '</ul>\n'
-
-
 def extract_headers(fn):
 	output = ""
 	data = get_notebook(fn)
@@ -125,11 +112,13 @@ def make_timeline():
 						if is_day(d):
 							h = None
 							try:
+								# TODO: This is probably unsafe: it won't work on windows
 								h = extract_headers('Calendar/%s/%s/%s'%(year[0],month[0],day))
 							except simplejson.decoder.JSONDecodeError:
 								print('WARNING: could not decode JSON (most probably this is not a proper nothon file)')
 							if h != None:
 								dayofweek = time.strftime("%A",datetime.date(int(year[0]),int(month[0]),int(d)).timetuple())
+								# TODO: This is probably unsafe: it won't work on windows
 								str_tl += "<li id='li_%d_%d'><a href='?name=Calendar/%s/%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), year[0], month[0], day, str(dayofweek) + ' ' + d)
 								str_tl += "<div class='toc_entry'>"
 								str_tl += h
@@ -150,6 +139,7 @@ def rec_toc(tree, path, level):
 			except simplejson.decoder.JSONDecodeError:
 				print('WARNING: could not decode JSON (most probably this is not a proper nothon file) - %s/%s'%(path,elem))
 			if h != None:
+				# TODO: This is probably unsafe: it won't work on windows
 				str_tl += "<li id='li_%d_%d'><a href='?name=%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), path, elem, elem)
 				str_tl += "<div class='toc_entry'>"
 				str_tl += h
@@ -158,6 +148,7 @@ def rec_toc(tree, path, level):
 		elif len(elem) == 2: # directory
 			str_tl += "<li>%s</li>"%elem[0]
 			str_tl += '<ul>\n'
+			# TODO: This is probably unsafe: it won't work on windows
 			str_tl += rec_toc(elem[1],path+'/'+elem[0], level+1)
 			str_tl += '</ul>\n'
 		else:
@@ -180,23 +171,23 @@ def make_toc():
 	note['content'] = {'content' : str_tl}
 	return note
 
-def unwrap_bibtree(tree, path):
-	tree_str = ''
+def unwrap_tree(tree, path, dirlisting_style):
+	if dirlisting_style == 'windows':  tree = shuffle_dir(tree)
+
+	tree_str = '<ul>\n'
 	for elem in tree:
 		if isinstance(elem, basestring):  #file
-			tree_str += "<li><a href='?name=%s/%s'>%s</a>"%(path, elem, os.path.join(path, elem))
+			tree_str += '<li id="%s"><a href="?name=%s">%s</a>\n'%(os.path.join(path, elem), os.path.join(path, elem), os.path.join('', elem))
 		elif len(elem) == 2: 	# directory
-			tree_str += "<li>%s</li>"%(elem[0])
-			tree_str += '<ul>\n'
-			tree_str += unwrap_bibtree(elem[1], os.path.join(path, elem[0]))
-			tree_str += '</ul>\n'
-	return tree_str
+			tree_str += '<li id="%s" class="folder">%s\n'%(elem[0], elem[0])
+			tree_str += unwrap_tree(elem[1], os.path.join(path, elem[0]), dirlisting_style)
+	return tree_str + '</ul>\n'
 
 
 def make_bibliography():
 	tree = dir_tree('.', '.bibnote')
 	bib_str = "<div class='TOC'>"
-	bib_str += unwrap_bibtree(tree, '.')
+	bib_str += unwrap_tree(tree, '.')
 	bib_str += "</div>"
 	
 	return {'content' : {'content' : bib_str} }
