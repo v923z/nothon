@@ -1,7 +1,7 @@
 import simplejson
 import datetime
 from fileutils import get_notebook, create_notebook_folder, notebook_folder
-from cell_utils import print_notebook
+from cell_utils import write_notebook
 import uuid
 import os
 
@@ -15,14 +15,9 @@ class Bibliography():
 			try:
 				data = get_notebook(message['file'])
 				bibliography = data.get('bibliography')
-				new_bib = {}
-				for element in bibliography:
-					# TODO: note that this will miserably fail, if there is no uuid
-					# We would have to write that to disc in parse_bibliography
-					# TODO: this should be done a bit better: we should not bail out, if one entry is incorrect
-					element['author'] = ' and '.join(name['given'] + ' ' + name['family'] for name in element['author'])
-					new_bib[element['uuid']] = element
-				return simplejson.dumps({'success' : 'success', 'bibliography' : new_bib})
+				for entry in bibliography:
+					bibliography[entry]['author'] = ' and '.join(name['given'] + ' ' + name['family'] for name in bibliography[entry]['author'])
+				return simplejson.dumps({'success' : 'success', 'bibliography' : bibliography})
 			except:
 				return simplejson.dumps({'success' : 'failed', 'bibliography' : None})
 				
@@ -30,7 +25,6 @@ class Bibliography():
 
 
 def parse_bibliography(fn, resource):
-	print fn
 	missing = False
 	body_str = ''
 	data = get_notebook(fn)
@@ -44,23 +38,18 @@ def parse_bibliography(fn, resource):
 	header_str += '</tr>'
 	note = {'table_header' : header_str}
 	if bibliography:
-		for i, entry in enumerate(bibliography):
-			uid = entry.get('uuid')
-			if uid is None:
+		# TODO: at the moment, this will sort by the keys. 
+		# We could define a key that preserves the last known order, although, that is a highly non-trivial problem
+		for i, entry in enumerate(sorted(bibliography.keys())):
+			if os.path.exists(os.path.join(notebook_folder(fn), '%s.note'%(entry))) is False:
 				missing = True
-				uid = str(uuid.uuid4())
-				entry['uuid'] = uid
-			if os.path.exists(os.path.join(notebook_folder(fn), uid + '.note')) is False:
-				create_notebook_folder(os.path.join(notebook_folder(fn), uid + '.note'))
-				with open(os.path.join(notebook_folder(fn), uid + '.note'), 'w') as fout:
-					fout.write(print_notebook({'notebook' : []}, resource.notebook_item_order))
+				create_notebook_folder(os.path.join(notebook_folder(fn), '%s.note'%(entry)))
+				write_notebook(os.path.join(notebook_folder(fn), '%s.note'%(entry)), {'notebook' : []}, resource.notebook_item_order)
+				bibliography[entry]['notebook'] = os.path.join(notebook_folder(fn), '%s.note'%(entry))
 
-				entry['notebook'] = os.path.join(notebook_folder(fn), uid + '.note')
-
-			body_str += render_bibtex_entry(i, entry, uid, resource)
-			bibliography[i] = entry
+			body_str += render_bibtex_entry(i, bibliography[entry], entry, resource)
 	
-	# Some IDs, folders, directories, etc. were missing, we have to update the file on disc
+	# Some directories, files, etc. were missing, we have to update the file on disc
 	if missing:
 		data['bibliography'] = bibliography
 		data['date'] = datetime.datetime.now().strftime(resource.time_format)

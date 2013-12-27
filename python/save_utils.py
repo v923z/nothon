@@ -3,20 +3,24 @@ import os
 from fileutils import notebook_folder
 import latex
 import markdown
+from cell_utils import write_notebook
 
-def _save(message):	
+def _save(message, resource):	
 	" Writes the stipped document content to disc "
-	with open(message['notebook'], 'w') as fout:
-		#nb = message
-		#nb['nothon version'] = resource.nothon_version
-		#print print_notebook(nb, resource.notebook_item_order)
-		fout.write('{\n"title" : "%s",\n'%(message["title"]))
-		fout.write('"type": "%s",\n'%(message['type']))
-		if message['type'] in ('notebook'):
-			fout.write('"directory" : "%s",\n'%(message["directory"].strip('<br>')))
-		fout.write('"date" : "%s",\n'%(message["date"]))
-		fout.write('"nothon version" : 1.3,\n')
-		fout.write('"notebook" : %s\n}'%(simplejson.dumps(message['content'][1:], sort_keys=True, indent=4)))
+	nb = { 'title' : message['title'],
+			'type' : message['type'],
+			'date' : message['date'],
+			'directory' : message["directory"].strip('<br>'), 
+			'nothon version' : resource.nothon_version
+	}
+
+	if message['type'] in ('notebook'):
+		print message['notebook']
+		nb['notebook'] = message['notebook']
+		write_notebook(message['file'], nb, resource.notebook_item_order)
+	if message['type'] in ('bibliography'):
+		nb['bibliography'] = message['bibliography']
+		write_bibliography(message['file'], nb, resource.bibliography_item_order)
 		
 class Save():
 	
@@ -24,8 +28,12 @@ class Save():
 		self.resource = resource
 		
 	def handler(self, message):
-		_save(message)
-		return  simplejson.dumps({'success' : 'success'})
+		try:
+			_save(message, self.resource)
+			success = 'success'
+		except:
+			success = 'failed'
+		return  simplejson.dumps({'success' : success})
 
 class Zip():
 	
@@ -43,7 +51,7 @@ class Zip():
 				for file in files:
 					zipper.write(os.path.join(root, file))
 
-		_save(message)
+		_save(message, self.resource)
 		fn = message['notebook']
 		folder = notebook_folder(fn)
 		zipper = zipfile.ZipFile(fn.replace('.note', '.zip'), 'w')
@@ -66,7 +74,7 @@ class Tar():
 		except ImportError:
 			return simplejson.dumps({'success' : 'Could not import module "tarfile".'})
 
-		_save(message)
+		_save(message, self.resource)
 		fn = message['notebook']
 		folder = notebook_folder(fn)
 		tar = tarfile.open(fn.replace('.note', '.tgz'), 'w:gz')
@@ -84,7 +92,7 @@ class Latex():
 		self.resource = resource
 
 	def handler(self, message):
-		_save(message)
+		_save(message, self.resource)
 		latex.process_note(message['notebook'])
 		return  simplejson.dumps({'success' : 'success'})
 
@@ -95,6 +103,6 @@ class Markdown():
 		self.resource = resource
 
 	def handler(self, message):
-		_save(message)
+		_save(message, self.resource)
 		markdown.process_note(message['notebook'])
 		return  simplejson.dumps({'success' : 'success'})

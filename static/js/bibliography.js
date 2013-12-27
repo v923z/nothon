@@ -108,10 +108,15 @@ function activate_element(event) {
 }
 
 function generate_uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-    });
+	var tmp = new Array()
+	for(i in bibliography) {
+		tmp.push(parseInt(i))
+	}
+	return Math.max.apply(null, tmp) + 1
+    //return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        //var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
+        //return v.toString(16);
+    //});
 }
 
 function toggle_publication_list() {
@@ -151,4 +156,10 @@ function bib_message(command) {
 function get_bibliography_handler(req) {
 	var message = JSON.parse(req.responseText)
 	bibliography = message['bibliography']
+}
+
+function save_bibliography(method) {
+	var message = _save(method)
+	message.bibliograhy = bibliography
+	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }

@@ -64,15 +64,20 @@ function get_max_index(className) {
 	return num
 }
 
-function create_message(div_data, message_type) {
+function _create_message(message_type) {
 	var message = new Object()
 	message.command = message_type
-	message.id = div_data.id
-	message.content = div_data.innerHTML
 	message.doc_title = document.title
-	message.document_type = $('body').data('type')
+	message.type = $('body').data('type')
 	message.file = $('body').data('file')
 	message.directory = $('#div_dir').html().replace('<br>', '')
+	return message
+}
+
+function create_message(div_data, message_type) {
+	var message = _create_message(message_type)
+	message.id = div_data.id
+	message.content = div_data.innerHTML
 	return message
 }
 
@@ -151,7 +156,6 @@ function add_tag(where, tag) {
 
 function get_divs() {
 	var content = new Array()
-	content[0] = {"title" : document.title }
 	$("#docmain").children("div[class*='_main']").each( function() {			
 			content.push(block_content($(this)))
 		}
@@ -161,26 +165,30 @@ function get_divs() {
 
 function save_handler(req) {
 	var message = JSON.parse(req.responseText)
+	if(message['success'] == 'success') {
+		var time = new Date()
+		$('#notebook_status').html('Saved at ' + time.toTimeString().split(' ')[0])
+	} else {
+		alert(message['success'])
+	}
 }
 
-function _save() {
-	if(window.location.href.indexOf('?name=__timeline') > 0 || window.location.href.indexOf('?name=__toc') > 0) false
-	var time = new Date()
-	$('#notebook_status').html('Saved at ' + time.toTimeString().split(' ')[0])
-	var message = create_message('', "save")
-	message.type = $('body').data('type')
-	message.doc_title = document.title
-	message.notebook = document.title	
-	message.title = $('#div_title').html()
-	message.directory = $('#div_dir').html().replace('<br>', '')
-	message.content = get_divs()
+function _save(method) {
+	if(window.location.href.indexOf('?name=__timeline') > 0 || 
+		window.location.href.indexOf('?name=__toc') > 0 ||
+		window.location.href.indexOf('?name=__bibliography') > 0) {
+		return null
+	}
+	var message = _create_message(method)
 	message.date = Date()
 	return message
 }
 
 function save_notebook(method) {
-	var message = _save()
-	message.command = method
+	var message = _save(method)
+	if(message == null) return
+	message.title = $('#div_title').html()
+	message.notebook = get_divs()
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 
@@ -302,7 +310,8 @@ function create_new_notebook() {
 	var notebook_address = $('#new_notebook').val()
 	if(notebook_address.length == 0) return
 	if(notebook_address.indexOf('.note') != notebook_address.length - 6) notebook_address += '.note'
-	save()
+	if($('body').data('type') == 'notebook') save_notebook('save')
+	if($('body').data('type') == 'bibliography') save_bibliography('save')	
 	window.location.href = "?name=" + notebook_address
 }
 
@@ -341,7 +350,8 @@ function toggle_document_tree() {
 document.addEventListener("keydown", function(e) {
   if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault()
-	save()
+    if($('body').data('type') == 'notebook') save_notebook('save')
+    else if($('body').data('type') == 'bibliography') save_bibliography('save')    
   }
   if (e.keyCode == 72 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault()

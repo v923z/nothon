@@ -59,7 +59,7 @@ def dir_html(tree, dirlisting_style):
 	tree_string = '<ul>'
 	if dirlisting_style == 'windows':  tree = shuffle_dir(tree)
 	for n in tree:
-		if isinstance(n,tuple):
+		if isinstance(n, tuple):
 			tree_string += '<li id="%s" class="folder">%s\n'%(n[0], n[0])
 			tree_string += dir_html(n[1], dirlisting_style)
 		else:

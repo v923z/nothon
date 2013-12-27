@@ -13,9 +13,7 @@ def paste_cell_handler(message, resource):
 		cell = address.split('#')[1]
 		new_cells.append(insert_cell(target_nb, source, cell))
 
-	with open(message['target'], 'w') as fout:
-		fout.write(print_notebook(target_nb, resource.notebook_item_order))
-	
+	write_notebook(message['target'], target_nb, resource.notebook_item_order)	
 	return simplejson.dumps({'target' : message['target'], 'id' : message['id'], 'links' : zip(labels, new_cells)})
 
 def remove_cell_handler(message, resource):
@@ -66,9 +64,13 @@ def prepare_cell(cell, count):
 def print_notebook(nb, objects):
 	def safe_notebook_cell(nb, obj):
 		if obj in nb: return simplejson.dumps(nb[obj], sort_keys=True, indent=4)
-		return ''
+		return '""'
 	
 	nb_str = '{\n'	
 	nb_str += ',\n'.join(['"%s" : %s'%(obj, safe_notebook_cell(nb, obj)) for obj in objects])
 	nb_str += '\n}'
 	return nb_str
+
+def write_notebook(fn, nb, objects):
+	with open(fn, 'w') as fout:
+		fout.write(print_notebook(nb, objects))
