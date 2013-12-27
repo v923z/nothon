@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	$(function() {
-		var message = bib_message('bibliography')
+		var message = _create_message('bibliography')
 		message['sub_command'] = 'get_bibliography'
 		xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), get_bibliography_handler)
 	})
@@ -141,16 +141,6 @@ function tabs_activated(event, ui) {
 			bibliography[uuid][id] = $(this).val()
 		})
 	}
-}
-
-function bib_message(command) {
-	var message = new Object()
-	message.command = command
-	message.document_type = $('body').data('type')
-	message.file = $('body').data('file')
-	message.directory = $('#div_dir').html().replace('<br>', '')
-	message.doc_title = document.title
-	return message
 }
 
 function get_bibliography_handler(req) {
