@@ -10,7 +10,7 @@ $(document).ready(function () {
 			widthFixed		: true,
 			showProcessing: true,
 			headerTemplate : '{content} {icon}',
-			widgets        : ['zebra', 'scroller', 'filter'],
+			widgets        : ['zebra', 'scroller', 'filter', 'resizable'],
 			widgetOptions : {
 				scroller_height : 100,
 				scroller_width : 17,
@@ -23,13 +23,6 @@ $(document).ready(function () {
 	});
 	$('#notes_tab').tabs({ 
 		activate: function(event, ui) { tabs_activated(event, ui) }
-	});
-	$('#aside_switch').click(function (event) {
-		var posY = $(this).position().top;
-		//$('#publication_list > tbody').height(event.pageY - posY + $('#publication_list > theader').height() + 20)
-		$('#publication_list').height(100)
-		//$('#publication_list > tbody').height() + $('#publication_list > thead').height()+20)
-		// TODO: here we should check, whether the new size is larger than what we actually need...
 	});
 })
 
@@ -45,9 +38,6 @@ function bibliography_side_switch() {
 		$('#article').css('width', '78%')
 		$('#aside_switch_container').html('<<')
 	}
-}
-
-function bibliography_side_position(event) {
 }
 
 function add_row(target, type) {
@@ -112,11 +102,8 @@ function generate_uuid() {
 	for(i in bibliography) {
 		tmp.push(parseInt(i))
 	}
+	// This is rather primitive: we should find the smallest unused integer. Some nifty trick, Lukas?
 	return Math.max.apply(null, tmp) + 1
-    //return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        //var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
-        //return v.toString(16);
-    //});
 }
 
 function toggle_publication_list() {
