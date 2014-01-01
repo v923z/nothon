@@ -41,6 +41,7 @@ def check_for_special_folder(dir, marker):
 	return False
 	
 def dir_tree(dir, ext='.note'):
+	# TODO: extend this, so that it can treat '.note' and '.bibnote' at the same time
 	tree = []
 	if check_for_special_folder(dir, '_'): return tree
 	

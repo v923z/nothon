@@ -79,11 +79,13 @@ function new_entry(target, link) {
 
 function activate_element(event) {
 	// Bail out immediately, if clicked on header
-	if($('#publication_list thead').has(event.target)) return false
+//	if($('#publication_list thead').has(event.target)) return false
 	
 	var uuid = $(event.target).parent().attr('id')
 	$('#publication_list tr.active_row').removeClass('active_row')
 	$('#' + uuid).addClass('active_row')
+	$('#field_id').text(uuid + ' : ' + bibliography[uuid]['key'])
+	console.log(bibliography[uuid]['key'])
 	// TODO: send save to server
 	//var message = bib_message('save')
 	$('#bibliography_fields input').each( function() {
@@ -108,6 +110,10 @@ function generate_uuid() {
 
 function toggle_publication_list() {
 	$('#publication_list').toggle()
+}
+
+function toggle_notes() {
+	$('#notes_tab').toggle()
 }
 
 function tabs_activated(event, ui) {
@@ -139,4 +145,21 @@ function save_bibliography(method) {
 	var message = _save(method)
 	message.bibliograhy = bibliography
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
+}
+
+function group_changed() {
+	var num = 0;
+	var mult = 1;
+	for(i=5; i >= 1; i--) {
+		if($('#group_' + i).prop('checked')) {
+			num += mult
+		}
+		mult *= 10
+	}	
+	$('#group_label').text(('00000' + num).slice(-5))
+	return false
+}
+
+function stars_changed() {
+	return false
 }

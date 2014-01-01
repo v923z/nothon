@@ -160,6 +160,8 @@ $for f in create_funcs + handler_funcs:
 	<li>Menu
 		<ul>
 			<li onmouseup='toggle_publication_list();'>Publication list</li>
+			<li onmouseup='toggle_notes();'>Notes</li>
+			<hr>
 			<li onmouseup='toggle_context_menu();'>Context</li>
 			<li onmouseup='topmenu_hide();'>Hide</li>
 			<li onmouseup='trashbin_image_toggle();'>Trashbin</li>
@@ -201,12 +203,34 @@ $for f in create_funcs + handler_funcs:
 
 <div id='notes_tab'>
 	 <ul>
-		<li><a href='#docmain'>Notes</a></li>
+		<li><a href='#notes'>Notes</a></li>
 		<li><a href='#bibliography_fields'>Fields</a></li>
 		<li><a href='#bibliography_fields2'>Fields 2</a></li>		
 		<li><a href='#bibtex_entry'>Bibtex</a></li>
 	</ul>
-	<div id='docmain'></div>
+	<div id='notes'>
+		<div id='notes_header' class='field_div'>
+			<label id='field_id' class='field_label'></label>
+			<label class='field_label'>Group</label>
+			<span class='field_span'>
+				<input id='group_1' type='checkbox' onchange='group_changed();'/>
+				<input id='group_2' type='checkbox' onchange='group_changed();' />
+				<input id='group_3' type='checkbox' onchange='group_changed();'/>
+				<input id='group_4' type='checkbox' onchange='group_changed();'/>
+				<input id='group_5' type='checkbox' onchange='group_changed();' />
+				<label id='group_label'>00000</label>
+			</span>
+			<label class='field_label'>Stars</label>
+			<span class='field_span'>
+				<label>1</label><input id='star_1' name='stars' type='radio' onchange='stars_changed();'/>
+				<label>2</label><input id='star_2' name='stars' type='radio' onchange='stars_changed();'/>
+				<label>3</label><input id='star_3' name='stars' type='radio' onchange='stars_changed();'/>
+				<label>4</label><input id='star_4' name='stars' type='radio' onchange='stars_changed();'/>
+				<label>5</label><input id='star_5' name='stars' type='radio' onchange='stars_changed();'/>
+			</span>
+		</div>
+		<div id='docmain'></div>
+	</div>
 	<div id='bibliography_fields'>
 		<div class='field_div'><label class='field_label'>Authors</label><span class='field_span'><input id='text_author' type='text' /></span></div>
 		<div class='field_div'><label class='field_label'>Title</label><span class='field_span'><input id='text_title' type='text' /></span></div>

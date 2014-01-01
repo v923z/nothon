@@ -77,3 +77,13 @@
 #text_pages {
 	width:				8em;
 }
+
+#group_label {
+	font-weight:		bold;
+}
+
+#field_id {
+	font-weight:		bold;
+	color:				#ee0000;
+	width:				20em;
+}
