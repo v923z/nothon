@@ -78,16 +78,26 @@ function new_entry(target, link) {
 }
 
 function activate_element(event) {
-	// Bail out immediately, if clicked on header
-//	if($('#publication_list thead').has(event.target)) return false
-	
 	var uuid = $(event.target).parent().attr('id')
+	// Bail out immediately, if clicked on header	
+	if(!uuid) {
+		// TODO: clean up tabs
+		$('#docmain').html('')
+		set_group('00000')
+		set_stars(1)
+		return false
+	}
+	$('#docmain').data('id', uuid)
 	$('#publication_list tr.active_row').removeClass('active_row')
 	$('#' + uuid).addClass('active_row')
-	$('#field_id').text(uuid + ' : ' + bibliography[uuid]['key'])
 	console.log(bibliography[uuid]['key'])
 	// TODO: send save to server
 	//var message = bib_message('save')
+	fill_in_fields(uuid)
+	return false
+}
+
+function fill_in_fields(uuid) {
 	$('#bibliography_fields input').each( function() {
 		var id = $(this).attr('id').replace('text_', '')
 		if(bibliography[uuid][id]) {
@@ -96,7 +106,36 @@ function activate_element(event) {
 			$(this).val('')
 		}
 	})
-	return false
+	if(bibliography[uuid]['key']) {
+		$('#field_id').text(uuid + ': ' + bibliography[uuid]['key'])
+	} else {
+		$('#field_id').text(uuid)
+	}
+	if(!bibliography[uuid]['group']) {
+		bibliography[uuid]['group'] = 0
+	}
+	set_group(100000 + parseInt(bibliography[uuid]['group']))
+	
+	if(!bibliography[uuid]['stars']) {
+		bibliography[uuid]['stars'] = 1
+	}
+	set_stars(bibliography[uuid]['stars'])
+}
+
+function set_group(group) {
+	$('#group_label').text(('' + group).slice(-5))
+	for(i=5; i >= 1; i--) {
+		if(group & 1) {
+			$('#group_' + i).prop('checked', true)
+		} else {
+			$('#group_' + i).prop('checked', false)
+		}
+		group /= 10
+	}
+}
+
+function set_stars(stars) {
+	$('#star_' + stars).prop('checked', true)
 }
 
 function generate_uuid() {
@@ -148,8 +187,9 @@ function save_bibliography(method) {
 }
 
 function group_changed() {
-	var num = 0;
-	var mult = 1;
+	var id = $('#docmain').data('id')
+	var num = 0
+	var mult = 1
 	for(i=5; i >= 1; i--) {
 		if($('#group_' + i).prop('checked')) {
 			num += mult
@@ -157,9 +197,14 @@ function group_changed() {
 		mult *= 10
 	}	
 	$('#group_label').text(('00000' + num).slice(-5))
+	bibliography[id]['group'] = ('00000' + num).slice(-5)
+	// TODO: if group is in the bibliography table, we have to update that, too
 	return false
 }
 
 function stars_changed() {
+	var id = $('#docmain').data('id')
+	bibliography[id]['stars'] = parseInt($('input[name=stars]:checked').attr('id').slice(-1))
+	// TODO: if stars is in the bibliography table, we have to update that, too
 	return false
 }
