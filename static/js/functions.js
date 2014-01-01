@@ -351,7 +351,7 @@ document.addEventListener("keydown", function(e) {
   if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault()
     if($('body').data('type') == 'notebook') save_notebook('save')
-    else if($('body').data('type') == 'bibliography') save_bibliography('save')    
+    else if($('body').data('type') == 'bibliography') save_bibliography('bibliography')    
   }
   if (e.keyCode == 72 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault()

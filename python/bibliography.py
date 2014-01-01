@@ -4,6 +4,7 @@ from fileutils import get_notebook, create_notebook_folder, notebook_folder
 from cell_utils import write_notebook
 import uuid
 import os
+import datetime
 
 class Bibliography():
 
@@ -21,6 +22,19 @@ class Bibliography():
 			except:
 				return simplejson.dumps({'success' : 'failed', 'bibliography' : None})
 				
+		if message['sub_command'] in ('save_bibliography'):
+			bib_dic = {'type' : 'bibliography', 'bibliography' : message['bibliography'], 'date' : message['date']}
+			bib_dic['nothon version'] = self.resource.nothon_version
+			# We have to re-format the author list here
+			for entry in bib_dic['bibliography']:
+				authors = bib_dic['bibliography'][entry]['author']
+				
+			try:
+				write_bibliography(message['file'], bib_dic, self.resource.bibliography_item_order)
+				return simplejson.dumps({'success' : 'success'})
+			except:
+				#TODO: return the error code
+				return simplejson.dumps({'success' : 'failed'})
 		else: return simplejson.dumps({'success' : 'failed'})
 
 

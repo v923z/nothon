@@ -61,6 +61,8 @@ function add_row(target, type) {
 	.trigger("applyWidgets")
 	$('#' + uuid).addClass('active_row')
 	$('#notes_tab').tabs('option', 'active', 1)
+	bibliography[uuid] = {}
+	fill_in_fields(uuid)
 	return false;
 }
 
@@ -83,6 +85,7 @@ function activate_element(event) {
 	if(!uuid) {
 		// TODO: clean up tabs
 		$('#docmain').html('')
+		$('#docmain').data('id', null)
 		set_group('00000')
 		set_stars(1)
 		return false
@@ -176,18 +179,21 @@ function tabs_activated(event, ui) {
 }
 
 function get_bibliography_handler(req) {
+	// TODO: some error handling here?
 	var message = JSON.parse(req.responseText)
 	bibliography = message['bibliography']
 }
 
 function save_bibliography(method) {
 	var message = _save(method)
-	message.bibliograhy = bibliography
+	message.bibliography = bibliography
+	message['sub_command'] = 'save_bibliography'
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 
 function group_changed() {
 	var id = $('#docmain').data('id')
+	if(id == null) return false
 	var num = 0
 	var mult = 1
 	for(i=5; i >= 1; i--) {
@@ -204,6 +210,7 @@ function group_changed() {
 
 function stars_changed() {
 	var id = $('#docmain').data('id')
+	if(id == null) return false
 	bibliography[id]['stars'] = parseInt($('input[name=stars]:checked').attr('id').slice(-1))
 	// TODO: if stars is in the bibliography table, we have to update that, too
 	return false
