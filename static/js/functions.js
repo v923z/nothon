@@ -311,7 +311,7 @@ function create_new_notebook() {
 	if(notebook_address.length == 0) return
 	if(notebook_address.indexOf('.note') != notebook_address.length - 6) notebook_address += '.note'
 	if($('body').data('type') == 'notebook') save_notebook('save')
-	if($('body').data('type') == 'bibliography') save_bibliography('save')	
+	if($('body').data('type') == 'bibliography') save_bibliography('save_bibnote')	
 	window.location.href = "?name=" + notebook_address
 }
 
@@ -351,7 +351,7 @@ document.addEventListener("keydown", function(e) {
   if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault()
     if($('body').data('type') == 'notebook') save_notebook('save')
-    else if($('body').data('type') == 'bibliography') save_bibliography('bibliography')    
+    else if($('body').data('type') == 'bibliography') save_bibliography('save_bibnote')    
   }
   if (e.keyCode == 72 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault()

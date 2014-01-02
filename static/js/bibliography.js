@@ -1,3 +1,5 @@
+bibliography = null
+
 $(document).ready(function () {
 	$(function() {
 		var message = _create_message('bibliography')
@@ -43,6 +45,11 @@ function bibliography_side_switch() {
 function add_row(target, type) {
 	$('#publication_list tr.active_row').removeClass('active_row')
 	var uuid = generate_uuid()
+	$('#docmain').data('id', uuid)
+	var entry = new Object()
+	entry['type'] = type
+	bibliography[uuid] = entry
+
 	var columns = count_columns(target)
 	var row = '<tr id="' + uuid + '"><td>' + count_rows(target) + '</td>'
 	
@@ -60,9 +67,11 @@ function add_row(target, type) {
 	.append(row)
 	.trigger("applyWidgets")
 	$('#' + uuid).addClass('active_row')
+	// Activate the first fields tab
 	$('#notes_tab').tabs('option', 'active', 1)
-	bibliography[uuid] = {}
+
 	fill_in_fields(uuid)
+	fill_in_row(uuid)
 	return false;
 }
 
@@ -79,46 +88,57 @@ function new_entry(target, link) {
 	add_row(target, link.innerHTML.toLowerCase())
 }
 
+function change_to_entry(target, link) {
+	var uuid = $('#docmain').data('id')
+	// Bail out immediately, if no active entry
+	if(uuid.length == 0) {
+		alert('No active entry found')
+		return false
+	}
+	bibliography[uuid]['type'] = link.innerHTML.toLowerCase()
+	fill_in_row(uuid)
+	set_field_id(uuid)
+}
+
 function activate_element(event) {
 	var uuid = $(event.target).parent().attr('id')
 	// Bail out immediately, if clicked on header	
 	if(!uuid) {
-		// TODO: clean up tabs
-		$('#docmain').html('')
-		$('#docmain').data('id', '')
-		set_group('00000')
-		set_stars(1)
 		return false
 	}
 	$('#docmain').data('id', uuid)
 	$('#publication_list tr.active_row').removeClass('active_row')
 	$('#' + uuid).addClass('active_row')
 	console.log(bibliography[uuid]['key'])
-	// TODO: send save to server
+	// TODO: send save to server, get notebook from disc
 	//var message = bib_message('save')
 	fill_in_fields(uuid)
 	return false
 }
 
+function _fill_in_fields(dom, uuid) {
+	var id = $(dom).attr('id').replace('text_', '')
+	if(bibliography[uuid][id]) {
+		$(dom).val(bibliography[uuid][id])
+	} else {
+		bibliography[uuid][id] = ''
+		$(dom).val('')
+	}
+}
+
 function fill_in_fields(uuid) {
 	// This is the inverse of fill_in_bibliography
 	$('#bibliography_fields input[type=text]').each( function() {
-		var id = $(this).attr('id').replace('text_', '')
-		if(bibliography[uuid][id]) {
-			$(this).val(bibliography[uuid][id])
-		} else {
-			$(this).val('')
-		}
+		_fill_in_fields(this, uuid)
 	})
-	if(bibliography[uuid]['key']) {
-		$('#field_id').text(uuid + ': ' + bibliography[uuid]['key'])
-	} else {
-		$('#field_id').text(uuid)
-	}
+	$('#bibliography_fields2 input[type=text]').each( function() {
+		_fill_in_fields(this, uuid)
+	})
+	set_field_id(uuid)
 	if(!bibliography[uuid]['group']) {
-		bibliography[uuid]['group'] = 0
+		bibliography[uuid]['group'] = '00000'
 	}
-	set_group(100000 + parseInt(bibliography[uuid]['group']))
+	set_group(bibliography[uuid]['group'], uuid)
 	
 	if(!bibliography[uuid]['stars']) {
 		bibliography[uuid]['stars'] = 1
@@ -146,8 +166,10 @@ function fill_in_bibliography(uuid) {
 	}
 }
 
-function set_group(group) {
-	$('#group_label').text(('' + group).slice(-5))
+function set_group(group, id) {
+	$('#group_label').text(('00000' + group).slice(-5))
+	bibliography[id]['group'] = ('00000' + group).slice(-5)
+	fill_in_row(id)
 	for(i=5; i >= 1; i--) {
 		if(group & 1) {
 			$('#group_' + i).prop('checked', true)
@@ -156,19 +178,28 @@ function set_group(group) {
 		}
 		group /= 10
 	}
+	
 }
 
 function set_stars(stars) {
 	$('#star_' + stars).prop('checked', true)
 }
 
+function set_field_id(uuid) {
+	if(!bibliography[uuid]['key']) bibliography[uuid]['key'] = ''
+	if(!bibliography[uuid]['type']) bibliography[uuid]['type'] = ''
+	$('#field_id').text(uuid + ': ' + bibliography[uuid]['key'] + ', ' + bibliography[uuid]['type'])
+}
+
 function generate_uuid() {
+	if(!bibliography.keys) return '1'
+	
 	var tmp = new Array()
 	for(i in bibliography) {
 		tmp.push(parseInt(i))
 	}
 	// This is rather primitive: we should find the smallest unused integer. Some nifty trick, Lukas?
-	return Math.max.apply(null, tmp) + 1
+	return '' + (Math.max.apply(null, tmp) + 1)
 }
 
 function toggle_publication_list() {
@@ -200,18 +231,23 @@ function tabs_activated(event, ui) {
 	if(ui.oldTab.index() == 3) {
 		// bibtex tab
 	}	
+	set_field_id(uuid)
 }
 
 function get_bibliography_handler(req) {
 	// TODO: some error handling here?
 	var message = JSON.parse(req.responseText)
-	bibliography = message['bibliography']
+	if(message['success'] == 'success') bibliography = message['bibliography']
+	else {
+		alert('Could not read file: ' + message['file'])
+		bibliography = null
+	}
 }
 
 function save_bibliography(method) {
-	var message = _save(method)
+	var message = _save('bibliography')
 	message.bibliography = bibliography
-	message['sub_command'] = 'save_bibliography'
+	message['sub_command'] = method
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 
@@ -225,10 +261,8 @@ function group_changed() {
 			num += mult
 		}
 		mult *= 10
-	}	
-	$('#group_label').text(('00000' + num).slice(-5))
-	bibliography[id]['group'] = ('00000' + num).slice(-5)
-	// TODO: if group is in the bibliography table, we have to update that, too
+	}
+	set_group(num, id)
 	return false
 }
 
@@ -236,7 +270,7 @@ function stars_changed() {
 	var id = $('#docmain').data('id')
 	if(id == null) return false
 	bibliography[id]['stars'] = parseInt($('input[name=stars]:checked').attr('id').slice(-1))
-	// TODO: if stars is in the bibliography table, we have to update that, too
+	fill_in_row(id)
 	return false
 }
 

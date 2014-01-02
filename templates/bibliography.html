@@ -115,8 +115,13 @@ $for f in create_funcs + handler_funcs:
 	</li>
 	<li>Bibliography
 		<ul>
-			<li onmouseup='save_bibliography("bibtex");'>BibTeX</li>
-			<li onmouseup='save_bibliography("html");'>HTML</li>
+			<li>Save
+				<ul>
+					<li onmouseup='save_bibliography("save_bibnote");'>Bibnote</li>
+					<li onmouseup='save_bibliography("save_bibtex");'>BibTeX</li>
+					<li onmouseup='save_bibliography("save_html");'>HTML</li>
+				</ul>
+			</li>
 			<li>Archive
 				<ul>
 					<li onmouseup='save_notebook("zip");'>Zip</li>

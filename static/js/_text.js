@@ -15,7 +15,7 @@ function text_context_menu() {
 		<li alt="italic" onmouseup="return mouse_down(this, null);" onmousedown="return false;"><i>Italic</i></li>\
 		<li alt="underline" onmouseup="return mouse_down(this, null);" onmousedown="return false;"><u>Underline</u></li>\
 		<li alt="strikeThrough" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Strikethrough</li>\
-		<li alt="hilitecolor" onmouseup="return highlight();" onmousedowb="return false;">Highlight</li>\
+		<li alt="hilitecolor" onmouseup="return highlight();" onmousedown="return false;">Highlight</li>\
 		<li alt="indent" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Indent</li>\
 		<li alt="outdent" onmouseup="return mouse_down(this, null);" onmousedown="return false;">Outdent</li>\
 		<li onmouseup="return insert_date();" onmousedown="return false;">Date</li>\

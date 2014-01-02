@@ -18,9 +18,10 @@ class Bibliography():
 				bibliography = data.get('bibliography')
 				return simplejson.dumps({'success' : 'success', 'bibliography' : bibliography})
 			except:
-				return simplejson.dumps({'success' : 'failed', 'bibliography' : None})
+				return simplejson.dumps({'success' : 'failed', 'file': message['file']})
 				
-		if message['sub_command'] in ('save_bibliography'):
+		if message['sub_command'] in ('save_bibnote'):
+			print 'here'
 			bib_dic = {'type' : 'bibliography', 'bibliography' : message['bibliography'], 'date' : message['date']}
 			bib_dic['nothon version'] = self.resource.nothon_version
 			# Have we got to re-format the author list here?
@@ -71,15 +72,13 @@ def parse_bibliography(fn, resource):
 def render_bibtex_entry(i, entry, uid, resource):
 	table_entry = '\n\t\t\t\t\t<tr id="%s"><td>%d</td>'%(uid, i+1)
 	for element in resource.bibliography_nothon_header:
-		#if element in ('author'):
-			#table_entry += '<td id="%s-%s">%s</td>'%(uid, element, render_authors(entry))
-		#else: 
 		table_entry += '<td id="%s-%s">%s</td>'%(uid, element, entry.get(element, ""))
 	table_entry += '</tr>'
 	
 	return table_entry
 
 def render_authors(entry):
+	# This function is probably not needed any longer
 	authors = entry.get('author')
 	if not authors: return ''
 	if len(authors) == 1:
@@ -90,7 +89,7 @@ def render_authors(entry):
 def write_bibliography(fn, nb, objects):
 	def safe_notebook_cell(nb, obj):
 		if obj in nb: return simplejson.dumps(nb[obj], sort_keys=True, indent=4)
-		return ''
+		return '""'
 	
 	nb_str = '{\n'	
 	nb_str += ',\n'.join(['"%s" : %s'%(obj, safe_notebook_cell(nb, obj)) for obj in objects])

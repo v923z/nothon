@@ -188,7 +188,7 @@ def unwrap_tree(tree, path, dirlisting_style):
 def make_bibliography():
 	tree = dir_tree('.', '.bibnote')
 	bib_str = "<div class='TOC'>"
-	bib_str += unwrap_tree(tree, '.')
+	bib_str += unwrap_tree(tree, '.', None)
 	bib_str += "</div>"
 	
 	return {'content' : {'content' : bib_str} }
