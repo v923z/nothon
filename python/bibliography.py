@@ -21,7 +21,6 @@ class Bibliography():
 				return simplejson.dumps({'success' : 'failed', 'file': message['file']})
 				
 		if message['sub_command'] in ('save_bibnote'):
-			print 'here'
 			bib_dic = {'type' : 'bibliography', 'bibliography' : message['bibliography'], 'date' : message['date']}
 			bib_dic['nothon version'] = self.resource.nothon_version
 			# Have we got to re-format the author list here?
