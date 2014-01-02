@@ -168,7 +168,7 @@ class Index(object):
 			with open(link.name, 'r') as fin:
 				html = fin.read()
 			return html
-		aside = {"tree" : unwrap_tree(dir_tree('.'), '.', nothon_resource.dirlisting_style)}
+		aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
 		if link.name == '__timeline':
 			return 	render.timeline(link.name, aside, make_timeline())
 		elif link.name == '__toc':
@@ -188,7 +188,7 @@ class Index(object):
 				title = os.path.basename(link.name).replace('.note', '')
 				create_notebook_folder(link.name)
 				write_notebook(link.name, {'title': title, 'type' : 'notebook', 'notebook': []}, nothon_resource.notebook_item_order)
-				aside = {"tree" : unwrap_tree(dir_tree('.'), '.', nothon_resource.dirlisting_style)}
+				aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
 				new_notebook(link.name, nothon_resource)
 			return 	render.notebook(link.name, link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
 

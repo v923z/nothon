@@ -178,7 +178,10 @@ def unwrap_tree(tree, path, dirlisting_style):
 	tree_str = '<ul>\n'
 	for elem in tree:
 		if isinstance(elem, basestring):  #file
-			tree_str += '<li id="%s"><a href="?name=%s">%s</a>\n'%(os.path.join(path, elem), os.path.join(path, elem), os.path.join('', elem))
+			if elem.endswith('.bibnote'):
+				tree_str += '<li id="%s" data="addClass: \'bibnote\'"><a href="?name=%s">%s</a>\n'%(os.path.join(path, elem), os.path.join(path, elem), os.path.join('', elem))
+			else:
+				tree_str += '<li id="%s"><a href="?name=%s">%s</a>\n'%(os.path.join(path, elem), os.path.join(path, elem), os.path.join('', elem))				
 		elif len(elem) == 2: 	# directory
 			tree_str += '<li id="%s" class="folder">%s\n'%(elem[0], elem[0])
 			tree_str += unwrap_tree(elem[1], os.path.join(path, elem[0]), dirlisting_style)
