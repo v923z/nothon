@@ -85,7 +85,7 @@ function activate_element(event) {
 	if(!uuid) {
 		// TODO: clean up tabs
 		$('#docmain').html('')
-		$('#docmain').data('id', null)
+		$('#docmain').data('id', '')
 		set_group('00000')
 		set_stars(1)
 		return false
@@ -101,7 +101,8 @@ function activate_element(event) {
 }
 
 function fill_in_fields(uuid) {
-	$('#bibliography_fields input').each( function() {
+	// This is the inverse of fill_in_bibliography
+	$('#bibliography_fields input[type=text]').each( function() {
 		var id = $(this).attr('id').replace('text_', '')
 		if(bibliography[uuid][id]) {
 			$(this).val(bibliography[uuid][id])
@@ -123,6 +124,26 @@ function fill_in_fields(uuid) {
 		bibliography[uuid]['stars'] = 1
 	}
 	set_stars(bibliography[uuid]['stars'])
+}
+
+function fill_in_row(uuid) {
+	for(i=2; i <= count_columns('#publication_list'); i++) {
+		var key = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
+		$('#' + uuid + '-' + key).html(bibliography[uuid][key])
+	}
+}
+
+function fill_in_bibliography(uuid) {
+	// This is the inverse of fill_in_fields
+	for(i=2; i <= count_columns('#publication_list'); i++) {
+		var key = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
+		if($('#text_' + key)) {
+			var value = $('#text_' + key).val()
+		} else {
+			var value = ''
+		}
+		bibliography[uuid][key] = value
+	}
 }
 
 function set_group(group) {
@@ -159,23 +180,26 @@ function toggle_notes() {
 }
 
 function tabs_activated(event, ui) {
-	if(ui.oldTab.index() == 1) {
-		var uuid = $('#publication_list tr.active_row').first().attr('id')
-		for(i=2; i <= count_columns('#publication_list'); i++) {
-			var header = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
-			if($('#text_' + header)) {
-				var value = $('#text_' + header).val()
-			} else {
-				var value = ''
-			}
-			$('#' + uuid + '-' + header).html(value)
-		}
-
-		$('#bibliography_fields input').each( function() {
+	var uuid = $('#docmain').data('id')
+	if(uuid.length == 0) return false
+	if(ui.oldTab.index() == 1 || ui.oldTab.index() == 2) {
+		// fields tabs
+		$('#bibliography_fields input[type=text]').each( function() {
 			var id = $(this).attr('id').replace('text_', '')
 			bibliography[uuid][id] = $(this).val()
 		})
+		$('#bibliography_fields2 input[type=text]').each( function() {
+			var id = $(this).attr('id').replace('text_', '')
+			bibliography[uuid][id] = $(this).val()
+		})
+		fill_in_row(uuid)
 	}
+	if(ui.newTab.index() == 3) {
+		// bibtex tab
+	}
+	if(ui.oldTab.index() == 3) {
+		// bibtex tab
+	}	
 }
 
 function get_bibliography_handler(req) {
@@ -213,5 +237,24 @@ function stars_changed() {
 	if(id == null) return false
 	bibliography[id]['stars'] = parseInt($('input[name=stars]:checked').attr('id').slice(-1))
 	// TODO: if stars is in the bibliography table, we have to update that, too
+	return false
+}
+
+function field_keypress(event, target) {
+	if(event.which === 13) {
+		$('#' + target).focus()
+		return false
+	} else {
+		return true
+	}
+}
+
+function generate_timestamp(dom) {
+	var date = new Date()
+	$(dom).val(date.getFullYear() + '.' + ('0' + (date.getMonth()+1)).slice(-2) + '.' + ('0' + date.getDate()).slice(-2))
+	return false
+}
+
+function browse() {
 	return false
 }

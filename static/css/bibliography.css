@@ -66,7 +66,7 @@
 	padding: 			0 0 0 0;
 }
 
-#text_author, #text_title, #text_journal, #text_key {
+#text_author, #text_title, #text_journal, #text_key, #text_keywords, #text_file, #text_doi, #text_url {
 	width:				100%;
 }
 
@@ -75,7 +75,15 @@
 }
 
 #text_pages {
-	width:				8em;
+	width:				10em;
+}
+
+#text_owner {
+	width:				10em;
+}
+
+#text_timestamp {
+	width:				6em;
 }
 
 #group_label {

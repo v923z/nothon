@@ -16,8 +16,6 @@ class Bibliography():
 			try:
 				data = get_notebook(message['file'])
 				bibliography = data.get('bibliography')
-				for entry in bibliography:
-					bibliography[entry]['author'] = ' and '.join(name['given'] + ' ' + name['family'] for name in bibliography[entry]['author'])
 				return simplejson.dumps({'success' : 'success', 'bibliography' : bibliography})
 			except:
 				return simplejson.dumps({'success' : 'failed', 'bibliography' : None})
@@ -25,10 +23,7 @@ class Bibliography():
 		if message['sub_command'] in ('save_bibliography'):
 			bib_dic = {'type' : 'bibliography', 'bibliography' : message['bibliography'], 'date' : message['date']}
 			bib_dic['nothon version'] = self.resource.nothon_version
-			# We have to re-format the author list here
-			for entry in bib_dic['bibliography']:
-				authors = bib_dic['bibliography'][entry]['author']
-				
+			# Have we got to re-format the author list here?
 			try:
 				write_bibliography(message['file'], bib_dic, self.resource.bibliography_item_order)
 				return simplejson.dumps({'success' : 'success'})
@@ -76,10 +71,10 @@ def parse_bibliography(fn, resource):
 def render_bibtex_entry(i, entry, uid, resource):
 	table_entry = '\n\t\t\t\t\t<tr id="%s"><td>%d</td>'%(uid, i+1)
 	for element in resource.bibliography_nothon_header:
-		if element in ('author'):
-			table_entry += '<td id="%s-%s">%s</td>'%(uid, element, render_authors(entry))
-
-		else: table_entry += '<td id="%s-%s">%s</td>'%(uid, element, entry.get(element, ""))
+		#if element in ('author'):
+			#table_entry += '<td id="%s-%s">%s</td>'%(uid, element, render_authors(entry))
+		#else: 
+		table_entry += '<td id="%s-%s">%s</td>'%(uid, element, entry.get(element, ""))
 	table_entry += '</tr>'
 	
 	return table_entry

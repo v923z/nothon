@@ -10,5 +10,5 @@ class NothonResource(object):
 		self.time_format = '%a %b %d %Y %H:%M:%S'
 		self.has_matplotlib = False
 		self.has_pygments = False
-		self.bibliography_bibtex_header = ['type', 'author', 'title', 'year', 'journal', 'page', 'key']
+		self.bibliography_bibtex = ['type', 'author', 'title', 'year', 'journal', 'page', 'key', 'url', 'doi', 'file', 'keywords', 'owner', 'timestamp']
 		self.bibliography_nothon_header = ['type', 'author', 'title', 'year', 'journal', 'key', 'group', 'stars']

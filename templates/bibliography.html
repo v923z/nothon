@@ -29,6 +29,7 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/widgets-scroller.js"></script>
 <script src="/static/js/functions.js"></script>
 <script src="/static/js/bibliography.js"></script>
+<script src="/static/js/bibtex_key.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
@@ -232,17 +233,29 @@ $for f in create_funcs + handler_funcs:
 		<div id='docmain' data-id=''></div>
 	</div>
 	<div id='bibliography_fields'>
-		<div class='field_div'><label class='field_label'>Authors</label><span class='field_span'><input id='text_author' type='text' /></span></div>
-		<div class='field_div'><label class='field_label'>Title</label><span class='field_span'><input id='text_title' type='text' /></span></div>
-		<div class='field_div'><label class='field_label'>Journal</label><span class='field_span'><input id='text_journal' type='text' /></span></div>
+		<div class='field_div'><label class='field_label'>Authors</label><span class='field_span'><input id='text_author' type='text' onkeypress='return field_keypress(event, "text_title");'/></span></div>
+		<div class='field_div'><label class='field_label'>Title</label><span class='field_span'><input id='text_title' type='text' onkeypress='return field_keypress(event, "text_journal");'/></span></div>
+		<div class='field_div'><label class='field_label'>Journal</label><span class='field_span'><input id='text_journal' type='text' onkeypress='return field_keypress(event, "text_volume");'/></span></div>
 		<div class='field_div'>
-			<label class='field_label'>Volume</label><span class='field_span'><input id='text_volume' type='text' /></span>
-			<label class='field_label'>Pages</label><span class='field_span'><input id='text_pages' type='text' /></span>
-			<label class='field_label'>Year</label><span class='field_span'><input id='text_year' type='text' /></span>
-			<label class='field_label'>Bibtex key</label><span class='field_span'><input id='text_key' type='text' /></span>
+			<label class='field_label'>Volume</label><span class='field_span'><input id='text_volume' type='text' onkeypress='return field_keypress(event, "text_pages");'/></span>
+			<label class='field_label'>Pages</label><span class='field_span'><input id='text_pages' type='text' onkeypress='return field_keypress(event, "text_year");'/></span>
+			<label class='field_label'>Year</label><span class='field_span'><input id='text_year' type='text' onkeypress='return field_keypress(event, "text_key");'/></span>
+			<input type='button' class='field_label' value='Key' onmouseup='generate_bibtex_key();'><span class='field_span'><input id='text_key' type='text' /></span>
 		</div>
 	</div>
-	<div id='bibliography_fields2'></div>
+	<div id='bibliography_fields2'>
+		<div class='field_div'><label class='field_label'>Keywords</label><span class='field_span'><input id='text_keywords' type='text' onkeypress='return field_keypress(event, "text_file");'/></span></div>
+		<div class='field_div'>
+			<label class='field_label'>File</label><span class='field_span'><input id='text_file' type='text' onkeypress='return field_keypress(event, "text_url");'/></span>
+			<input type='button' class='field_label' value='Browse' onmouseup='browse();'>
+		</div>
+		<div class='field_div'><label class='field_label'>Url</label><span class='field_span'><input id='text_url' type='text' onkeypress='return field_keypress(event, "text_doi");'/></span></div>
+		<div class='field_div'><label class='field_label'>DOI</label><span class='field_span'><input id='text_doi' type='text' onkeypress='return field_keypress(event, "text_owner");'/></span></div>
+		<div class='field_div'>
+			<label class='field_label'>Owner</label><span class='field_span'><input id='text_owner' type='text' onkeypress='return field_keypress(event, "text_timestamp");'/></span>
+			<label class='field_label'>Timestamp</label><span class='field_span'><input id='text_timestamp' type='text' ondblclick='return generate_timestamp(this);'/></span>
+		</div>
+	</div>
 	<div id='bibtex_entry'>
 		<div>
 			<input id='textview_bibtex' type='textview' />
