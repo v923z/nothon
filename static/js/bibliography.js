@@ -26,6 +26,9 @@ $(document).ready(function () {
 	$('#notes_tab').tabs({ 
 		activate: function(event, ui) { tabs_activated(event, ui) }
 	});
+	$('#field_file_button').click(function() {
+		$('#input_file').click();   
+	});
 })
 
 function bibliography_side_switch() {
@@ -290,5 +293,12 @@ function generate_timestamp(dom) {
 }
 
 function browse() {
+	var file_list = $('#text_file').val()
+	if(file_list.length > 0) {
+		file_list += ', ' + $('#input_file').val()
+	} else {
+		file_list = $('#input_file').val()
+	}
+	 $('#text_file').val(file_list)
 	return false
 }

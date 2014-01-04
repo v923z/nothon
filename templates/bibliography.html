@@ -252,7 +252,8 @@ $for f in create_funcs + handler_funcs:
 		<div class='field_div'><label class='field_label'>Keywords</label><span class='field_span'><input id='text_keywords' type='text' onkeypress='return field_keypress(event, "text_file");'/></span></div>
 		<div class='field_div'>
 			<label class='field_label'>File</label><span class='field_span'><input id='text_file' type='text' onkeypress='return field_keypress(event, "text_url");'/></span>
-			<input type='button' class='field_label' value='Browse' onmouseup='browse();'>
+			<input id='field_file_button' type='button' value='Browse' />
+			<input id='input_file' type='file' name='files' class='field_label' style='display: none;' onchange='browse(this)'>
 		</div>
 		<div class='field_div'><label class='field_label'>Url</label><span class='field_span'><input id='text_url' type='text' onkeypress='return field_keypress(event, "text_doi");'/></span></div>
 		<div class='field_div'><label class='field_label'>DOI</label><span class='field_span'><input id='text_doi' type='text' onkeypress='return field_keypress(event, "text_owner");'/></span></div>
