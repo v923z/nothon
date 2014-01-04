@@ -66,6 +66,7 @@ function get_max_index(className) {
 
 function _create_message(message_type) {
 	var message = new Object()
+	message.date = Date()
 	message.command = message_type
 	message.doc_title = document.title
 	message.type = $('body').data('type')
@@ -180,7 +181,6 @@ function _save(method) {
 		return null
 	}
 	var message = _create_message(method)
-	message.date = Date()
 	return message
 }
 
@@ -296,7 +296,6 @@ $(function() {
 		height:		150,
 		width:		400,
 		modal:		true,
-		title:		'New notebook',
 		draggable:	true,
 		hide:		'fade',
 		buttons:	{
@@ -315,9 +314,10 @@ function create_new_notebook() {
 	window.location.href = "?name=" + notebook_address
 }
 
-function open_new_notebook_dialog() {
+function open_new_notebook_dialog(title) {
 	// TODO: move focus to dialog
 	$('#new_notebook_dialog').dialog('open')
+	$('#new_notebook_dialog').dialog({title: title})	
 }
 
 function new_notebook_keypress(event) {
@@ -500,4 +500,37 @@ function cut_intoc(string) {
 
 function toggle_calendar() {
 	$('#calendar').toggle()
+}
+
+function save_notebook_as() {
+	$('#new_notebook_dialog').dialog('open')
+	$('#new_notebook_dialog').dialog({
+		title: 'Save notebook as...', 
+		buttons:	{
+			'Save' : function(){ _save_notebook_as() },
+			'Cancel' : function(){ $(this).dialog('close')}
+		}
+	})
+}
+
+function _save_notebook_as() {
+	var notebook_address = $('#new_notebook').val()
+	if(notebook_address.length == 0) return
+	if(notebook_address.indexOf('.note') != notebook_address.length - 6) notebook_address += '.note'
+	var message = _save('save')
+	if(message == null) return
+	message.title = $('#div_title').html()
+	message.notebook = get_divs()
+	message.sub_command = 'save_notebook_as'
+	message.notebook_address = notebook_address
+	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_as_handler)
+}
+
+function save_as_handler(req) {
+	var message = JSON.parse(req.responseText)
+	if(message['success'] == 'success') {
+		window.location.href = "?name=" + message['notebook_address']
+	} else {
+		alert(message['success'])
+	}
 }

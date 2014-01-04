@@ -1,11 +1,12 @@
 import simplejson
 import os
+from shutil import copytree
 from fileutils import notebook_folder
 import latex
 import markdown
 from cell_utils import write_notebook
 
-def _save(message, resource):	
+def _save(message, fn, resource):
 	" Writes the stipped document content to disc "
 	nb = { 'title' : message['title'],
 			'type' : message['type'],
@@ -15,12 +16,12 @@ def _save(message, resource):
 	}
 
 	if message['type'] in ('notebook'):
-		print message['notebook']
 		nb['notebook'] = message['notebook']
-		write_notebook(message['file'], nb, resource.notebook_item_order)
+		write_notebook(fn, nb, resource.notebook_item_order)
+	# This is probably not needed: saving of the bibliography is handled through the bibliography class
 	if message['type'] in ('bibliography'):
 		nb['bibliography'] = message['bibliography']
-		write_bibliography(message['file'], nb, resource.bibliography_item_order)
+		write_bibliography(fn, nb, resource.bibliography_item_order)
 		
 class Save():
 	
@@ -28,12 +29,21 @@ class Save():
 		self.resource = resource
 		
 	def handler(self, message):
-		try:
-			_save(message, self.resource)
-			success = 'success'
-		except:
-			success = 'failed'
-		return  simplejson.dumps({'success' : success})
+		print message['sub_command']
+		if message['sub_command'] in ('save_notebook_as'):
+			if os.path.exists(message['notebook_address']):
+				success = 'File %s already exists.\n Choose a different name'%(message['notebook_address'])
+			else:
+				_save(message, message['notebook_address'], self.resource)
+				copytree(notebook_folder(message['file']), notebook_folder(message['notebook_address']))
+				success = 'success'
+		else:		
+			try:
+				_save(message, message['file'], self.resource)
+				success = 'success'
+			except:
+				success = 'failed'
+		return  simplejson.dumps({'success' : success, 'notebook_address': message['notebook_address']})
 
 class Zip():
 	
@@ -51,7 +61,7 @@ class Zip():
 				for file in files:
 					zipper.write(os.path.join(root, file))
 
-		_save(message, self.resource)
+		_save(message, message['file'], self.resource)
 		fn = message['notebook']
 		folder = notebook_folder(fn)
 		zipper = zipfile.ZipFile(fn.replace('.note', '.zip'), 'w')
@@ -74,7 +84,7 @@ class Tar():
 		except ImportError:
 			return simplejson.dumps({'success' : 'Could not import module "tarfile".'})
 
-		_save(message, self.resource)
+		_save(message, message['file'], self.resource)
 		fn = message['notebook']
 		folder = notebook_folder(fn)
 		tar = tarfile.open(fn.replace('.note', '.tgz'), 'w:gz')
@@ -92,7 +102,7 @@ class Latex():
 		self.resource = resource
 
 	def handler(self, message):
-		_save(message, self.resource)
+		_save(message, message['file'], self.resource)
 		latex.process_note(message['notebook'])
 		return  simplejson.dumps({'success' : 'success'})
 
@@ -103,6 +113,6 @@ class Markdown():
 		self.resource = resource
 
 	def handler(self, message):
-		_save(message, self.resource)
+		_save(message, message['file'], self.resource)
 		markdown.process_note(message['notebook'])
 		return  simplejson.dumps({'success' : 'success'})
