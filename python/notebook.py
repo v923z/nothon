@@ -5,6 +5,7 @@ from template_helpers import *
 from plot_utils import Plot
 from head_utils import Head
 from code_utils import Code
+from text_utils import Text
 from save_utils import Zip, Tar, Save, Latex, Markdown
 
 class Notebook(object):
@@ -48,7 +49,7 @@ class Notebook(object):
 		
 		for element in content:
 			elem_type element.get('type')
-			if elem_type in ('plot', 'head', 'code'):
+			if elem_type in ('plot', 'head', 'code', 'text'):
 				exec('obj = %s(None)'%(elem_type.title()))
 				div = obj.render(element, render)
 			else:
