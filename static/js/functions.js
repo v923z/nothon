@@ -502,18 +502,24 @@ function toggle_calendar() {
 	$('#calendar').toggle()
 }
 
-function save_notebook_as() {
+function save_notebook_as(method) {
+	if(method == 'save_notebook_as') {
+		var title = 'Save notebook as ...'
+	} else if(method == 'rename_notebook') {
+		var title = 'Rename notebook ...'
+	}
+	else return
 	$('#new_notebook_dialog').dialog('open')
 	$('#new_notebook_dialog').dialog({
-		title: 'Save notebook as...', 
+		title: title, 
 		buttons:	{
-			'Save' : function(){ _save_notebook_as() },
+			'Save' : function(){ _save_notebook_as(method) },
 			'Cancel' : function(){ $(this).dialog('close')}
 		}
 	})
 }
 
-function _save_notebook_as() {
+function _save_notebook_as(method) {
 	var notebook_address = $('#new_notebook').val()
 	if(notebook_address.length == 0) return
 	if(notebook_address.indexOf('.note') != notebook_address.length - 6) notebook_address += '.note'
@@ -521,7 +527,7 @@ function _save_notebook_as() {
 	if(message == null) return
 	message.title = $('#div_title').html()
 	message.notebook = get_divs()
-	message.sub_command = 'save_notebook_as'
+	message.sub_command = method
 	message.notebook_address = notebook_address
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_as_handler)
 }

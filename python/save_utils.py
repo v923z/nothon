@@ -1,6 +1,6 @@
 import simplejson
 import os
-from shutil import copytree
+from shutil import copytree, move
 from fileutils import notebook_folder
 import latex
 import markdown
@@ -30,12 +30,16 @@ class Save():
 		
 	def handler(self, message):
 		print message['sub_command']
-		if message['sub_command'] in ('save_notebook_as'):
+		if message['sub_command'] in ('save_notebook_as', 'rename_notebook'):
 			if os.path.exists(message['notebook_address']):
 				success = 'File %s already exists.\n Choose a different name'%(message['notebook_address'])
 			else:
 				_save(message, message['notebook_address'], self.resource)
-				copytree(notebook_folder(message['file']), notebook_folder(message['notebook_address']))
+				if message['sub_command'] in ('save_notebook_as'):
+					copytree(notebook_folder(message['file']), notebook_folder(message['notebook_address']))
+				if message['sub_command'] in ('rename_notebook'):
+					move(notebook_folder(message['file']), notebook_folder(message['notebook_address']))
+					os.rename(message['file'], message['notebook_address'])
 				success = 'success'
 		else:		
 			try:
