@@ -1,6 +1,11 @@
-from python.plot_utils import Plot
-from python.head_utils import Head
-from python.code_utils import Code
+from bs4 import BeautifulSoup
+
+from template_helpers import *
+
+from plot_utils import Plot
+from head_utils import Head
+from code_utils import Code
+from save_utils import Zip, Tar, Save, Latex, Markdown
 
 class Notebook(object):
 	""" Entry point for handling notebook files """
@@ -9,74 +14,68 @@ class Notebook(object):
 		self.resource = resource
 		
 	def handler(self, message):
-		if message.get('sub_command') in ('plot', 'head', 'code'):
-			exec('obj = %s(nothon_resource)'%(message.get('command').title()))
+		command = message.get('sub_command')
+		if command in ('plot', 'head', 'code'):
+			exec('obj = %s(nothon_resource)'%(command.title()))
 			return obj.handler(message)
 
+		if command in ('save', 'tar', 'zip', 'latex', 'markdown'):
+			fn = message.get('file')
+			folder = notebook_folder(fn)
+			result = save_notebook(message, fn self.resource)
 			
-	def parse_note(self):
-		pass
+			if command in ('tar'):
+				result = Tar(self.resource).tar_notebook(fn, folder, fn.replace('.note', '.tgz'))
+			elif command in ('zip'):
+				result = Zip(self.resource).zip_notebook(fn, folder, fn.replace('.note', '.zip'))
+			elif command in ('latex'): 
+				result = Latex(self.resource).process_note(fn)
+			elif command in ('markdown'): 
+				result = Markdown(self.resource).process_note(fn)
+		else:
+			result = {'success': 'undefined command: %s'%(command)}
+			
+		return result
 		
-	def zip_notebook(self, message):
-		try:
-			import zipfile
-		except ImportError:
-			return simplejson.dumps({'success' : 'Could not import module "zipfile".'})
-
-		def zipdir(path, zipper):
-			for root, dirs, files in os.walk(path):
-				for file in files:
-					zipper.write(os.path.join(root, file))
-
-		save_notebook(message, message['file'], self.resource)
-		fn = message.get('file')
-		folder = notebook_folder(fn)
-		zipper = zipfile.ZipFile(fn.replace('.note', '.zip'), 'w')
-		zipper.write(fn)
-		if os.path.exists(folder): zipdir(folder, zipper)
-		zipper.close()
-		return simplejson.dumps({'success' : 'success'})
+	def parse_note(self, fn):
+		note = {}
+		note_str = ''
+			
+		data = get_notebook(fn)
+		content = data.get('notebook')
+		note['directory'] = {'content' : data.get('directory')}
+		note['title'] = {'content' : data.get('title')}
 		
-	def handler(self, message):
-		return self.zip_notebook(message)
-
-	def tar_notebook(self, message):
-		try:
-			import tarfile
-		except ImportError:
-			return simplejson.dumps({'success' : 'Could not import module "tarfile".'})
-
-		save_notebook(message, message['file'], self.resource)
-		fn = message.get('file')
-		folder = notebook_folder(fn)
-		tar = tarfile.open(fn.replace('.note', '.tgz'), 'w:gz')
-		tar.add(fn)
-		if os.path.exists(folder): tar.add(folder)
-		tar.close()
-		return simplejson.dumps({'success' : 'success'})
-		
-	def handler(self, message):
-		return self.tar_notebook(message)
-
-class Latex():
-	
-	def __init__(self, resource):
-		self.resource = resource
-
-	def handler(self, message):
-		save_notebook(message, message['file'], self.resource)
-		latex.process_note(message.get('file'))
-		return  simplejson.dumps({'success' : 'success'})
+		for element in content:
+			elem_type element.get('type')
+			if elem_type in ('plot', 'head', 'code'):
+				exec('obj = %s(None)'%(elem_type.title()))
+				div = obj.render(element, render)
+			else:
+				exec('element = %s_update_dict(element)'%(elem_type))	
+				exec('div = render.%s_html(%s, %s)'%(elem_type, element['count'], element['content']))
+				if elem_type in ('text', 'section', 'paragraph'):
+					div = update_image(div, note['directory'])
+			note_str += str(div)
+			
+		note['content'] = {'content' : note_str}
+		return note
 
 
-class Markdown():
-	
-	def __init__(self, resource):
-		self.resource = resource
-
-	def handler(self, message):
-		save_notebook(message, message['file'], self.resource)
-		markdown.process_note(message.get('file'))
-		return  simplejson.dumps({'success' : 'success'})
-
-	
+def update_image(content, directory):
+	# Parses the content for images, fetches them from disc, and inserts them accordingly
+	soup = BeautifulSoup(str(content))
+	dic = {}
+	for img in soup.find_all(class_='section_image'):
+		ID = img['id'].split('_')[-1]
+		dic['style'] = {'content' : img['style']}
+		dic['image_data'] = {'content' : fetch_image(ID, img['data-path'], directory)}
+		dic['image_caption'] = {'content' : img['data-caption']}
+		s = BeautifulSoup(str(render.image_html(ID, dic)))
+		s.html.unwrap()
+		s.body.unwrap()
+		img.replace_with(s)
+        
+	soup.html.unwrap()
+	soup.body.unwrap()
+	return soup
