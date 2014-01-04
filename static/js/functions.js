@@ -189,6 +189,9 @@ function save_notebook(method) {
 	if(message == null) return
 	message.title = $('#div_title').html()
 	message.notebook = get_divs()
+	// TODO: we might have to track the type of the parent document (bibliography etc.)
+	message.type = 'notebook'
+	message.file = $('#docmain').data('file')
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 

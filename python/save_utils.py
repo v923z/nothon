@@ -6,21 +6,19 @@ import latex
 import markdown
 from cell_utils import write_notebook
 
-def _save(message, fn, resource):
+def save_notebook(message, fn, resource):
 	" Writes the stipped document content to disc "
-	nb = { 'title' : message['title'],
-			'type' : message['type'],
-			'date' : message['date'],
-			'directory' : message["directory"].strip('<br>'), 
+	nb = { 'title' : message.get('title', ''),
+			'type' : message.get('type'),
+			'date' : message.get('date'),
+			'directory' : message.get('directory', '""').strip('<br>'), 
 			'nothon version' : resource.nothon_version
 	}
-
-	if message['type'] in ('notebook'):
-		nb['notebook'] = message['notebook']
+	if message.get('type') in ('notebook'):
+		nb['notebook'] = message.get('notebook')
 		write_notebook(fn, nb, resource.notebook_item_order)
-	# This is probably not needed: saving of the bibliography is handled through the bibliography class
-	if message['type'] in ('bibliography'):
-		nb['bibliography'] = message['bibliography']
+	if message.get('type') in ('bibliography'):
+		nb['bibliography'] = message.get('bibliography')
 		write_bibliography(fn, nb, resource.bibliography_item_order)
 		
 class Save():
@@ -29,25 +27,26 @@ class Save():
 		self.resource = resource
 		
 	def handler(self, message):
-		print message['sub_command']
-		if message['sub_command'] in ('save_notebook_as', 'rename_notebook'):
+		if message.get('sub_command') in ('save_notebook_as', 'rename_notebook'):
 			if os.path.exists(message['notebook_address']):
 				success = 'File %s already exists.\n Choose a different name'%(message['notebook_address'])
 			else:
-				_save(message, message['notebook_address'], self.resource)
+				save_notebook(message, message['notebook_address'], self.resource)
 				if message['sub_command'] in ('save_notebook_as'):
 					copytree(notebook_folder(message['file']), notebook_folder(message['notebook_address']))
 				if message['sub_command'] in ('rename_notebook'):
 					move(notebook_folder(message['file']), notebook_folder(message['notebook_address']))
 					os.rename(message['file'], message['notebook_address'])
 				success = 'success'
-		else:		
+			return  simplejson.dumps({'success' : success, 'notebook_address': message['notebook_address']})
+
+		else:	
 			try:
-				_save(message, message['file'], self.resource)
+				save_notebook(message, message['file'], self.resource)
 				success = 'success'
 			except:
 				success = 'failed'
-		return  simplejson.dumps({'success' : success, 'notebook_address': message['notebook_address']})
+			return  simplejson.dumps({'success' : success})
 
 class Zip():
 	
@@ -65,8 +64,8 @@ class Zip():
 				for file in files:
 					zipper.write(os.path.join(root, file))
 
-		_save(message, message['file'], self.resource)
-		fn = message['notebook']
+		save_notebook(message, message['file'], self.resource)
+		fn = message.get('file')
 		folder = notebook_folder(fn)
 		zipper = zipfile.ZipFile(fn.replace('.note', '.zip'), 'w')
 		zipper.write(fn)
@@ -88,8 +87,8 @@ class Tar():
 		except ImportError:
 			return simplejson.dumps({'success' : 'Could not import module "tarfile".'})
 
-		_save(message, message['file'], self.resource)
-		fn = message['notebook']
+		save_notebook(message, message['file'], self.resource)
+		fn = message.get('file')
 		folder = notebook_folder(fn)
 		tar = tarfile.open(fn.replace('.note', '.tgz'), 'w:gz')
 		tar.add(fn)
@@ -106,8 +105,8 @@ class Latex():
 		self.resource = resource
 
 	def handler(self, message):
-		_save(message, message['file'], self.resource)
-		latex.process_note(message['notebook'])
+		save_notebook(message, message['file'], self.resource)
+		latex.process_note(message.get('file'))
 		return  simplejson.dumps({'success' : 'success'})
 
 
@@ -117,6 +116,6 @@ class Markdown():
 		self.resource = resource
 
 	def handler(self, message):
-		_save(message, message['file'], self.resource)
-		markdown.process_note(message['notebook'])
+		save_notebook(message, message['file'], self.resource)
+		markdown.process_note(message.get('file'))
 		return  simplejson.dumps({'success' : 'success'})

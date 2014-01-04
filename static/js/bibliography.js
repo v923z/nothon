@@ -48,11 +48,11 @@ function bibliography_side_switch() {
 function add_row(target, type) {
 	$('#publication_list tr.active_row').removeClass('active_row')
 	var uuid = generate_uuid()
-	$('#docmain').data('id', uuid)
 	var entry = new Object()
 	entry['type'] = type
 	bibliography[uuid] = entry
-
+	set_active_paper(uuid)
+	
 	var columns = count_columns(target)
 	var row = '<tr id="' + uuid + '"><td>' + count_rows(target) + '</td>'
 	
@@ -92,7 +92,7 @@ function new_entry(target, link) {
 }
 
 function change_to_entry(target, link) {
-	var uuid = $('#docmain').data('id')
+	var uuid = get_active_paper()
 	// Bail out immediately, if no active entry
 	if(uuid.length == 0) {
 		alert('No active entry found')
@@ -109,12 +109,13 @@ function activate_element(event) {
 	if(!uuid) {
 		return false
 	}
-	$('#docmain').data('id', uuid)
+	var id = get_active_paper()
+	// TODO: send save to server, get notebook from disc
+	save_and_load(uuid)
+	set_active_paper(uuid)
 	$('#publication_list tr.active_row').removeClass('active_row')
 	$('#' + uuid).addClass('active_row')
 	console.log(bibliography[uuid]['key'])
-	// TODO: send save to server, get notebook from disc
-	//var message = bib_message('save')
 	fill_in_fields(uuid)
 	return false
 }
@@ -181,7 +182,6 @@ function set_group(group, id) {
 		}
 		group /= 10
 	}
-	
 }
 
 function set_stars(stars) {
@@ -195,8 +195,7 @@ function set_field_id(uuid) {
 }
 
 function generate_uuid() {
-	if(!bibliography.keys) return '1'
-	
+	if(Object.keys(bibliography).length == 0) return '1'
 	var tmp = new Array()
 	for(i in bibliography) {
 		tmp.push(parseInt(i))
@@ -214,7 +213,7 @@ function toggle_notes() {
 }
 
 function tabs_activated(event, ui) {
-	var uuid = $('#docmain').data('id')
+	var uuid = get_active_paper()
 	if(uuid.length == 0) return false
 	if(ui.oldTab.index() == 1 || ui.oldTab.index() == 2) {
 		// fields tabs
@@ -240,22 +239,19 @@ function tabs_activated(event, ui) {
 function get_bibliography_handler(req) {
 	// TODO: some error handling here?
 	var message = JSON.parse(req.responseText)
-	if(message['success'] == 'success') bibliography = message['bibliography']
+	if(message['success'] == 'success') {
+		bibliography = message['bibliography']
+		extra_data = message['extra_data']
+	}
 	else {
 		alert('Could not read file: ' + message['file'])
 		bibliography = null
+		extra_data = null
 	}
 }
 
-function save_bibliography(method) {
-	var message = _save('bibliography')
-	message.bibliography = bibliography
-	message['sub_command'] = method
-	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
-}
-
 function group_changed() {
-	var id = $('#docmain').data('id')
+	var id = get_active_paper()
 	if(id == null) return false
 	var num = 0
 	var mult = 1
@@ -270,7 +266,7 @@ function group_changed() {
 }
 
 function stars_changed() {
-	var id = $('#docmain').data('id')
+	var id = get_active_paper()
 	if(id == null) return false
 	bibliography[id]['stars'] = parseInt($('input[name=stars]:checked').attr('id').slice(-1))
 	fill_in_row(id)
@@ -278,7 +274,11 @@ function stars_changed() {
 }
 
 function field_keypress(event, target) {
+	var id = get_active_paper()
+	if(id == null) return false
 	if(event.which === 13) {
+		fill_in_bibliography(id)
+		fill_in_row(id)
 		$('#' + target).focus()
 		return false
 	} else {
@@ -299,6 +299,42 @@ function browse() {
 	} else {
 		file_list = $('#input_file').val()
 	}
-	 $('#text_file').val(file_list)
+	$('#text_file').val(file_list)
+	var id = get_active_paper()
+	bibliography[uuid]['file'] = file_list
 	return false
+}
+
+function set_active_paper(uuid) {
+	$('#docmain').data('id', uuid)
+	if(!bibliography[uuid]['notebook'] || bibliography[uuid]['notebook'].length == 0) {
+		// This would happen, when a new entry is created
+		bibliography[uuid]['notebook'] = extra_data['folder'] + extra_data['separator'] + uuid + '.note'
+	}
+	$('#docmain').data('file', bibliography[uuid]['notebook'])
+}
+
+function get_active_paper() {
+	return $('#docmain').data('id')
+}
+
+function save_bibliography(method) {
+	var message = _save('bibliography')
+	message.bibliography = bibliography
+	message['sub_command'] = method
+	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
+}
+
+
+function save_and_load(id) {
+	//var message = _save('bibliography')
+	//if(message == null) return
+	//message.sub_command = 'save_and_load'
+	//message.notebook = get_divs()
+	//message.file = $('#docmain').data('file')
+	//message.new_notebook = bibliography[id]['notebook']
+	//xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_and_load_handler)
+}
+
+function save_and_load_handler(req) {
 }

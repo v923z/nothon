@@ -2,6 +2,7 @@ import simplejson
 import datetime
 from fileutils import get_notebook, create_notebook_folder, notebook_folder
 from cell_utils import write_notebook
+from save_utils import save_notebook
 import uuid
 import os
 import datetime
@@ -12,16 +13,18 @@ class Bibliography():
 		self.resource = resource
 	
 	def handler(self, message):
-		if message['sub_command'] in ('get_bibliography'):
+		if message.get('sub_command') in ('get_bibliography'):
+			# This function is called by the client immediately after loading the main content
 			try:
 				data = get_notebook(message['file'])
 				bibliography = data.get('bibliography')
-				return simplejson.dumps({'success' : 'success', 'bibliography' : bibliography})
+				extra_data = {'separator': os.sep, 'folder': notebook_folder(message['file'])}
+				return simplejson.dumps({'success' : 'success', 'bibliography' : bibliography, 'extra_data': extra_data})
 			except:
 				return simplejson.dumps({'success' : 'failed', 'file': message['file']})
 				
-		if message['sub_command'] in ('save_bibnote'):
-			bib_dic = {'type' : 'bibliography', 'bibliography' : message['bibliography'], 'date' : message['date']}
+		if message.get('sub_command') in ('save_bibnote'):
+			bib_dic = {'type' : 'bibliography', 'bibliography' : message.get('bibliography', ''), 'date' : message.get('date', '')}
 			bib_dic['nothon version'] = self.resource.nothon_version
 			# Have we got to re-format the author list here?
 			try:
@@ -30,6 +33,14 @@ class Bibliography():
 			except:
 				#TODO: return the error code
 				return simplejson.dumps({'success' : 'failed'})
+				
+		if message.get('sub_command') in ('save_and_load'):
+			try:
+				save_notebook(message, message.get('file'), self.resource)
+				
+			except:
+				return simplejson.dumps({'success' : 'failed'})
+			
 		else: return simplejson.dumps({'success' : 'failed'})
 
 
@@ -52,8 +63,10 @@ def parse_bibliography(fn, resource):
 		for i, entry in enumerate(sorted(bibliography.keys())):
 			if os.path.exists(os.path.join(notebook_folder(fn), '%s.note'%(entry))) is False:
 				missing = True
-				create_notebook_folder(os.path.join(notebook_folder(fn), '%s.note'%(entry)))
-				write_notebook(os.path.join(notebook_folder(fn), '%s.note'%(entry)), {'notebook' : []}, resource.notebook_item_order)
+				write_notebook(os.path.join(notebook_folder(fn), '%s.note'%(entry)), 
+								{'notebook': [], 'nothon version': resource.nothon_version, 'type': 'notebook'}, 
+								resource.notebook_item_order)
+				# Here we should insert only the relative path
 				bibliography[entry]['notebook'] = os.path.join(notebook_folder(fn), '%s.note'%(entry))
 
 			body_str += render_bibtex_entry(i, bibliography[entry], entry, resource)

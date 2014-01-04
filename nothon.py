@@ -80,9 +80,9 @@ def parse_note(fn):
 	note_str = ''
 		
 	data = get_notebook(fn)
-	content = data['notebook']
-	note['directory'] = {'content' : data['directory']}
-	note['title'] = {'content' : data['title']}
+	content = data.get('notebook')
+	note['directory'] = {'content' : data.get('directory')}
+	note['title'] = {'content' : data.get('title')}
 	
 	for element in content:
 		if not element.get('type'):
