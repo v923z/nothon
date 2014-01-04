@@ -27,7 +27,7 @@ def code_arguments(string):
 		
 	return fn, tag, linenos, include
 
-class Code():
+class Code(object):
 	
 	def __init__(self, resource):
 		if resource is None:
@@ -76,7 +76,7 @@ class Code():
 		if not lexer: return ''.join(code)
 		return highlight(''.join(code), lexer, HtmlFormatter(linenos=linenos))
 
-	def render(self, dictionary, render):
+	def render(self, dictionary, directory, render):
 		fn, tag, linenos, include = code_arguments(dictionary['content']['code_header']['content'])
 		try:
 			if self.resource.has_pygments: lexer = get_lexer_for_filename(fn)

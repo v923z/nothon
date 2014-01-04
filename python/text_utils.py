@@ -2,37 +2,41 @@ import os
 from bs4 import BeautifulSoup
 
 class Text(object):
+		
+	def __init__(self, resource):
+		self.resource = resource
+		pass
+
+	def render(self, dictionary, directory, render):
+		div = render.text_html(dictionary['count'], dictionary['content'])
+		if directory:
+			div = update_image(div, directory)
+		return str(div)
+
+
+class Paragraph(object):
 	
 	def __init__(self, resource):
 		self.resource = resource
 		pass
 
-	def render(self, dictionary, render):
-		div = render.text_html(dictionary['count'], dictionary['content'])
-		if note.get('directory'):
-			div = update_image(div, note.get('directory'))
-		return str(div)
-
-class Paragraph(object):
-	def __init__(self, resource):
-		self.resource = resource
-		pass
-
-	def render(self, dictionary, render):
+	def render(self, dictionary, directory, render):
 		div = render.paragraph_html(dictionary['count'], dictionary['content'])
-		if note.get('directory'):
-			div = update_image(div, note.get('directory'))
+		if directory:
+			div = update_image(div, directory)
 		return str(div)
 
-class section(object):
+
+class Section(object):
+	
 	def __init__(self, resource):
 		self.resource = resource
 		pass
 
-	def render(self, dictionary, render):
+	def render(self, dictionary, directory, render):
 		div = render.text_html(dictionary['count'], dictionary['content'])
-		if note.get('directory'):
-			div = update_image(div, note.get('directory'))
+		if directory:
+			div = update_image(div, directory)
 		return str(div)
 
 def update_image(content, directory):

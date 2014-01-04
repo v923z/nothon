@@ -23,7 +23,7 @@ def save_notebook(message, fn, resource):
 		
 	return simplejson.dumps({'success': succes})
 		
-class Save():
+class Save(object):
 	
 	def __init__(self, resource):
 		self.resource = resource

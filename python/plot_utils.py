@@ -8,7 +8,7 @@ try:
 except:
 	pass
 	
-class Plot():
+class Plot(object):
 	
 	def __init__(self, resource):
 		self.resource = resource
@@ -61,6 +61,6 @@ class Plot():
 							message['title'] : os.path.join(new_path, fn + '.png'), 
 							message['body'] : exit_status})
 
-	def render(self, dictionary, render):
+	def render(self, dictionary, directory, render):
 		dictionary['content']['plot_body'] = {'content' : self.read_plot(dictionary['content']['plot_file']['content'])}
 		return render.plot_html(dictionary['count'], dictionary['content'])

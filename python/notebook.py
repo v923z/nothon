@@ -44,14 +44,15 @@ class Notebook(object):
 			
 		data = get_notebook(fn)
 		content = data.get('notebook')
-		note['directory'] = {'content' : data.get('directory')}
+		directory = data.get('directory')
+		note['directory'] = {'content' : directory}
 		note['title'] = {'content' : data.get('title')}
 		
 		for element in content:
 			elem_type element.get('type')
 			if elem_type in ('plot', 'head', 'code', 'text'):
 				exec('obj = %s(None)'%(elem_type.title()))
-				div = obj.render(element, render)
+				div = obj.render(element, directory, render)
 			else:
 				exec('element = %s_update_dict(element)'%(elem_type))	
 				exec('div = render.%s_html(%s, %s)'%(elem_type, element['count'], element['content']))
