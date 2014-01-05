@@ -41,67 +41,6 @@ web.template.Template.globals['safe_content'] = safe_content
 web.template.Template.globals['safe_props'] = safe_props
 app = web.application(urls, globals())
 
-def update_image(content, directory):
-	# Parses the content for images, fetches them from disc, and inserts them accordingly
-	soup = BeautifulSoup(str(content))
-	dic = {}
-	for img in soup.find_all(class_='section_image'):
-		ID = img['id'].split('_')[-1]
-		dic['style'] = {'content' : img['style']}
-		dic['image_data'] = {'content' : fetch_image(ID, img['data-path'], directory)}
-		dic['image_caption'] = {'content' : img['data-caption']}
-		s = BeautifulSoup(str(render.image_html(ID, dic)))
-		s.html.unwrap()
-		s.body.unwrap()
-		img.replace_with(s)
-        
-	soup.html.unwrap()
-	soup.body.unwrap()
-	return soup
-
-def fetch_image(ID, fn, directory):
-	try:
-		fn = get_file_path(fn, directory)
-		# TODO: figure out image size, deal with SVG files
-		ext = os.path.splitext(fn)[1]
-		if ext.lower() in ('.png', '.jpg', '.jpeg', '.bmp', '.tiff'):
-			with open(fn, "rb") as image_file:
-				return '<img id="img_' + ID + '" src="data:image/' + ext + ';base64,' + base64.b64encode(image_file.read()) + '"/>'
-	except IOError:
-		return '<span class="code_error">Could not read file from disc</span>'
-	
-def text_update_dict(dictionary):
-	#update_image(dictionary['content']['text_body']['content'], '/home/v923z/sandbox/nothon/')
-	return dictionary
-
-def paragraph_update_dict(dictionary):
-	return dictionary
-
-def parse_note(fn):
-	note = {}
-	note_str = ''
-		
-	data = get_notebook(fn)
-	content = data.get('notebook')
-	note['directory'] = {'content' : data.get('directory')}
-	note['title'] = {'content' : data.get('title')}
-	
-	for element in content:
-		if not element.get('type'):
-			pass
-		if element['type'] in ('plot', 'head', 'code'):
-			exec('obj = %s(None)'%(element['type'].title()))
-			div = obj.render(element, render)
-		else:
-			exec('element = %s_update_dict(element)'%(element['type']))	
-			exec('div = render.%s_html(%s, %s)'%(element['type'], element['count'], element['content']))
-			if element['type'] in ('text', 'section', 'paragraph'):
-				div = update_image(div, note['directory'])
-		note_str += str(div)
-		
-	note['content'] = {'content' : note_str}
-	return note
-
 def image_handler(message, resource):
 	ID = message['id'].split('_')[-1]
 	fn = message['filename']
@@ -122,39 +61,6 @@ def maxima_execute(max_string):
 	os.remove(tmp)
 	os.remove(tmp + '.out')
 	return result
-	
-def text_handler(message, resource):
-	print message["content"]
-	result = maxima_execute(message["content"])
-	if result.find('$$') == -1:
-		return simplejson.dumps({'target' : message['id'], 'success' : 'failed', 'result' : result})
-	else:
-		return simplejson.dumps({'target' : message['id'], 'success' : 'success', 'result' : result.split('$$')[1]})
-
-def paragraph_handler(message, resource):
-	return text_handler(message, resource)
-	
-def savehtml_handler(message, resource):
-	fin = open('static/css/main.css', 'r')
-	css = fin.read()
-	fin.close()
-	fin = open('static/css/highlight.css', 'r')
-	css += fin.read()
-	fin.close()
-	# TODO: If the source of the page has a link to an image, either on disc, or on the web, 
-	# then that has to be resolved, and the base64 representation inserted in the html file.
-	fout = open(message['outfile'].replace('.note', '.html'), 'w')
-	# The aside (third argument) could be used for adding a table of contents to the page later on
-	fout.write(str(render.saved_document(message['title'], css, 'aside', message['content'])))
-	fout.close()
-	return  simplejson.dumps({'success' : 'success'})
-
-def docmain_render_handler(message, resource):
-	notebook = parse_note(message["address"])
-	return simplejson.dumps({'docmain' : notebook['content']['content'], 
-							'title' : notebook['title']['content'],
-							'doc_title' : message["address"],
-							'directory' : notebook['directory']['content']})
 	
 def list_handler_functions():
 	return [file.split('.')[0] for file in os.listdir('static/js/') if file.startswith('_')]
@@ -178,7 +84,7 @@ class Index(object):
 		elif link.name == '__bibliography':
 			return 	render.bib_list(link.name, aside, make_bibliography())
 		elif link.name.endswith('.bibnote'):
-			bib = Bibliography(nothon_resource)
+			bib = Bibliography(nothon_resource, render)
 			if not os.path.exists(link.name):
 				bib.new_bibliography(link.name)
 			return render.bibliography(link.name, link.name, aside, parse_bibliography(link.name, nothon_resource), list_handler_functions(), list_create_functions())
@@ -199,7 +105,7 @@ class Index(object):
 		doc_type = message.get('type')
 		if doc_type in ('notebook'):
 			exec('obj = %s(nothon_resource, render)'%(doc_type.title()))
-			return obj.handler(message)
+			return simplejson.dumps(obj.handler(message))
 			
 		#if message['command'] in ('plot', 'head', 'code', 'zip', 'tar', 'save', 'latex', 'markdown', 'bibliography'):
 			#exec('obj = %s(nothon_resource)'%(message['command'].title()))

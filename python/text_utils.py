@@ -5,33 +5,36 @@ class Text(object):
 		
 	def __init__(self, resource):
 		self.resource = resource
-		pass
 
 	def render(self, dictionary, directory, render):
 		div = render.text_html(dictionary['count'], dictionary['content'])
 		if directory:
 			div = update_image(div, directory)
 		return str(div)
+		
+	def handler(message, resource):
+		return {'success': 'success'}
 
 
 class Paragraph(object):
 	
 	def __init__(self, resource):
 		self.resource = resource
-		pass
-
+		
 	def render(self, dictionary, directory, render):
 		div = render.paragraph_html(dictionary['count'], dictionary['content'])
 		if directory:
 			div = update_image(div, directory)
 		return str(div)
+		
+	def handler(message, resource):
+		return {'success': 'success'}
 
 
 class Section(object):
 	
 	def __init__(self, resource):
 		self.resource = resource
-		pass
 
 	def render(self, dictionary, directory, render):
 		div = render.text_html(dictionary['count'], dictionary['content'])
@@ -39,6 +42,10 @@ class Section(object):
 			div = update_image(div, directory)
 		return str(div)
 
+	def handler(message, resource):
+		return {'success': 'success'}
+		
+		
 def update_image(content, directory):
 	# Parses the content for images, fetches them from disc, and inserts them accordingly
 	soup = BeautifulSoup(str(content))

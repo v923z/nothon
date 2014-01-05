@@ -13,7 +13,7 @@ from text_utils import Text
 from save_utils import Zip, Tar, Save, Latex, Markdown
 from fileutils import notebook_folder, get_notebook, write_notebook, create_notebook_folder
 from new_notebook import new_notebook
-from template_helpers import *
+
 
 class Notebook(object):
 	""" Entry point for handling notebook files """
@@ -30,13 +30,14 @@ class Notebook(object):
 			exec('obj = %s(self.resource)'%(command.title()))
 			result = obj.handler(message)
 
-		elif command in ('save', 'tar', 'zip', 'latex', 'markdown'):
+		elif command in ('save', 'html', 'tar', 'zip', 'latex', 'markdown'):
 			fn = message.get('file')
 			folder = notebook_folder(fn)
 			result = self.save_notebook(message, fn)
-			print result
 			
-			if command in ('tar'):
+			if command in ('html'):
+				result = save_html(fn.replace('.note', '.html'), message.get('docmain'))
+			elif command in ('tar'):
 				result = Tar(self.resource).tar_notebook(fn, folder, fn.replace('.note', '.tgz'))
 			elif command in ('zip'):
 				result = Zip(self.resource).zip_notebook(fn, folder, fn.replace('.note', '.zip'))
@@ -44,11 +45,15 @@ class Notebook(object):
 				result = Latex(self.resource).process_note(fn)
 			elif command in ('markdown'): 
 				result = Markdown(self.resource).process_note(fn)
+				
+		elif command in ('render_docmain'):
+			result = self.render_docmain(message.get('address'))
+			
 		else:
 			result = {'success': 'undefined command: %s'%(command)}
 			
 		print 'Returning from notebook command %s %s'%(command, datetime.datetime.now().strftime("%H:%M:%S.%f"))
-		return simplejson.dumps(result)
+		return result
 		
 	def parse_note(self, fn):
 		print 'Reading file %s %s'%(fn, datetime.datetime.now().strftime("%H:%M:%S.%f"))
@@ -74,6 +79,13 @@ class Notebook(object):
 		print 'Read file %s %s'%(fn, datetime.datetime.now().strftime("%H:%M:%S.%f"))
 		return note
 		
+	def render_docmain(self, fn):
+		notebook = self.parse_note(fn)
+		return {'docmain' : notebook['content']['content'], 
+			'title' : notebook['title']['content'],
+			'doc_title' : fn,
+			'directory' : notebook['directory']['content']}
+
 		
 	def save_notebook(self, message, fn):
 		" Writes the stipped document content to disc "
@@ -116,3 +128,12 @@ def update_image(content, directory):
 	soup.html.unwrap()
 	soup.body.unwrap()
 	return soup
+	
+def save_html(fn, content):
+	with open('static/css/main.css', 'r') as fin:
+		css = fin.read()
+	with open('static/css/highlight.css', 'r') as fin:
+		css += fin.read()
+	with open(fn, 'w') as fout:
+		fout.write(content)
+	return {'success' : 'success'}
