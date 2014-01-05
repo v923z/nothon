@@ -59,7 +59,7 @@ class Zip():
 		try:
 			import zipfile
 		except ImportError:
-			return simplejson.dumps({'success' : 'Could not import module "zipfile".'})
+			return {'success' : 'Could not import module "zipfile".'}
 
 		def zipdir(path, zipper):
 			for root, dirs, files in os.walk(path):
@@ -70,7 +70,7 @@ class Zip():
 		zipper.write(fn)
 		if os.path.exists(folder): zipdir(folder, zipper)
 		zipper.close()
-		return simplejson.dumps({'success' : 'success'})
+		return {'success' : 'success'}
 
 class Tar():
 	
@@ -81,13 +81,13 @@ class Tar():
 		try:
 			import tarfile
 		except ImportError:
-			return simplejson.dumps({'success' : 'Could not import module "tarfile".'})
+			return {'success' : 'Could not import module "tarfile".'}
 
 		tar = tarfile.open(tarout, 'w:gz')
 		tar.add(fn)
 		if os.path.exists(folder): tar.add(folder)
 		tar.close()
-		return simplejson.dumps({'success' : 'success'})
+		return {'success' : 'success'}
 
 class Latex():
 	
@@ -96,7 +96,7 @@ class Latex():
 
 	def process(self, fn):
 		latex.process_note(fn)
-		return  simplejson.dumps({'success' : 'success'})
+		return {'success' : 'success'}
 
 
 class Markdown():
@@ -106,4 +106,4 @@ class Markdown():
 
 	def process(self, fn):
 		markdown.process_note(fn)
-		return  simplejson.dumps({'success' : 'success'})
+		return {'success' : 'success'}

@@ -1,3 +1,7 @@
+import web
+import datetime
+import simplejson
+import os
 from bs4 import BeautifulSoup
 
 from template_helpers import *
@@ -7,23 +11,30 @@ from head_utils import Head
 from code_utils import Code
 from text_utils import Text
 from save_utils import Zip, Tar, Save, Latex, Markdown
+from fileutils import notebook_folder, get_notebook, write_notebook, create_notebook_folder
+from new_notebook import new_notebook
+from template_helpers import *
 
 class Notebook(object):
 	""" Entry point for handling notebook files """
 		
-	def __init__(self, resource):
+	def __init__(self, resource, render):
 		self.resource = resource
-		
-	def handler(self, message):
-		command = message.get('sub_command')
-		if command in ('plot', 'head', 'code'):
-			exec('obj = %s(nothon_resource)'%(command.title()))
-			return obj.handler(message)
+		self.render = render
 
-		if command in ('save', 'tar', 'zip', 'latex', 'markdown'):
+	def handler(self, message):
+		command = message.get('command')
+		print 'Handling notebook command %s %s'%(command, datetime.datetime.now().strftime("%H:%M:%S.%f"))
+		if command in ('plot', 'head', 'code'):
+			print command.title()
+			exec('obj = %s(self.resource)'%(command.title()))
+			result = obj.handler(message)
+
+		elif command in ('save', 'tar', 'zip', 'latex', 'markdown'):
 			fn = message.get('file')
 			folder = notebook_folder(fn)
-			result = save_notebook(message, fn self.resource)
+			result = self.save_notebook(message, fn)
+			print result
 			
 			if command in ('tar'):
 				result = Tar(self.resource).tar_notebook(fn, folder, fn.replace('.note', '.tgz'))
@@ -36,9 +47,11 @@ class Notebook(object):
 		else:
 			result = {'success': 'undefined command: %s'%(command)}
 			
-		return result
+		print 'Returning from notebook command %s %s'%(command, datetime.datetime.now().strftime("%H:%M:%S.%f"))
+		return simplejson.dumps(result)
 		
 	def parse_note(self, fn):
+		print 'Reading file %s %s'%(fn, datetime.datetime.now().strftime("%H:%M:%S.%f"))
 		note = {}
 		note_str = ''
 			
@@ -49,20 +62,42 @@ class Notebook(object):
 		note['title'] = {'content' : data.get('title')}
 		
 		for element in content:
-			elem_type element.get('type')
-			if elem_type in ('plot', 'head', 'code', 'text'):
-				exec('obj = %s(None)'%(elem_type.title()))
-				div = obj.render(element, directory, render)
+			elem_type = element.get('type')
+			if elem_type in ('plot', 'head', 'code', 'text', 'paragraph', 'section'):
+				exec('obj = %s(self.resource)'%(elem_type.title()))
+				div = obj.render(element, directory, self.render)
 			else:
-				exec('element = %s_update_dict(element)'%(elem_type))	
-				exec('div = render.%s_html(%s, %s)'%(elem_type, element['count'], element['content']))
-				if elem_type in ('text', 'section', 'paragraph'):
-					div = update_image(div, note['directory'])
+				pass
 			note_str += str(div)
 			
 		note['content'] = {'content' : note_str}
+		print 'Read file %s %s'%(fn, datetime.datetime.now().strftime("%H:%M:%S.%f"))
 		return note
+		
+		
+	def save_notebook(self, message, fn):
+		" Writes the stipped document content to disc "
+		nb = { 'title' : message.get('title', ''),
+				'type' : message.get('type'),
+				'date' : message.get('date'),
+				'directory' : message.get('directory', '""').strip('<br>'), 
+				'nothon version' : self.resource.nothon_version
+		}
+		nb['notebook'] = message.get('notebook')
+		try:
+			write_notebook(fn, nb, self.resource.notebook_item_order)
+			success = 'success'
+		except:
+			success = 'failed to write file %s'%(fn)
+			
+		return {'success': success}
 
+	def new_notebook(self, fn):
+		" Creates an empty notebook on disc "
+		title = os.path.basename(fn).replace('.note', '')
+		create_notebook_folder(fn)
+		write_notebook(fn, {'title': title, 'type' : 'notebook', 'notebook': []}, self.resource.notebook_item_order)
+		new_notebook(fn, self.resource)
 
 def update_image(content, directory):
 	# Parses the content for images, fetches them from disc, and inserts them accordingly

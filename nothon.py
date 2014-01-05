@@ -7,6 +7,7 @@ import simplejson
 import traceback
 import tempfile
 import time
+import datetime
 import sys
 from bs4 import BeautifulSoup
 
@@ -20,6 +21,7 @@ from python.plot_utils import Plot
 from python.head_utils import Head
 from python.code_utils import Code
 from python.save_utils import Zip, Tar, Save, Latex, Markdown
+from python.notebook import Notebook
 
 from python.template_helpers import *
 from python.bibliography import *
@@ -175,29 +177,33 @@ class Index(object):
 			return 	render.toc(link.name, aside, make_toc())
 		elif link.name == '__bibliography':
 			return 	render.bib_list(link.name, aside, make_bibliography())
-		elif link.name.endswith('.bibnote'):			
+		elif link.name.endswith('.bibnote'):
+			bib = Bibliography(nothon_resource)
 			if not os.path.exists(link.name):
-				create_notebook_folder(link.name)
-				write_bibliography(link.name, {'type' : 'bibliography', 'bibliography' : {}}, nothon_resource.bibliography_item_order)
+				bib.new_bibliography(link.name)
 			return render.bibliography(link.name, link.name, aside, parse_bibliography(link.name, nothon_resource), list_handler_functions(), list_create_functions())
 			
 		else:
+			nb = Notebook(nothon_resource, render)
 			sp = link.name.split('#')
 			link.name = sp[0]
 			if not os.path.exists(link.name):
-				title = os.path.basename(link.name).replace('.note', '')
-				create_notebook_folder(link.name)
-				write_notebook(link.name, {'title': title, 'type' : 'notebook', 'notebook': []}, nothon_resource.notebook_item_order)
+				nb.new_notebook(link.name)
 				aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
-				new_notebook(link.name, nothon_resource)
-			return 	render.notebook(link.name, link.name, aside, parse_note(link.name), list_handler_functions(), list_create_functions())
+				
+			return 	render.notebook(link.name, link.name, aside, nb.parse_note(link.name), list_handler_functions(), list_create_functions())
 
 	def POST(self):
 		message = simplejson.loads(web.data())
 		print message
-		if message['command'] in ('plot', 'head', 'code', 'zip', 'tar', 'save', 'latex', 'markdown', 'bibliography'):
-			exec('obj = %s(nothon_resource)'%(message['command'].title()))
+		doc_type = message.get('type')
+		if doc_type in ('notebook'):
+			exec('obj = %s(nothon_resource, render)'%(doc_type.title()))
 			return obj.handler(message)
+			
+		#if message['command'] in ('plot', 'head', 'code', 'zip', 'tar', 'save', 'latex', 'markdown', 'bibliography'):
+			#exec('obj = %s(nothon_resource)'%(message['command'].title()))
+			#return obj.handler(message)
 			
 		if message['command'] in ('text', 'paragraph', 'savehtml', 'docmain_render', 'image', 'paste_cell', 'remove_cell'):
 			exec('result = %s_handler(message, nothon_resource)'%(message['command']))

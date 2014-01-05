@@ -26,9 +26,9 @@ class Plot(object):
 		exit_status = False
 		pwd = os.getcwd()
 		if message['directory']: os.chdir(message['directory'].strip('<br>'))
-		new_path = create_notebook_folder(message['doc_title'])
-		fn = message['filename'].replace('./', '')
-		print new_path, fn
+		new_path = create_notebook_folder(message.get('file'))
+		fn = message.get('filename').replace('./', '')
+		out_file = os.path.join(new_path, fn + '.png')
 		if code.startswith('#gnuplot') or code.startswith('# gnuplot'):
 			with open(fn + '.gp', 'w') as fout:
 				# We should make this configurable from the resource
@@ -46,20 +46,18 @@ class Plot(object):
 				x = linspace(-10, 10, 100)
 				try:
 					exec(code)
-					savefig(os.path.join(new_path, fn + '.png'))
+					savefig(out_file)
 					if self.resource.plot_pdf_output: 
-						savefig(os.path.join(new_path, fn + '.pdf'))
+						savefig(out_file.replace('.png', '.pdf'))
 					close()
 				except:
 					exit_status = traceback.format_exc().replace('\n', '<br>')
 
 		os.chdir(pwd)
 		if not exit_status:
-			exit_status = self.read_plot(os.path.join(new_path, fn + '.png'))
+			exit_status = self.read_plot(out_file)
 
-		return simplejson.dumps({ "scroller" : message['body'],
-							message['title'] : os.path.join(new_path, fn + '.png'), 
-							message['body'] : exit_status})
+		return {'scroller': message.get('body'), message.get('title'): out_file, message.get('body'): exit_status}
 
 	def render(self, dictionary, directory, render):
 		dictionary['content']['plot_body'] = {'content' : self.read_plot(dictionary['content']['plot_file']['content'])}

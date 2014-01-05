@@ -108,25 +108,25 @@ $for f in create_funcs + handler_funcs:
 		<ul>
 			<li onmouseup='usage();'>Usage</li>
 			<li onmouseup='about();'>About</li>
-			<li><a href="https://github.com/v923z/nothon" target="_blank">nothon</a></li>
+			<li><a href='https://github.com/v923z/nothon' target='_blank'>nothon</a></li>
 		</ul>
 	</li>
 	<div id='notebook_status'>Saved: never</div>
 </ul>
 </div>
 <div id="doc_toplevel">
-<div id="menucontainer-right">
-<div class="menu" onclick="move('up');"><img src="/static/css/up-arrow.png"  width="60%"></div>
-<div class="menu" onclick="move('down');"><img src="/static/css/down-arrow.png" width="60%"></div>
+<div id='menucontainer-right'>
+<div class='menu' onclick='move("up");'><img src='/static/css/up-arrow.png'  width='60%'></div>
+<div class='menu' onclick='move("down");'><img src='/static/css/down-arrow.png' width='60%'></div>
 </div>
 <div id='context_menu'></div>
-<div id="div_title" contenteditable='true'>$:safe_content(content, "title")</div>
-	<div id="dir_container"> 
-	<div id="dir_tag">Directory:   </div><div id="div_dir" contenteditable='true' onkeypress='return dir_keypress(event);'>$safe_content(content, "directory")</div>
+<div id='div_title' contenteditable='true'>$:safe_content(content, "title")</div>
+	<div id='dir_container'> 
+	<div id='dir_tag'>Directory:   </div><div id='div_dir' contenteditable='true' onkeypress='return dir_keypress(event);'>$safe_content(content, "directory")</div>
 </div>
 
-<div id="docmain">$:safe_content(content, "content")</div>
-<div id="trash"></div>
+<div id='docmain' data-sub_type='notebook' data-file='$filename'>$:safe_content(content, "content")</div>
+<div id='trash'></div>
 </div>
 <div id='calculator_dialog'>
 	<div contenteditable=false id='calculator_result' style='width: 95%; height: 200px; overflow-y: scroll;'></div>

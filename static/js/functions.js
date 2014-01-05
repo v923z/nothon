@@ -64,19 +64,20 @@ function get_max_index(className) {
 	return num
 }
 
-function _create_message(message_type) {
+function _create_message(command) {
 	var message = new Object()
 	message.date = Date()
-	message.command = message_type
+	message.command = command
 	message.doc_title = document.title
 	message.type = $('body').data('type')
+	message.sub_type = $('#docmain').data('sub_type')
 	message.file = $('body').data('file')
 	message.directory = $('#div_dir').html().replace('<br>', '')
 	return message
 }
 
-function create_message(div_data, message_type) {
-	var message = _create_message(message_type)
+function create_message(div_data, command) {
+	var message = _create_message(command)
 	message.id = div_data.id
 	message.content = div_data.innerHTML
 	return message
