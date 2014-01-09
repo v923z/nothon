@@ -26,7 +26,10 @@ class Bibliography():
 				
 		elif command in ('save_bibnote'):
 			result = self.save_bibnote(message.get('file'), message)
-				
+		
+		elif command in ('save_html'):
+			result = self.save_html(message.get('file'), message)
+					
 		elif command in ('save_and_load'):
 			try:
 				nb = Notebook(self.resource, self.render)
@@ -51,6 +54,15 @@ class Bibliography():
 			return {'success' : 'success'}
 		except:
 			return {'success' : 'failed to write file %s'%(message.get('file'))}
+		
+	def save_html(self, fn, message):
+		# Should be save directly to HTML, or to bibnote first, and then parse the file?
+		self.save_bibnote(fn, message)
+		bibliography = self.parse_bibliography(fn)
+		with open(fn.replace('.bibnote', '.html'), 'w') as fout:
+			fout.write(str(self.render.bib_html()))
+			
+		return {'success': 'success'}
 		
 	def new_bibliography(self, fn):
 		create_notebook_folder(fn)
