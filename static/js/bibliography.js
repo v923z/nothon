@@ -337,3 +337,8 @@ function save_and_load(id) {
 
 function save_and_load_handler(req) {
 }
+
+function show_tag(tag) {
+	// Removes all elements from the publication list that do not have 'tag' in their keyword list
+	console.log(tag)
+}
