@@ -87,7 +87,7 @@ class Index(object):
 			bib = Bibliography(nothon_resource, render)
 			if not os.path.exists(link.name):
 				bib.new_bibliography(link.name)
-			return render.bibliography(link.name, link.name, aside, parse_bibliography(link.name, nothon_resource), list_handler_functions(), list_create_functions())
+			return render.bibliography(link.name, link.name, aside, bib.parse_bibliography(link.name), list_handler_functions(), list_create_functions())
 			
 		else:
 			nb = Notebook(nothon_resource, render)

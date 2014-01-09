@@ -75,9 +75,9 @@ class Bibliography():
 			for i, entry in enumerate(sorted(bibliography.keys())):
 				if os.path.exists(os.path.join(notebook_folder(fn), '%s.note'%(entry))) is False:
 					missing = True
-					write_notebook(os.path.join(notebook_folder(fn), '%s.note'%(entry)), 
-									{'notebook': [], 'nothon version': self.resource.nothon_version, 'type': 'notebook'}, 
-									resource.notebook_item_order)
+					#write_notebook(os.path.join(notebook_folder(fn), '%s.note'%(entry)), 
+									#{'notebook': [], 'nothon version': self.resource.nothon_version, 'type': 'notebook'}, 
+									#self.resource.notebook_item_order)
 					# Here we should insert only the relative path
 					bibliography[entry]['notebook'] = os.path.join(notebook_folder(fn), '%s.note'%(entry))
 
@@ -86,8 +86,8 @@ class Bibliography():
 		# Some directories, files, etc. were missing, we have to update the file on disc
 		if missing:
 			data['bibliography'] = bibliography
-			data['date'] = datetime.datetime.now().strftime(resource.time_format)
-			write_notebook(fn, data, resource.bibliography_item_order)
+			data['date'] = datetime.datetime.now().strftime(self.resource.time_format)
+			write_notebook(fn, data, self.resource.bibliography_item_order)
 			
 		note['table_body'] = body_str
 		note['bibliography'] = simplejson.dumps(bibliography)
