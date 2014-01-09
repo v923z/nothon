@@ -95,3 +95,7 @@
 	color:				#ee0000;
 	width:				20em;
 }
+
+.keywords_list {
+	list-style-type:	none;
+}

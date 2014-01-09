@@ -10,25 +10,31 @@ class Translator(object):
 	def __init__(self, outformat):
 		self.resource = NothonResource()
 		self.outformat = outformat
-		self.fields = {'author': '', 'count': '', 'file': '', 'group': '', 'id': '', 'journal': '', 'key': '', 
-		'keywords': '', 'notebook': '', 'number': '', 'owner': '', 'pages': '', 'publisher': '', 'stars': '',
-        'timestamp': '', 'title': '', 'type': '', 'url': '', 'volume': '', 'year': ''}
-		
+				
 	def reader(self, file, owner='v923z'):
 		parser = bibtex.Parser()
 		bibdata = parser.parse_file(file)
 		self.bibliography = {}
-		for count, bib_id in enumerate(bibdata.entries):
-			new_dic = self.fields
+		for count, key in enumerate(bibdata.entries):
+			new_dic = {}
+			new_dic['key'] = key
 			new_dic['owner'] = owner
-			for key in bibdata.entries[bib_id].fields:
-				new_dic[key] = bibdata.entries[bib_id].fields[key]
-			new_dic['author'] = ' and '.join([', '.join(author.last() + author.first()) for author in bibdata.entries[bib_id].persons['author']])
-			new_dic['count'] = count
-			new_dic['type'] = bibdata.entries[bib_id].type
+			for skey in bibdata.entries[key].fields:
+				new_dic[skey] = bibdata.entries[key].fields[skey]
+			new_dic['author'] = ' and '.join([', '.join(author.last() + author.first()) for author in bibdata.entries[key].persons.get('author')])
+			new_dic['count'] = count+1
+			new_dic['type'] = bibdata.entries[key].type
 			new_dic['group'] = '00000'
+			new_dic['stars'] = 1
+			fn = bibdata.entries[key].fields.get('file')
+			if fn:
+				nfn = []
+				for part in fn.split(';'):
+					nfn.append(part.split(':')[1])
+					
+				new_dic['file'] = ', '.join(nfn)
 			
-			self.bibliography['%s'%count] = new_dic
+			self.bibliography['%s'%(count+1)] = new_dic
 
 		return self.bibliography
 		

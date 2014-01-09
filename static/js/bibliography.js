@@ -2,8 +2,8 @@ bibliography = null
 
 $(document).ready(function () {
 	$(function() {
-		var message = _create_message('bibliography')
-		message['sub_command'] = 'get_bibliography'
+		var message = _create_message('get_bibliography')
+		message.sub_type = 'bibliography'
 		xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), get_bibliography_handler)
 	})
 
@@ -237,14 +237,13 @@ function tabs_activated(event, ui) {
 }
 
 function get_bibliography_handler(req) {
-	// TODO: some error handling here?
 	var message = JSON.parse(req.responseText)
 	if(message['success'] == 'success') {
 		bibliography = message['bibliography']
 		extra_data = message['extra_data']
 	}
 	else {
-		alert('Could not read file: ' + message['file'])
+		alert(message['success'])
 		bibliography = null
 		extra_data = null
 	}

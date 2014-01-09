@@ -61,6 +61,7 @@ class Bibliography():
 		body_str = ''
 		data = get_notebook(fn)
 		bibliography = data.get('bibliography')
+		keywords = []
 		if data.get('directory') is None:
 			data['directory'] = notebook_folder(fn)
 			missing = True
@@ -82,6 +83,8 @@ class Bibliography():
 					bibliography[entry]['notebook'] = os.path.join(notebook_folder(fn), '%s.note'%(entry))
 
 				body_str += render_bibtex_entry(i, bibliography[entry], entry, self.resource)
+				if bibliography[entry].get('keywords'):
+					keywords += bibliography[entry].get('keywords').split(',')
 		
 		# Some directories, files, etc. were missing, we have to update the file on disc
 		if missing:
@@ -90,7 +93,7 @@ class Bibliography():
 			write_notebook(fn, data, self.resource.bibliography_item_order)
 			
 		note['table_body'] = body_str
-		note['bibliography'] = simplejson.dumps(bibliography)
+		note['keywords'] = render_keywords(keywords)
 		return note
 
 def get_bibliography(fn):
@@ -98,9 +101,9 @@ def get_bibliography(fn):
 		data = get_notebook(fn)
 		bibliography = data.get('bibliography')
 		extra_data = {'separator': os.sep, 'folder': notebook_folder(fn)}
-		result = {'success' : 'success', 'bibliography' : bibliography, 'extra_data': extra_data}
+		return {'success' : 'success', 'bibliography' : bibliography, 'extra_data': extra_data}
 	except:
-		result = {'success' : 'failed', 'file': fn}
+		return {'success' : 'Could not read file: %s'%(fn)}
 				
 def render_bibtex_entry(i, entry, uid, resource):
 	table_entry = '\n\t\t\t\t\t<tr id="%s"><td>%d</td>'%(uid, i+1)
@@ -118,3 +121,14 @@ def render_authors(entry):
 		return '%s %s'%(authors[0]['given'], authors[0]['family'])
 	else:
 		return '%s %s et al.'%(authors[0]['given'], authors[0]['family'])
+
+def render_keywords(keywords):
+	# Given a python list of keywords, returns a HTML list of links
+	if '""' in keywords: keywords.remove('""')
+	keywords = set(keywords)
+	ul = '<ul class="keywords_list">\n'
+	for keyword in sorted(keywords):
+		# TODO: create sub-groups by letter
+		ul += '<li><a href="%s">%s</a></li>\n'%(keyword, keyword)
+	ul += '</ul>'
+	return ul

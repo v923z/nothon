@@ -103,7 +103,7 @@ class Index(object):
 		message = simplejson.loads(web.data())
 		print message
 		doc_type = message.get('type')
-		if doc_type in ('notebook'):
+		if doc_type in ('notebook', 'bibliography'):
 			exec('obj = %s(nothon_resource, render)'%(doc_type.title()))
 			return simplejson.dumps(obj.handler(message))
 			
@@ -116,7 +116,7 @@ class Index(object):
 			return result
 			
 		else:
-			return simplejson.dumps(message)
+			return simplejson.dumps({'success': 'Could not parse command'})
 
 if __name__ == "__main__": app.run()
 
