@@ -87,7 +87,7 @@ class Bibliography():
 		if missing:
 			data['bibliography'] = bibliography
 			data['date'] = datetime.datetime.now().strftime(resource.time_format)
-			write_bibliography(fn, data, resource.bibliography_item_order)
+			write_notebook(fn, data, resource.bibliography_item_order)
 			
 		note['table_body'] = body_str
 		note['bibliography'] = simplejson.dumps(bibliography)
