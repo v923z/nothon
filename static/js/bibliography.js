@@ -319,8 +319,9 @@ function get_active_paper() {
 
 function save_bibliography(method) {
 	var message = _save('bibliography')
+	message.sub_type = 'bibliography'
 	message.bibliography = bibliography
-	message['sub_command'] = method
+	message['command'] = method
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 

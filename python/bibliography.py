@@ -26,6 +26,9 @@ class Bibliography():
 				
 		elif command in ('save_bibnote'):
 			result = self.save_bibnote(message.get('file'), message)
+			
+		elif command in ('save_bibtex'):
+			result = self.save_bibtex(message.get('file', '').replace('.bibnote', '.bib'), message)
 		
 		elif command in ('save_html'):
 			result = self.save_html(message.get('file'), message)
@@ -47,9 +50,29 @@ class Bibliography():
 
 	def save_bibnote(self, fn, message):
 		bib_dic = {'type' : 'bibliography', 'bibliography' : message.get('bibliography', ''), 'date' : message.get('date', '')}
-		bib_dic['nothon version'] = version
+		bib_dic['nothon version'] = self.resource.nothon_version
 		# Have we got to re-format the author list here?
 		return write_notebook(message.get('file'), bib_dic, self.resource.bibliography_item_order)
+	
+	def save_bibtex(self, fn, message):
+		bibliography = message.get('bibliography')
+		if not bibliography:
+			return {'success': 'Could not get bibliographic data from client'}
+		bib_str = ''
+		for tag in bibliography:
+			entry = bibliography.get(tag)
+			print entry
+			if entry:
+				header = '@%s{%s,\n'%(entry.get('type', ''), entry.get('key', ''))
+				body = ',\n'.join([dic_to_bib_string(key, entry) for key in entry])
+				bib_str += header + body + '\n}\n\n'
+			
+		try:
+			with open(fn, 'w') as fout:
+				fout.write(bib_str.encode('utf-8'))
+			return {'success': 'success'}
+		except EnvironmentError: 
+			return {'success': 'Could not write file %s'%(fn)}
 		
 	def save_html(self, fn, message):
 		# Should be save directly to HTML, or to bibnote first, and then parse the file?
@@ -140,3 +163,6 @@ def render_keywords(keywords):
 		ul += '<li><a href="javascript:show_tag(\'%s\');">%s</a></li>\n'%(keyword, keyword)
 	ul += '</ul>'
 	return ul
+
+def dic_to_bib_string(key, entry):
+	return '\t%s = {%s}'%(key, entry.get(key, '""'))
