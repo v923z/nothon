@@ -9,7 +9,7 @@ from template_helpers import *
 from plot_utils import Plot
 from head_utils import Head
 from code_utils import Code
-from text_utils import Text
+from text_utils import Text, Section, Paragraph
 from save_utils import Zip, Tar, Save, Latex, Markdown
 from fileutils import notebook_folder, get_notebook, write_notebook, create_notebook_folder
 from new_notebook import new_notebook

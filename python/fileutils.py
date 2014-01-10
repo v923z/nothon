@@ -15,13 +15,16 @@ def print_notebook(nb, objects):
 	nb_str += '\n}'
 	return nb_str
 
-def write_notebook(fn, nb, objects):
+def write_to_disc(string, fn):
 	try:
 		with open(fn, 'w') as fout:
-			fout.write(print_notebook(nb, objects))
+			fout.write(string.encode('utf-8'))
 		return {'success': 'success'}
 	except EnvironmentError: 
 		return {'success': 'Could not write file %s'%(fn)}
+	
+def write_notebook(fn, nb, objects):
+	return write_to_disc(print_notebook(nb, objects), fn)
 		
 def create_notebook_folder(fn):
 	# Creates the helper folder beginning with _fn

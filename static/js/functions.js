@@ -186,6 +186,7 @@ function _save(method) {
 }
 
 function save_notebook(method) {
+	console.log('here')
 	var message = _save(method)
 	if(message == null) return
 	message.title = $('#div_title').html()

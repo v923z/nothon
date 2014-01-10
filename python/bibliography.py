@@ -1,6 +1,6 @@
 import simplejson
 import datetime
-from fileutils import get_notebook, create_notebook_folder, notebook_folder, write_notebook
+from fileutils import get_notebook, create_notebook_folder, notebook_folder, write_notebook, write_to_disc
 from save_utils import save_notebook
 import uuid
 import os
@@ -66,22 +66,17 @@ class Bibliography():
 				header = '@%s{%s,\n'%(entry.get('type', ''), entry.get('key', ''))
 				body = ',\n'.join([dic_to_bib_string(key, entry) for key in entry])
 				bib_str += header + body + '\n}\n\n'
-			
-		try:
-			with open(fn, 'w') as fout:
-				fout.write(bib_str.encode('utf-8'))
-			return {'success': 'success'}
-		except EnvironmentError: 
-			return {'success': 'Could not write file %s'%(fn)}
+		
+		return write_to_disc(bib_str, fn)
 		
 	def save_html(self, fn, message):
-		# Should be save directly to HTML, or to bibnote first, and then parse the file?
-		self.save_bibnote(fn, message)
-		bibliography = self.parse_bibliography(fn)
-		with open(fn.replace('.bibnote', '.html'), 'w') as fout:
-			fout.write(str(self.render.bib_html()))
-			
+		# Should be save directly to HTML, or to bibnote first?
+		#self.save_bibnote(fn, message)
+		bibliography = message.get('bibliography')
+		if not bibliography:
+			return {'success': 'Could not get bibliographic data from client'}
 		return {'success': 'success'}
+		#return write_to_dics(str(self.render.bib_html()), fn.replace('.bibnote', '.html'))
 		
 	def new_bibliography(self, fn):
 		create_notebook_folder(fn)
