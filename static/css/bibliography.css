@@ -100,3 +100,8 @@
 	list-style-type:	none;
 	padding-left:		0;
 }
+
+#textarea_bibtex {
+	width:				100%;
+	min-height:			200px;
+}

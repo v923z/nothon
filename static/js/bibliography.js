@@ -228,7 +228,7 @@ function tabs_activated(event, ui) {
 		fill_in_row(uuid)
 	}
 	if(ui.newTab.index() == 3) {
-		// bibtex tab
+		$('#textarea_bibtex').val(json_to_bibtex(uuid))
 	}
 	if(ui.oldTab.index() == 3) {
 		// bibtex tab
@@ -350,4 +350,16 @@ function delete_entry() {
 	delete bibliography[id]
 	$('#publication_list tr[id=' + id + ']').remove()
 	return false
+}
+
+function json_to_bibtex(id) {
+	// Converts a bibliography entry into bibtex format, so that it can be displayed in the bibtex tab
+	var entry = bibliography[id]
+	var bib_str = '@' + entry['type'] + '{' + entry['key'] + ',\n'
+	var items = new Array()
+	for(i in entry) {
+		items.push('\t' + i + '= {' + entry[i] + '}')
+	}
+	bib_str += items.join(',\n')
+	return bib_str + '\n}'
 }

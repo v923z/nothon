@@ -13,5 +13,3 @@ class NothonResource(object):
 		self.has_pygments = False
 		self.bibliography_bibtex = ['type', 'author', 'title', 'year', 'journal', 'page', 'key', 'url', 'doi', 'file', 'keywords', 'owner', 'timestamp']
 		self.bibliography_nothon_header = ['type', 'author', 'title', 'year', 'journal', 'key', 'group', 'stars']
-		self.bib_html_js = ['jquery.min.js', 'jquery.tablesorter.min.js', 'bibliography.js']
-		self.bib_html_css = ['main.css', 'bibliography.css']

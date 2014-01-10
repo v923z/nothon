@@ -80,16 +80,15 @@ class Bibliography():
 		js_str = ''
 
 		for js_file in ['jquery.min.js', 'ui/jquery-ui.min.js', 'jquery.tablesorter.min.js', 
-		'jquery.datepick.js', 'jquery.dynatree-1.2.4.js', # These two can be taken out
-		'functions.js', 'bibliography.js']:
+		'jquery.tablesorter.widgets.min.js', 'bibliography.js']:
 			with open('static/js/' + js_file, 'r') as fin:
-				js_str += '\n<script>' + fin.read() + '</script>\n'
+				js_str += '\n<script>\n' + fin.read() + '\n</script>\n'
 				
 		css_str = ''
 		for css_file in ['main.css', 'bibliography.css', 'ui.dynatree.css', 
 		'dynatree_custom.css', 'jquery-ui-smoothness.css', 'theme.default.css', 'jquery.datepick.css']:
 			with open('static/css/' + css_file, 'r') as fin:
-				css_str += '\n<style>' + fin.read() + '</style>\n'
+				css_str += '\n<style>\n' + fin.read() + '\n</style>\n'
 				
 		content = self.parse_bibliography(fn)
 		return write_to_disc(str(self.render.bib_html(fn, content, js_str, css_str)), fn.replace('.bibnote', '.html'))
