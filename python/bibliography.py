@@ -58,10 +58,11 @@ class Bibliography():
 		bibliography = message.get('bibliography')
 		if not bibliography:
 			return {'success': 'Could not get bibliographic data from client'}
-		bib_str = ''
+		# We need this, otherwise jabref doesn't understand the encoding
+		bib_str = '% This file was created with JabRef 2.9.2.\n'
+		bib_str += '% Encoding: UTF8\n\n'
 		for tag in bibliography:
 			entry = bibliography.get(tag)
-			print entry
 			if entry:
 				header = '@%s{%s,\n'%(entry.get('type', ''), entry.get('key', ''))
 				body = ',\n'.join([dic_to_bib_string(key, entry) for key in entry])
@@ -160,4 +161,6 @@ def render_keywords(keywords):
 	return ul
 
 def dic_to_bib_string(key, entry):
+	if key in ('file'):
+		return '\t%s = {:%s:PDF}'%(key, entry.get(key, '""'))	
 	return '\t%s = {%s}'%(key, entry.get(key, '""'))

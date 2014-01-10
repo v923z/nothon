@@ -343,3 +343,11 @@ function show_tag(tag) {
 	// Removes all elements from the publication list that do not have 'tag' in their keyword list
 	console.log(tag)
 }
+
+function delete_entry() {
+	var id = get_active_paper()
+	if(id == null) return false
+	delete bibliography[id]
+	$('#publication_list tr[id=' + id + ']').remove()
+	return false
+}
