@@ -15,13 +15,7 @@ def save_notebook(message, fn, resource):
 			'nothon version' : resource.nothon_version
 	}
 	nb['notebook'] = message.get('notebook')
-	try:
-		write_notebook(fn, nb, resource.notebook_item_order)
-		success = 'success'
-	except:
-		success = 'failed to write file %s'%(fn)
-		
-	return simplejson.dumps({'success': succes})
+	return write_notebook(fn, nb, resource.notebook_item_order)
 		
 class Save(object):
 	

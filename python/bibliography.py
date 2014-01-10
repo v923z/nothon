@@ -49,11 +49,7 @@ class Bibliography():
 		bib_dic = {'type' : 'bibliography', 'bibliography' : message.get('bibliography', ''), 'date' : message.get('date', '')}
 		bib_dic['nothon version'] = version
 		# Have we got to re-format the author list here?
-		try:
-			write_notebook(message.get('file'), bib_dic, self.resource.bibliography_item_order)
-			return {'success' : 'success'}
-		except:
-			return {'success' : 'failed to write file %s'%(message.get('file'))}
+		return write_notebook(message.get('file'), bib_dic, self.resource.bibliography_item_order)
 		
 	def save_html(self, fn, message):
 		# Should be save directly to HTML, or to bibnote first, and then parse the file?

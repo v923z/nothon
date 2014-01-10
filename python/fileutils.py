@@ -16,8 +16,12 @@ def print_notebook(nb, objects):
 	return nb_str
 
 def write_notebook(fn, nb, objects):
-	with open(fn, 'w') as fout:
-		fout.write(print_notebook(nb, objects))
+	try:
+		with open(fn, 'w') as fout:
+			fout.write(print_notebook(nb, objects))
+		return {'success': 'success'}
+	except EnvironmentError: 
+		return {'success': 'Could not write file %s'%(fn)}
 		
 def create_notebook_folder(fn):
 	# Creates the helper folder beginning with _fn

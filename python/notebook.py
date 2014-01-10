@@ -96,13 +96,7 @@ class Notebook(object):
 				'nothon version' : self.resource.nothon_version
 		}
 		nb['notebook'] = message.get('notebook')
-		try:
-			write_notebook(fn, nb, self.resource.notebook_item_order)
-			success = 'success'
-		except:
-			success = 'failed to write file %s'%(fn)
-			
-		return {'success': success}
+		return write_notebook(fn, nb, self.resource.notebook_item_order)
 
 	def new_notebook(self, fn):
 		" Creates an empty notebook on disc "
