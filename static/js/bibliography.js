@@ -1,11 +1,11 @@
 bibliography = null
 
 $(document).ready(function () {
-	$(function() {
-		var message = _create_message('get_bibliography')
-		message.sub_type = 'bibliography'
-		xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), get_bibliography_handler)
-	})
+	//$(function() {
+		//var message = _create_message('get_bibliography')
+		//message.sub_type = 'bibliography'
+		//xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), get_bibliography_handler)
+	//})
 
 	$(function(){
 		$('#publication_list').tablesorter({

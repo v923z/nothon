@@ -49,9 +49,9 @@ class Bibliography():
 		return result
 
 	def save_bibnote(self, fn, message):
-		bib_dic = {'type' : 'bibliography', 'bibliography' : message.get('bibliography', ''), 'date' : message.get('date', '')}
-		bib_dic['nothon version'] = self.resource.nothon_version
-		# Have we got to re-format the author list here?
+		bib_dic = {'type' : 'bibliography', 'bibliography' : message.get('bibliography', ''), 
+		'date' : message.get('date', datetime.datetime.now().strftime(self.resource.time_format)), 
+		'nothon version': self.resource.nothon_version}
 		return write_notebook(message.get('file'), bib_dic, self.resource.bibliography_item_order)
 	
 	def save_bibtex(self, fn, message):
@@ -71,13 +71,28 @@ class Bibliography():
 		return write_to_disc(bib_str, fn)
 		
 	def save_html(self, fn, message):
-		# Should be save directly to HTML, or to bibnote first?
-		#self.save_bibnote(fn, message)
+		# Should be save directly to HTML, or to bibnote first, and then parse the file from disc?
+		self.save_bibnote(fn, message)
 		bibliography = message.get('bibliography')
 		if not bibliography:
 			return {'success': 'Could not get bibliographic data from client'}
-		return {'success': 'success'}
-		#return write_to_dics(str(self.render.bib_html()), fn.replace('.bibnote', '.html'))
+		
+		js_str = ''
+
+		for js_file in ['jquery.min.js', 'ui/jquery-ui.min.js', 'jquery.tablesorter.min.js', 
+		'jquery.datepick.js', 'jquery.dynatree-1.2.4.js', # These two can be taken out
+		'functions.js', 'bibliography.js']:
+			with open('static/js/' + js_file, 'r') as fin:
+				js_str += '\n<script>' + fin.read() + '</script>\n'
+				
+		css_str = ''
+		for css_file in ['main.css', 'bibliography.css', 'ui.dynatree.css', 
+		'dynatree_custom.css', 'jquery-ui-smoothness.css', 'theme.default.css', 'jquery.datepick.css']:
+			with open('static/css/' + css_file, 'r') as fin:
+				css_str += '\n<style>' + fin.read() + '</style>\n'
+				
+		content = self.parse_bibliography(fn)
+		return write_to_disc(str(self.render.bib_html(fn, content, js_str, css_str)), fn.replace('.bibnote', '.html'))
 		
 	def new_bibliography(self, fn):
 		create_notebook_folder(fn)
@@ -121,6 +136,7 @@ class Bibliography():
 			
 		note['table_body'] = body_str
 		note['keywords'] = render_keywords(keywords)
+		note['bibliography'] = simplejson.dumps(bibliography)
 		return note
 
 def get_bibliography(fn):

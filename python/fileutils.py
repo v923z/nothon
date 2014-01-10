@@ -18,7 +18,7 @@ def print_notebook(nb, objects):
 def write_to_disc(string, fn):
 	try:
 		with open(fn, 'w') as fout:
-			fout.write(string.encode('utf-8'))
+			fout.write(string) #.encode('utf-8'))
 		return {'success': 'success'}
 	except EnvironmentError: 
 		return {'success': 'Could not write file %s'%(fn)}

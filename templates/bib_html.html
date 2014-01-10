@@ -1,0 +1,109 @@
+$def with (title, content, js_str, css_str)
+<html>
+<head>
+<title>$title</title>
+<meta charset="utf-8">
+
+$:js_str
+$:css_str
+<script>var bibliography = $:content['bibliography']</script>
+</head>
+<body>
+<aside id='aside'>
+<div id='notebook_tab'>
+	 <ul>
+		<li><a href='#biblio_search'>Search</a></li>
+		<li><a href='#biblio_keywords'>Tags</a></li>
+	</ul>
+	<div id='biblio_search'></div>
+	<div id='biblio_keywords'>$:content['keywords']</div>
+</div>
+</aside>
+<article id='article'>
+<div class='aside_switch' id='aside_switch'>
+	<div id='aside_switch_container' onclick='bibliography_side_switch()'><<</div>
+</div>
+<div class='trash_image' id='trash_image' onclick='toggle_trashbin();'></div>
+<div id='doc_toplevel'>
+<div id='menucontainer-right'>
+<div class='menu' onclick='move("up");'><img src='/static/css/up-arrow.png'  width="60%"></div>
+<div class='menu' onclick='move("down");'><img src='/static/css/down-arrow.png' width="60%"></div>
+</div>
+<div id='context_menu'></div>
+<div id="div_dir">$safe_content(content, "directory")</div>
+
+<div id='publication_div'>
+	<table id='publication_list' class='tablesorter'>
+		<thead>$:content['table_header']
+		</thead>
+		<tbody>$:content['table_body']
+		</tbody>
+	</table>
+</div>
+
+<div id='notes_tab'>
+	 <ul>
+		<li><a href='#notes'>Notes</a></li>
+		<li><a href='#bibliography_fields'>Fields</a></li>
+		<li><a href='#bibliography_fields2'>Fields 2</a></li>		
+		<li><a href='#bibtex_entry'>Bibtex</a></li>
+	</ul>
+	<div id='notes'>
+		<div id='notes_header' class='field_div'>
+			<label id='field_id' class='field_label'></label>
+			<label class='field_label'>Group</label>
+			<span class='field_span'>
+				<input id='group_1' type='checkbox' onchange='group_changed();'/>
+				<input id='group_2' type='checkbox' onchange='group_changed();' />
+				<input id='group_3' type='checkbox' onchange='group_changed();'/>
+				<input id='group_4' type='checkbox' onchange='group_changed();'/>
+				<input id='group_5' type='checkbox' onchange='group_changed();' />
+				<label id='group_label'>00000</label>
+			</span>
+			<label class='field_label'>Stars</label>
+			<span class='field_span'>
+				<label>1</label><input id='star_1' name='stars' type='radio' onchange='stars_changed();'/>
+				<label>2</label><input id='star_2' name='stars' type='radio' onchange='stars_changed();'/>
+				<label>3</label><input id='star_3' name='stars' type='radio' onchange='stars_changed();'/>
+				<label>4</label><input id='star_4' name='stars' type='radio' onchange='stars_changed();'/>
+				<label>5</label><input id='star_5' name='stars' type='radio' onchange='stars_changed();'/>
+			</span>
+		</div>
+		<div id='docmain' data-id=''></div>
+	</div>
+	<div id='bibliography_fields'>
+		<div class='field_div'><label class='field_label'>Authors</label><span class='field_span'><input id='text_author' type='text' onkeypress='return field_keypress(event, "text_title");'/></span></div>
+		<div class='field_div'><label class='field_label'>Title</label><span class='field_span'><input id='text_title' type='text' onkeypress='return field_keypress(event, "text_journal");'/></span></div>
+		<div class='field_div'><label class='field_label'>Journal</label><span class='field_span'><input id='text_journal' type='text' onkeypress='return field_keypress(event, "text_volume");'/></span></div>
+		<div class='field_div'>
+			<label class='field_label'>Volume</label><span class='field_span'><input id='text_volume' type='text' onkeypress='return field_keypress(event, "text_pages");'/></span>
+			<label class='field_label'>Pages</label><span class='field_span'><input id='text_pages' type='text' onkeypress='return field_keypress(event, "text_year");'/></span>
+			<label class='field_label'>Year</label><span class='field_span'><input id='text_year' type='text' onkeypress='return field_keypress(event, "text_key");'/></span>
+			<input type='button' class='field_label' value='Key' onmouseup='generate_bibtex_key();'><span class='field_span'><input id='text_key' type='text' /></span>
+		</div>
+	</div>
+	<div id='bibliography_fields2'>
+		<div class='field_div'><label class='field_label'>Keywords</label><span class='field_span'><input id='text_keywords' type='text' onkeypress='return field_keypress(event, "text_file");'/></span></div>
+		<div class='field_div'>
+			<label class='field_label'>File</label><span class='field_span'><input id='text_file' type='text' onkeypress='return field_keypress(event, "text_url");'/></span>
+			<input id='field_file_button' type='button' value='Browse' />
+			<input id='input_file' type='file' name='files' class='field_label' style='display: none;' onchange='browse(this)'>
+		</div>
+		<div class='field_div'><label class='field_label'>Url</label><span class='field_span'><input id='text_url' type='text' onkeypress='return field_keypress(event, "text_doi");'/></span></div>
+		<div class='field_div'><label class='field_label'>DOI</label><span class='field_span'><input id='text_doi' type='text' onkeypress='return field_keypress(event, "text_owner");'/></span></div>
+		<div class='field_div'>
+			<label class='field_label'>Owner</label><span class='field_span'><input id='text_owner' type='text' onkeypress='return field_keypress(event, "text_timestamp");'/></span>
+			<label class='field_label'>Timestamp</label><span class='field_span'><input id='text_timestamp' type='text' ondblclick='return generate_timestamp(this);'/></span>
+		</div>
+	</div>
+	<div id='bibtex_entry'>
+		<div>
+			<input id='textview_bibtex' type='textview' />
+		</div>
+	</div>
+</div>
+
+</div>
+</article>
+</body>
+</html>

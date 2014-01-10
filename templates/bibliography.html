@@ -35,7 +35,8 @@ $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
 	<script src="$js_src"></script>
 
-<script>var bibliography = new Object()</script>
+$# <script>var bibliography = new Object()</script>
+<script>var bibliography = $:content['bibliography']</script>
 </head>
 <body data-type='bibliography' data-file='$filename'>
 <aside id='aside'>
