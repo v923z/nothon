@@ -372,14 +372,18 @@ function show_tag(tag) {
 		$link.removeClass('active_filter')
 		// TODO: we have to re-build the table, once the constraint is removed. This works, but is awfully slow...
 		var i = 0
-		var row
+		var row = ''
 		for(uuid in bibliography) {
 			i++
-			row = generate_row('#publication_list', bibliography[uuid]['type'], uuid, i)
-			$('#publication_list').find('tbody').append(row)
+			// This could be sped up by constructing an array from the header first, and then looping over that.
+			row += generate_row('#publication_list', bibliography[uuid]['type'], uuid, i) + '\n'
+		}
+		$('#publication_list > tbody').append(row)
+		for(uuid in bibliography) {
+			// This is the slow part here... 
 			fill_in_row(uuid)
 		}
-		$('#publication_list').find('tbody').trigger("applyWidgets")
+		$('#publication_list > tbody').trigger("applyWidgets")
 	}
 }
 
