@@ -232,8 +232,8 @@ function tabs_activated(event, ui) {
 		$('#textarea_bibtex').val(json_to_bibtex(uuid))
 	}
 	if(ui.oldTab.index() == 3) {
-		// bibtex tab
-		parse_bibstring()
+		// bibtex tab: get the bibtex string, and send it to the server for parsing
+		if($('#textarea_bibtex').val().length > 0) parse_bibstring($('#textarea_bibtex').val())
 	}	
 	set_field_id(uuid)
 }
@@ -365,12 +365,12 @@ function json_to_bibtex(id) {
 	return bib_str + '\n}'
 }
 
-function parse_bibstring() {
+function parse_bibstring(bibstring) {
 	var message = _save('bibliography')
 	message.sub_type = 'bibliography'
 	message['command'] = 'parse_bibstring'
 	message['count'] = get_active_paper()
-	message['bibstring'] = $('#textarea_bibtex').val()
+	message['bibstring'] = bibstring
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), parse_bibstring_handler)
 }
 
@@ -380,9 +380,19 @@ function parse_bibstring_handler(req) {
 		// Update the bibliographic entry here
 		var entry = message['entry']
 		console.log(entry)
+		var uuid = message['count']
 		for(key in entry) {
-			bibliography[message['count']][key] = entry[key]
+			bibliography[uuid][key] = entry[key]
 		}
+		// We have to set the values in the text boxes
+		$('#bibliography_fields input[type=text]').each( function() {
+			var id = $(this).attr('id').replace('text_', '')
+			$(this).val(bibliography[uuid][id])
+		})
+		$('#bibliography_fields2 input[type=text]').each( function() {
+			var id = $(this).attr('id').replace('text_', '')
+			$(this).val(bibliography[uuid][id])
+		})
 		fill_in_row(message['count'])
 	}
 	else {
