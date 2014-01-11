@@ -105,3 +105,8 @@
 	width:				100%;
 	min-height:			200px;
 }
+
+.active_filter {
+	color:				#cc0000;		/* this doesn't take effect... */
+	font-weight:		bold;
+}

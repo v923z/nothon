@@ -45,16 +45,9 @@ function bibliography_side_switch() {
 	}
 }
 
-function add_row(target, type) {
-	$('#publication_list tr.active_row').removeClass('active_row')
-	var uuid = generate_uuid()
-	var entry = new Object()
-	entry['type'] = type
-	bibliography[uuid] = entry
-	set_active_paper(uuid)
-	
+function generate_row(target, type, uuid, count) {
 	var columns = count_columns(target)
-	var row = '<tr id="' + uuid + '"><td>' + count_rows(target) + '</td>'
+	var row = '<tr id="' + uuid + '"><td>' + count + '</td>'
 	
 	for(i=2; i <= columns; i++) {
 		var header = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
@@ -65,10 +58,18 @@ function add_row(target, type) {
 		}
 	}
 	row += '</tr>'
-	$(target)
-	.find('tbody')
-	.append(row)
-	.trigger("applyWidgets")
+	return row
+}
+
+function add_row(target, type) {
+	$('#publication_list tr.active_row').removeClass('active_row')
+	var uuid = generate_uuid()
+	var entry = new Object()
+	entry['type'] = type
+	bibliography[uuid] = entry
+	set_active_paper(uuid)	
+	row = generate_row(target, type, uuid, count_rows(target))
+	$(target).find('tbody').append(row).trigger("applyWidgets")
 	$('#' + uuid).addClass('active_row')
 	// Activate the first fields tab
 	$('#notes_tab').tabs('option', 'active', 1)
@@ -310,7 +311,9 @@ function set_active_paper(uuid) {
 	$('#docmain').data('id', uuid)
 	if(!bibliography[uuid]['notebook'] || bibliography[uuid]['notebook'].length == 0) {
 		// This would happen, when a new entry is created
-		bibliography[uuid]['notebook'] = extra_data['folder'] + extra_data['separator'] + uuid + '.note'
+		// TODO: we have to get the separator and the folder from somewhere!!!
+		//bibliography[uuid]['notebook'] = extra_data['folder'] + extra_data['separator'] + uuid + '.note'
+		bibliography[uuid]['notebook'] = './' + uuid + '.note'
 	}
 	$('#docmain').data('file', bibliography[uuid]['notebook'])
 }
@@ -340,9 +343,44 @@ function save_and_load(id) {
 function save_and_load_handler(req) {
 }
 
+function find_tag_link(tag) {
+	var $ret = null
+	$('#biblio_keywords > ul > li > a').each( function() {
+		if($(this).text() == tag) $ret = $(this)
+	})
+	return $ret
+}
+
 function show_tag(tag) {
 	// Removes all elements from the publication list that do not have 'tag' in their keyword list
-	console.log(tag)
+	var $link = find_tag_link(tag)
+	if(!$link.hasClass('active_filter')) {
+		$link.addClass('active_filter')
+		$('#publication_list > tbody > tr').each( function() {
+			var id = $(this).attr('id')
+			var keep = false
+			if(bibliography[id]['keywords']) {
+				// TODO: this splits only on ','. Should we allow ';', too?
+				var keywords = bibliography[id]['keywords'].split(',')
+				for(i in keywords) {
+					if(tag == keywords[i].trim()) keep = true
+				}
+			}
+			if(!keep) $(this).remove()
+		})
+	} else {
+		$link.removeClass('active_filter')
+		// TODO: we have to re-build the table, once the constraint is removed. This works, but is awfully slow...
+		var i = 0
+		var row
+		for(uuid in bibliography) {
+			i++
+			row = generate_row('#publication_list', bibliography[uuid]['type'], uuid, i)
+			$('#publication_list').find('tbody').append(row)
+			fill_in_row(uuid)
+		}
+		$('#publication_list').find('tbody').trigger("applyWidgets")
+	}
 }
 
 function delete_entry() {
