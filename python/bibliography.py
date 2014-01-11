@@ -5,6 +5,7 @@ from save_utils import save_notebook
 import uuid
 import os
 import datetime
+from bibtex2bibnote import Translator
 from notebook import Notebook
 
 class Bibliography():
@@ -24,6 +25,9 @@ class Bibliography():
 			# This function is called by the client immediately after loading the main content
 			result = get_bibliography(message.get('file'))
 				
+		elif command in ('parse_bibstring'):
+			result = Translator(None).string_reader(message.get('bibstring', ''), count=message.get('count', 10000))
+			
 		elif command in ('save_bibnote'):
 			result = self.save_bibnote(message.get('file'), message)
 			

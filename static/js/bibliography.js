@@ -228,10 +228,12 @@ function tabs_activated(event, ui) {
 		fill_in_row(uuid)
 	}
 	if(ui.newTab.index() == 3) {
+		// bibtex tab
 		$('#textarea_bibtex').val(json_to_bibtex(uuid))
 	}
 	if(ui.oldTab.index() == 3) {
 		// bibtex tab
+		parse_bibstring()
 	}	
 	set_field_id(uuid)
 }
@@ -325,7 +327,6 @@ function save_bibliography(method) {
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
 
-
 function save_and_load(id) {
 	//var message = _save('bibliography')
 	//if(message == null) return
@@ -358,8 +359,33 @@ function json_to_bibtex(id) {
 	var bib_str = '@' + entry['type'] + '{' + entry['key'] + ',\n'
 	var items = new Array()
 	for(i in entry) {
-		items.push('\t' + i + '= {' + entry[i] + '}')
+		items.push('\t' + i + ' = {' + entry[i] + '}')
 	}
 	bib_str += items.join(',\n')
 	return bib_str + '\n}'
+}
+
+function parse_bibstring() {
+	var message = _save('bibliography')
+	message.sub_type = 'bibliography'
+	message['command'] = 'parse_bibstring'
+	message['count'] = get_active_paper()
+	message['bibstring'] = $('#textarea_bibtex').val()
+	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), parse_bibstring_handler)
+}
+
+function parse_bibstring_handler(req) {
+	var message = JSON.parse(req.responseText)
+	if(message['success'] == 'success') {
+		// Update the bibliographic entry here
+		var entry = message['entry']
+		console.log(entry)
+		for(key in entry) {
+			bibliography[message['count']][key] = entry[key]
+		}
+		fill_in_row(message['count'])
+	}
+	else {
+		alert(message['success'])
+	}
 }

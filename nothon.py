@@ -101,7 +101,7 @@ class Index(object):
 
 	def POST(self):
 		message = simplejson.loads(web.data())
-		#print message
+		print message
 		doc_type = message.get('type')
 		if doc_type in ('notebook', 'bibliography'):
 			exec('obj = %s(nothon_resource, render)'%(doc_type.title()))
