@@ -68,7 +68,7 @@ function add_row(target, type) {
 	entry['type'] = type
 	bibliography[uuid] = entry
 	set_active_paper(uuid)	
-	row = generate_row(target, type, uuid, count_rows(target))
+	var row = generate_row(target, type, uuid, count_rows(target))
 	$(target).find('tbody').append(row).trigger("applyWidgets")
 	$('#' + uuid).addClass('active_row')
 	// Activate the first fields tab
@@ -370,19 +370,22 @@ function show_tag(tag) {
 		})
 	} else {
 		$link.removeClass('active_filter')
-		// TODO: we have to re-build the table, once the constraint is removed. This works, but is awfully slow...
+		// We have to re-build the table, once the constraint is removed.
+		var header = new Array()
+		for(i=2; i <= count_columns('#publication_list'); i++) {
+			header.push($('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase())
+		}
 		var i = 0
-		var row = ''
+		var rows = ''
 		for(uuid in bibliography) {
 			i++
-			// This could be sped up by constructing an array from the header first, and then looping over that.
-			row += generate_row('#publication_list', bibliography[uuid]['type'], uuid, i) + '\n'
-		}
-		$('#publication_list > tbody').append(row)
-		for(uuid in bibliography) {
-			// This is the slow part here... 
-			fill_in_row(uuid)
-		}
+			var row = '\n<tr id="' + uuid + '"><td>' + i + '</td>'
+			for(j in header) {
+				row += '<td id="' + uuid + '-' + header + '">' + bibliography[uuid][header[j]] + '</td>'
+			}
+			rows += row + '</tr>'
+		}		
+		$('#publication_list > tbody').html(rows)
 		$('#publication_list > tbody').trigger("applyWidgets")
 	}
 }
