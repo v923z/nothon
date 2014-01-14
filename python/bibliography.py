@@ -172,7 +172,7 @@ def render_keywords(keywords):
 	# Given a python list of keywords, returns a HTML list of links
 	if '""' in keywords: keywords.remove('""')
 	keywords = set([keyword.lstrip().rstrip() for keyword in keywords])
-	ul = '<ul class="keywords_list">\n'
+	ul = '<ul id="keyword_list" class="keywords_list">\n'
 	for keyword in sorted(keywords):
 		# TODO: create sub-groups by letter
 		ul += '<li><a href="javascript:show_tag(\'%s\');">%s</a></li>\n'%(keyword, keyword)

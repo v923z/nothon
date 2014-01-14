@@ -351,6 +351,36 @@ function find_tag_link(tag) {
 	return $ret
 }
 
+function array_set(array) {
+	var uniqueNames = new Array()
+	$.each(names, function(i, el){
+		if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+	});
+	return uniqueNames
+}
+
+function get_keywords(uuid) {
+	if(bibliography[id]['keywords']) {
+		// TODO: this splits only on ','. Should we allow ';', too?
+		return bibliography[id]['keywords'].split(',')
+	}
+	return null
+}
+
+function keyword_list(array) {
+	var keywords = new Array()
+	// Generates the list of keywords on the left hand side
+	$('#publication_list > tbody > tr').each( function() {
+		var uuid = $(this).attr('id')
+		keywords = keywords.concat(get_keywords(uuid))
+	})
+	keywords = array_set(keywords)
+	var li = ''
+	for(i in keywords) {
+		li += '\n<li><a href="javascript:show_tag(\'' + keywords[i] + '\');">' + keywords[i] + '</a></li>'
+	}
+	$('#keyword_list').html(li)
+}
 function show_tag(tag) {
 	// Removes all elements from the publication list that do not have 'tag' in their keyword list
 	var $link = find_tag_link(tag)
@@ -368,9 +398,13 @@ function show_tag(tag) {
 			}
 			if(!keep) $(this).remove()
 		})
+		// TODO: once we removed the rows from the table, we have to re-build the tag list on the left hand side.
+		// Apply the 'active_filter' style somehow
+		keyword_list()
 	} else {
 		$link.removeClass('active_filter')
 		// We have to re-build the table, once the constraint is removed.
+		// TODO: apply multiple tags
 		var header = new Array()
 		for(i=2; i <= count_columns('#publication_list'); i++) {
 			header.push($('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase())
