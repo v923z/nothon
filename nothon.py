@@ -71,7 +71,10 @@ def list_create_functions():
 class Index(object):
 	update_js()
 	def GET(self):
-		link = web.input(name='test.note')
+		link = web.input(name=None, arxiv=None)
+		if link.name == None and link.arxiv == None:
+			return render.welcome()
+			
 		if link.name.endswith('.html'): 
 			with open(link.name, 'r') as fin:
 				html = fin.read()

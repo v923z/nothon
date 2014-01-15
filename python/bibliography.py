@@ -139,7 +139,7 @@ class Bibliography():
 		note['table_body'] = body_str
 		note['keywords'] = render_keywords(keywords)
 		note['bibliography'] = simplejson.dumps(bibliography)
-		note['extra_data'] = {'separator': os.sep, 'folder': notebook_folder(fn)}
+		note['extra_data'] = simplejson.dumps({'separator': os.sep, 'folder': notebook_folder(fn)})
 		return note
 
 def get_bibliography(fn):

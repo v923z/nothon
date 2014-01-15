@@ -309,10 +309,11 @@ function browse() {
 
 function set_active_paper(uuid) {
 	$('#docmain').data('id', uuid)
-	if(!bibliography[uuid]['notebook'] || bibliography[uuid]['notebook'].length == 0) {
-		// This would happen, when a new entry is created
-		bibliography[uuid]['notebook'] = uuid + '.note'
-	}
+	// TODO: I am not sure, whether this is the best way of handling this. 
+	bibliography[uuid]['notebook'] = uuid + '.note'
+	//if(!bibliography[uuid]['notebook'] || bibliography[uuid]['notebook'].length == 0) {
+		//// This would happen, when a new entry is created
+	//}
 	$('#docmain').data('file', extra_data['folder'] + extra_data['separator'] + bibliography[uuid]['notebook'])
 }
 

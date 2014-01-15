@@ -57,7 +57,7 @@ function plot_keypress(event) {
 function plot_data(div_data) {
 	var message = create_message(div_data, 'plot')
 	message.title = 'div_plot_file_' + get_num(div_data)
-	message.filename = document.title + '_plot_' + get_num(div_data)
+	message.filename = $('$docmain').data('file') + '_plot_' + get_num(div_data)
 	message.body = 'div_plot_body_' + get_num(div_data)
 	message.sub_type = 'notebook'
     xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
