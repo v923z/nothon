@@ -400,7 +400,7 @@ function show_tag(tag) {
 		})
 		// TODO: once we removed the rows from the table, we have to re-build the tag list on the left hand side.
 		// Apply the 'active_filter' style somehow
-		keyword_list()
+		//keyword_list()
 	} else {
 		$link.removeClass('active_filter')
 		// We have to re-build the table, once the constraint is removed.
