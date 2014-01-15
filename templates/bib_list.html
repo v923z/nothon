@@ -1,0 +1,103 @@
+$def with (title, aside, content)
+<html>
+<head>
+<title>$title</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/static/css/main.css"/>
+<link rel="stylesheet" href="/static/css/highlight.css"/>
+<link rel="stylesheet" href="/static/css/ui.dynatree.css"/>
+<link rel="stylesheet" href="/static/css/dynatree_custom.css"/>
+<link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
+<link rel="stylesheet" href="/static/css/jquery-ui-smoothness.css" />
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.datepick.js"></script>
+<script src="/static/js/ui/jquery-ui.min.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/jquery.dynatree-1.2.4.js"></script>
+<script src="/static/js/functions.js"></script>
+<script src="/static/js/math.min.js"></script>
+<script src="/static/js/calculator.js"></script>
+
+</head>
+<body data-type='bibliography_list'>
+<aside id='aside'>
+<div id='calendar'></div>
+<div id='notebook_tab'>
+	 <ul>
+		<li><a href='#document_tree'>Documents</a></li>
+		<li><a href='#document_contents'>Contents</a></li>
+		<li><a href='#tags'>Tags</a></li>
+	</ul>
+	<div id='document_tree'>$:aside['tree']</div>
+	<div id='document_contents'>Contents</div>
+	<div id='tags'>Tags</div>
+</div>
+</aside>
+<article id='article'>
+<div class="aside_switch" id="aside_switch" onclick="toggle_document_tree()"><<</div>
+<div id='top_menu' onmouseover='topmenu_over();'>
+<ul>
+	<li>Organise
+		<ul>
+			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__toc");'>ToC</li>
+			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__timeline");'>Timeline</li>
+			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__bibliography");'>Bibliography</li>
+		</ul>
+	</li>
+	<li>Notebook
+		<ul>
+			<li onmouseup='open_new_notebook_dialog()'>New</li>
+			<li onmouseup='save_notebook("save");'>Save</li>
+			<li onmouseup='rename_notebook();'>Rename</li>
+			<hr>
+			<li onmouseup='expand_collapse_all("expand");'>Expand all</li>
+			<li onmouseup='expand_collapse_all("collapse");'>Collapse all</li>
+			<hr>
+			<li onmouseup='save_notebook("latex");'>LaTeX</li>
+			<li onmouseup='save_notebook("markdown");'>Markdown</li>
+			<li onmouseup='save_html(this);'>HTML</li>
+			<li>Archive
+				<ul>
+					<li onmouseup='save_notebook("zip");'>Zip</li>
+					<li onmouseup='save_notebook("tar");'>Tar + gzip</li>
+					<li onmouseup='git();'>Git</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>Menu
+		<ul>
+			<li onmouseup='toggle_context_menu();'>Context</li>
+			<li onmouseup='topmenu_hide();'>Hide</li>
+			<li onmouseup='trashbin_image_toggle();'>Trashbin</li>
+			<li onmouseup='toggle_all();'>Toggle all</li>
+		</ul>
+	</li>
+	<li>Tools
+		<ul>
+			<li onmouseup='toggle_calendar()'>Calendar</li>
+			<li onmouseup='open_calculator(); return false;' onmousedown='return false;'>Calculator</li>
+		</ul>
+	</li>
+	<li>Help
+		<ul>
+			<li onmouseup='usage();'>Usage</li>
+			<li onmouseup='about();'>About</li>
+			<li><a href="https://github.com/v923z/nothon" target="_blank">nothon</a></li>
+		</ul>
+	</li>
+</ul>
+</div>
+<div id="doc_toplevel">
+<div id="docmain">$:safe_content(content, "content")</div>
+</div>
+<div id='calculator_dialog'>
+	<div contenteditable=false id='calculator_result' style='width: 95%; height: 200px; overflow-y: scroll;'></div>
+	<input id='calculator_string' type='text' style='width: 90%; position: absolute; top: 250px;' onkeydown='return eval_calculator(event);'>
+</div>
+<div id='new_notebook_dialog'>
+	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'>
+</div>
+</article>
+</body>
+</html>
