@@ -22,6 +22,7 @@ from python.head_utils import Head
 from python.code_utils import Code
 from python.save_utils import Zip, Tar, Save, Latex, Markdown
 from python.notebook import Notebook
+from python.arxiv import Arxiv
 
 from python.template_helpers import *
 from python.bibliography import *
@@ -71,15 +72,19 @@ def list_create_functions():
 class Index(object):
 	update_js()
 	def GET(self):
-		link = web.input(name=None, arxiv=None)
-		if link.name == None and link.arxiv == None:
-			return render.welcome()
-			
+		link = web.input(name='', arxiv='')
+		if link.name == '' and link.arxiv == '':
+			return render.welcome(None)
+						
 		if link.name.endswith('.html'): 
 			with open(link.name, 'r') as fin:
 				html = fin.read()
 			return html
 		aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
+		if link.arxiv:
+			arxiv = Arxiv(nothon_resource, render)
+			return render.arxiv('arxiv', aside, arxiv.parse(link.arxiv))
+
 		if link.name == '__timeline':
 			return 	render.timeline(link.name, aside, make_timeline())
 		elif link.name == '__toc':
@@ -92,7 +97,7 @@ class Index(object):
 				bib.new_bibliography(link.name)
 			return render.bibliography(link.name, link.name, aside, bib.parse_bibliography(link.name), list_handler_functions(), list_create_functions())
 			
-		else:
+		elif link.name.endswith('.note'):
 			nb = Notebook(nothon_resource, render)
 			sp = link.name.split('#')
 			link.name = sp[0]
@@ -100,7 +105,10 @@ class Index(object):
 				nb.new_notebook(link.name)
 				aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
 				
-			return 	render.notebook(link.name, link.name, aside, nb.parse_note(link.name), list_handler_functions(), list_create_functions())
+			return render.notebook(link.name, link.name, aside, nb.parse_note(link.name), list_handler_functions(), list_create_functions())
+			
+		else:
+			return render.welcome('Could not process requested URL!')
 
 	def POST(self):
 		message = simplejson.loads(web.data())

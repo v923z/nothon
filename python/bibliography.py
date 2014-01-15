@@ -7,7 +7,7 @@ import os
 from bibtex2bibnote import Translator
 from notebook import Notebook
 
-class Bibliography():
+class Bibliography(object):
 
 	def __init__(self, resource, render):
 		self.resource = resource
