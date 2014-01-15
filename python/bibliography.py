@@ -4,7 +4,6 @@ from fileutils import get_notebook, create_notebook_folder, notebook_folder, wri
 from save_utils import save_notebook
 import uuid
 import os
-import datetime
 from bibtex2bibnote import Translator
 from notebook import Notebook
 
@@ -95,7 +94,7 @@ class Bibliography():
 				css_str += '\n<style>\n' + fin.read() + '\n</style>\n'
 				
 		content = self.parse_bibliography(fn)
-		return write_to_disc(str(self.render.bib_html(fn, content, js_str, css_str)), fn.replace('.bibnote', '.html'))
+		return write_to_disc(str(self.render.bib_standalone(fn, content, js_str, css_str)), fn.replace('.bibnote', '.html'))
 		
 	def new_bibliography(self, fn):
 		create_notebook_folder(fn)
@@ -140,6 +139,7 @@ class Bibliography():
 		note['table_body'] = body_str
 		note['keywords'] = render_keywords(keywords)
 		note['bibliography'] = simplejson.dumps(bibliography)
+		note['extra_data'] = {'separator': os.sep, 'folder': notebook_folder(fn)}
 		return note
 
 def get_bibliography(fn):
@@ -183,3 +183,21 @@ def dic_to_bib_string(key, entry):
 	if key in ('file'):
 		return '\t%s = {:%s:PDF}'%(key, entry.get(key, '""'))	
 	return '\t%s = {%s}'%(key, entry.get(key, '""'))
+
+def insert_new_entry(fn, entry, resource):
+	try:
+		data = get_notebook(fn)
+		bibliography = data.get('bibliography')
+	except EnvironmentError: 
+		return 'Could not write file %s'%(fn)
+		
+	if bibliography:
+		keys = bibliography.keys()
+		keys.sort(key=int)
+		new_key = int(keys[-1]) + 1
+		if entry:
+			bibliography['%s'%new_key] = entry
+			
+	data['date'] = datetime.datetime.now().strftime(resource.time_format)
+	data['bibliography'] = bibliography
+	return write_notebook(fn, data, resource.bibliography_item_order)

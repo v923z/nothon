@@ -2,6 +2,7 @@ import simplejson
 import os
 import base64
 from fileutils import create_notebook_folder
+import traceback
 
 try:
 	from pylab import *

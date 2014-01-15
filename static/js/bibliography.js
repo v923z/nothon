@@ -311,11 +311,9 @@ function set_active_paper(uuid) {
 	$('#docmain').data('id', uuid)
 	if(!bibliography[uuid]['notebook'] || bibliography[uuid]['notebook'].length == 0) {
 		// This would happen, when a new entry is created
-		// TODO: we have to get the separator and the folder from somewhere!!!
-		//bibliography[uuid]['notebook'] = extra_data['folder'] + extra_data['separator'] + uuid + '.note'
-		bibliography[uuid]['notebook'] = './' + uuid + '.note'
+		bibliography[uuid]['notebook'] = uuid + '.note'
 	}
-	$('#docmain').data('file', bibliography[uuid]['notebook'])
+	$('#docmain').data('file', extra_data['folder'] + extra_data['separator'] + bibliography[uuid]['notebook'])
 }
 
 function get_active_paper() {
