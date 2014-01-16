@@ -74,13 +74,16 @@ $def with (title, aside, arxiv)
 	</li>
 </ul>
 </div>
-<div id="doc_toplevel">
+<div id='doc_toplevel'>
 
 <div id='docmain' data-sub_type='arxiv'>
 $for entry in arxiv['papers']: 
-	<div class='arxiv_title'>$entry['title']</div>
+	<div class='$loop.parity' data-title='$entry['title']' data-authors='$entry['authors']'>
+	<div class='arxiv_title'>$entry['full_title']</div>
 	<div><input class='arxiv_save_button' type='button' onmouseup='save_arxiv_entry("$entry['link']");' value='Save'/></div>
-	<div>$:entry['summary']</div>	
+	<div>$:entry['authors_raw']</div>
+	<div>$:entry['abstract']</div>
+	</div>
 </div>
 </div>
 <div id='new_notebook_dialog'>
