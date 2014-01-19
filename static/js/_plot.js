@@ -20,7 +20,7 @@ function copy_plot_cell() {
 	var num = get_index($(active_div).data('main'))
 	var id = get_max_index('plot_main') + 1
 	insert_plot()
-	$('#div_plot_header_' + id).html($('#div_plot_header_' + num).html())
+	$('#div_plot_header_' + id).val($('#div_plot_header_' + num).val())
 	$('#div_plot_caption_' + id).html($('#div_plot_caption_' + num).html())
 	return false
 }
