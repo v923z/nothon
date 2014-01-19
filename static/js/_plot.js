@@ -34,27 +34,40 @@ function plot_onclick(target) {
 	}
 }
 
-function plot_keypress(event) {
-	if (event.which === 13 && event.ctrlKey && event.target.id.indexOf('_plot_header_') > -1) {			// Enter
+function plot_header_keypress(event) {
+	if(event.keyCode == 38) {			// Up arrow
+		if($(event.target).getCursorPosition() == 0) {
+			active_div = document.getElementById(event.target.id.replace('_plot_header_', '_plot_caption_'))
+			active_div.focus()
+			return false
+		} else {
+			return true
+		}
+	}
+	if (event.which === 13 && event.ctrlKey) {			// Enter
 		plot_data(event.target)
 		return false
-	} else if (event.which === 13 && event.shiftKey && event.target.id.indexOf('_plot_header_') > -1) {	// Enter
+	} else if (event.which === 13 && event.shiftKey) {	// Enter
 		plot_data(event.target)
 		insert_plot()
 		generate_toc()
 		return false
-	} else if (event.which === 13 && event.shiftKey && event.target.id.indexOf('_plot_caption_') > -1) {	// Enter
-		generate_toc()
-		active_div = document.getElementById(event.target.id.replace('_plot_caption_', '_plot_header_'))
-		active_div.focus()
-		return false
-	} else if(event.which === 13 && event.target.id.indexOf('_plot_caption_') > -1) {
-		generate_toc()
-	} else if(event.which === 47 && event.ctrlKey && event.target.id.indexOf('_plot_header_') > -1) { // '/'
+	} else if(event.which === 47 && event.ctrlKey) { // '/'
 		toggle_comment(event.target)
 		return false
 	}
 	return true
+}
+
+function plot_caption_keypress(event) {
+	if (event.which === 13) {	// Enter
+		generate_toc()
+		active_div = document.getElementById(event.target.id.replace('_plot_caption_', '_plot_header_'))
+		active_div.focus()
+		return false
+	} else {
+		return true
+	}
 }
 
 function plot_data(div_data) {
