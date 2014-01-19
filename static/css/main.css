@@ -212,6 +212,7 @@ article {
 	background: 		#eeeeee;
 	min-height:  		1.2em;
 	overflow:			hidden;
+	resize:				vertical;
 }
 
 .plot_file {

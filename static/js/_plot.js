@@ -35,7 +35,6 @@ function plot_onclick(target) {
 }
 
 function plot_keypress(event) {
-	console.log(event.which)
 	if (event.which === 13 && event.ctrlKey && event.target.id.indexOf('_plot_header_') > -1) {			// Enter
 		plot_data(event.target)
 		return false
@@ -51,10 +50,6 @@ function plot_keypress(event) {
 		return false
 	} else if(event.which === 13 && event.target.id.indexOf('_plot_caption_') > -1) {
 		generate_toc()
-	} else if(event.which === 13 && event.target.id.indexOf('_plot_header_') > -1) {
-		resize_textarea(event.target)
-	} else if(event.which === 8 && event.target.id.indexOf('_plot_header_') > -1) {		// Backspace
-		resize_textarea(event.target)
 	} else if(event.which === 47 && event.ctrlKey && event.target.id.indexOf('_plot_header_') > -1) { // '/'
 		toggle_comment(event.target)
 		return false
@@ -76,11 +71,9 @@ function plot_sanitise(block) {
 	return block
 }
 
-function resize_textarea(target) {
-	var text = $(target).val()
-	matches = text.match(/\n/g)
-	breaks = matches ? matches.length : 2
-	$(target).attr('rows', breaks + 2);
+function plot_up(target) {
+    target.style.height = '1px';     //Reset height, so that it not only grows but also shrinks
+    target.style.height = (target.scrollHeight+20) + 'px';    //Set new height
 }
 
 function toggle_comment(target) {
