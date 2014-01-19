@@ -18,9 +18,8 @@ except ImportError:
 
 from code_utils import code_arguments
 import resource
-import settings
 
-nothon_resource = settings.NothonResource()
+nothon_resource = resource.NothonResource()
 
 def latexify(text):
 	text = text.replace('&nbsp;', '\quad').replace('_', '\_').replace('#', '\#').replace('&amp;', '\&{}')
