@@ -72,8 +72,9 @@ function plot_sanitise(block) {
 }
 
 function plot_up(target) {
-    target.style.height = '1px';     //Reset height, so that it not only grows but also shrinks
-    target.style.height = (target.scrollHeight+20) + 'px';    //Set new height
+    target.style.height = '1px';
+    target.style.height = (target.scrollHeight+20) + 'px';
+    return false
 }
 
 function toggle_comment(target) {

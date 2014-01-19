@@ -5,6 +5,8 @@ from fileutils import create_notebook_folder
 import traceback
 
 try:
+	import matplotlib
+	matplotlib.use('Cairo')
 	from pylab import *
 except:
 	pass
