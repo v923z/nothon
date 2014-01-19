@@ -25,7 +25,7 @@ class Plot(object):
 			return '<span class="code_error">Could not read file from disc</span>'
 
 	def handler(self, message):
-		code = message['content'].replace('<p>', '\n').replace('</p>', '').replace('<br>', '\n')
+		code = message['content']
 		exit_status = False
 		pwd = os.getcwd()
 		if message['directory']: os.chdir(message['directory'].strip('<br>'))
