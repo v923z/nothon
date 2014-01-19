@@ -211,6 +211,7 @@ article {
 .plot_header {
 	background: 		#eeeeee;
 	min-height:  		1.2em;
+	overflow:			hidden;
 }
 
 .plot_file {

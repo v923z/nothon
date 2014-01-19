@@ -35,6 +35,7 @@ function plot_onclick(target) {
 }
 
 function plot_keypress(event) {
+	console.log(event.which)
 	if (event.which === 13 && event.ctrlKey && event.target.id.indexOf('_plot_header_') > -1) {			// Enter
 		plot_data(event.target)
 		return false
@@ -50,12 +51,20 @@ function plot_keypress(event) {
 		return false
 	} else if(event.which === 13 && event.target.id.indexOf('_plot_caption_') > -1) {
 		generate_toc()
+	} else if(event.which === 13 && event.target.id.indexOf('_plot_header_') > -1) {
+		resize_textarea(event.target)
+	} else if(event.which === 8 && event.target.id.indexOf('_plot_header_') > -1) {		// Backspace
+		resize_textarea(event.target)
+	} else if(event.which === 47 && event.ctrlKey && event.target.id.indexOf('_plot_header_') > -1) { // '/'
+		toggle_comment(event.target)
+		return false
 	}
 	return true
 }
 
 function plot_data(div_data) {
-	var message = create_message(div_data, 'plot')
+	var message = _create_message('plot')
+	message.content = $('#div_plot_header_'+get_num(div_data)).val()
 	message.title = 'div_plot_file_' + get_num(div_data)
 	message.filename = $('#docmain').data('file') + '_plot_' + get_num(div_data)
 	message.body = 'div_plot_body_' + get_num(div_data)
@@ -64,6 +73,53 @@ function plot_data(div_data) {
 
 function plot_sanitise(block) {
 	block.content.plot_caption.content = block.content.plot_caption.content.replace('<br>', '')
-	block.content.plot_header.content = $.trim(block.content.plot_header.content)
 	return block
+}
+
+function resize_textarea(target) {
+	var text = $(target).val()
+	matches = text.match(/\n/g)
+	breaks = matches ? matches.length : 2
+	$(target).attr('rows', breaks + 2);
+}
+
+function toggle_comment(target) {
+	var caret = $(target).getCursorPosition()
+	var text = $(target).val()
+	while(text[caret] == '\n') caret--;
+	
+	for(start=caret; start >= 0; start--) {
+		if(text[start] == '\n') {
+			start++
+			break
+		}
+	}
+	if(text[start] !== '#') {
+		$(target).val(text.substring(0, start) + '#' + text.substring(start, text.length))
+	} else {
+		$(target).val(text.substring(0, start) + text.substring(start+1, text.length))
+	}
+}
+
+jQuery.fn.getCursorPosition = function() {
+    if(this.length == 0) return -1;
+    return $(this).getSelectionStart();
+}
+
+jQuery.fn.getSelectionStart = function() {
+    if(this.length == 0) return -1;
+    input = this[0];
+
+    var pos = input.value.length;
+
+    if (input.createTextRange) {
+        var r = document.selection.createRange().duplicate();
+        r.moveEnd('character', input.value.length);
+        if (r.text == '') 
+        pos = input.value.length;
+        pos = input.value.lastIndexOf(r.text);
+    } else if(typeof(input.selectionStart)!="undefined")
+    pos = input.selectionStart;
+
+    return pos;
 }

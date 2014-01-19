@@ -121,7 +121,8 @@ function block_content(elem) {
 			if(nothon) {
 				if(check_tag(nothon, 'save')) {
 					var sub_block = new Object()
-					sub_block['content'] = $(this).html()
+					if($(this).is('textarea')) sub_block['content'] = $(this).val()
+					else sub_block['content'] = $(this).html()
 					sub_block['id'] = $(this).attr('id')
 					if($(this).is(':visible')) props.replace('collapsed;', '')
 					else props = add_tag(props, 'collapsed')
