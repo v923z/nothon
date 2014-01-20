@@ -1,11 +1,11 @@
 bibliography = null
 
 $(document).ready(function () {
-	$(function() {
-		var message = _create_message('bibliography')
-		message['sub_command'] = 'get_bibliography'
-		xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), get_bibliography_handler)
-	})
+	//$(function() {
+		//var message = _create_message('get_bibliography')
+		//message.sub_type = 'bibliography'
+		//xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), get_bibliography_handler)
+	//})
 
 	$(function(){
 		$('#publication_list').tablesorter({
@@ -45,16 +45,9 @@ function bibliography_side_switch() {
 	}
 }
 
-function add_row(target, type) {
-	$('#publication_list tr.active_row').removeClass('active_row')
-	var uuid = generate_uuid()
-	var entry = new Object()
-	entry['type'] = type
-	bibliography[uuid] = entry
-	set_active_paper(uuid)
-	
+function generate_row(target, type, uuid, count) {
 	var columns = count_columns(target)
-	var row = '<tr id="' + uuid + '"><td>' + count_rows(target) + '</td>'
+	var row = '<tr id="' + uuid + '"><td>' + count + '</td>'
 	
 	for(i=2; i <= columns; i++) {
 		var header = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
@@ -65,10 +58,18 @@ function add_row(target, type) {
 		}
 	}
 	row += '</tr>'
-	$(target)
-	.find('tbody')
-	.append(row)
-	.trigger("applyWidgets")
+	return row
+}
+
+function add_row(target, type) {
+	$('#publication_list tr.active_row').removeClass('active_row')
+	var uuid = generate_uuid()
+	var entry = new Object()
+	entry['type'] = type
+	bibliography[uuid] = entry
+	set_active_paper(uuid)	
+	var row = generate_row(target, type, uuid, count_rows(target))
+	$(target).find('tbody').append(row).trigger("applyWidgets")
 	$('#' + uuid).addClass('active_row')
 	// Activate the first fields tab
 	$('#notes_tab').tabs('option', 'active', 1)
@@ -229,22 +230,23 @@ function tabs_activated(event, ui) {
 	}
 	if(ui.newTab.index() == 3) {
 		// bibtex tab
+		$('#textarea_bibtex').val(json_to_bibtex(uuid))
 	}
 	if(ui.oldTab.index() == 3) {
-		// bibtex tab
+		// bibtex tab: get the bibtex string, and send it to the server for parsing
+		if($('#textarea_bibtex').val().length > 0) parse_bibstring($('#textarea_bibtex').val())
 	}	
 	set_field_id(uuid)
 }
 
 function get_bibliography_handler(req) {
-	// TODO: some error handling here?
 	var message = JSON.parse(req.responseText)
 	if(message['success'] == 'success') {
 		bibliography = message['bibliography']
 		extra_data = message['extra_data']
 	}
 	else {
-		alert('Could not read file: ' + message['file'])
+		alert(message['success'])
 		bibliography = null
 		extra_data = null
 	}
@@ -307,11 +309,12 @@ function browse() {
 
 function set_active_paper(uuid) {
 	$('#docmain').data('id', uuid)
-	if(!bibliography[uuid]['notebook'] || bibliography[uuid]['notebook'].length == 0) {
-		// This would happen, when a new entry is created
-		bibliography[uuid]['notebook'] = extra_data['folder'] + extra_data['separator'] + uuid + '.note'
-	}
-	$('#docmain').data('file', bibliography[uuid]['notebook'])
+	// TODO: I am not sure, whether this is the best way of handling this. 
+	bibliography[uuid]['notebook'] = uuid + '.note'
+	//if(!bibliography[uuid]['notebook'] || bibliography[uuid]['notebook'].length == 0) {
+		//// This would happen, when a new entry is created
+	//}
+	$('#docmain').data('file', extra_data['folder'] + extra_data['separator'] + bibliography[uuid]['notebook'])
 }
 
 function get_active_paper() {
@@ -320,11 +323,11 @@ function get_active_paper() {
 
 function save_bibliography(method) {
 	var message = _save('bibliography')
+	message.sub_type = 'bibliography'
 	message.bibliography = bibliography
-	message['sub_command'] = method
+	message['command'] = method
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
-
 
 function save_and_load(id) {
 	//var message = _save('bibliography')
@@ -337,4 +340,140 @@ function save_and_load(id) {
 }
 
 function save_and_load_handler(req) {
+}
+
+function find_tag_link(tag) {
+	var $ret = null
+	$('#biblio_keywords > ul > li > a').each( function() {
+		if($(this).text() == tag) $ret = $(this)
+	})
+	return $ret
+}
+
+function array_set(array) {
+	var uniqueNames = new Array()
+	$.each(names, function(i, el){
+		if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+	});
+	return uniqueNames
+}
+
+function get_keywords(uuid) {
+	if(bibliography[id]['keywords']) {
+		// TODO: this splits only on ','. Should we allow ';', too?
+		return bibliography[id]['keywords'].split(',')
+	}
+	return null
+}
+
+function keyword_list(array) {
+	var keywords = new Array()
+	// Generates the list of keywords on the left hand side
+	$('#publication_list > tbody > tr').each( function() {
+		var uuid = $(this).attr('id')
+		keywords = keywords.concat(get_keywords(uuid))
+	})
+	keywords = array_set(keywords)
+	var li = ''
+	for(i in keywords) {
+		li += '\n<li><a href="javascript:show_tag(\'' + keywords[i] + '\');">' + keywords[i] + '</a></li>'
+	}
+	$('#keyword_list').html(li)
+}
+function show_tag(tag) {
+	// Removes all elements from the publication list that do not have 'tag' in their keyword list
+	var $link = find_tag_link(tag)
+	if(!$link.hasClass('active_filter')) {
+		$link.addClass('active_filter')
+		$('#publication_list > tbody > tr').each( function() {
+			var id = $(this).attr('id')
+			var keep = false
+			if(bibliography[id]['keywords']) {
+				// TODO: this splits only on ','. Should we allow ';', too?
+				var keywords = bibliography[id]['keywords'].split(',')
+				for(i in keywords) {
+					if(tag == keywords[i].trim()) keep = true
+				}
+			}
+			if(!keep) $(this).remove()
+		})
+		// TODO: once we removed the rows from the table, we have to re-build the tag list on the left hand side.
+		// Apply the 'active_filter' style somehow
+		//keyword_list()
+	} else {
+		$link.removeClass('active_filter')
+		// We have to re-build the table, once the constraint is removed.
+		// TODO: apply multiple tags
+		var header = new Array()
+		for(i=2; i <= count_columns('#publication_list'); i++) {
+			header.push($('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase())
+		}
+		var i = 0
+		var rows = ''
+		for(uuid in bibliography) {
+			i++
+			var row = '\n<tr id="' + uuid + '"><td>' + i + '</td>'
+			for(j in header) {
+				row += '<td id="' + uuid + '-' + header + '">' + bibliography[uuid][header[j]] + '</td>'
+			}
+			rows += row + '</tr>'
+		}		
+		$('#publication_list > tbody').html(rows)
+		$('#publication_list > tbody').trigger("applyWidgets")
+	}
+}
+
+function delete_entry() {
+	var id = get_active_paper()
+	if(id == null) return false
+	delete bibliography[id]
+	$('#publication_list tr[id=' + id + ']').remove()
+	return false
+}
+
+function json_to_bibtex(id) {
+	// Converts a bibliography entry into bibtex format, so that it can be displayed in the bibtex tab
+	var entry = bibliography[id]
+	var bib_str = '@' + entry['type'] + '{' + entry['key'] + ',\n'
+	var items = new Array()
+	for(i in entry) {
+		items.push('\t' + i + ' = {' + entry[i] + '}')
+	}
+	bib_str += items.join(',\n')
+	return bib_str + '\n}'
+}
+
+function parse_bibstring(bibstring) {
+	var message = _save('bibliography')
+	message.sub_type = 'bibliography'
+	message['command'] = 'parse_bibstring'
+	message['count'] = get_active_paper()
+	message['bibstring'] = bibstring
+	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), parse_bibstring_handler)
+}
+
+function parse_bibstring_handler(req) {
+	var message = JSON.parse(req.responseText)
+	if(message['success'] == 'success') {
+		// Update the bibliographic entry here
+		var entry = message['entry']
+		console.log(entry)
+		var uuid = message['count']
+		for(key in entry) {
+			bibliography[uuid][key] = entry[key]
+		}
+		// We have to set the values in the text boxes
+		$('#bibliography_fields input[type=text]').each( function() {
+			var id = $(this).attr('id').replace('text_', '')
+			$(this).val(bibliography[uuid][id])
+		})
+		$('#bibliography_fields2 input[type=text]').each( function() {
+			var id = $(this).attr('id').replace('text_', '')
+			$(this).val(bibliography[uuid][id])
+		})
+		fill_in_row(message['count'])
+	}
+	else {
+		alert(message['success'])
+	}
 }

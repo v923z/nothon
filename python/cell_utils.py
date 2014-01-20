@@ -1,5 +1,5 @@
 import simplejson
-from fileutils import get_notebook
+from fileutils import get_notebook, write_notebook
 
 def paste_cell_handler(message, resource):
 	target_nb = get_notebook(message['target'])
@@ -61,16 +61,3 @@ def prepare_cell(cell, count):
 		new_cell['content'][c]['id'] = new_id
 	return new_cell
 
-def print_notebook(nb, objects):
-	def safe_notebook_cell(nb, obj):
-		if obj in nb: return simplejson.dumps(nb[obj], sort_keys=True, indent=4)
-		return '""'
-	
-	nb_str = '{\n'	
-	nb_str += ',\n'.join(['"%s" : %s'%(obj, safe_notebook_cell(nb, obj)) for obj in objects])
-	nb_str += '\n}'
-	return nb_str
-
-def write_notebook(fn, nb, objects):
-	with open(fn, 'w') as fout:
-		fout.write(print_notebook(nb, objects))

@@ -14,14 +14,10 @@ def save_notebook(message, fn, resource):
 			'directory' : message.get('directory', '""').strip('<br>'), 
 			'nothon version' : resource.nothon_version
 	}
-	if message.get('type') in ('notebook'):
-		nb['notebook'] = message.get('notebook')
-		write_notebook(fn, nb, resource.notebook_item_order)
-	if message.get('type') in ('bibliography'):
-		nb['bibliography'] = message.get('bibliography')
-		write_bibliography(fn, nb, resource.bibliography_item_order)
+	nb['notebook'] = message.get('notebook')
+	return write_notebook(fn, nb, resource.notebook_item_order)
 		
-class Save():
+class Save(object):
 	
 	def __init__(self, resource):
 		self.resource = resource
@@ -53,61 +49,48 @@ class Zip():
 	def __init__(self, resource):
 		self.resource = resource
 
-	def zip_notebook(self, message):
+	def zip_notebook(self, fn, folder, zipout):
 		try:
 			import zipfile
 		except ImportError:
-			return simplejson.dumps({'success' : 'Could not import module "zipfile".'})
+			return {'success' : 'Could not import module "zipfile".'}
 
 		def zipdir(path, zipper):
 			for root, dirs, files in os.walk(path):
 				for file in files:
 					zipper.write(os.path.join(root, file))
 
-		save_notebook(message, message['file'], self.resource)
-		fn = message.get('file')
-		folder = notebook_folder(fn)
-		zipper = zipfile.ZipFile(fn.replace('.note', '.zip'), 'w')
+		zipper = zipfile.ZipFile(zipout, 'w')
 		zipper.write(fn)
 		if os.path.exists(folder): zipdir(folder, zipper)
 		zipper.close()
-		return simplejson.dumps({'success' : 'success'})
-		
-	def handler(self, message):
-		return self.zip_notebook(message)
+		return {'success' : 'success'}
 
 class Tar():
 	
 	def __init__(self, resource):
 		self.resource = resource
 
-	def tar_notebook(self, message):
+	def tar_notebook(self, fn, folder, tarout):
 		try:
 			import tarfile
 		except ImportError:
-			return simplejson.dumps({'success' : 'Could not import module "tarfile".'})
+			return {'success' : 'Could not import module "tarfile".'}
 
-		save_notebook(message, message['file'], self.resource)
-		fn = message.get('file')
-		folder = notebook_folder(fn)
-		tar = tarfile.open(fn.replace('.note', '.tgz'), 'w:gz')
+		tar = tarfile.open(tarout, 'w:gz')
 		tar.add(fn)
 		if os.path.exists(folder): tar.add(folder)
 		tar.close()
-		return simplejson.dumps({'success' : 'success'})
-		
-	def handler(self, message):
-		return self.tar_notebook(message)
+		return {'success' : 'success'}
 
 class Latex():
 	
 	def __init__(self, resource):
 		self.resource = resource
 
-	def handler(self, message):
-		save_notebook(message, message['file'], self.resource)
-		latex.process_note(message.get('file'))
-		return  simplejson.dumps({'success' : 'success'})
+	def process(self, fn):
+		latex.process_note(fn)
+		return {'success' : 'success'}
 
 
 class Markdown():
@@ -115,7 +98,6 @@ class Markdown():
 	def __init__(self, resource):
 		self.resource = resource
 
-	def handler(self, message):
-		save_notebook(message, message['file'], self.resource)
-		markdown.process_note(message.get('file'))
-		return  simplejson.dumps({'success' : 'success'})
+	def process(self, fn):
+		markdown.process_note(fn)
+		return {'success' : 'success'}

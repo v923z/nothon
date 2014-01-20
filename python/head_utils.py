@@ -2,7 +2,7 @@ import simplejson
 import os
 import time
 
-class Head():
+class Head(object):
 
 	def __init__(self, resource):
 		self.resource = resource
@@ -36,5 +36,5 @@ class Head():
 								message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),  
 								message['body'] : '<br>'.join([x.rstrip('\n\r') for x in lines])})
 
-	def render(self, dictionary, render):
+	def render(self, dictionary, directory, render):
 		return render.head_html(dictionary['count'], dictionary['content'])

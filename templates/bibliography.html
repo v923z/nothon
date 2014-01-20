@@ -35,7 +35,8 @@ $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
 	<script src="$js_src"></script>
 
-<script>var bibliography = new Object()</script>
+<script>var bibliography = $:content['bibliography']</script>
+<script>var extra_data = $:content['extra_data']</script>
 </head>
 <body data-type='bibliography' data-file='$filename'>
 <aside id='aside'>
@@ -44,9 +45,11 @@ $for f in create_funcs + handler_funcs:
 	 <ul>
 		<li><a href='#document_tree'>Documents</a></li>
 		<li><a href='#biblio_search'>Search</a></li>
+		<li><a href='#biblio_keywords'>Tags</a></li>
 	</ul>
 	<div id='document_tree'>$:aside['tree']</div>
 	<div id='biblio_search'></div>
+	<div id='biblio_keywords'>$:content['keywords']</div>
 </div>
 </aside>
 <article id='article'>
@@ -111,6 +114,7 @@ $for f in create_funcs + handler_funcs:
 					<li onmouseup='change_to_entry("#publication_list", this);'>Unpublished</li>
 				</ul>
 			</li>
+			<li onmouseup='delete_entry();'>Delete</li>
 		</ul>
 	</li>
 	<li>Bibliography
@@ -264,7 +268,7 @@ $for f in create_funcs + handler_funcs:
 	</div>
 	<div id='bibtex_entry'>
 		<div>
-			<input id='textview_bibtex' type='textview' />
+			<textarea id='textarea_bibtex'></textarea>
 		</div>
 	</div>
 </div>

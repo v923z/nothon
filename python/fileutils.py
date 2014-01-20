@@ -5,6 +5,27 @@ import datetime
 import time
 from random import randrange
 
+def print_notebook(nb, objects):
+	def safe_notebook_cell(nb, obj):
+		if obj in nb: return simplejson.dumps(nb[obj], sort_keys=True, indent=4)
+		return '""'
+	
+	nb_str = '{\n'	
+	nb_str += ',\n'.join(['"%s" : %s'%(obj, safe_notebook_cell(nb, obj)) for obj in objects])
+	nb_str += '\n}'
+	return nb_str
+
+def write_to_disc(string, fn):
+	try:
+		with open(fn, 'w') as fout:
+			fout.write(string) #.encode('utf-8'))
+		return {'success': 'success'}
+	except EnvironmentError: 
+		return {'success': 'Could not write file %s'%(fn)}
+	
+def write_notebook(fn, nb, objects):
+	return write_to_disc(print_notebook(nb, objects), fn)
+		
 def create_notebook_folder(fn):
 	# Creates the helper folder beginning with _fn
 	new_path = notebook_folder(fn)

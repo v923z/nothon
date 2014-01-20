@@ -26,6 +26,11 @@ function paragraph_handler(req) {
 }
 
 function paragraph_sanitise(block) {
-	block.content.paragraph_body.content = strip_mathjax2(block.content.paragraph_body.content)
+	var dtemp = $('<div/>', {'id': 'dtemp'}).appendTo('#trash')
+	$('#dtemp').html($('#' + block.content.paragraph_body.id).html())
+	strip_mathjax_for_save($('#dtemp'))
+	strip_images_for_save($('#dtemp'))
+	block.content.paragraph_body.content = $('#dtemp').html()
+	$('#dtemp').remove()
 	return block
 }

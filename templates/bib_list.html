@@ -1,4 +1,4 @@
-$def with (title, filename, aside, content, handler_funcs, create_funcs)
+$def with (title, aside, content)
 <html>
 <head>
 <title>$title</title>
@@ -9,13 +9,6 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <link rel="stylesheet" href="/static/css/dynatree_custom.css"/>
 <link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
 <link rel="stylesheet" href="/static/css/jquery-ui-smoothness.css" />
-<script 
-  src="/static/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-   MathJax.Hub.Config({
-    styles: { ".MathJax": { color: "#0000ee", "background-color": "#bbbbee" } },
-    TeX: { equationNumbers: { autoNumber: "all" } }
-  });
-</script>
 <script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/jquery.datepick.js"></script>
 <script src="/static/js/ui/jquery-ui.min.js"></script>
@@ -25,12 +18,8 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/math.min.js"></script>
 <script src="/static/js/calculator.js"></script>
 
-$for f in create_funcs + handler_funcs:
-	$ js_src = "/static/js/%s.js"%(f)
-	<script src="$js_src"></script>
-
 </head>
-<body data-type='notebook' data-file='$filename'>
+<body data-type='bibliography_list'>
 <aside id='aside'>
 <div id='calendar'></div>
 <div id='notebook_tab'>
@@ -46,7 +35,6 @@ $for f in create_funcs + handler_funcs:
 </aside>
 <article id='article'>
 <div class="aside_switch" id="aside_switch" onclick="toggle_document_tree()"><<</div>
-<div class="trash_image" id="trash_image" onclick="toggle_trashbin();"></div>
 <div id='top_menu' onmouseover='topmenu_over();'>
 <ul>
 	<li>Organise
@@ -58,10 +46,9 @@ $for f in create_funcs + handler_funcs:
 	</li>
 	<li>Notebook
 		<ul>
-			<li onmouseup='open_new_notebook_dialog("New notebook")'>New</li>
-			<li onmouseup='save_notebook("save")'>Save</li>
-			<li onmouseup='save_notebook_as("save_notebook_as")'>Save as</li>
-			<li onmouseup='save_notebook_as("rename_notebook")'>Rename</li>
+			<li onmouseup='open_new_notebook_dialog()'>New</li>
+			<li onmouseup='save_notebook("save");'>Save</li>
+			<li onmouseup='rename_notebook();'>Rename</li>
 			<hr>
 			<li onmouseup='expand_collapse_all("expand");'>Expand all</li>
 			<li onmouseup='expand_collapse_all("collapse");'>Collapse all</li>
@@ -76,18 +63,6 @@ $for f in create_funcs + handler_funcs:
 					<li onmouseup='git();'>Git</li>
 				</ul>
 			</li>
-		</ul>
-	</li>
-	<li>Cell
-		<ul>
-			<li onmouseup='insert_text();'>Section</li>
-			<li onmouseup='insert_paragraph();'>Paragraph</li>
-			<li onmouseup='insert_plot()'>Plot</li>
-			<li onmouseup='insert_code();'>Code</li>
-			<li onmouseup='insert_head();'>Head</li>
-			<hr>
-			<li onmouseup='delete_block();'>Delete</li>
-			<li onmouseup='recover_block();'>Recover</li>			
 		</ul>
 	</li>
 	<li>Menu
@@ -108,32 +83,20 @@ $for f in create_funcs + handler_funcs:
 		<ul>
 			<li onmouseup='usage();'>Usage</li>
 			<li onmouseup='about();'>About</li>
-			<li><a href='https://github.com/v923z/nothon' target='_blank'>nothon</a></li>
+			<li><a href="https://github.com/v923z/nothon" target="_blank">nothon</a></li>
 		</ul>
 	</li>
-	<div id='notebook_status'>Saved: never</div>
 </ul>
 </div>
 <div id="doc_toplevel">
-<div id='menucontainer-right'>
-<div class='menu' onclick='move("up");'><img src='/static/css/up-arrow.png'  width='60%'></div>
-<div class='menu' onclick='move("down");'><img src='/static/css/down-arrow.png' width='60%'></div>
-</div>
-<div id='context_menu'></div>
-<div id='div_title' contenteditable='true'>$:safe_content(content, "title")</div>
-	<div id='dir_container'> 
-	<div id='dir_tag'>Directory:   </div><div id='div_dir' contenteditable='true' onkeypress='return dir_keypress(event);'>$safe_content(content, "directory")</div>
-</div>
-
-<div id='docmain' data-sub_type='notebook' data-file='$filename'>$:safe_content(content, "content")</div>
-<div id='trash'></div>
+<div id="docmain">$:safe_content(content, "content")</div>
 </div>
 <div id='calculator_dialog'>
 	<div contenteditable=false id='calculator_result' style='width: 95%; height: 200px; overflow-y: scroll;'></div>
 	<input id='calculator_string' type='text' style='width: 90%; position: absolute; top: 250px;' onkeydown='return eval_calculator(event);'>
 </div>
 <div id='new_notebook_dialog'>
-	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 10px;' onkeypress='return new_notebook_keypress(event);'>
+	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'>
 </div>
 </article>
 </body>
