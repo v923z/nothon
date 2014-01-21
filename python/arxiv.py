@@ -1,7 +1,10 @@
 import feedparser
 import datetime
 import simplejson
+import os
 from bs4 import BeautifulSoup
+
+from fileutils import check_for_special_folder
 
 class Arxiv(object):
 	
@@ -12,7 +15,7 @@ class Arxiv(object):
 	def handler(self, message):
 		command = message.get('command')
 		print 'Handling arxiv command %s %s'%(command, datetime.datetime.now().strftime("%H:%M:%S.%f"))
-		if command in ('bibtex'):
+		if command in ('save_entry'):
 			result = {'success': 'success'}
 		else: 
 			result = {'success': 'undefined command: %s'%(command)}
@@ -50,9 +53,21 @@ class Arxiv(object):
 			# TODO:	change the order of entries, if keywords are supplied
 			# TODO: remove papers, if includeonly argument is supplied
 		arxiv['dictionary'] = simplejson.dumps({entry['arxiv_id']: entry for entry in arxiv['papers']})
+		arxiv['bibnotes'] = simplejson.dumps(list_bibnotes('.'))
 		return arxiv
 
 def strip_title(title):
 	# Removes the trailing garbage from a title string: "This is some title. (arXiv:1401.1234v1 [cond-mat.mtrl-sci])"
 	title = title[:title.rfind('(')]
 	return title[:title.rfind('.')]
+
+def list_bibnotes(dir):
+	bibnote_list = []
+	for root, dirs, files in os.walk('.'):
+		for dir in dirs:
+			if check_for_special_folder(dir, '_'): dirs.remove(dir)
+		for file in files:
+			if file.endswith('.bibnote'):
+				bibnote_list.append(os.path.join(root, file))
+				
+	return bibnote_list

@@ -29,6 +29,7 @@ $def with (title, aside, arxiv)
 <script src="/static/js/arxiv.js"></script>
 
 <script>var arxiv = $:arxiv['dictionary']</script>
+<script>var bibnotes = $:arxiv['bibnotes']</script>
 </head>
 <body data-type='arxiv'>
 <aside id='aside'>
@@ -82,7 +83,13 @@ $for entry in arxiv['papers']:
 	<div class='arxiv-entry arxiv-$loop.parity' data-title='$entry['title']' data-authors='$entry['author']'>
 	<div class='arxiv-title'>$entry['full_title']</div>
 	<div>
-		<input class='arxiv-button arxiv-save-button' type='button' onmouseup='arxiv_save_entry("$entry['url']");' value='Save'/>
+		<div class='arxiv-button arxiv-save-button' data-target='$entry['arxiv_id']'>Save</div>
+		<ul class='arxiv-save-button'>
+			<li>Save
+				<ul id='$entry['arxiv_id']'>
+				</ul>
+			</li>
+		</ul>
 		<input class='arxiv-button arxiv-bibtex-button' type='button' onmouseup='alert(arxiv_to_bibtex("$entry['arxiv_id']"));' value='Bibtex'/>
 	</div>
 	<div>$:entry['authors_raw']</div>

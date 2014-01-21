@@ -64,6 +64,7 @@ def check_for_special_folder(dir, marker):
 	
 def dir_tree(dir, ext='.note'):
 	tree = []
+	# TODO: We should also skip the static, and python directories, for those should not contain any documents
 	if check_for_special_folder(dir, '_'): return tree
 	
 	for item in os.listdir(dir):

@@ -13,6 +13,8 @@
 
 .arxiv-save-button {
 	background:			#eeee88;
+	width:				5em;
+	text-align:			center;
 }
 
 .arxiv-bibtex-button {

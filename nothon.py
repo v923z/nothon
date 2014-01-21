@@ -114,7 +114,7 @@ class Index(object):
 		message = simplejson.loads(web.data())
 		print message
 		doc_type = message.get('type')
-		if doc_type in ('notebook', 'bibliography'):
+		if doc_type in ('notebook', 'bibliography', 'arxiv'):
 			exec('obj = %s(nothon_resource, render)'%(doc_type.title()))
 			return simplejson.dumps(obj.handler(message))
 			
