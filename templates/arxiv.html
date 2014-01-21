@@ -83,7 +83,7 @@ $for entry in arxiv['papers']:
 	<div class='arxiv-title'>$entry['full_title']</div>
 	<div>
 		<input class='arxiv-button arxiv-save-button' type='button' onmouseup='arxiv_save_entry("$entry['url']");' value='Save'/>
-		<input class='arxiv-button arxiv-bibtex-button' type='button' onmouseup='arxiv_to_bibtex("$entry['arxiv_id']");' value='Bibtex'/>
+		<input class='arxiv-button arxiv-bibtex-button' type='button' onmouseup='alert(arxiv_to_bibtex("$entry['arxiv_id']"));' value='Bibtex'/>
 	</div>
 	<div>$:entry['authors_raw']</div>
 	<div>$:entry['abstract']</div>
