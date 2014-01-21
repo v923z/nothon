@@ -1,5 +1,6 @@
 import feedparser
 import datetime
+import simplejson
 from bs4 import BeautifulSoup
 
 class Arxiv(object):
@@ -19,7 +20,7 @@ class Arxiv(object):
 		print 'Returning from arxiv command %s %s'%(command, datetime.datetime.now().strftime("%H:%M:%S.%f"))
 		return result
 			
-	def parse(self, link):
+	def parse(self, link, keywords=None, includeonly=None):
 		arxiv = {'papers': []}
 		parser = feedparser.parse('http://export.arxiv.org/rss/cond-mat?version=2.0')
 		for entry in parser.entries:
@@ -34,11 +35,21 @@ class Arxiv(object):
 					for a in p.findAll('a'):
 						authors.append(a.contents[0])
 				if i == 1: abstract = ''.join(p.contents)
-			arxiv['papers'].append({'id': entry['id'], 'link': entry['link'], 
-									'authors': ' and '.join(authors), 'authors_raw': authors_raw, 
-									'title': strip_title(entry['title']), 'full_title': entry['title'], 
+				
+			arxiv['papers'].append({'arxiv_id': entry['link'].split('/')[-1], 
+									'id': entry['id'], 'url': entry['link'], 
+									'author': ' and '.join(authors),
+									'authors_raw': authors_raw, 
+									'title': strip_title(entry['title']),
+									'full_title': entry['title'], 
+									'timestamp': datetime.datetime.now().strftime('%Y.%m.%d'), 
+									'journal': 'arxiv',
+									'pages': entry['link'], # FIXME!
+									'url': entry['link'], 
 									'abstract': abstract})
-							
+			# TODO:	change the order of entries, if keywords are supplied
+			# TODO: remove papers, if includeonly argument is supplied
+		arxiv['dictionary'] = simplejson.dumps({entry['arxiv_id']: entry for entry in arxiv['papers']})
 		return arxiv
 
 def strip_title(title):
