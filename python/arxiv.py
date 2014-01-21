@@ -1,4 +1,5 @@
 import feedparser
+import datetime
 from bs4 import BeautifulSoup
 
 class Arxiv(object):
@@ -7,6 +8,17 @@ class Arxiv(object):
 		self.resource = resource
 		self.render = render
 
+	def handler(self, message):
+		command = message.get('command')
+		print 'Handling arxiv command %s %s'%(command, datetime.datetime.now().strftime("%H:%M:%S.%f"))
+		if command in ('bibtex'):
+			result = {'success': 'success'}
+		else: 
+			result = {'success': 'undefined command: %s'%(command)}
+			
+		print 'Returning from arxiv command %s %s'%(command, datetime.datetime.now().strftime("%H:%M:%S.%f"))
+		return result
+			
 	def parse(self, link):
 		arxiv = {'papers': []}
 		parser = feedparser.parse('http://export.arxiv.org/rss/cond-mat?version=2.0')

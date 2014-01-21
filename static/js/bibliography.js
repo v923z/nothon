@@ -22,6 +22,10 @@ $(document).ready(function () {
 		}).click(function(event) {
 			activate_element(event)
 		});
+		$('#bibliography_panes').splitter({
+			splitHorizontal: true,
+			sizeTop: true,
+		});
 	});
 	$('#notes_tab').tabs({ 
 		activate: function(event, ui) { tabs_activated(event, ui) }
@@ -29,6 +33,7 @@ $(document).ready(function () {
 	$('#field_file_button').click(function() {
 		$('#input_file').click();   
 	});
+
 })
 
 function bibliography_side_switch() {

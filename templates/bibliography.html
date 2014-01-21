@@ -30,6 +30,7 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/functions.js"></script>
 <script src="/static/js/bibliography.js"></script>
 <script src="/static/js/bibtex_key.js"></script>
+<script src="splitter-152.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
@@ -202,6 +203,7 @@ $for f in create_funcs + handler_funcs:
 <div id='context_menu'></div>
 <div id="div_dir">$safe_content(content, "directory")</div>
 
+<div id='bibliography_panes'>
 <div id='publication_div'>
 	<table id='publication_list' class='tablesorter'>
 		<thead>$:content['table_header']
@@ -212,7 +214,7 @@ $for f in create_funcs + handler_funcs:
 </div>
 
 <div id='notes_tab'>
-	 <ul>
+	<ul>
 		<li><a href='#notes'>Notes</a></li>
 		<li><a href='#bibliography_fields'>Fields</a></li>
 		<li><a href='#bibliography_fields2'>Fields 2</a></li>		
@@ -272,6 +274,7 @@ $for f in create_funcs + handler_funcs:
 		</div>
 	</div>
 </div>
+</div> 
 
 <div id='trash'></div>
 </div>

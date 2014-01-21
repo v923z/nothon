@@ -1,4 +1,4 @@
-.arxiv_title {
+.arxiv-title {
 	font-size:			16px;
 	font-weight:		bold;
 	margin-top:			10px;
@@ -6,8 +6,29 @@
 	background-color:	rgba(255, 0, 0, 0.2);
 }
 
-.arxiv_save_button {
-	background:			#eeee88;
+.arxiv-button {
 	font-weight: 		bold;
 	border: 			solid 0px;
+}
+
+.arxiv-save-button {
+	background:			#eeee88;
+}
+
+.arxiv-bibtex-button {
+	background:			#eeee88;
+}
+
+.arxiv-entry {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 		5px;
+}
+
+.arxiv-odd {
+	background:			#ccd9ff;
+}
+
+.arxiv-odd {
+	background:			#f2f2f2;
 }
