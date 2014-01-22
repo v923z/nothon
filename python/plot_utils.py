@@ -49,6 +49,7 @@ class Plot(object):
 				x = linspace(-10, 10, 100)
 				try:
 					exec(code)
+					os.chdir(pwd)
 					savefig(out_file)
 					if self.resource.plot_pdf_output: 
 						savefig(out_file.replace('.png', '.pdf'))
@@ -60,7 +61,7 @@ class Plot(object):
 		if not exit_status:
 			exit_status = self.read_plot(out_file)
 
-		return {'scroller': message.get('body'), message.get('title'): out_file, message.get('body'): exit_status}
+		return {'success': 'success', 'out_file': out_file, 'body': exit_status}
 
 	def render(self, dictionary, directory, render):
 		dictionary['content']['plot_body'] = {'content' : self.read_plot(dictionary['content']['plot_file']['content'])}

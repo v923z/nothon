@@ -71,13 +71,17 @@ function plot_caption_keypress(event) {
 	}
 }
 
-function plot_data(div_data) {
+function plot_data(target) {
+	var count = $(target).data('count')
 	var message = _create_message('plot')
-	message.content = $('#div_plot_header_'+get_num(div_data)).val()
-	message.title = 'div_plot_file_' + get_num(div_data)
-	message.filename = $('#docmain').data('file') + '_plot_' + get_num(div_data)
-	message.body = 'div_plot_body_' + get_num(div_data)
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
+	message.content = $(target).val()
+	message.filename = $('#docmain').data('file') + '_plot_' + count
+
+	$.post('http://127.0.0.1:8080/', JSON.stringify(message, null, 4), function(data) {
+		$('#div_plot_body_' + count).html(data.body)
+		$('#div_plot_file_' + count).html(data.out_file)
+		$('#div_plot_body_' + count).scrollTop(100)		// For some reason, this doesn't work...
+	}, 'json');
 }
 
 function plot_sanitise(block) {
