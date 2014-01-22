@@ -74,7 +74,7 @@ function plot_caption_keypress(event) {
 function plot_data(target) {
 	var count = $(target).data('count')
 	var message = _create_message('plot')
-	message.content = $(target).val()
+	message.code = $(target).val()
 	message.filename = $('#docmain').data('file') + '_plot_' + count
 
 	$.post('http://127.0.0.1:8080/', JSON.stringify(message, null, 4), function(data) {
