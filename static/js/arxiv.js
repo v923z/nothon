@@ -15,7 +15,7 @@ function arxiv_save_entry(what) {
 function arxiv_to_bibtex(what) {
 	var entry = arxiv[what]
 	var elems = new Array()
-	var keys = ['author', 'title', 'journal', 'pages', 'abstract', 'url', 'timestamp']
+	var keys = ['author', 'title', 'journal', 'pages', 'abstract', 'url', 'timestamp', 'year']
 	for(i in keys) {
 		elems.push('\t' + keys[i] + ' = {' + entry[keys[i]] + '}')
 	}

@@ -37,7 +37,9 @@ class Arxiv(object):
 					authors_raw = str(p).replace('Authors: ', '')
 					for a in p.findAll('a'):
 						authors.append(a.contents[0])
-				if i == 1: abstract = ''.join(p.contents)
+				if i == 1: 
+					abstract = ''.join([unicode(elem) for elem in p.contents])
+				else: abstract = ''
 				
 			arxiv['papers'].append({'arxiv_id': entry['link'].split('/')[-1], 
 									'id': entry['id'], 'url': entry['link'], 
@@ -47,9 +49,9 @@ class Arxiv(object):
 									'full_title': entry['title'], 
 									'timestamp': datetime.datetime.now().strftime('%Y.%m.%d'), 
 									'journal': 'arxiv',
-									'pages': entry['link'], # FIXME!
-									'url': entry['link'], 
-									'abstract': abstract})
+									'pages': entry['link'].split('/')[-1], 
+									'abstract': abstract, 
+									'year': datetime.datetime.now().strftime('%Y')})
 			# TODO:	change the order of entries, if keywords are supplied
 			# TODO: remove papers, if includeonly argument is supplied
 		arxiv['dictionary'] = simplejson.dumps({entry['arxiv_id']: entry for entry in arxiv['papers']})
