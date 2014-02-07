@@ -2,7 +2,7 @@
 "title" : "arxiv management<br>",
 "type" : "notebook",
 "directory" : "",
-"date" : "Fri Feb 07 2014 21:13:28 GMT+0100 (CET)",
+"date" : "Fri Feb 07 2014 21:16:23 GMT+0100 (CET)",
 "nothon version" : 1.3,
 "notebook" : [
     {
@@ -20,6 +20,23 @@
         },
         "count": 1,
         "id": "div_text_main_1",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "At the moment, only one meaningful operation can be performed on an entry in a listing, and that is retrieving the bibtex code. This can then be copied into a bibtex list for use in latex.<br><br>Planned, and implemented soon is saving the entry directly into a bibnote file.<br>",
+                "id": "div_text_body_2",
+                "props": "searchable"
+            },
+            "text_header": {
+                "content": "Extracting and saving the content of a listing",
+                "id": "div_text_header_2",
+                "props": "searchable;intoc"
+            }
+        },
+        "count": 2,
+        "id": "div_text_main_2",
         "type": "text"
     }
 ]
