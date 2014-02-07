@@ -80,21 +80,25 @@ $def with (title, aside, arxiv)
 
 <div id='docmain' data-sub_type='arxiv'>
 $for entry in arxiv['papers']:
-	<div class='arxiv-entry arxiv-$loop.parity' data-title='$entry['title']' data-authors='$entry['author']'>
+	$if entry['has_keyword']:
+		<div class='arxiv-entry arxiv-has-keyword' data-title='$entry['title']' data-authors='$entry['author']'>
+	$else:
+		<div class='arxiv-entry arxiv-$loop.parity' data-title='$entry['title']' data-authors='$entry['author']'>	
 	<div class='arxiv-title'>$entry['full_title']</div>
 	<div>
-		<div class='arxiv-button arxiv-save-button' data-target='$entry['arxiv_id']'>Save</div>
-		<ul class='arxiv-save-button'>
-			<li>Save
-				<ul id='$entry['arxiv_id']'>
-				</ul>
-			</li>
-		</ul>
+		<input class='arxiv-button arxiv-save-button' data-target='$entry['arxiv_id']' type='button' value='Save'/>
 		<input class='arxiv-button arxiv-bibtex-button' type='button' onmouseup='alert(arxiv_to_bibtex("$entry['arxiv_id']"));' value='Bibtex'/>
 	</div>
 	<div>$:entry['authors_raw']</div>
 	<div>$:entry['abstract']</div>
 	</div>
+</div>
+<div id='paper_save_menu'>
+<ul>
+	<li>1</li>
+	<li>2</li>
+	<li>3</li>
+</ul>
 </div>
 </div>
 <div id='new_notebook_dialog'>

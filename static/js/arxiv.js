@@ -1,7 +1,22 @@
 $(document).ready(function () {
-	$('.arxiv-save-button').hover( function() {
-		arxiv_save_entry($(this).data('target'))
+	//$('#paper_save_menu').hide()
+	$('.arxiv-save-button').mouseenter( function() {
+		//arxiv_save_entry($(this).data('target'))
+		//var offset = 
+		$(this).find('li').each( function() { $(this).show() })
+		//$(this).children().show()
+		//offset()
+		//console.log(offset.top, offset.left)
+		//console.log($('#paper_save_menu').offset().top, $('#paper_save_menu').offset().left)
+		//$('#paper_save_menu').offset({top: offset.top, left: offset.left+30})
+		//$('#paper_save_menu').slideDown('slow')
 	})
+	$('.arxiv-save-button').mouseleave( function() {
+		$(this).find('li').each( function() { $(this).hide() })
+		//var offset = $(this).offset()
+		//$('#paper_save_menu').offset({top: offset.top, left: offset.left+30})
+		//$('#paper_save_menu').slideUp('slow')
+	})	
 })
 
 function arxiv_save_entry(what) {

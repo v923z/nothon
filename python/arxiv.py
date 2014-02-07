@@ -23,9 +23,9 @@ class Arxiv(object):
 		print 'Returning from arxiv command %s %s'%(command, datetime.datetime.now().strftime("%H:%M:%S.%f"))
 		return result
 			
-	def parse(self, link, keywords=None, includeonly=None):
+	def parse(self, link, keyword=None, includeonly=None):
 		arxiv = {'papers': []}
-		parser = feedparser.parse('http://export.arxiv.org/rss/cond-mat?version=2.0')
+		parser = feedparser.parse('http://export.arxiv.org/rss/%s?version=2.0'%(link))
 		for entry in parser.entries:
 			soup = BeautifulSoup(entry['summary'].replace('\n', ' '))
 			#arxiv['papers'].append({'id': entry['id'], 'link': entry['link'], 
@@ -41,7 +41,8 @@ class Arxiv(object):
 					abstract = ''.join([unicode(elem) for elem in p.contents])
 				else: abstract = ''
 				
-			arxiv['papers'].append({'arxiv_id': entry['link'].split('/')[-1], 
+			paper = {'has_keyword': False,				
+									'arxiv_id': entry['link'].split('/')[-1], 
 									'id': entry['id'], 'url': entry['link'], 
 									'author': ' and '.join(authors),
 									'authors_raw': authors_raw, 
@@ -51,9 +52,18 @@ class Arxiv(object):
 									'journal': 'arxiv',
 									'pages': entry['link'].split('/')[-1], 
 									'abstract': abstract, 
-									'year': datetime.datetime.now().strftime('%Y')})
-			# TODO:	change the order of entries, if keywords are supplied
-			# TODO: remove papers, if includeonly argument is supplied
+									'year': datetime.datetime.now().strftime('%Y')}
+									
+			if keyword:
+				if keyword_in_paper(paper, keyword): 
+					print paper
+					paper['has_keyword'] = True
+
+			if includeonly:
+				if keyword_in_paper(paper, includeonly): arxiv['papers'].append(paper)
+			else:
+				arxiv['papers'].append(paper)
+				
 		arxiv['dictionary'] = simplejson.dumps({entry['arxiv_id']: entry for entry in arxiv['papers']})
 		arxiv['bibnotes'] = simplejson.dumps(list_bibnotes('.'))
 		return arxiv
@@ -73,3 +83,13 @@ def list_bibnotes(dir):
 				bibnote_list.append(os.path.join(root, file))
 				
 	return bibnote_list
+
+def keyword_in_paper(paper, keywords):
+	# Returns true, if any of the keywords can be found in the paper, otherwise false
+	fields = ['author', 'title', 'abstract']
+	for field in fields:
+		field_text = paper.get(field, '').lower()
+		for keyword in keywords:
+			if keyword in field_text: return True
+
+	return False

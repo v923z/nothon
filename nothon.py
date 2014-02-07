@@ -72,18 +72,20 @@ def list_create_functions():
 class Index(object):
 	update_js()
 	def GET(self):
-		link = web.input(name='', arxiv='')
-		if link.name == '' and link.arxiv == '':
+		
+		aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
+		link = web.input(keyword=[], includeonly=[])
+		if 'arxiv' in link:
+			arxiv = Arxiv(nothon_resource, render)
+			return render.arxiv('arxiv', aside, arxiv.parse(link.arxiv, keyword=link.keyword, includeonly=link.includeonly))
+			
+		if link.name == '':
 			return render.welcome(None)
 						
 		if link.name.endswith('.html'): 
 			with open(link.name, 'r') as fin:
 				html = fin.read()
 			return html
-		aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
-		if link.arxiv:
-			arxiv = Arxiv(nothon_resource, render)
-			return render.arxiv('arxiv', aside, arxiv.parse(link.arxiv))
 
 		if link.name == '__timeline':
 			return 	render.timeline(link.name, aside, make_timeline())

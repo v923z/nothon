@@ -12,7 +12,7 @@
 }
 
 .arxiv-save-button {
-	background:			#eeee88;
+	background:			#eeee00;
 	width:				5em;
 	text-align:			center;
 }
@@ -27,10 +27,22 @@
 	border-radius: 		5px;
 }
 
+.arxiv-has-keyword {
+	background:			#8888ee;
+}
+
 .arxiv-odd {
 	background:			#ccd9ff;
 }
 
 .arxiv-odd {
 	background:			#f2f2f2;
+}
+
+.paper_save_menu {
+	z-index:		100;
+}
+
+.paper_save_menu > li {
+	display:		hidden;
 }
