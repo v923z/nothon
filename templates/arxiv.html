@@ -62,6 +62,12 @@ $def with (title, aside, arxiv)
 			<hr>
 		</ul>
 	</li>
+	<li>Arxiv
+		<ul>
+			<li onmouseup='toggle_abstract()'>Toggle abstract</li>
+			<li onmouseup='shuffle_marked()'>Shuffle marked</li>
+		</ul>
+	</li>	
 	<li>Tools
 		<ul>
 			<li onmouseup='toggle_calendar()'>Calendar</li>
@@ -90,7 +96,7 @@ $for entry in arxiv['papers']:
 		<input class='arxiv-button arxiv-bibtex-button' type='button' onmouseup='alert(arxiv_to_bibtex("$entry['arxiv_id']"));' value='Bibtex'/>
 	</div>
 	<div>$:entry['authors_raw']</div>
-	<div>$:entry['abstract']</div>
+	<div class='arxiv-abstract'>$:entry['abstract']</div>
 	</div>
 </div>
 <div id='paper_save_menu'>

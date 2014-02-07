@@ -44,3 +44,23 @@ function arxiv_message(command) {
 	message.command = command
 	return message
 }
+
+function toggle_abstract() {
+	$('#docmain').children().each( function() {
+		$(this).children().each( function () {
+			if($(this).hasClass('arxiv-abstract')) {
+				$(this).toggle()
+			}
+		})
+	})
+}
+
+function shuffle_marked() {
+	// Moves those entries to the top that are marked, because one 
+	// or more keywords are contained in the content of the paper
+	$('#docmain').children().each( function() {
+		if($(this).hasClass('arxiv-has-keyword')) {
+			$(this).prependTo('#docmain')
+		}
+	})
+}

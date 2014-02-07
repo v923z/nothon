@@ -2,7 +2,7 @@
 "title" : "arxiv management<br>",
 "type" : "notebook",
 "directory" : "",
-"date" : "Fri Feb 07 2014 21:16:23 GMT+0100 (CET)",
+"date" : "Fri Feb 07 2014 21:45:52 GMT+0100 (CET)",
 "nothon version" : 1.3,
 "notebook" : [
     {
@@ -15,11 +15,28 @@
             "text_header": {
                 "content": "Getting arxiv listings",
                 "id": "div_text_header_1",
-                "props": "searchable;intoc"
+                "props": "intoc;searchable"
             }
         },
         "count": 1,
         "id": "div_text_main_1",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "By default, the title, authors, and the abstract of a paper is shown, but this is not necessary, how the user desires the results. The abstracts can be toggled by pressing on Arxiv -&gt; Toggle abstracts. <br><br>When supplying supplying keywords to the arxiv reader, if there are papers with the specified keywords, they will be displayed in place, i.e., they position will be what it was in the listing. These entries can be moved to the top of the listing by pressing on Arxiv -&gt; Shuffle marked. This operation cannot be undone, i.e., these entries cannot be moved back to their original position. The original positions can only be recovered by reloading the page. <br>",
+                "id": "div_text_body_3",
+                "props": "searchable"
+            },
+            "text_header": {
+                "content": "Changing how the listing is displayed",
+                "id": "div_text_header_3",
+                "props": "searchable;intoc"
+            }
+        },
+        "count": 3,
+        "id": "div_text_main_3",
         "type": "text"
     },
     {
@@ -32,7 +49,7 @@
             "text_header": {
                 "content": "Extracting and saving the content of a listing",
                 "id": "div_text_header_2",
-                "props": "searchable;intoc"
+                "props": "intoc;searchable"
             }
         },
         "count": 2,
