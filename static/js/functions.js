@@ -551,8 +551,8 @@ $(function() {
 	$('#cell_dialog').dialog({
 		dialogClass: 'no-close ui-dialog',
 		autoOpen: 	false,
-		height:		150,
-		width:		400,
+		height:		250,
+		width:		900,
 		modal:		false,
 		draggable:	true,
 		hide:		'fade',
@@ -565,6 +565,12 @@ $(function() {
 function popout_cell() {
 	if(!active_div) return false
 	$('#cell_dialog_content').html($('#' + $(active_div).data('main')).html())
+	$('#cell_dialog_content').find('*').each( function() {
+		if($(this).attr('id')) {
+			$(this).attr('id', $(this).attr('id') + '_popout')
+		}
+	})
+	console.log($('#cell_dialog_content').html())
 	$('#cell_dialog').dialog('open')
 	return false
 }
