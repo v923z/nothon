@@ -546,3 +546,25 @@ function save_as_handler(req) {
 		alert(message['success'])
 	}
 }
+
+$(function() {
+	$('#cell_dialog').dialog({
+		dialogClass: 'no-close ui-dialog',
+		autoOpen: 	false,
+		height:		150,
+		width:		400,
+		modal:		false,
+		draggable:	true,
+		hide:		'fade',
+		buttons:	{
+			'Cancel' : function(){ $(this).dialog('close')}
+		}
+	});
+});
+
+function popout_cell() {
+	if(!active_div) return false
+	$('#cell_dialog_content').html($('#' + $(active_div).data('main')).html())
+	$('#cell_dialog').dialog('open')
+	return false
+}

@@ -27,6 +27,7 @@ function text_context_menu() {
 		<li alt="lock" onmouseup="return lock_cell(active_div);">Lock cell</li>\
 		<li alt="new" onmousedown="return false;" onmouseup="return insert_text();">New text cell</li>\
 		<li alt="copy" onmousedown="return false;" onmouseup="return copy_text_cell();">Copy cell</li>\
+		<li onmousedown="return false;" onmouseup="return popout_cell()">Pop out cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
 }

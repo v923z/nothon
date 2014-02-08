@@ -18,6 +18,7 @@ function code_context_menu() {
 	var menu = '<div class="context_menu_header">Code</div>\
 		<ul class="context_menu_list">\
 		<li onmousedown="return false;" onmouseup="return false;">New code cell</li>\
+		<li onmousedown="return false;" onmouseup="return popout_cell()">Pop out cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
 }

@@ -45,7 +45,7 @@ function arxiv_message(command) {
 	return message
 }
 
-function toggle_abstract() {
+function toggle_abstract(which) {
 	$('#docmain').children().each( function() {
 		$(this).children().each( function () {
 			if($(this).hasClass('arxiv-abstract')) {
