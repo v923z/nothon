@@ -565,7 +565,7 @@ $(function() {
 function popout_cell() {
 	if(!active_div) return false
 	$('#cell_dialog_content').html($('#' + $(active_div).data('main')).html())
-	$('#cell_dialog_content').find('*').each( function() {
+	$('#cell_dialog_content').find('*').each(function() {
 		if($(this).attr('id')) {
 			$(this).attr('id', $(this).attr('id') + '_popout')
 		}

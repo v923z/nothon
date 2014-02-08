@@ -6,7 +6,7 @@ $(document).ready(function () {
 			headerTemplate : '{content} {icon}',
 			widgets        : ['zebra', 'scroller', 'filter', 'resizable'],
 			widgetOptions : {
-				scroller_height : 100,
+				scroller_height : 300,
 				scroller_width : 17,
 				scroller_jumpToHeader: true,
 				scroller_idPrefix : 's_'
