@@ -78,7 +78,16 @@ class Index(object):
 		if 'arxiv' in link:
 			arxiv = Arxiv(nothon_resource, render)
 			return render.arxiv('arxiv', aside, arxiv.parse(link.arxiv, keyword=link.keyword, includeonly=link.includeonly))
-			
+		
+		if 'bibnote' in link:
+			bib = Bibliography(nothon_resource, render)
+			bibnote = link.bibnote
+			if len(bibnote) > 0:
+				if not os.path.exists(bibnote):
+					bib.new_bibliography(bibnote)
+				return render.bibliography(bibnote, bibnote, aside, bib.parse_bibliography(bibnote), list_handler_functions(), list_create_functions())
+			else: return render.welcome(None)
+				
 		if link.name == '':
 			return render.welcome(None)
 						
@@ -93,11 +102,6 @@ class Index(object):
 			return 	render.toc(link.name, aside, make_toc())
 		elif link.name == '__bibliography':
 			return 	render.bib_list(link.name, aside, make_bibliography())
-		elif link.name.endswith('.bibnote'):
-			bib = Bibliography(nothon_resource, render)
-			if not os.path.exists(link.name):
-				bib.new_bibliography(link.name)
-			return render.bibliography(link.name, link.name, aside, bib.parse_bibliography(link.name), list_handler_functions(), list_create_functions())
 			
 		elif link.name.endswith('.note'):
 			nb = Notebook(nothon_resource, render)
