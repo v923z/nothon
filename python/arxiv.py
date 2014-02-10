@@ -42,17 +42,17 @@ class Arxiv(object):
 				else: abstract = ''
 				
 			paper = {'has_keyword': False,				
-									'arxiv_id': entry['link'].split('/')[-1], 
-									'id': entry['id'], 'url': entry['link'], 
-									'author': ' and '.join(authors),
-									'authors_raw': authors_raw, 
-									'title': strip_title(entry['title']),
-									'full_title': entry['title'], 
-									'timestamp': datetime.datetime.now().strftime('%Y.%m.%d'), 
-									'journal': 'arxiv',
-									'pages': entry['link'].split('/')[-1], 
-									'abstract': abstract, 
-									'year': datetime.datetime.now().strftime('%Y')}
+						'arxiv_id': entry['link'].split('/')[-1], 
+						'id': entry['id'], 'url': entry['link'], 
+						'author': ' and '.join(authors),
+						'authors_raw': authors_raw, 
+						'title': strip_title(entry['title']),
+						'full_title': entry['title'], 
+						'timestamp': datetime.datetime.now().strftime('%Y.%m.%d'), 
+						'journal': 'arxiv',
+						'pages': entry['link'].split('/')[-1], 
+						'abstract': abstract, 
+						'year': datetime.datetime.now().strftime('%Y')}
 									
 			if keyword:
 				if keyword_in_paper(paper, keyword): 
