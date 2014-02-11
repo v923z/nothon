@@ -91,7 +91,9 @@ $for entry in arxiv['papers']:
 		<div class='arxiv-entry arxiv-has-keyword' data-title='$entry['title']' data-authors='$entry['author']'>
 	$else:
 		<div class='arxiv-entry arxiv-$loop.parity' data-title='$entry['title']' data-authors='$entry['author']'>	
-	<div class='arxiv-title'>$entry['full_title']</div>
+	<div class='arxiv-title'>$entry['full_title']
+		<a href='http://arxiv.org/pdf/$entry['pdflink']' target='_blank'>$entry['pdflink']</a>
+	</div>
 	<div>
 		<input class='arxiv-button arxiv-save-button' data-target='$entry['arxiv_id']' type='button' value='Save'/>
 		<input class='arxiv-button arxiv-bibtex-button' type='button' onmouseup='alert(arxiv_to_bibtex("$entry['arxiv_id']"));' value='Bibtex'/>

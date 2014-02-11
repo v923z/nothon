@@ -52,7 +52,8 @@ class Arxiv(object):
 						'journal': 'arxiv',
 						'pages': entry['link'].split('/')[-1], 
 						'abstract': abstract, 
-						'year': datetime.datetime.now().strftime('%Y')}
+						'year': datetime.datetime.now().strftime('%Y'), 
+						'pdflink': pdf_link(entry['title'])}
 									
 			if keyword:
 				if keyword_in_paper(paper, keyword): 
@@ -70,9 +71,15 @@ class Arxiv(object):
 
 def strip_title(title):
 	# Removes the trailing garbage from a title string: "This is some title. (arXiv:1401.1234v1 [cond-mat.mtrl-sci])"
+	# We might have to re-consider this, for this is not entirely safe.
 	title = title[:title.rfind('(')]
 	return title[:title.rfind('.')]
 
+def pdf_link(title):
+	# Returns the link to the pdf as derived from "This is some title. (arXiv:1401.1234v1 [cond-mat.mtrl-sci])"
+	title = title[title.rfind('(arXiv:'):]
+	return title[7:title.find(' ')]
+	
 def list_bibnotes(dir):
 	bibnote_list = []
 	for root, dirs, files in os.walk('.'):
