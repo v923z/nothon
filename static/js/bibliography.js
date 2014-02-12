@@ -14,10 +14,10 @@ $(document).ready(function () {
 		}).click(function(event) {
 			activate_element(event)
 		});
-		$('#bibliography_panes').splitter({
-			splitHorizontal: true,
-			sizeTop: true,
-		});
+		//$('#bibliography_panes').splitter({
+			//splitHorizontal: true,
+			//sizeTop: true,
+		//});
 	});
 	$('#notes_tab').tabs({ 
 		activate: function(event, ui) { tabs_activated(event, ui) }
@@ -190,6 +190,8 @@ function set_field_id(uuid) {
 	if(!bibliography[uuid]['key']) bibliography[uuid]['key'] = ''
 	if(!bibliography[uuid]['type']) bibliography[uuid]['type'] = ''
 	$('#field_id').text(uuid + ': ' + bibliography[uuid]['key'] + ', ' + bibliography[uuid]['type'])
+	$('#pdf-link').attr('href', 'file://' + bibliography[uuid]['file'])
+	$('#pdf-link').text('File')
 }
 
 function generate_uuid() {
