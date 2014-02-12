@@ -74,9 +74,11 @@ class Index(object):
 	def GET(self):
 		
 		aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
-		link = web.input(keyword=[], includeonly=[])
+		link = web.input(keyword=[], includeonly=[])		
 		if 'arxiv' in link:
 			arxiv = Arxiv(nothon_resource, render)
+			if len(link.arxiv) == 0:
+				return render.arxiv_all(nothon_resource.server, aside)
 			return render.arxiv('arxiv', aside, arxiv.parse(link.arxiv, keyword=link.keyword, includeonly=link.includeonly))
 		
 		if 'bibnote' in link:

@@ -1,0 +1,108 @@
+$def with (server, aside)
+<html>
+<head>
+<title>nothon - arxiv manager</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/static/css/main.css"/>
+<link rel="stylesheet" href="/static/css/arxiv.css"/>
+<link rel="stylesheet" href="/static/css/ui.dynatree.css"/>
+<link rel="stylesheet" href="/static/css/dynatree_custom.css"/>
+<link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
+<link rel="stylesheet" href="/static/css/jquery-ui-smoothness.css" />
+<script 
+  src="/static/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	MathJax.Hub.Config({
+	tex2jax: {
+		inlineMath: [['$','$'], ['\\(','\\)']],
+		processEscapes: true
+	}  
+  });
+</script>
+
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.datepick.js"></script>
+<script src="/static/js/ui/jquery-ui.min.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/jquery.dynatree-1.2.4.js"></script>
+<script src="/static/js/functions.js"></script>
+<script src="/static/js/arxiv.js"></script>
+<script>var server = $server</script>
+</head>
+<body data-type='arxiv'>
+<aside id='aside'>
+<div id='calendar'></div>
+<div id='notebook_tab'>
+	 <ul>
+		<li><a href='#document_tree'>Documents</a></li>
+		<li><a href='#document_contents'>Contents</a></li>
+		<li><a href='#tags'>Tags</a></li>
+	</ul>
+	<div id='document_tree'>$:aside['tree']</div>
+	<div id='document_contents'>Contents</div>
+	<div id='tags'>Tags</div>
+</div>
+</aside>
+<article id='article'>
+<div class="aside_switch" id="aside_switch" onclick="toggle_document_tree()"><<</div>
+<div id='top_menu' onmouseover='topmenu_over();'>
+<ul>
+	<li>Organise
+		<ul>
+			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__toc");'>ToC</li>
+			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__timeline");'>Timeline</li>
+			<li onmouseup='redirect("http://127.0.0.1:8080/?name=__bibliography");'>Bibliography</li>
+		</ul>
+	</li>
+	<li>Notebook
+		<ul>
+			<li onmouseup='open_new_notebook_dialog("New notebook")'>New</li>
+		</ul>
+	</li>
+	<li>Tools
+		<ul>
+			<li onmouseup='toggle_calendar()'>Calendar</li>
+		</ul>
+	</li>
+	<li>Help
+		<ul>
+			<li onmouseup='usage();'>Usage</li>
+			<li onmouseup='about();'>About</li>
+			<li><a href='https://github.com/v923z/nothon' target='_blank'>nothon</a></li>
+		</ul>
+	</li>
+</ul>
+</div>
+<div id='doc_toplevel'>
+
+<div id='docmain' data-sub_type='arxiv'>
+	<ul>Physics
+		<li><a href='$server?arxiv=astro-ph'>Astrophysics</a></li>
+		<li><a href='$server?arxiv=cond-mat'>Condensed matter</a></li>		
+		<li><a href='$server?arxiv=gr-qc'>General Relativity and Quantum Cosmology</a></li>
+		<li><a href='$server?arxiv=hep-ex'>High Energy Physics - Experiment</a></li>
+		<li><a href='$server?arxiv=hep-lat'>High Energy Physics - Lattice</a></li>
+		<li><a href='$server?arxiv=hep-ph'>High Energy Physics - Phenomenology</a></li>
+		<li><a href='$server?arxiv=hep-th'>High Energy Physics - Theory</a></li>
+		<li><a href='$server?arxiv=mat-ph'>Mathematical Physics</a></li>
+		<li><a href='$server?arxiv=nlin'>Nonlinear Sciences</a></li>
+		<li><a href='$server?arxiv=hep-ex'>High Energy Physics - Experiment</a></li>
+		<li><a href='$server?arxiv=nucl-ex'>Nuclear Experiment</a></li>
+		<li><a href='$server?arxiv=nucl-th'>Nuclear Theory</a></li>
+		<li><a href='$server?arxiv=physics'>Physics</a></li>
+		<li><a href='$server?arxiv=quant-ph'>Quantum Physics</a></li>
+	</ul>
+	<ul>Mathematics
+		<li><a href='$server?arxiv=math'>Mathematics</a></li>
+	</ul>
+	<ul>Computer Science
+		<li><a href='$server?arxiv=corr'>Computer Science</a></li>
+	</ul>	
+</div>
+</div>
+<div id='new_notebook_dialog'>
+	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 10px;' onkeypress='return new_notebook_keypress(event);'>
+</div>
+</article>
+</body>
+</html>

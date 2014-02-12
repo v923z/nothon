@@ -1,6 +1,7 @@
 class NothonResource(object):
 	def __init__(self):
 		self.nothon_version = 1.3
+		self.server = '127.0.0.1:8080/'
 		self.code_delimiter = ('*-', '-*')
 		self.plot_pdf_output = True
 		self.listed = ('.note', '.bibnote')
