@@ -74,7 +74,10 @@ class Index(object):
 	def GET(self):
 		
 		aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
-		link = web.input(keyword=[], includeonly=[])		
+		link = web.input(keyword=[], includeonly=[])
+		if 'file' in link:
+			return get_file_from_disc(link.file)
+			
 		if 'arxiv' in link:
 			arxiv = Arxiv(nothon_resource, render)
 			if len(link.arxiv) == 0:

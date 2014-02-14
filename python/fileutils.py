@@ -5,6 +5,17 @@ import datetime
 import time
 from random import randrange
 
+def get_file_from_disc(file):
+	# TODO: resolve relative paths
+	if os.path.exists(file):
+		try:
+			f = open(file, 'r')
+			return f.read()
+		except:
+			return 'Could not load file %s'%(file)
+	else:
+			return 'File %s does not exist'%(file)
+
 def print_notebook(nb, objects):
 	def safe_notebook_cell(nb, obj):
 		if obj in nb: return simplejson.dumps(nb[obj], sort_keys=True, indent=4)

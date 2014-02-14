@@ -190,7 +190,7 @@ function set_field_id(uuid) {
 	if(!bibliography[uuid]['key']) bibliography[uuid]['key'] = ''
 	if(!bibliography[uuid]['type']) bibliography[uuid]['type'] = ''
 	$('#field_id').text(uuid + ': ' + bibliography[uuid]['key'] + ', ' + bibliography[uuid]['type'])
-	$('#pdf-link').attr('href', 'file://' + bibliography[uuid]['file'])
+	$('#pdf-link').attr('href', '?file=' + bibliography[uuid]['file'])
 	$('#pdf-link').text('File')
 }
 
