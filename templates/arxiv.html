@@ -86,6 +86,8 @@ $def with (title, aside, arxiv)
 <div id='doc_toplevel'>
 
 <div id='docmain' data-sub_type='arxiv'>
+<div id='arxiv-header'></div>
+
 $for entry in arxiv['papers']:
 	$if entry['has_keyword']:
 		<div class='arxiv-entry arxiv-has-keyword' data-title='$entry['title']' data-authors='$entry['author']'>

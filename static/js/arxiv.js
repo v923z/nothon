@@ -16,7 +16,8 @@ $(document).ready(function () {
 		//var offset = $(this).offset()
 		//$('#paper_save_menu').offset({top: offset.top, left: offset.left+30})
 		//$('#paper_save_menu').slideUp('slow')
-	})	
+	})
+	$('#arxiv-header').html($('#docmain .arxiv-entry').length + (($('#docmain .arxiv-entry').length == 1) ? ' article' : ' articles'))
 })
 
 function arxiv_save_entry(what) {
