@@ -1,4 +1,6 @@
-$(document).ready(function () {
+$(document).ready(function () {	
+	$('#publication_list > tbody').html(populate_publication_list(bibliography))
+
 	$(function(){
 		$('#publication_list').tablesorter({
 			widthFixed		: true,
@@ -414,23 +416,27 @@ function show_tag(tag) {
 		$link.removeClass('active_filter')
 		// We have to re-build the table, once the constraint is removed.
 		// TODO: apply multiple tags
-		var header = new Array()
-		for(i=2; i <= count_columns('#publication_list'); i++) {
-			header.push($('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase())
-		}
-		var i = 0
-		var rows = ''
-		for(uuid in bibliography) {
-			i++
-			var row = '\n<tr id="' + uuid + '"><td>' + i + '</td>'
-			for(j in header) {
-				row += '<td id="' + uuid + '-' + header + '">' + bibliography[uuid][header[j]] + '</td>'
-			}
-			rows += row + '</tr>'
-		}		
-		$('#publication_list > tbody').html(rows)
+		$('#publication_list > tbody').html(populate_publication_list(bibliography))
 		$('#publication_list > tbody').trigger("applyWidgets")
 	}
+}
+
+function populate_publication_list(bibliography) {
+	var header = new Array()
+	for(i=2; i <= count_columns('#publication_list'); i++) {
+		header.push($('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase())
+	}
+	var i = 0
+	var rows = ''
+	for(uuid in bibliography) {
+		i++
+		var row = '\n<tr id="' + uuid + '"><td>' + i + '</td>'
+		for(j in header) {
+			row += '<td id="' + uuid + '-' + header + '">' + bibliography[uuid][header[j]] + '</td>'
+		}
+		rows += row + '</tr>'
+	}
+	return rows
 }
 
 function delete_entry() {
