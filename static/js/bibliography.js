@@ -9,7 +9,18 @@ $(document).ready(function () {
 				scroller_height : 300,
 				scroller_width : 17,
 				scroller_jumpToHeader: true,
-				scroller_idPrefix : 's_'
+				scroller_idPrefix : 's_',
+			// e = exact text from cell
+			// n = normalized value returned by the column parser
+			// f = search filter input value
+			// i = column index
+			filter_functions : {
+				2 : function(e, n, f, i) {
+						var celltext = remove_diacritics(e).toLowerCase()
+						var filtertext = remove_diacritics(f).toLowerCase()
+						return  celltext.indexOf(filtertext) > -1 ? true : false
+					}
+				}
 			}
 		}).click(function(event) {
 			activate_element(event)
