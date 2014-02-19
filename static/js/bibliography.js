@@ -476,3 +476,14 @@ function parse_bibstring_handler(req) {
 		alert(message['success'])
 	}
 }
+
+function generate_bibtex_key() {
+	var id = get_active_paper()
+	// Bail out immediately, if no active entry
+	if(id.length == 0) {
+		alert('No active entry found')
+		return false
+	}
+	$('#text_key').val(_generate_bibtex_key(id, bibliography))
+	return false
+}
