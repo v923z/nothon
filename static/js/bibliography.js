@@ -116,7 +116,7 @@ function change_to_entry(target, link) {
 
 function activate_element(event) {
 	var uuid = $(event.target).parent().attr('id')
-	// Bail out immediately, if clicked on header	
+	// Bail out immediately, if clicked on header
 	if(!uuid) {
 		return false
 	}
@@ -432,11 +432,29 @@ function populate_publication_list(bibliography) {
 		i++
 		var row = '\n<tr id="' + uuid + '"><td>' + i + '</td>'
 		for(j in header) {
-			row += '<td id="' + uuid + '-' + header + '">' + bibliography[uuid][header[j]] + '</td>'
+			if(header[j] == 'author') {
+				row += '<td id="' + uuid + '-' + header + '">' + render_authors(uuid, bibliography) + '</td>'
+			} else {
+				row += '<td id="' + uuid + '-' + header + '">' + bibliography[uuid][header[j]] + '</td>'
+			}
 		}
 		rows += row + '</tr>'
 	}
 	return rows
+}
+
+function render_authors(id, bibliography) {
+	// Note: we have to return right way, otherwise, if we activate the links, 
+	// the browser won't know how to handle the activate_element function
+	return bibliography[uuid]['author']
+	var authors = bibliography[uuid]['author'].split(' and ')
+	var _authors = new Array()
+	for(i in authors) _authors.push('<a href="javascript: void(0)" onmouseup="author_selected(this)">' + authors[i] + '</a>')
+	return _authors.join(', ')
+}
+
+function author_selected(link) {
+	console.log(link)
 }
 
 function delete_entry() {
