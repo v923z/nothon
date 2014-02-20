@@ -3,6 +3,7 @@ $(document).ready(function () {
 
 	$(function(){
 		$('#publication_list').tablesorter({
+			initialized: function(){ count_publications() },
 			widthFixed		: true,
 			showProcessing: true,
 			headerTemplate : '{content} {icon}',
@@ -26,6 +27,8 @@ $(document).ready(function () {
 			}
 		}).click(function(event) {
 			activate_element(event)
+		}).on('filterEnd', function () {
+			count_publications()
 		});
 		//$('#bibliography_panes').splitter({
 			//splitHorizontal: true,
@@ -528,5 +531,6 @@ function generate_bibtex_key() {
 }
 
 function count_publications() {
-	$('#publication_count').html('Papers')
+	var pc = $('#publication_list tr:visible').length
+	$('#publication_count').html(pc + ' paper' + (pc != 1 ? 's' : ''))
 }
