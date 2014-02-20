@@ -532,5 +532,10 @@ function generate_bibtex_key() {
 
 function count_publications() {
 	var pc = $('#publication_list tr:visible').length - 1
-	$('#publication_count').html(pc + ' paper' + (pc != 1 ? 's' : ''))
+	var pc_all = Object.keys(bibliography).length
+	if(pc == pc_all) {
+		$('#publication_count').html(pc + ' paper' + (pc != 1 ? 's' : ''))
+	} else {
+		$('#publication_count').html(pc + ' (' + pc_all + ') paper' + (pc != 1 ? 's' : ''))
+	}
 }
