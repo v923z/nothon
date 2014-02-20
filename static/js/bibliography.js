@@ -531,6 +531,6 @@ function generate_bibtex_key() {
 }
 
 function count_publications() {
-	var pc = $('#publication_list tr:visible').length
+	var pc = $('#publication_list tr:visible').length - 1
 	$('#publication_count').html(pc + ' paper' + (pc != 1 ? 's' : ''))
 }
