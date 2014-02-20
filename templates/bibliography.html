@@ -119,6 +119,18 @@ $for f in create_funcs + handler_funcs:
 	</li>
 	<li>Bibliography
 		<ul>
+			<li>Column
+				<ul>
+					<li onmouseup='toggle_column("type");'>Toggle type</li>
+					<li onmouseup='toggle_column("author");'>Toggle author</li>
+					<li onmouseup='toggle_column("title");'>Toggle title</li>
+					<li onmouseup='toggle_column("year");'>Toggle year</li>
+					<li onmouseup='toggle_column("journal");'>Toggle journal</li>
+					<li onmouseup='toggle_column("key");'>Toggle key</li>
+					<li onmouseup='toggle_column("group");'>Toggle group</li>
+					<li onmouseup='toggle_column("stars");'>Toggle stars</li>
+				</ul>
+			</li>		
 			<li>Save
 				<ul>
 					<li onmouseup='save_bibliography("save_bibnote");'>Bibnote</li>
@@ -222,7 +234,8 @@ $for f in create_funcs + handler_funcs:
 	</ul>
 	<div id='notes'>
 		<div id='notes_header' class='field_div'>
-			<img id='info_image' src='/static/icons/expand.png' onmouseup='show_hide_info();'/><label id='info_id' class='field_label'></label>
+			<a href='javascript: show_hide_info();' id='info_switch'>-</a>
+			<label id='info_id' class='field_label'></label>
 			<a href='#' target='_blank' id='pdf-link' class='field_label'></a>
 			<label class='field_label'>Group</label>
 			<span class='field_span'>
@@ -242,10 +255,10 @@ $for f in create_funcs + handler_funcs:
 				<label>5</label><input id='star_5' name='stars' type='radio' onchange='stars_changed();'/>
 			</span>
 		</div>
-		<div id='#info_box'>
-			<label id='info_title'>title</label>
+		<div id='info_box'>
+			<label id='info_title'></label>
 			<br>
-			<div id='info_names'>name</div>
+			<div id='info_author'></div>
 			<label id='info_journal'></label>
 			<label id='info_volume'></label>
 			<label id='info_pages'></label>

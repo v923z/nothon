@@ -130,7 +130,6 @@ function activate_element(event) {
 	set_active_paper(uuid)
 	$('#publication_list tr.active_row').removeClass('active_row')
 	$('#' + uuid).addClass('active_row')
-	console.log(bibliography[uuid]['key'])
 	fill_in_fields(uuid)
 	return false
 }
@@ -210,6 +209,7 @@ function set_paper_info(uuid) {
 	$('#pdf-link').attr('href', '?file=' + bibliography[uuid]['file'])
 	$('#pdf-link').text('File')
 	$('#info_title').text(bibliography[uuid]['title'] ? bibliography[uuid]['title'] : 'undefined')
+	$('#info_author').html(render_authors(uuid, bibliography))
 	$('#info_journal').text(bibliography[uuid]['journal'] ? bibliography[uuid]['journal'] + ' ' : '')
 	$('#info_volume').text(bibliography[uuid]['volume'] ? bibliography[uuid]['volume'] + ' ' : '')
 	$('#info_pages').text(bibliography[uuid]['pages'] ? bibliography[uuid]['pages'] + ' ' : '')
@@ -444,7 +444,7 @@ function populate_publication_list(bibliography) {
 		var row = '\n<tr id="' + uuid + '"><td>' + i + '</td>'
 		for(j in header) {
 			if(header[j] == 'author') {
-				row += '<td id="' + uuid + '-author" onmouseover="author_selected(' + uuid + ');">' + render_authors(uuid, bibliography) + '</td>'
+				row += '<td id="' + uuid + '-author" onmouseover="author_selected(' + uuid + ');">' + bibliography[uuid]['author'] + '</td>'
 			} else if(header[j] == '#') {
 				row += '<td id="' + uuid + '-count">' + bibliography[uuid]['count'] + '</td>'				
 			} else {
@@ -456,10 +456,7 @@ function populate_publication_list(bibliography) {
 	return rows
 }
 
-function render_authors(id, bibliography) {
-	// Note: we have to return right way, otherwise, if we activate the links, 
-	// the browser won't know how to handle the activate_element function
-	return bibliography[uuid]['author']
+function render_authors(uuid, bibliography) {
 	var authors = bibliography[uuid]['author'].split(' and ')
 	var _authors = new Array()
 	for(i in authors) _authors.push('<a href="javascript: void(0)" onmouseup="author_selected(this)">' + authors[i] + '</a>')
@@ -548,5 +545,11 @@ function count_publications() {
 }
 
 function show_hide_info() {
-	//$('#info_image')
+	if($('#info_switch').text() == '+') {
+		$('#info_switch').text('-')
+		$('#info_box').show()
+	} else {
+		$('#info_switch').text('+')
+		$('#info_box').hide()
+	}
 }
