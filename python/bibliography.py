@@ -19,10 +19,6 @@ class Bibliography(object):
 		if message.get('sub_type') in ('notebook'):
 			nb = Notebook(self.resource, self.render)
 			result = nb.handler(message)
-			
-		elif command in ('get_bibliography'):
-			# This function is called by the client immediately after loading the main content
-			result = get_bibliography(message.get('file'))
 				
 		elif command in ('parse_bibstring'):
 			result = Translator(None).string_reader(message.get('bibstring', ''), count=message.get('count', 10000))
@@ -74,7 +70,7 @@ class Bibliography(object):
 		return write_to_disc(bib_str, fn)
 		
 	def save_html(self, fn, message):
-		# Should be save directly to HTML, or to bibnote first, and then parse the file from disc?
+		# Should we save directly to HTML, or to bibnote first, and then parse the file from disc?
 		self.save_bibnote(fn, message)
 		bibliography = message.get('bibliography')
 		if not bibliography:
@@ -138,15 +134,6 @@ class Bibliography(object):
 		note['bibliography'] = simplejson.dumps(bibliography)
 		note['extra_data'] = simplejson.dumps({'separator': os.sep, 'folder': notebook_folder(fn)})
 		return note
-
-def get_bibliography(fn):
-	try:
-		data = get_notebook(fn)
-		bibliography = data.get('bibliography')
-		extra_data = {'separator': os.sep, 'folder': notebook_folder(fn)}
-		return {'success' : 'success', 'bibliography' : bibliography, 'extra_data': extra_data}
-	except:
-		return {'success' : 'Could not read file: %s'%(fn)}
 
 def render_keywords(keywords):
 	# Given a python list of keywords, returns a HTML list of links

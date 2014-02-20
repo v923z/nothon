@@ -114,7 +114,7 @@ function change_to_entry(target, link) {
 	}
 	bibliography[uuid]['type'] = link.innerHTML.toLowerCase()
 	fill_in_row(uuid)
-	set_field_id(uuid)
+	set_paper_info(uuid)
 }
 
 function activate_element(event) {
@@ -153,7 +153,7 @@ function fill_in_fields(uuid) {
 	$('#bibliography_fields2 input[type=text]').each( function() {
 		_fill_in_fields(this, uuid)
 	})
-	set_field_id(uuid)
+	set_paper_info(uuid)
 	if(!bibliography[uuid]['group']) {
 		bibliography[uuid]['group'] = '00000'
 	}
@@ -203,12 +203,17 @@ function set_stars(stars) {
 	$('#star_' + stars).prop('checked', true)
 }
 
-function set_field_id(uuid) {
-	if(!bibliography[uuid]['key']) bibliography[uuid]['key'] = ''
-	if(!bibliography[uuid]['type']) bibliography[uuid]['type'] = ''
-	$('#field_id').text(uuid + ': ' + bibliography[uuid]['key'] + ', ' + bibliography[uuid]['type'])
+function set_paper_info(uuid) {
+	if(!bibliography[uuid]['key']) bibliography[uuid]['key'] = 'no key'
+	if(!bibliography[uuid]['type']) bibliography[uuid]['type'] = 'no type'
+	$('#info_id').text(uuid + ': ' + bibliography[uuid]['key'] + ', ' + bibliography[uuid]['type'])
 	$('#pdf-link').attr('href', '?file=' + bibliography[uuid]['file'])
 	$('#pdf-link').text('File')
+	$('#info_title').text(bibliography[uuid]['title'] ? bibliography[uuid]['title'] : 'undefined')
+	$('#info_journal').text(bibliography[uuid]['journal'] ? bibliography[uuid]['journal'] + ' ' : '')
+	$('#info_volume').text(bibliography[uuid]['volume'] ? bibliography[uuid]['volume'] + ' ' : '')
+	$('#info_pages').text(bibliography[uuid]['pages'] ? bibliography[uuid]['pages'] + ' ' : '')
+	$('#info_year').text(bibliography[uuid]['year'] ? '(' + bibliography[uuid]['year'] + ')' : '')
 }
 
 function generate_uuid() {
@@ -252,7 +257,7 @@ function tabs_activated(event, ui) {
 		// bibtex tab: get the bibtex string, and send it to the server for parsing
 		if($('#textarea_bibtex').val().length > 0) parse_bibstring($('#textarea_bibtex').val())
 	}	
-	set_field_id(uuid)
+	set_paper_info(uuid)
 }
 
 function get_bibliography_handler(req) {
@@ -413,6 +418,7 @@ function show_tag(tag) {
 			}
 			if(!keep) $(this).remove()
 		})
+		count_publications()
 		// TODO: once we removed the rows from the table, we have to re-build the tag list on the left hand side.
 		// Apply the 'active_filter' style somehow
 		//keyword_list()
@@ -422,6 +428,7 @@ function show_tag(tag) {
 		// TODO: apply multiple tags
 		$('#publication_list > tbody').html(populate_publication_list(bibliography))
 		$('#publication_list > tbody').trigger("applyWidgets")
+		count_publications()
 	}
 }
 
@@ -538,4 +545,8 @@ function count_publications() {
 	} else {
 		$('#publication_count').html(pc + ' (' + pc_all + ') paper' + (pc != 1 ? 's' : ''))
 	}
+}
+
+function show_hide_info() {
+	//$('#info_image')
 }

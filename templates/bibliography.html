@@ -222,7 +222,7 @@ $for f in create_funcs + handler_funcs:
 	</ul>
 	<div id='notes'>
 		<div id='notes_header' class='field_div'>
-			<label id='field_id' class='field_label'></label>
+			<img id='info_image' src='/static/icons/expand.png' onmouseup='show_hide_info();'/><label id='info_id' class='field_label'></label>
 			<a href='#' target='_blank' id='pdf-link' class='field_label'></a>
 			<label class='field_label'>Group</label>
 			<span class='field_span'>
@@ -241,7 +241,15 @@ $for f in create_funcs + handler_funcs:
 				<label>4</label><input id='star_4' name='stars' type='radio' onchange='stars_changed();'/>
 				<label>5</label><input id='star_5' name='stars' type='radio' onchange='stars_changed();'/>
 			</span>
+		</div>
+		<div id='#info_box'>
+			<label id='info_title'>title</label>
 			<br>
+			<div id='info_names'>name</div>
+			<label id='info_journal'></label>
+			<label id='info_volume'></label>
+			<label id='info_pages'></label>
+			<label id='info_year'></label>
 		</div>
 		<div id='docmain' data-id=''></div>
 	</div>

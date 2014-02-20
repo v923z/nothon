@@ -84,11 +84,38 @@
 	padding:			0 0 0 0;
 	display:			table-cell;
 }
+#info_box {
+	float:				left;
+	width:				100%;
+	display:			block;
+	padding:			0 0 0 0;
+}
 
-#field_id {
+#info_id {
 	font-weight:		bold;
 	color:				#ee0000;
 	width:				20em;
+}
+
+#info_names {
+	color:				#ee0000;
+}
+
+#info_title {
+	font-weight:		bold;
+}
+
+#info_journal {
+}
+
+#info_volume {
+	font-weight:		bold;	
+}
+
+#info_pages {
+}
+
+#info_year {
 }
 
 .keywords_list {
