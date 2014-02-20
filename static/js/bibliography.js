@@ -115,6 +115,7 @@ function change_to_entry(target, link) {
 }
 
 function activate_element(event) {
+	//if($(event.target).attr('id').indexOf('-author') != -1) return false
 	var uuid = $(event.target).parent().attr('id')
 	// Bail out immediately, if clicked on header
 	if(!uuid) {
@@ -433,9 +434,11 @@ function populate_publication_list(bibliography) {
 		var row = '\n<tr id="' + uuid + '"><td>' + i + '</td>'
 		for(j in header) {
 			if(header[j] == 'author') {
-				row += '<td id="' + uuid + '-' + header + '">' + render_authors(uuid, bibliography) + '</td>'
+				row += '<td id="' + uuid + '-author" onmouseover="author_selected(' + uuid + ');">' + render_authors(uuid, bibliography) + '</td>'
+			} else if(header[j] == '#') {
+				row += '<td id="' + uuid + '-count">' + bibliography[uuid]['count'] + '</td>'				
 			} else {
-				row += '<td id="' + uuid + '-' + header + '">' + bibliography[uuid][header[j]] + '</td>'
+				row += '<td id="' + uuid + '-' + header[j] + '">' + bibliography[uuid][header[j]] + '</td>'
 			}
 		}
 		rows += row + '</tr>'
@@ -453,8 +456,8 @@ function render_authors(id, bibliography) {
 	return _authors.join(', ')
 }
 
-function author_selected(link) {
-	console.log(link)
+function author_selected(id) {
+	console.log(id)
 }
 
 function delete_entry() {
@@ -491,7 +494,6 @@ function parse_bibstring_handler(req) {
 	if(message['success'] == 'success') {
 		// Update the bibliographic entry here
 		var entry = message['entry']
-		console.log(entry)
 		var uuid = message['count']
 		for(key in entry) {
 			bibliography[uuid][key] = entry[key]
@@ -520,5 +522,11 @@ function generate_bibtex_key() {
 		return false
 	}
 	$('#text_key').val(_generate_bibtex_key(id, bibliography))
+	fill_in_bibliography(id)
+	fill_in_row(id)
 	return false
+}
+
+function count_publications() {
+	$('#publication_count').html('Papers')
 }
