@@ -553,3 +553,15 @@ function show_hide_info() {
 		$('#info_box').hide()
 	}
 }
+
+function toggle_column(column) {
+	var header = new Array()
+	for(i=2; i <= count_columns('#publication_list'); i++) {
+		console.log($('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase(), column)
+		if(column == $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()) {
+			break;
+		}
+	}
+	$('#publication_list th').eq(i).hide()
+	$('#publication_list tbody tr td:nth-child(' + i + ')').hide()
+}

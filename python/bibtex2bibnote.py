@@ -79,6 +79,9 @@ class Translator(object):
 			data['date'] = datetime.datetime.now().strftime(self.resource.time_format)
 			write_notebook(file, data, self.resource.bibliography_item_order)
 			
+	def endnote(self):
+		pass
+	
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
 		print '\n\tSyntax: python bibtex2bibnote.py in.bib [out.bibnote]\n'

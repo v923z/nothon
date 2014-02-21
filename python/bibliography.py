@@ -94,7 +94,7 @@ class Bibliography(object):
 		
 	def new_bibliography(self, fn):
 		create_notebook_folder(fn)
-		write_bibliography(fn, {'type' : 'bibliography', 'bibliography' : {}}, self.resource.bibliography_item_order)
+		write_notebook(fn, {'type' : 'bibliography', 'bibliography' : {}}, self.resource.bibliography_item_order)
 
 	def parse_bibliography(self, fn):
 		missing = False
