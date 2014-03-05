@@ -29,19 +29,21 @@ $(document).ready(function () {
 			activate_element(event)
 		}).on('filterEnd', function () {
 			count_publications()
-		});
+		})
 		//$('#bibliography_panes').splitter({
 			//splitHorizontal: true,
 			//sizeTop: true,
 		//});
-	});
+	})
 	$('#notes_tab').tabs({ 
 		activate: function(event, ui) { tabs_activated(event, ui) }
-	});
+	})
 	$('#field_file_button').click(function() {
 		$('#input_file').click();   
-	});
-	keyword_list()
+	})
+	$(function(){
+		keyword_list()
+	})
 })
 
 function bibliography_side_switch() {
@@ -375,10 +377,10 @@ function find_tag_link(tag) {
 	return $ret
 }
 
-function array_set(array) {
+function array_set(keywords) {
 	var uniqueNames = new Array()
-	$.each(names, function(i, el){
-		if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+	$.each(keywords, function(i, el){
+		if($.inArray($.trim(el), uniqueNames) === -1) uniqueNames.push($.trim(el));
 	});
 	return uniqueNames
 }
@@ -402,7 +404,8 @@ function keyword_list() {
 	for(i in keywords) {
 		li += '\n<li><a href="javascript:show_tag(\'' + keywords[i] + '\');">' + keywords[i] + '</a></li>'
 	}
-	$('#keyword_list').html(li)
+	console.log(li)
+	$('#biblio_keywords').html(li)
 }
 function show_tag(tag) {
 	// Removes all elements from the publication list that do not have 'tag' in their keyword list
