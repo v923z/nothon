@@ -37,6 +37,7 @@ $for f in create_funcs + handler_funcs:
 
 <script>var bibliography = $:content['bibliography']</script>
 <script>var extra_data = $:content['extra_data']</script>
+<script>var running_server = true</script>
 </head>
 <body data-type='bibliography' data-file='$filename'>
 <aside id='aside'>
@@ -49,7 +50,7 @@ $for f in create_funcs + handler_funcs:
 	</ul>
 	<div id='document_tree'>$:aside['tree']</div>
 	<div id='biblio_search'></div>
-	<div id='biblio_keywords'>$:content['keywords']</div>
+	<div id='biblio_keywords'></div>
 </div>
 </aside>
 <article id='article'>

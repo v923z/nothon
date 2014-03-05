@@ -22,7 +22,7 @@ class Arxiv(object):
 			
 		print 'Returning from arxiv command %s %s'%(command, datetime.datetime.now().strftime("%H:%M:%S.%f"))
 		return result
-			
+		
 	def parse(self, link, keyword=None, includeonly=None):
 		arxiv = {'papers': []}
 		parser = feedparser.parse('http://export.arxiv.org/rss/%s?version=2.0'%(link))

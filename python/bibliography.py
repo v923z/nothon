@@ -50,7 +50,7 @@ class Bibliography(object):
 	def save_bibnote(self, fn, message):
 		bib_dic = {'type' : 'bibliography', 'bibliography' : message.get('bibliography', ''), 
 		'date' : message.get('date', datetime.datetime.now().strftime(self.resource.time_format)), 
-		'nothon version': self.resource.nothon_version}
+		'nothon version': self.resource.nothon_version, 'directory': message.get('directory', '')}
 		return write_notebook(message.get('file'), bib_dic, self.resource.bibliography_item_order)
 	
 	def save_bibtex(self, fn, message):
@@ -100,10 +100,9 @@ class Bibliography(object):
 		missing = False
 		data = get_notebook(fn)
 		bibliography = data.get('bibliography')
-		keywords = []
-		if data.get('directory') is None:
-			data['directory'] = notebook_folder(fn)
-			missing = True
+		#if data.get('directory') is None:
+			#data['directory'] = notebook_folder(fn)
+			#missing = True
 		
 		header_str = '<tr><th>#</th>'
 		header_str += ''.join(['<th>%s</th>'%(elem.title()) for elem in self.resource.bibliography_nothon_header])
@@ -120,9 +119,6 @@ class Bibliography(object):
 									#self.resource.notebook_item_order)
 					# Here we should insert only the relative path
 					bibliography[entry]['notebook'] = os.path.join(notebook_folder(fn), '%s.note'%(entry))
-
-				if bibliography[entry].get('keywords'):
-					keywords += bibliography[entry].get('keywords').split(',')
 		
 		# Some directories, files, etc. were missing, we have to update the file on disc
 		if missing:
@@ -130,21 +126,10 @@ class Bibliography(object):
 			data['date'] = datetime.datetime.now().strftime(self.resource.time_format)
 			write_notebook(fn, data, self.resource.bibliography_item_order)
 			
-		note['keywords'] = render_keywords(keywords)
 		note['bibliography'] = simplejson.dumps(bibliography)
-		note['extra_data'] = simplejson.dumps({'separator': os.sep, 'folder': notebook_folder(fn)})
+		note['extra_data'] = simplejson.dumps({'separator': os.sep, 
+							'folder': notebook_folder(fn), 'directory': data.get('directory', '')})
 		return note
-
-def render_keywords(keywords):
-	# Given a python list of keywords, returns a HTML list of links
-	if '""' in keywords: keywords.remove('""')
-	keywords = set([keyword.lstrip().rstrip() for keyword in keywords])
-	ul = '<ul id="keyword_list" class="keywords_list">\n'
-	for keyword in sorted(keywords):
-		# TODO: create sub-groups by letter
-		ul += '<li><a href="javascript:show_tag(\'%s\');">%s</a></li>\n'%(keyword, keyword)
-	ul += '</ul>'
-	return ul
 
 def dic_to_bib_string(key, entry):
 	if key in ('file'):

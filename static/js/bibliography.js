@@ -41,7 +41,7 @@ $(document).ready(function () {
 	$('#field_file_button').click(function() {
 		$('#input_file').click();   
 	});
-
+	keyword_list()
 })
 
 function bibliography_side_switch() {
@@ -206,7 +206,11 @@ function set_paper_info(uuid) {
 	if(!bibliography[uuid]['key']) bibliography[uuid]['key'] = 'no key'
 	if(!bibliography[uuid]['type']) bibliography[uuid]['type'] = 'no type'
 	$('#info_id').text(uuid + ': ' + bibliography[uuid]['key'] + ', ' + bibliography[uuid]['type'])
-	$('#pdf-link').attr('href', '?file=' + bibliography[uuid]['file'])
+	if(running_server) {
+		$('#pdf-link').attr('href', '?file=' + extra_data['directory'] + bibliography[uuid]['file'])
+	} else {
+		$('#pdf-link').attr('href', bibliography[uuid]['file'])
+	}
 	$('#pdf-link').text('File')
 	$('#info_title').text(bibliography[uuid]['title'] ? bibliography[uuid]['title'] : 'undefined')
 	$('#info_author').html(render_authors(uuid, bibliography))
@@ -379,7 +383,7 @@ function array_set(array) {
 	return uniqueNames
 }
 
-function get_keywords(uuid) {
+function get_keywords(id) {
 	if(bibliography[id]['keywords']) {
 		// TODO: this splits only on ','. Should we allow ';', too?
 		return bibliography[id]['keywords'].split(',')
@@ -387,13 +391,12 @@ function get_keywords(uuid) {
 	return null
 }
 
-function keyword_list(array) {
+function keyword_list() {
 	var keywords = new Array()
 	// Generates the list of keywords on the left hand side
-	$('#publication_list > tbody > tr').each( function() {
-		var uuid = $(this).attr('id')
-		keywords = keywords.concat(get_keywords(uuid))
-	})
+	for(id in bibliography) {
+		keywords = keywords.concat(get_keywords(id))
+	}
 	keywords = array_set(keywords)
 	var li = ''
 	for(i in keywords) {
