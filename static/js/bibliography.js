@@ -92,6 +92,9 @@ function add_row(target, type) {
 
 	fill_in_fields(uuid)
 	fill_in_row(uuid)
+	var row_pos = $('#publication_list tr[id="' + uuid + '"]').offset().top
+	$('#publication_list').parent().animate({scrollTop: row_pos}, 'fast')
+	count_publications()
 	return false;
 }
 
