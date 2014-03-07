@@ -365,20 +365,22 @@ function generate_set(bibliography, key) {
 	}
 	var elements = new Array()
 	$.each(_set, function(i, el){
-		if($.inArray($.trim(el), elements) === -1) elements.push($.trim(el));
+		if(el) {
+			if($.inArray($.trim(el), elements) === -1) elements.push($.trim(el));
+		}
 	});
-	return elements
+	return elements.sort()
 }
 
 function keyword_list() {
 	var keywords = generate_set(bibliography, 'keywords')
-	var li = ''
+	var li_str = ''
 	for(i in keywords) {
-		li += '\n<li><a href="javascript:show_tag(\'' + keywords[i] + '\');">' + keywords[i] + '</a></li>'
+		li_str += '\n<li><a href="javascript:show_tag(\'' + keywords[i] + '\');">' + keywords[i] + '</a></li>'
 	}
-	console.log(li)
-	$('#biblio_keywords').html(li)
+	$('#biblio_keywords').html('<ul>' + li_str + '</ul>')
 }
+
 function show_tag(tag) {
 	// Removes all elements from the publication list that do not have 'tag' in their keyword list
 	var $link = find_tag_link(tag)
