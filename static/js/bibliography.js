@@ -356,14 +356,6 @@ function find_tag_link(tag) {
 	return $ret
 }
 
-function array_set(keywords) {
-	var uniqueNames = new Array()
-	$.each(keywords, function(i, el){
-		if($.inArray($.trim(el), uniqueNames) === -1) uniqueNames.push($.trim(el));
-	});
-	return uniqueNames
-}
-
 function generate_set(bibliography, key) {
 	var _set = new Array()
 	for(id in bibliography) {
@@ -378,21 +370,8 @@ function generate_set(bibliography, key) {
 	return elements
 }
 
-function get_keywords(id) {
-	if(bibliography[id]['keywords']) {
-		// TODO: this splits only on ','. Should we allow ';', too?
-		return bibliography[id]['keywords'].split(',')
-	}
-	return null
-}
-
 function keyword_list() {
-	var keywords = new Array()
-	// Generates the list of keywords on the left hand side
-	for(id in bibliography) {
-		keywords = keywords.concat(get_keywords(id))
-	}
-	keywords = array_set(keywords)
+	var keywords = generate_set(bibliography, 'keywords')
 	var li = ''
 	for(i in keywords) {
 		li += '\n<li><a href="javascript:show_tag(\'' + keywords[i] + '\');">' + keywords[i] + '</a></li>'
