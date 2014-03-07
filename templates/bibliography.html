@@ -230,22 +230,14 @@ $for f in create_funcs + handler_funcs:
 	<ul>
 		<li><a href='#notes'>Notes</a></li>
 		<li><a href='#bibliography_fields'>Fields</a></li>
-		<li><a href='#bibliography_fields2'>Fields 2</a></li>		
+		<li><a href='#bibliography_fields2'>Fields 2</a></li>
+		<li><a href='#bibliography_privnotes'>Private notes</a></li>			
 		<li><a href='#bibtex_entry'>Bibtex</a></li>
 	</ul>
 	<div id='notes'>
 		<div id='notes_header' class='field_div'>
 			<a href='javascript: show_hide_info();' id='info_switch'>-</a>
 			<label id='info_id' class='field_label'></label>
-			<label class='field_label'>Group</label>
-			<span class='field_span'>
-				<input id='group_1' type='checkbox' onchange='group_changed();'/>
-				<input id='group_2' type='checkbox' onchange='group_changed();' />
-				<input id='group_3' type='checkbox' onchange='group_changed();'/>
-				<input id='group_4' type='checkbox' onchange='group_changed();'/>
-				<input id='group_5' type='checkbox' onchange='group_changed();' />
-				<label id='group_label'>00000</label>
-			</span>
 			<label class='field_label'>Stars</label>
 			<span class='field_span'>
 				<label>1</label><input id='star_1' name='stars' type='radio' onchange='stars_changed();'/>
@@ -276,8 +268,9 @@ $for f in create_funcs + handler_funcs:
 			<label class='field_label'>Volume</label><span class='field_span'><input id='text_volume' type='text' onkeypress='return field_keypress(event, "text_pages");'/></span>
 			<label class='field_label'>Pages</label><span class='field_span'><input id='text_pages' type='text' onkeypress='return field_keypress(event, "text_year");'/></span>
 			<label class='field_label'>Year</label><span class='field_span'><input id='text_year' type='text' onkeypress='return field_keypress(event, "text_key");'/></span>
-			<input type='button' class='field_label' value='Key' onmouseup='generate_bibtex_key();'><span class='field_span'><input id='text_key' type='text' /></span>
+			<input type='button' class='field_label' value='Key' onmouseup='generate_bibtex_key();'><span class='field_span'><input id='text_key' type='text'/></span>
 		</div>
+		<div class='field_div'><label class='field_label'>Crossref</label><span class='field_span'><input id='text_crossref' type='text'/></span></div>		
 	</div>
 	<div id='bibliography_fields2'>
 		<div class='field_div'><label class='field_label'>Group</label><span class='field_span'><input id='text_group' type='text' onkeypress='return field_keypress(event, "text_keywords");'/></span></div>
@@ -293,6 +286,10 @@ $for f in create_funcs + handler_funcs:
 			<label class='field_label'>Owner</label><span class='field_span'><input id='text_owner' type='text' onkeypress='return field_keypress(event, "text_timestamp");'/></span>
 			<label class='field_label'>Timestamp</label><span class='field_span'><input id='text_timestamp' type='text' ondblclick='return generate_timestamp(this);'/></span>
 		</div>
+	</div>
+	<div id='bibliography_privnotes'>
+		<label class='field_label'>Private notes</label>
+		<input id='text_privnotes' type='text' class='field_label' />
 	</div>
 	<div id='bibtex_entry'>
 		<div>

@@ -49,7 +49,7 @@
 }
 
 .field_label {
-	width:				5em;
+	width:				6em;
 	padding:			0 0 0 0;
 	display:			table-cell;
 }
@@ -59,7 +59,7 @@
 	padding: 			0 0 0 0;
 }
 
-#text_author, #text_title, #text_journal, #text_key, #text_group, #text_keywords, #text_file, #text_doi, #text_url {
+#text_author, #text_title, #text_journal, #text_key, #text_group, #text_keywords, #text_file, #text_doi, #text_url, #text_crossref, #text_privnotes {
 	width:				100%;
 }
 

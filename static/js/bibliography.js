@@ -154,6 +154,9 @@ function fill_in_fields(uuid) {
 	$('#bibliography_fields2 input[type=text]').each( function() {
 		_fill_in_fields(this, uuid)
 	})
+	$('#bibliography_privnotes input[type=text]').each( function() {
+		_fill_in_fields(this, uuid)
+	})
 	set_paper_info(uuid)	
 	if(!bibliography[uuid]['stars']) {
 		bibliography[uuid]['stars'] = 1
@@ -229,7 +232,7 @@ function toggle_notes() {
 function tabs_activated(event, ui) {
 	var uuid = get_active_paper()
 	if(uuid.length == 0) return false
-	if(ui.oldTab.index() == 1 || ui.oldTab.index() == 2) {
+	if(ui.oldTab.index() < 4) {
 		// fields tabs
 		$('#bibliography_fields input[type=text]').each( function() {
 			var id = $(this).attr('id').replace('text_', '')
@@ -239,13 +242,17 @@ function tabs_activated(event, ui) {
 			var id = $(this).attr('id').replace('text_', '')
 			bibliography[uuid][id] = $(this).val()
 		})
+		$('#bibliography_privnotes input[type=text]').each( function() {
+			var id = $(this).attr('id').replace('text_', '')
+			bibliography[uuid][id] = $(this).val()
+		})
 		fill_in_row(uuid)
 	}
-	if(ui.newTab.index() == 3) {
+	if(ui.newTab.index() == 4) {
 		// bibtex tab
 		$('#textarea_bibtex').val(json_to_bibtex(uuid))
 	}
-	if(ui.oldTab.index() == 3) {
+	if(ui.oldTab.index() == 4) {
 		// bibtex tab: get the bibtex string, and send it to the server for parsing
 		if($('#textarea_bibtex').val().length > 0) parse_bibstring($('#textarea_bibtex').val())
 	}	
