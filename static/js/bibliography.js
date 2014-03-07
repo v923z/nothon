@@ -154,12 +154,7 @@ function fill_in_fields(uuid) {
 	$('#bibliography_fields2 input[type=text]').each( function() {
 		_fill_in_fields(this, uuid)
 	})
-	set_paper_info(uuid)
-	if(!bibliography[uuid]['group']) {
-		bibliography[uuid]['group'] = '00000'
-	}
-	set_group(bibliography[uuid]['group'], uuid)
-	
+	set_paper_info(uuid)	
 	if(!bibliography[uuid]['stars']) {
 		bibliography[uuid]['stars'] = 1
 	}
@@ -183,20 +178,6 @@ function fill_in_bibliography(uuid) {
 			var value = ''
 		}
 		bibliography[uuid][key] = value
-	}
-}
-
-function set_group(group, id) {
-	$('#group_label').text(('00000' + group).slice(-5))
-	bibliography[id]['group'] = ('00000' + group).slice(-5)
-	fill_in_row(id)
-	for(i=5; i >= 1; i--) {
-		if(group & 1) {
-			$('#group_' + i).prop('checked', true)
-		} else {
-			$('#group_' + i).prop('checked', false)
-		}
-		group /= 10
 	}
 }
 
@@ -282,21 +263,6 @@ function get_bibliography_handler(req) {
 		bibliography = null
 		extra_data = null
 	}
-}
-
-function group_changed() {
-	var id = get_active_paper()
-	if(id == null) return false
-	var num = 0
-	var mult = 1
-	for(i=5; i >= 1; i--) {
-		if($('#group_' + i).prop('checked')) {
-			num += mult
-		}
-		mult *= 10
-	}
-	set_group(num, id)
-	return false
 }
 
 function stars_changed() {

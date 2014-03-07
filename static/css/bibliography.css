@@ -59,7 +59,7 @@
 	padding: 			0 0 0 0;
 }
 
-#text_author, #text_title, #text_journal, #text_key, #text_keywords, #text_file, #text_doi, #text_url {
+#text_author, #text_title, #text_journal, #text_key, #text_group, #text_keywords, #text_file, #text_doi, #text_url {
 	width:				100%;
 }
 
