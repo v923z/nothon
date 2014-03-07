@@ -90,7 +90,9 @@ class Index(object):
 			if len(bibnote) > 0:
 				if not os.path.exists(bibnote):
 					bib.new_bibliography(bibnote)
-				return render.bibliography(bibnote, bibnote, aside, bib.parse_bibliography(bibnote), list_handler_functions(), list_create_functions())
+				return render.bibliography(bibnote, bibnote, aside, 
+											bib.parse_bibliography(bibnote), 
+											list_handler_functions(), list_create_functions())
 			else: return render.welcome(None)
 				
 		if link.name == '':

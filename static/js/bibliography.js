@@ -43,6 +43,7 @@ $(document).ready(function () {
 	})
 	$(function(){
 		keyword_list()
+		list_groups(bibliography)
 	})
 })
 
@@ -363,6 +364,20 @@ function array_set(keywords) {
 	return uniqueNames
 }
 
+function generate_set(bibliography, key) {
+	var _set = new Array()
+	for(id in bibliography) {
+		if(bibliography[id][key]) {
+			_set = _set.concat(bibliography[id][key].split(','))
+		}
+	}
+	var elements = new Array()
+	$.each(_set, function(i, el){
+		if($.inArray($.trim(el), elements) === -1) elements.push($.trim(el));
+	});
+	return elements
+}
+
 function get_keywords(id) {
 	if(bibliography[id]['keywords']) {
 		// TODO: this splits only on ','. Should we allow ';', too?
@@ -548,4 +563,30 @@ function toggle_column(column) {
 	}
 	$('#publication_list th').eq(i).hide()
 	$('#publication_list tbody tr td:nth-child(' + i + ')').hide()
+}
+
+function list_groups(bibliography) {
+	var _set = generate_set(bibliography, 'group')
+	var ul_str = '<li onmouseup=\'group_onmouseup(bibliography, null);\'>all groups</li>\n'
+	for(i in _set) {
+		ul_str += '<li onmouseup=\'group_onmouseup(bibliography, "' + _set[i] + '");\'>' + _set[i] + '</li>\n'
+	}
+	$('#ul_group').html(ul_str)
+}
+
+function group_onmouseup(bibliography, which) {
+	var new_bib = {}
+	if(which == null) {
+		new_bib = bibliography
+	} else {
+		for(id in bibliography) {
+			if(bibliography[id]['group']) {
+				if(bibliography[id]['group'].indexOf(which) != -1) {
+					new_bib[id] = bibliography[id]
+				}
+			}
+		}
+	}
+	$('#publication_list > tbody').html(populate_publication_list(new_bib))
+	count_publications()
 }
