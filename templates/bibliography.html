@@ -237,7 +237,6 @@ $for f in create_funcs + handler_funcs:
 		<div id='notes_header' class='field_div'>
 			<a href='javascript: show_hide_info();' id='info_switch'>-</a>
 			<label id='info_id' class='field_label'></label>
-			<a href='#' target='_blank' id='pdf-link' class='field_label'></a>
 			<label class='field_label'>Group</label>
 			<span class='field_span'>
 				<input id='group_1' type='checkbox' onchange='group_changed();'/>
@@ -264,6 +263,8 @@ $for f in create_funcs + handler_funcs:
 			<label id='info_volume'></label>
 			<label id='info_pages'></label>
 			<label id='info_year'></label>
+			<br>
+			<div id='pdf-link'></div>
 		</div>
 		<div id='docmain' data-id=''></div>
 	</div>

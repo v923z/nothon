@@ -208,12 +208,17 @@ function set_paper_info(uuid) {
 	if(!bibliography[uuid]['key']) bibliography[uuid]['key'] = 'no key'
 	if(!bibliography[uuid]['type']) bibliography[uuid]['type'] = 'no type'
 	$('#info_id').text(uuid + ': ' + bibliography[uuid]['key'] + ', ' + bibliography[uuid]['type'])
-	if(running_server) {
-		$('#pdf-link').attr('href', '?file=' + extra_data['directory'] + bibliography[uuid]['file'])
-	} else {
-		$('#pdf-link').attr('href', bibliography[uuid]['file'])
+	var file_links = bibliography[uuid]['file'].split(',')
+	var file_link_str = ''
+	for(i in file_links) {
+		if(running_server) {
+			var fl = $.trim(file_links[i])
+			file_link_str += '<a href="/?file=' + extra_data['directory'] + fl + '" target="_blank">' + fl + '</a>'
+		} else {
+			file_link_str += '<a href="' + fl + '" target="_blank">' + fl + '</a>'
+		}
 	}
-	$('#pdf-link').text('File')
+	$('#pdf-link').html(file_link_str)
 	$('#info_title').text(bibliography[uuid]['title'] ? bibliography[uuid]['title'] : 'undefined')
 	$('#info_author').html(render_authors(uuid, bibliography))
 	$('#info_journal').text(bibliography[uuid]['journal'] ? bibliography[uuid]['journal'] + ' ' : '')
