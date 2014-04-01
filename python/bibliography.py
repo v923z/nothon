@@ -1,6 +1,6 @@
 import simplejson
 import datetime
-from fileutils import get_notebook, create_notebook_folder, notebook_folder, write_notebook, write_to_disc
+from fileutils import get_notebook, create_notebook_folder, notebook_folder, write_notebook, write_to_disc, _save_notebook
 from save_utils import save_notebook
 import uuid
 import os
@@ -51,7 +51,8 @@ class Bibliography(object):
 		bib_dic = {'type' : 'bibliography', 'bibliography' : message.get('bibliography', ''), 
 		'date' : message.get('date', datetime.datetime.now().strftime(self.resource.time_format)), 
 		'nothon version': self.resource.nothon_version, 'directory': message.get('directory', '')}
-		return write_notebook(message.get('file'), bib_dic, self.resource.bibliography_item_order)
+		return _save_notebook(message.get('file'), message.get('bibliography', ''))
+		#return write_notebook(message.get('file'), bib_dic, self.resource.bibliography_item_order)
 	
 	def save_bibtex(self, fn, message):
 		bibliography = message.get('bibliography')
@@ -126,7 +127,8 @@ class Bibliography(object):
 			data['date'] = datetime.datetime.now().strftime(self.resource.time_format)
 			write_notebook(fn, data, self.resource.bibliography_item_order)
 			
-		note['bibliography'] = simplejson.dumps(bibliography)
+		note['bibliography'] = simplejson.dumps(data)
+		print data
 		note['extra_data'] = simplejson.dumps({'separator': os.sep, 
 							'folder': notebook_folder(fn), 'directory': data.get('directory', '')})
 		return note

@@ -16,6 +16,9 @@ def get_file_from_disc(file):
 	else:
 			return 'File %s does not exist'%(file)
 
+def _save_notebook(fn, nb):
+	return write_to_disc(simplejson.dumps(nb, sort_keys=True, indent=4), fn)
+	
 def print_notebook(nb, objects):
 	def safe_notebook_cell(nb, obj):
 		if obj in nb: return simplejson.dumps(nb[obj], sort_keys=True, indent=4)

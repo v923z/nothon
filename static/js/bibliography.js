@@ -202,9 +202,11 @@ function set_paper_info(uuid) {
 	var file_links = bibliography[uuid]['file'].split(',')
 	var file_link_str = ''
 	for(i in file_links) {
+		// This could be done a bit more elegantly using join.
 		if(running_server) {
 			var fl = $.trim(file_links[i])
-			file_link_str += '<a href="/?file=' + extra_data['directory'] + fl + '" target="_blank">' + fl + '</a>'
+			//file_link_str += '<a href="/?file=' + extra_data['directory'] + fl + '" target="_blank">' + fl + '</a>'
+			file_link_str += '<a href="/?file=' + full_bibliography['directory'] + fl + '" target="_blank">' + fl + '</a>'
 		} else {
 			file_link_str += '<a href="' + fl + '" target="_blank">' + fl + '</a>'
 		}
@@ -340,7 +342,9 @@ function get_active_paper() {
 function save_bibliography(method) {
 	var message = _save('bibliography')
 	message.sub_type = 'bibliography'
-	message.bibliography = bibliography
+	full_bibliography['bibliography'] = bibliography
+	full_bibliography['date'] = Date()
+	message.bibliography = full_bibliography
 	message['command'] = method
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
