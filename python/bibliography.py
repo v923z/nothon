@@ -55,7 +55,8 @@ class Bibliography(object):
 		#return write_notebook(message.get('file'), bib_dic, self.resource.bibliography_item_order)
 	
 	def save_bibtex(self, fn, message):
-		bibliography = message.get('bibliography')
+		full_bibliography = message.get('bibliography')
+		bibliography = full_bibliography['bibliography']
 		if not bibliography:
 			return {'success': 'Could not get bibliographic data from client'}
 		# We need this, otherwise jabref doesn't understand the encoding
