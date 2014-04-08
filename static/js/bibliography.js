@@ -198,8 +198,9 @@ function set_stars(stars) {
 function set_paper_info(uuid) {
 	if(!bibliography[uuid]['key']) bibliography[uuid]['key'] = 'no key'
 	if(!bibliography[uuid]['type']) bibliography[uuid]['type'] = 'no type'
-	$('#info_id').text(uuid + ': ' + bibliography[uuid]['key'] + ', ' + bibliography[uuid]['type'])
-	var file_links = bibliography[uuid]['file'].split(',')
+	var entry = bibliography[uuid]
+	$('#info_id').text(uuid + ': ' + entry['key'] + ', ' + entry['type'])
+	var file_links = entry['file'].split(',')
 	var file_link_str = ''
 	for(i in file_links) {
 		// This could be done a bit more elegantly using join.
@@ -212,12 +213,16 @@ function set_paper_info(uuid) {
 		}
 	}
 	$('#pdf-link').html(file_link_str)
-	$('#info_title').text(bibliography[uuid]['title'] ? bibliography[uuid]['title'] : 'undefined')
+	// TODO: json_to_bibtex should accept a single entry!!!
+	email_link_str = '<a href="mailto:?subject=' + entry['key'] + '&body=' + json_to_bibtex(uuid) + '&attachment="file://' + entry['file'] + '">E-mail</a>'
+	$('#email-link').html(email_link_str)
+	$('#info_title').text(entry['title'] ? entry['title'] : 'undefined')
+	// TODO: render_authors should accept a single entry!!!
 	$('#info_author').html(render_authors(uuid, bibliography))
-	$('#info_journal').text(bibliography[uuid]['journal'] ? bibliography[uuid]['journal'] + ' ' : '')
-	$('#info_volume').text(bibliography[uuid]['volume'] ? bibliography[uuid]['volume'] + ' ' : '')
-	$('#info_pages').text(bibliography[uuid]['pages'] ? bibliography[uuid]['pages'] + ' ' : '')
-	$('#info_year').text(bibliography[uuid]['year'] ? '(' + bibliography[uuid]['year'] + ')' : '')
+	$('#info_journal').text(entry['journal'] ? entry['journal'] + ' ' : '')
+	$('#info_volume').text(entry['volume'] ? entry['volume'] + ' ' : '')
+	$('#info_pages').text(entry['pages'] ? entry['pages'] + ' ' : '')
+	$('#info_year').text(entry['year'] ? '(' + entry['year'] + ')' : '')
 }
 
 function generate_uuid() {
@@ -584,4 +589,8 @@ function group_onmouseup(bibliography, which) {
 	}
 	$('#publication_list > tbody').html(populate_publication_list(new_bib))
 	count_publications()
+}
+
+function email_onmouseup(bibliography, which) {
+	
 }
