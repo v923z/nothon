@@ -590,7 +590,3 @@ function group_onmouseup(bibliography, which) {
 	$('#publication_list > tbody').html(populate_publication_list(new_bib))
 	count_publications()
 }
-
-function email_onmouseup(bibliography, which) {
-	
-}
