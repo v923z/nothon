@@ -508,14 +508,14 @@ function parse_bibstring_handler(req) {
 		$('#bibliography_fields input[type=text]').each( function() {
 			var id = $(this).attr('id').replace('text_', '')
 			if(!bibliography[uuid][id]) {
-				!bibliography[uuid][id] = ''
+				bibliography[uuid][id] = ''
 			}
 			$(this).val(bibliography[uuid][id])
 		})
 		$('#bibliography_fields2 input[type=text]').each( function() {
 			var id = $(this).attr('id').replace('text_', '')
 			if(!bibliography[uuid][id]) {
-				!bibliography[uuid][id] = ''
+				bibliography[uuid][id] = ''
 			}
 			$(this).val(bibliography[uuid][id])
 		})
