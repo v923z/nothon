@@ -88,8 +88,6 @@ class Index(object):
 			bib = Bibliography(nothon_resource, render)
 			bibnote = link.bibnote
 			if len(bibnote) > 0:
-				if not os.path.exists(bibnote):
-					bib.new_bibliography(bibnote)
 				return render.bibliography(bibnote, bibnote, aside, 
 											bib.parse_bibliography(bibnote), 
 											list_handler_functions(), list_create_functions())

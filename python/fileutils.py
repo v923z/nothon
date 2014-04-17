@@ -58,7 +58,9 @@ def get_file_path(fn, base_path):
 	elif fn.startswith('./'): return os.path.join(base_path, fn)
 	else: return fn
 	
-def get_notebook(fn):
+def get_notebook(fn, new_note=False):
+	if not os.path.exists(fn) and new_note:
+		_save_notebook(fn, new_note)			
 	with open(fn, 'r') as fin:
 		data = simplejson.load(fin)
 	return data

@@ -8,7 +8,17 @@ class NothonResource(object):
 		self.dirlisting_style = 'windows'
 		self.base_path = '/home/v923z/sandbox/nothon'
 		self.notebook_item_order = ['title', 'type', 'directory', 'date', 'nothon version', 'notebook']
-		self.bibliography_item_order = ['type', 'date', 'nothon version', 'bibliography']
+		self.new_notebook = {"_metadata": {
+					"type": "notebook", 
+					"date": "",
+					"nothon version": self.nothon_version },
+					"notebook": []}
+		self.new_bibliography = {"_metadata": {
+					"type": "bibliography", 
+					"date": "",
+					"directory": "",
+					"nothon version": self.nothon_version },
+					"bibliography": {}}
 		self.time_format = '%a %b %d %Y %H:%M:%S'
 		self.has_matplotlib = False
 		self.has_pygments = False

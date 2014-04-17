@@ -100,9 +100,8 @@ class Notebook(object):
 
 	def new_notebook(self, fn):
 		" Creates an empty notebook on disc "
-		title = os.path.basename(fn).replace('.note', '')
 		create_notebook_folder(fn)
-		write_notebook(fn, {'title': title, 'type' : 'notebook', 'notebook': []}, self.resource.notebook_item_order)
+		_save_notebook(fn, self.resource.new_notebook)
 		new_notebook(fn, self.resource)
 
 def update_image(content, directory):

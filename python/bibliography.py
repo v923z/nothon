@@ -89,13 +89,9 @@ class Bibliography(object):
 				
 		content = self.parse_bibliography(fn)
 		return write_to_disc(str(self.render.bib_standalone(fn, content, js_str, css_str)), fn.replace('.bibnote', '.html'))
-		
-	def new_bibliography(self, fn):
-		create_notebook_folder(fn)
-		write_notebook(fn, {'type' : 'bibliography', 'bibliography' : {}}, self.resource.bibliography_item_order)
 
 	def parse_bibliography(self, fn):
-		data = get_notebook(fn)		
+		data = get_notebook(fn, new_note=self.resource.new_bibliography)
 		header_str = '<tr><th>#</th>'
 		header_str += ''.join(['<th>%s</th>'%(elem.title()) for elem in self.resource.bibliography_nothon_header])
 		header_str += '</tr>'
