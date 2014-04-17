@@ -48,12 +48,8 @@ class Bibliography(object):
 		return result
 
 	def save_bibnote(self, fn, message):
-		bib_dic = {'type' : 'bibliography', 'bibliography' : message.get('bibliography', ''), 
-		'date' : message.get('date', datetime.datetime.now().strftime(self.resource.time_format)), 
-		'nothon version': self.resource.nothon_version, 'directory': message.get('directory', '')}
-		return _save_notebook(message.get('file'), message.get('bibliography', ''))
-		#return write_notebook(message.get('file'), bib_dic, self.resource.bibliography_item_order)
-	
+		return _save_notebook(message.get('file'), message.get('full_bibliography', ''))
+		
 	def save_bibtex(self, fn, message):
 		full_bibliography = message.get('bibliography')
 		bibliography = full_bibliography['bibliography']
@@ -99,39 +95,13 @@ class Bibliography(object):
 		write_notebook(fn, {'type' : 'bibliography', 'bibliography' : {}}, self.resource.bibliography_item_order)
 
 	def parse_bibliography(self, fn):
-		missing = False
-		data = get_notebook(fn)
-		bibliography = data.get('bibliography')
-		#if data.get('directory') is None:
-			#data['directory'] = notebook_folder(fn)
-			#missing = True
-		
+		data = get_notebook(fn)		
 		header_str = '<tr><th>#</th>'
 		header_str += ''.join(['<th>%s</th>'%(elem.title()) for elem in self.resource.bibliography_nothon_header])
 		header_str += '</tr>'
 		note = {'table_header' : header_str}
-		if bibliography:
-			# TODO: at the moment, this will sort by the keys. 
-			# We could define a key that preserves the last known order, although, that is a highly non-trivial problem
-			for i, entry in enumerate(sorted(bibliography.keys())):
-				if os.path.exists(os.path.join(notebook_folder(fn), '%s.note'%(entry))) is False:
-					missing = True
-					#write_notebook(os.path.join(notebook_folder(fn), '%s.note'%(entry)), 
-									#{'notebook': [], 'nothon version': self.resource.nothon_version, 'type': 'notebook'}, 
-									#self.resource.notebook_item_order)
-					# Here we should insert only the relative path
-					bibliography[entry]['notebook'] = os.path.join(notebook_folder(fn), '%s.note'%(entry))
-		
-		# Some directories, files, etc. were missing, we have to update the file on disc
-		if missing:
-			data['bibliography'] = bibliography
-			data['date'] = datetime.datetime.now().strftime(self.resource.time_format)
-			write_notebook(fn, data, self.resource.bibliography_item_order)
-			
-		note['bibliography'] = simplejson.dumps(data)
-		print data
-		note['extra_data'] = simplejson.dumps({'separator': os.sep, 
-							'folder': notebook_folder(fn), 'directory': data.get('directory', '')})
+		note['full_bibliography'] = simplejson.dumps(data)
+		note['extra_data'] = simplejson.dumps({'separator': os.sep, 'folder': notebook_folder(fn)})
 		return note
 
 def dic_to_bib_string(key, entry):

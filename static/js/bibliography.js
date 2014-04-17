@@ -207,7 +207,7 @@ function set_paper_info(uuid) {
 		if(running_server) {
 			var fl = $.trim(file_links[i])
 			//file_link_str += '<a href="/?file=' + extra_data['directory'] + fl + '" target="_blank">' + fl + '</a>'
-			file_link_str += '<a href="/?file=' + full_bibliography['directory'] + fl + '" target="_blank">' + fl + '</a>'
+			file_link_str += '<a href="/?file=' + directory + fl + '" target="_blank">' + fl + '</a>'
 		} else {
 			file_link_str += '<a href="' + fl + '" target="_blank">' + fl + '</a>'
 		}
@@ -348,8 +348,8 @@ function save_bibliography(method) {
 	var message = _save('bibliography')
 	message.sub_type = 'bibliography'
 	full_bibliography['bibliography'] = bibliography
-	full_bibliography['date'] = Date()
-	message.bibliography = full_bibliography
+	full_bibliography['_metadata']['date'] = Date()
+	message.full_bibliography = full_bibliography
 	message['command'] = method
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
 }
