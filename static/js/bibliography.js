@@ -204,9 +204,8 @@ function set_paper_info(uuid) {
 	var file_link_str = ''
 	for(i in file_links) {
 		// This could be done a bit more elegantly using join.
+		var fl = $.trim(file_links[i])
 		if(running_server) {
-			var fl = $.trim(file_links[i])
-			//file_link_str += '<a href="/?file=' + extra_data['directory'] + fl + '" target="_blank">' + fl + '</a>'
 			file_link_str += '<a href="/?file=' + directory + fl + '" target="_blank">' + fl + '</a>'
 		} else {
 			file_link_str += '<a href="' + fl + '" target="_blank">' + fl + '</a>'
@@ -214,7 +213,7 @@ function set_paper_info(uuid) {
 	}
 	$('#pdf-link').html(file_link_str)
 	// TODO: json_to_bibtex should accept a single entry!!!
-	email_link_str = '<a href="mailto:?subject=' + entry['key'] + '&body=' + encodeURIComponent(json_to_bibtex(uuid)) + '&attachment=\"file://' + entry['file'] + '\"">E-mail</a>'
+	email_link_str = '<a href="mailto:?subject=' + entry['key'] + '&body=' + encodeURIComponent(file_link_str + '\n' + json_to_bibtex(uuid)) + '\"">E-mail</a>'
 	$('#email-link').html(email_link_str)
 	$('#info_title').text(entry['title'] ? entry['title'] : 'undefined')
 	// TODO: render_authors should accept a single entry!!!
