@@ -213,7 +213,7 @@ function set_paper_info(uuid) {
 	}
 	$('#pdf-link').html(file_link_str)
 	// TODO: json_to_bibtex should accept a single entry!!!
-	email_link_str = '<a href="mailto:?subject=' + entry['key'] + '&body=' + encodeURIComponent(file_link_str + '\n' + json_to_bibtex(uuid)) + '\"">E-mail</a>'
+	email_link_str = '<a href="mailto:?subject=' + entry['key'] + '&body=' + encodeURIComponent(file_link_str + '\n' + json_to_bibtex(entry)) + '\"">E-mail</a>'
 	$('#email-link').html(email_link_str)
 	$('#info_title').text(entry['title'] ? entry['title'] : 'undefined')
 	// TODO: render_authors should accept a single entry!!!
@@ -245,29 +245,30 @@ function toggle_notes() {
 function tabs_activated(event, ui) {
 	var uuid = get_active_paper()
 	if(uuid.length == 0) return false
+	var entry = bibliography[uuid]
 	if(ui.oldTab.index() < 5) {
 		// fields tabs
 		$('#bibliography_fields input[type=text]').each( function() {
 			var id = $(this).attr('id').replace('text_', '')
-			bibliography[uuid][id] = $(this).val()
+			entry[id] = $(this).val()
 		})
 		$('#bibliography_fields2 input[type=text]').each( function() {
 			var id = $(this).attr('id').replace('text_', '')
-			bibliography[uuid][id] = $(this).val()
+			entry[id] = $(this).val()
 		})
 		$('#bibliography_privnotes input[type=text]').each( function() {
 			var id = $(this).attr('id').replace('text_', '')
-			bibliography[uuid][id] = $(this).val()
+			entry[id] = $(this).val()
 		})
 		$('#bibliography_abstract input[type=text]').each( function() {
 			var id = $(this).attr('id').replace('text_', '')
-			bibliography[uuid][id] = $(this).val()
+			entry[id] = $(this).val()
 		})
 		fill_in_row(uuid)
 	}
 	if(ui.newTab.index() == 5) {
 		// bibtex tab
-		$('#textarea_bibtex').val(json_to_bibtex(uuid))
+		$('#textarea_bibtex').val(json_to_bibtex(entry))
 	}
 	if(ui.oldTab.index() == 5) {
 		// bibtex tab: get the bibtex string, and send it to the server for parsing
@@ -473,9 +474,8 @@ function delete_entry() {
 	return false
 }
 
-function json_to_bibtex(id) {
+function json_to_bibtex(entry) {
 	// Converts a bibliography entry into bibtex format, so that it can be displayed in the bibtex tab
-	var entry = bibliography[id]
 	var bib_str = '@' + entry['type'] + '{' + entry['key'] + ',\n'
 	var items = new Array()
 	for(i in entry) {
