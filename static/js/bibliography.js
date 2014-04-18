@@ -212,7 +212,6 @@ function set_paper_info(uuid) {
 		}
 	}
 	$('#pdf-link').html(file_link_str)
-	// TODO: json_to_bibtex should accept a single entry!!!
 	email_link_str = '<a href="mailto:?subject=' + entry['key'] + '&body=' + encodeURIComponent(file_link_str + '\n' + json_to_bibtex(entry)) + '\"">E-mail</a>'
 	$('#email-link').html(email_link_str)
 	$('#info_title').text(entry['title'] ? entry['title'] : 'undefined')
