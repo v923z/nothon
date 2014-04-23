@@ -51,7 +51,7 @@ class Bibliography(object):
 		return _save_notebook(message.get('file'), message.get('full_bibliography', ''))
 		
 	def save_bibtex(self, fn, message):
-		full_bibliography = message.get('bibliography')
+		full_bibliography = message.get('full_bibliography')
 		bibliography = full_bibliography['bibliography']
 		if not bibliography:
 			return {'success': 'Could not get bibliographic data from client'}
@@ -70,7 +70,8 @@ class Bibliography(object):
 	def save_html(self, fn, message):
 		# Should we save directly to HTML, or to bibnote first, and then parse the file from disc?
 		self.save_bibnote(fn, message)
-		bibliography = message.get('bibliography')
+		full_bibliography = message.get('full_bibliography')
+		bibliography = full_bibliography['bibliography']
 		if not bibliography:
 			return {'success': 'Could not get bibliographic data from client'}
 		
