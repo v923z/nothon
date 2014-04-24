@@ -1,8 +1,8 @@
 {
 "title" : "Comments on using the nothon notebook<br>",
-"type": "notebook",
+"type" : "notebook",
 "directory" : "",
-"date" : "Thu Nov 28 2013 17:21:20 GMT+0100 (CET)",
+"date" : "Thu Apr 24 2014 14:06:48 GMT+0200",
 "nothon version" : 1.3,
 "notebook" : [
     {
@@ -344,12 +344,12 @@
                 "props": ";intoc;searchable"
             },
             "plot_file": {
-                "content": "notebooks/nothon.note_plot_1.png",
+                "content": "_nothon.note/nothon.note.png",
                 "id": "div_plot_file_1",
                 "props": ""
             },
             "plot_header": {
-                "content": "plot(sin(x), 'ro')<br>xlabel('Time [s]')<br>ylabel('Displacement [a.u.]')<br>",
+                "content": "plot(sin(x), 'ro')\nxlabel('Time [s]')\nylabel('Displacement [a.u.]')",
                 "id": "div_plot_header_1",
                 "props": ""
             }

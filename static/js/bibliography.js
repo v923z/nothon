@@ -221,6 +221,8 @@ function set_paper_info(uuid) {
 	$('#info_volume').text(entry['volume'] ? entry['volume'] + ' ' : '')
 	$('#info_pages').text(entry['pages'] ? entry['pages'] + ' ' : '')
 	$('#info_year').text(entry['year'] ? '(' + entry['year'] + ')' : '')
+	if(!entry['url']) entry['url'] = ''
+	$('#info_link').html('<a href="' + entry['url'] + '" target="_blank">' + entry['url'] + '</a>')
 }
 
 function generate_uuid() {
