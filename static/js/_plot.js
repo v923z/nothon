@@ -114,6 +114,14 @@ function toggle_comment(target) {
 	}
 }
 
+function plot_render(json) {
+	add_new_cell(plot_html(json.count))
+	$('#div_plot_caption_' + json.count).html(json.content.plot_caption.content)
+	$('#div_plot_caption_' + json.count).html(json.content.plot_header.content)
+	$('#div_plot_file_' + json.count).html(json.content.plot_file.content)
+	$('#div_plot_body_' + json.count).html(json.content.plot_body.content)
+}
+
 jQuery.fn.getCursorPosition = function() {
     if(this.length == 0) return -1;
     return $(this).getSelectionStart();

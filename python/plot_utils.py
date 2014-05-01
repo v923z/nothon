@@ -72,3 +72,4 @@ class Plot(object):
 	def render(self, dictionary, directory, render):
 		dictionary['content']['plot_body'] = {'content' : self.read_plot(dictionary['content']['plot_file']['content'])}
 		return render.plot_html(dictionary['count'], dictionary['content'])
+		#return dictionary

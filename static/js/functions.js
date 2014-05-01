@@ -250,10 +250,7 @@ $(document).ready(function () {
 		dateFormat: 'yyyy-mm-dd',
 		onSelect: function(date) {
 			save_notebook('save')
-			var d = new Date(date)
-			var month = (100 + d.getMonth() + 1).toString().slice(1,3)
-			var day = (100 + d.getDate()).toString().slice(1,3)
-			window.location.href = 'http://127.0.0.1:8080/?name=Calendar/' + d.getFullYear() + '/' + month + '/' + day + '.note'
+			window.location.href = 'http://127.0.0.1:8080/?name=' +  calendar_path(date.valueOf()[0]) + '.note'
 		}
 	});
 	
@@ -463,16 +460,20 @@ function usage() {
 	window.open('?name=help.html', 'nothon quick help', 'left=20, top=20, width=500, height=500, toolbar=0, location=0, menubar=0, resizable=0')
 }
 
+function add_new_cell(html) {
+	if($('#docmain').is(':empty')) {
+		$('#docmain').prepend(html)
+	} else {
+		$('#docmain').children(':last').after(html)
+	}
+}
+
 function insert_new_cell(html, to_activate) {
 	if(active_div && $.contains($('#docmain')[0], active_div)) {
 		$('#' + $(active_div).data('main')).after(html)		
 	}
 	else {
-		if($('#docmain').is(':empty')) {
-			$('#docmain').prepend(html)
-		} else {
-			$('#docmain').children(':last').after(html)
-		}
+		add_new_cell(html)
 	}
 	generate_toc()
 	set_active(document.getElementById(to_activate))
