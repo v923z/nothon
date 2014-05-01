@@ -13,8 +13,8 @@ $ body_props = safe_props(content, 'plot_body')
 
 <div id='$mid' class='plot_main' data-type='plot' data-count='$id'>
 <div class='button_expand' id='$eid' data-count='$id' onclick='plot_onclick(this);'><img src='/static/icons/collapse.png' height='18px'/></div>
-<div id='$cid' class='plot_caption' contenteditable='true' data-save='true' data-searchable=\"true\" data-main='$mid' data-type='plot' data-count='$id' data-nothon='save;' data-props='$caption_props' onkeypress='return plot_caption_keypress(event);'  onfocus='set_active(this);'>$:safe_content(content, "plot_caption")</div>
-<textarea id='$taid' class='plot_header' data-save='true' data-searchable=\"true\" data-main='$mid' data-type='plot' data-count='$id' data-expand='$eid' onkeypress='return plot_header_keypress(event);' onkeyup='return plot_up(this);' onfocus='set_active(this);' data-nothon='save;' data-props='$head_props'>$:safe_content(content, "plot_header")</textarea>
+<div id='$cid' class='plot_caption' contenteditable='true' data-save='true' data-searchable='true' data-main='$mid' data-type='plot' data-count='$id' data-nothon='save;' data-props='$caption_props' onkeypress='return plot_caption_keypress(event);'  onfocus='set_active(this);'>$:safe_content(content, "plot_caption")</div>
+<textarea id='$taid' class='plot_header' data-save='true' data-searchable='true' data-main='$mid' data-type='plot' data-count='$id' data-expand='$eid' onkeypress='return plot_header_keypress(event);' onkeyup='return plot_up(this);' onfocus='set_active(this);' data-nothon='save;' data-props='$head_props'>$:safe_content(content, "plot_header")</textarea>
 <div id='$tid' class='plot_file' data-save='true' data-main='$mid' data-type='plot' data-nothon='save;' data-count='$id' data-props='$file_props'>$safe_content(content, "plot_file")</div>
 <div id='$bid' class='plot_body' data-main='$mid' data-type='plot' data-nothon='' data-count='$id' data-props='$body_props'>$:safe_content(content, "plot_body")</div>
 </div>

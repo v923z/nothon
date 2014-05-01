@@ -1,6 +1,7 @@
 function insert_code() {
 	var id = get_max_index('code_main') + 1
 	insert_new_cell(code_html(id), 'div_code_header_' + id)
+	console.log(code_html(id))
 	code_context_menu()
 	return false
 }
@@ -51,4 +52,11 @@ function code_sanitise(block) {
 	block.content.code_body.content = $('#temp_div').find('.highlight').text()
 	$("#temp_div").remove()	
 	return block
+}
+
+function code_render(json) {
+	add_new_cell(code_html(json.count))
+	$('#div_code_header_' + json.count).html(json.content.code_header.content)
+	$('#div_code_date_' + json.count).html(json.content.code_date.content)
+	$('#div_code_body_' + json.count).html(json.content.code_body.content)
 }
