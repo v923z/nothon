@@ -30,6 +30,8 @@ $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
 	<script src="$js_src"></script>
 
+<script>var full_notebook = $:content['full_notebook']</script>
+<script>var running_server = true</script>
 </head>
 <body data-type='notebook' data-file='$filename'>
 <aside id='aside'>
