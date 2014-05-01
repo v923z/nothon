@@ -48,6 +48,14 @@ function head_data(div_data) {
 }
 
 function head_sanitise(block) {
-	block.content.head_header.content = block.content.head_header.content.replace('<br>', '')
+	//block.content.head_header.content = block.content.head_header.content.replace('<br>', '')
 	return block
+}
+
+
+function head_render(json) {
+	add_new_cell(head_html(json.count))
+	$('#div_head_header_' + json.count).html(json.content.head_header.content)
+	$('#div_head_date_' + json.count).html(json.content.head_date.content)
+	$('#div_head_body_' + json.count).html(json.content.head_body.content)
 }

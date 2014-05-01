@@ -34,3 +34,8 @@ function paragraph_sanitise(block) {
 	$('#dtemp').remove()
 	return block
 }
+
+function paragraph_render(json) {
+	add_new_cell(paragraph_html(json.count))
+	$('#div_paragraph_body_' + json.count).html(json.content.paragraph_body.content)
+}

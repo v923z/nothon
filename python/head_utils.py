@@ -31,10 +31,11 @@ class Head(object):
 			# http://stackoverflow.com/questions/136168/get-last-n-lines-of-a-file-with-python-similar-to-tail
 			lines = fin.readlines()
 			lines = lines[n:]
-		fin.close()	
-		return simplejson.dumps({"scroller" : message['body'],
-								message['date'] : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),  
-								message['body'] : '<br>'.join([x.rstrip('\n\r') for x in lines])})
+		fin.close()
+		return simplejson.dumps({"scroller" : message.get('body'),
+								message.get('date') : 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),  
+								message.get('body') : '<br>'.join([x.rstrip('\n\r') for x in lines])})
 
 	def render(self, dictionary, directory, render):
-		return render.head_html(dictionary['count'], dictionary['content'])
+		return dictionary
+		#return render.head_html(dictionary['count'], dictionary['content'])

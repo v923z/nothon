@@ -1,7 +1,6 @@
 function insert_code() {
 	var id = get_max_index('code_main') + 1
 	insert_new_cell(code_html(id), 'div_code_header_' + id)
-	console.log(code_html(id))
 	code_context_menu()
 	return false
 }

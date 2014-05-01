@@ -22,10 +22,12 @@ class Paragraph(object):
 		self.resource = resource
 		
 	def render(self, dictionary, directory, render):
-		div = render.paragraph_html(dictionary['count'], dictionary['content'])
+		#div = render.paragraph_html(dictionary['count'], dictionary['content'])
 		if directory:
-			div = update_image(div, directory)
-		return str(div)
+			#div = update_image(div, directory)
+		#return str(div)
+			dictionary['content']['body'] = update_image(dictionary['content']['body'], directory)
+		return dictionary
 		
 	def handler(message, resource):
 		return {'success': 'success'}
@@ -37,10 +39,12 @@ class Section(object):
 		self.resource = resource
 
 	def render(self, dictionary, directory, render):
-		div = render.text_html(dictionary['count'], dictionary['content'])
+		#div = render.text_html(dictionary['count'], dictionary['content'])
 		if directory:
-			div = update_image(div, directory)
-		return str(div)
+			#div = update_image(div, directory)
+		#return str(div)
+			dictionary['content']['body'] = update_image(dictionary['content']['body'], directory)
+		return dictionary
 
 	def handler(message, resource):
 		return {'success': 'success'}

@@ -85,10 +85,12 @@ function create_message(div_data, command) {
 
 function message_handler(req) {
 	var message = JSON.parse(req.responseText)
-	for(i in message) {
-		var elem = document.getElementById(i)
-		if(elem && i != "scroller") {
-			elem.innerHTML = message[i]
+	console.log(message)
+	for(elem in message) {
+		if($('#' + elem).is('textarea')) {
+			$('#' + elem).val(message[elem])
+		} else {
+			$('#' + elem).html(message[elem])
 		}
 	}
 	// TODO: scrolling is not quite perfect

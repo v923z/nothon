@@ -4,5 +4,5 @@ $ bid = 'div_paragraph_body_%s'%(id)
 $ body_props = safe_props(content, 'paragraph_body', 'searchable')
 
 <div id='$mid' class='paragraph_main' data-type='paragraph' data-count='$id'>
-<div id='$bid' class='paragraph_body' contenteditable='true' onfocus='set_active(this);' onkeypress='return paragraph_keypress(event);' data-type='paragraph' data-main='$mid' data-nothon='save;' data-count='$id' data-props='$body_props'>$:safe_content(content, "paragraph_body")</div>
+<div id='$bid' class='paragraph_body' contenteditable='true' data-save='true' data-searchable='true' onfocus='set_active(this);' onkeypress='return paragraph_keypress(event);' data-type='paragraph' data-main='$mid' data-nothon='save;' data-count='$id' data-props='$body_props'>$:safe_content(content, "paragraph_body")</div>
 </div>
