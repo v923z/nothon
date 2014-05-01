@@ -84,14 +84,6 @@ class Notebook(object):
 	def save_notebook(self, message, fn):
 		" Writes the stipped document content to disc "
 		return _save_notebook(fn, message.get('full_notebook'))
-		nb = { 'title' : message.get('title', ''),
-				'type' : message.get('type'),
-				'date' : message.get('date'),
-				'directory' : message.get('directory', '""').strip('<br>'), 
-				'nothon version' : self.resource.nothon_version
-		}
-		nb['notebook'] = message.get('notebook')
-		return write_notebook(fn, nb, self.resource.notebook_item_order)
 
 	def new_notebook(self, fn):
 		" Creates an empty notebook on disc "
