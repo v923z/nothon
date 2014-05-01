@@ -10,7 +10,7 @@ class NothonResource(object):
 		self.notebook_item_order = ['title', 'type', 'directory', 'date', 'nothon version', 'notebook']
 		self.new_notebook = {"_metadata": {
 					"type": "notebook", 
-					"date": "",
+					"date": "date",
 					"nothon version": self.nothon_version },
 					"notebook": []}
 		self.new_bibliography = {"_metadata": {

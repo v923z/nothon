@@ -107,60 +107,59 @@ function set_active(id) {
 	})
 }
 
+//function block_content(elem) {
+	//var block = new Object()
+
+	//block.type = $(elem).data('type')
+	//block.count = get_index($(elem).attr('id'))
+	//block.id = $(elem).attr('id')
+	//block.content = {}
+	//$(elem).children().each( function() {
+		//if($(this).parent().get(0) === $(elem).get(0)) {
+			//var nothon = $(this).data('nothon')
+			//var props = $(this).data('props')
+			//if(nothon) {
+				//if(check_tag(nothon, 'save')) {
+					//var sub_block = new Object()
+					//if($(this).is('textarea')) sub_block['content'] = $(this).val()
+					//else sub_block['content'] = $(this).html()
+					//sub_block['id'] = $(this).attr('id')
+					//if($(this).is(':visible')) props.replace('collapsed;', '')
+					//else props = add_tag(props, 'collapsed')
+					//console.log(props)
+					//sub_block['props']= props
+					//block.content[$(this).attr('class')] = sub_block
+				//}
+			//}
+		//}
+	//})
+	//eval('block = ' + block.type + '_sanitise(block)')
+	//return block
+//}
+
 function block_content(elem) {
 	var block = new Object()
 
 	block.type = $(elem).data('type')
-	block.count = get_index($(elem).attr('id'))
+	block.count = $(elem).data('count')
 	block.id = $(elem).attr('id')
 	block.content = {}
 	$(elem).children().each( function() {
 		if($(this).parent().get(0) === $(elem).get(0)) {
-			var nothon = $(this).data('nothon')
-			var props = $(this).data('props')
-			if(nothon) {
-				if(check_tag(nothon, 'save')) {
-					var sub_block = new Object()
-					if($(this).is('textarea')) sub_block['content'] = $(this).val()
-					else sub_block['content'] = $(this).html()
-					sub_block['id'] = $(this).attr('id')
-					if($(this).is(':visible')) props.replace('collapsed;', '')
-					else props = add_tag(props, 'collapsed')
-					console.log(props)
-					sub_block['props']= props
-					block.content[$(this).attr('class')] = sub_block
-				}
+			if($(this).data('save')) {
+				var sub_block = new Object()
+				if($(this).is('textarea')) sub_block.content = $(this).val()
+				else sub_block.content = $(this).html()
+				sub_block.id = $(this).attr('id')
+				sub_block.collapsed = $(this).data('collapsed')
+				sub_block.searchable = $(this).data('searchable')
+				block.content[$(this).attr('class')] = sub_block
 			}
 		}
 	})
 	eval('block = ' + block.type + '_sanitise(block)')
 	return block
 }
-
-//function block_content(elem) {
-	//var block = new Object()
-
-	//block.type = $(elem).data('type')
-	//block.count = $(elem).data('count')
-	//block.id = $(elem).attr('id')
-	//block.content = {}
-	//$(elem).children().each( function() {
-		//if($(this).parent().get(0) === $(elem).get(0)) {
-			//if($(this).data('save')) {
-				//var sub_block = new Object()
-				//if($(this).is('textarea')) sub_block['content'] = $(this).val()
-				//else sub_block.content = $(this).html()
-				//sub_block.id = $(this).attr('id')
-				//sub_block.collapsed = $(this).data('collapsed')
-				//sub_block.searchable = $(this).data('searchable')
-				//block.content[$(this).attr('class')] = sub_block
-			//}
-		//}
-	//})
-	//eval('block = ' + block.type + '_sanitise(block)')
-	//console.log(block)
-	//return block
-//}
 
 function check_tag(where, tag) {
 	if(!where || where.length == 0) return false
@@ -211,12 +210,26 @@ function _save(method) {
 	return message
 }
 
+//function save_notebook(method) {
+	//console.log('here')
+	//var message = _save(method)
+	//if(message == null) return
+	//message.title = $('#div_title').html()
+	//message.notebook = get_divs()
+	//// TODO: we might have to track the type of the parent document (bibliography etc.)
+	//message.type = 'notebook'
+	//message.file = $('#docmain').data('file')
+	//xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
+//}
+
 function save_notebook(method) {
-	console.log('here')
 	var message = _save(method)
 	if(message == null) return
-	message.title = $('#div_title').html()
-	message.notebook = get_divs()
+	
+	full_notebook['notebook'] = get_divs()
+	full_notebook['_metadata']['date'] = Date()
+	full_notebook['_metadata']['title'] = $('#div_title').html()
+	message['full_notebook'] = full_notebook
 	// TODO: we might have to track the type of the parent document (bibliography etc.)
 	message.type = 'notebook'
 	message.file = $('#docmain').data('file')
@@ -298,16 +311,23 @@ $(document).ready(function () {
 		return false;
 	});
 	
-	$(function() {
-		$("div").each( function() {
-			var props = $(this).data('props')
-			if(check_tag(props, 'collapsed')) {
-				$(this).hide()
-				set_collapse('#' + $(this).data('main'))
-			}
-			if(check_tag(props, 'locked')) $(this).attr('contenteditable', false)
-		});
-	});
+	// We do the rendering here
+	var notebook = full_notebook['notebook']
+	$('#div_title').html(full_notebook._metadata.title)
+	for(i in notebook) {
+		eval(notebook[i].type + '_render(notebook[i])')
+	}
+	
+	//$(function() {
+		//$("div").each( function() {
+			//var props = $(this).data('props')
+			//if(check_tag(props, 'collapsed')) {
+				//$(this).hide()
+				//set_collapse('#' + $(this).data('main'))
+			//}
+			//if(check_tag(props, 'locked')) $(this).attr('contenteditable', false)
+		//});
+	//});
 	
 	$(function() {
 		$('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })

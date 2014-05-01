@@ -77,6 +77,20 @@ class Notebook(object):
 			
 		note['content'] = {'content' : note_str}
 		print 'Read file %s %s'%(fn, datetime.datetime.now().strftime("%H:%M:%S.%f"))
+		
+		# Added hack here
+		notebook = data.get('notebook')
+		for element in notebook:
+			elem_type = element.get('type')
+			if elem_type in ('plot', 'head', 'code', 'text', 'paragraph', 'section'):
+				exec('obj = %s(self.resource)'%(elem_type.title()))
+				element = obj.render(element, directory, self.render)
+			else:
+				pass
+				
+		note = {'full_notebook': simplejson.dumps({'_metadata': data['_metadata'], 'notebook': notebook})}
+		print note
+		# hack ends here
 		return note
 		
 	def render_docmain(self, fn):
@@ -89,6 +103,7 @@ class Notebook(object):
 		
 	def save_notebook(self, message, fn):
 		" Writes the stipped document content to disc "
+		return _save_notebook(fn, message.get('full_notebook'))
 		nb = { 'title' : message.get('title', ''),
 				'type' : message.get('type'),
 				'date' : message.get('date'),

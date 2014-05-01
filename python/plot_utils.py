@@ -35,7 +35,7 @@ class Plot(object):
 		# TODO: This is a beauty plaster for the moment...
 		os.chdir(new_path)
 		#fn = message.get('filename').replace('./', '')
-		fn = os.path.basename(message.get('file'))
+		fn = os.path.basename(message.get('filename'))
 		out_file = os.path.join(new_path, fn + '.png')
 		print out_file
 		if code.startswith('#gnuplot') or code.startswith('# gnuplot'):
@@ -71,5 +71,5 @@ class Plot(object):
 
 	def render(self, dictionary, directory, render):
 		dictionary['content']['plot_body'] = {'content' : self.read_plot(dictionary['content']['plot_file']['content'])}
-		return render.plot_html(dictionary['count'], dictionary['content'])
-		#return dictionary
+		#return render.plot_html(dictionary['count'], dictionary['content'])
+		return dictionary
