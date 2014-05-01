@@ -249,7 +249,7 @@ $(document).ready(function () {
 	$('#calendar').datepick({
 		dateFormat: 'yyyy-mm-dd',
 		onSelect: function(date) {
-			save()
+			save_notebook('save')
 			var d = new Date(date)
 			var month = (100 + d.getMonth() + 1).toString().slice(1,3)
 			var day = (100 + d.getDate()).toString().slice(1,3)
@@ -264,7 +264,7 @@ $(document).ready(function () {
 		$("#document_tree").dynatree({
 			persist: true,
 			onActivate: function(node) {
-				save()
+				save_notebook('save')
 				window.location.href = "?name=" + node.getKeyPath().slice(1)
 				return false
 			}
