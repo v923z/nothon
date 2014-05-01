@@ -38,4 +38,3 @@ class Head(object):
 
 	def render(self, dictionary, directory, render):
 		return dictionary
-		#return render.head_html(dictionary['count'], dictionary['content'])

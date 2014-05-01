@@ -57,29 +57,10 @@ class Notebook(object):
 		
 	def parse_note(self, fn):
 		print 'Reading file %s %s'%(fn, datetime.datetime.now().strftime("%H:%M:%S.%f"))
-		note = {}
-		note_str = ''
-			
 		data = get_notebook(fn)
-		content = data.get('notebook')
-		directory = data.get('directory')
-		note['directory'] = {'content' : directory}
-		note['title'] = {'content' : data.get('title')}
-		
-		for element in content:
-			elem_type = element.get('type')
-			if elem_type in ('plot', 'head', 'code', 'text', 'paragraph', 'section'):
-				exec('obj = %s(self.resource)'%(elem_type.title()))
-				div = obj.render(element, directory, self.render)
-			else:
-				pass
-			note_str += str(div)
-			
-		note['content'] = {'content' : note_str}
-		print 'Read file %s %s'%(fn, datetime.datetime.now().strftime("%H:%M:%S.%f"))
-		
-		# Added hack here
 		notebook = data.get('notebook')
+		_metadata = data.get('_metadata')
+		directory = _metadata.get('directory')
 		for element in notebook:
 			elem_type = element.get('type')
 			if elem_type in ('plot', 'head', 'code', 'text', 'paragraph', 'section'):
@@ -89,8 +70,7 @@ class Notebook(object):
 				pass
 				
 		note = {'full_notebook': simplejson.dumps({'_metadata': data['_metadata'], 'notebook': notebook})}
-		print note
-		# hack ends here
+		print 'Read file %s %s'%(fn, datetime.datetime.now().strftime("%H:%M:%S.%f"))
 		return note
 		
 	def render_docmain(self, fn):
