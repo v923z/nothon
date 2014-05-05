@@ -123,9 +123,9 @@ function block_content(elem) {
 				if($(this).is('textarea')) sub_block.content = $(this).val()
 				else sub_block.content = $(this).html()
 				sub_block.id = $(this).attr('id')
-				if($(this).is(':visible')) sub_block.collapsed = false
-				sub_block.searchable = $(this).data('searchable')
-				if($(this).data('toc')) sub_block.toc = true
+				if($(this).is(':visible')) sub_block.collapsed = "false"
+				if($(this).data('searchable')) sub_block.searchable = "true"
+				if($(this).data('toc')) sub_block.toc = "true"
 				block.content[$(this).attr('class')] = sub_block
 			}
 		}
