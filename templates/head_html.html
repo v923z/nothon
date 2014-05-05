@@ -4,13 +4,10 @@ $ did = 'div_head_date_%s'%(id)
 $ hid = 'div_head_header_%s'%(id)
 $ bid = 'div_head_body_%s'%(id)
 $ eid = 'expand_div_head_main_%s'%(id)
-$ head_props = safe_props(content, 'head_header', 'searchable', 'intoc')
-$ date_props = safe_props(content, 'head_date')
-$ body_props = safe_props(content, 'head_body', 'searchable')
 
 <div id='$mid' class='head_main' data-type='head' data-count='$id'>
 <div class='button_expand' id='$eid' onclick='head_onclick(this);'><img src='/static/icons/collapse.png' height='18px'/></div>
-<div id='$hid' class='head_header' contenteditable='true' data-save='true' data-toc='true' data-count='$id' onkeypress='return head_keypress(event);' onfocus='set_active(this);' data-main='$mid' data-type='head' data-nothon='save;' data-props='$head_props'>$:safe_content(content, "head_header")</div>
-<div id='$did' class='head_date' data-save='true' data-count='$id' data-props='$date_props'>$safe_content(content, "head_date")</div>
-<div id='$bid' class='head_body' data-expand='$eid' data-count='$id' data-save='true' data-props='$body_props'>$:safe_content(content, "head_body")</div>
+<div id='$hid' class='head_header' contenteditable='true' data-save='true' data-toc='true' data-count='$id' onkeypress='return head_keypress(event);' onfocus='set_active(this);' data-main='$mid' data-type='head'>$:safe_content(content, "head_header")</div>
+<div id='$did' class='head_date' data-save='true' data-count='$id'>$safe_content(content, "head_date")</div>
+<div id='$bid' class='head_body' data-expand='$eid' data-count='$id' data-save='true'>$:safe_content(content, "head_body")</div>
 </div>

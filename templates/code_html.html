@@ -4,9 +4,6 @@ $ did = 'div_code_date_%s'%(id)
 $ hid = 'div_code_header_%s'%(id)
 $ bid = 'div_code_body_%s'%(id)
 $ eid = 'expand_div_code_main_%s'%(id)
-$ header_props = safe_props(content, 'code_header', 'intoc')
-$ date_props = safe_props(content, 'code_date')
-$ body_props = safe_props(content, 'code_body')
 
 <div id='$mid' class='code_main' data-type='code' data-count='$id'>
 <div class='button_expand' id='$eid' onclick='code_onclick(this);'><img src='/static/icons/collapse.png' height='18px'/></div>
