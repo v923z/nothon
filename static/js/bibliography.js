@@ -165,7 +165,7 @@ function fill_in_fields(uuid) {
 		_fill_in_fields(this, uuid)
 	})	
 	set_paper_info(uuid)	
-	if(!bibliography[uuid]['stars']) {
+	if(!bibliography[uuid]['stars'] || !bibliography[uuid]['stars'] == 'undefined') {
 		bibliography[uuid]['stars'] = 1
 	}
 	set_stars(bibliography[uuid]['stars'])
