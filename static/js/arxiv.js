@@ -126,8 +126,8 @@ function get_parameters(queryString) {
 	if(queryString[0] == '?') queryString = queryString.slice(1)
 	var queries =  queryString.split("&")
 	for (i=0; i < queries.length; i++) {
-		val = queries[i].split("=");
+		val = queries[i].split("=")
 		params[val[0]] = val[1]
 	}
-	return params;
+	return params
 }
