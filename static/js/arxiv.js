@@ -67,18 +67,26 @@ function shuffle_marked() {
 }
 
 function parse_feed(url) {
-	var bibliography = new Object()
+	// Produces the json representation of the feed given in the url
+	var arxiv_listing = new Object()
 	var counter = 0
 	var date = new Date()
-	$.get(url, function (data) {
-		$(data).find('entry').each(function () { 
+	$.get(url, function (data, success) {
+		$(data).find('entry').each(function () { 			
 			var el = $(this)
 			var entry = new Object()
 			counter += 1
+			var _key = el.find('id').text().split('/')
+			entry['key'] = _key[_key.length-1]
 			entry['title'] = el.find('title').text()
 			var _authors = new Array()
-			el.find('author').each(function () { 
+			el.find('author').each(function() { 
 				_authors.push($(this).text().trim())
+			})
+			el.find('link').each(function() {
+				if($(this).title == 'pdf') {
+					entry['pdf'] = $(this).href()
+				}
 			})
 			entry['author'] = _authors.join(' and ')
 			entry['abstract'] = el.find('summary').text()
@@ -89,6 +97,25 @@ function parse_feed(url) {
 			var day = (100 + date.getDate()).toString().slice(1,3)
 			entry['timestamp'] = date.getFullYear() + '.' + month + '.' + day
 			entry['year'] = date.getFullYear()
-		})
+			arxiv_listing[entry['key']] = entry
+		}),
+		'xml'
 	})
+	return arxiv_listing
+}
+
+function render_feed(json) {
+	// Renders the feed in html
+	var all_html = ''
+	for(key in json) {
+		var entry = json[key]
+		var html = "<div class='arxiv-entry' id='" + entry.key + "'>"
+		html += "<div class='arxiv-title'>" + entry.title
+		html += "<a href='" + entry.pdf + "' target='_blank'>" + entry.key + "</a></div>"
+		html += "<div class='arxiv-authors'>" + entry.author + "</div>"
+		html += "<div class='arxiv-abstract'>" + entry.abstract + "</div>"
+		html += "</div>"
+		all_html += html
+	}
+	$("#docmain").html(all_html)
 }
