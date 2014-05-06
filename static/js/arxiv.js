@@ -111,11 +111,23 @@ function render_feed(json) {
 		var entry = json[key]
 		var html = "<div class='arxiv-entry' id='" + entry.key + "'>"
 		html += "<div class='arxiv-title'>" + entry.title
-		html += "<a href='" + entry.pdf + "' target='_blank'>" + entry.key + "</a></div>"
+		html += "<a href='" + entry.pdf + "' target='_blank'> " + entry.key + "</a></div>"
 		html += "<div class='arxiv-authors'>" + entry.author + "</div>"
 		html += "<div class='arxiv-abstract'>" + entry.abstract + "</div>"
 		html += "</div>"
 		all_html += html
 	}
 	$("#docmain").html(all_html)
+}
+
+function get_parameters(queryString) {
+	var params = new Object()
+	var i, val
+	if(queryString[0] == '?') queryString = queryString.slice(1)
+	var queries =  queryString.split("&")
+	for (i=0; i < queries.length; i++) {
+		val = queries[i].split("=");
+		params[val[0]] = val[1]
+	}
+	return params;
 }
