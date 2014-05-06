@@ -112,6 +112,7 @@ class Index(object):
 			nb = Notebook(nothon_resource, render)
 			sp = link.name.split('#')
 			link.name = sp[0]
+			print 'here', link.name
 			if not os.path.exists(link.name):
 				nb.new_notebook(link.name)
 				aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}

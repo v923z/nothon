@@ -1,43 +1,51 @@
 {
-"title" : "arxiv management<br>",
-"type" : "notebook",
-"directory" : "",
-"date" : "Sat Feb 08 2014 11:30:26 GMT+0100 (CET)",
-"nothon version" : 1.3,
-"notebook" : [
-    {
-        "content": {
-            "text_body": {
-                "content": "The server is equipped with an arxiv reader utility, which can be used for quickly and conveniently browsing through the daily listings. One can get a particular section's listing by pointing the browser to, e.g.,<br><br>127.0.0.1:8080/?arxiv=cond-mat<br><br>which will load and format the content of cond-mat. Styling can be modified in arxiv.css. At the time of writing this, the arxiv reader can accept two special keywords that determine how the content of the listing is parsed before display. <br><br>One keyword argument is 'keyword', which will highlight those papers that have certain keywords in the title, author list, or the abstract. Multiple keywords are supported (an OR logical operation is understood for this case), but each one of them has to be preceded by 'keyword'. E.g., <br><br>127.0.0.1:8080/?arxiv=cond-mat&amp;keyword=physics<br><br>will highlight papers whose content contains the word 'physics', while <br><br>127.0.0.1:8080/?arxiv=cond-mat&amp;keyword=physics&amp;keyword=optics&amp;keyword=quantum<br><br>will highlight those papers that contain any of the words 'physics', 'optics', or 'quantum'.<br><br>The 'includeonly' keyword can be used for actually filtering the listing. E.g.,<br><br>127.0.0.1:8080/?arxiv=cond-mat&amp;includeonly=physics<br><br>will display <b><i>only</i></b> those papers that contain 'physics', while <br><br>127.0.0.1:8080/?arxiv=cond-mat&amp;includeonly=physics&amp;includeonly=optics<br><br>will display those, that contain either 'physics' or 'optics'. <br><br>The above-mentioned two keywords can be combined, e.g., <br><br>127.0.0.1:8080/?arxiv=cond-mat&amp;includeonly=physics&amp;includeonly=optics&amp;keyword=optics<br><br>will first filter the list, and then highlight those elements that contain the word 'physics'. <br><br>Other listings can be browsed by supplying the id of the appropriate rss feed to the arxiv field above.<br><br>",
-                "id": "div_text_body_1",
-                "props": "searchable"
-            },
-            "text_header": {
-                "content": "Getting arxiv listings",
-                "id": "div_text_header_1",
-                "props": "intoc;searchable"
-            }
-        },
-        "count": 1,
-        "id": "div_text_main_1",
-        "type": "text"
+    "_metadata": {
+        "date": "Tue May 06 2014 15:22:00 GMT+0200",
+        "directory": "",
+        "nothon version": 1.4,
+        "title": "arxiv management<br>",
+        "type": "notebook"
     },
-    {
-        "content": {
-            "text_body": {
-                "content": "At the moment, only one meaningful operation can be performed on an entry in a listing, and that is retrieving the bibtex code. This can then be copied into a bibtex list for use in latex.<br><br>Planned, and implemented soon is saving the entry directly into a bibnote file.<br>",
-                "id": "div_text_body_2",
-                "props": "searchable"
+    "notebook": [
+        {
+            "content": {
+                "text_body": {
+                    "collapsed": "false",
+                    "content": "The server is equipped with an arxiv reader utility, which can be used for quickly and conveniently browsing through the daily listings. One can get a particular section's listing by pointing the browser to, e.g.,<br><br>127.0.0.1:8080/?arxiv=cond-mat<br><br>which will load and format the content of cond-mat. Styling can be modified in arxiv.css. At the time of writing this, the arxiv reader can accept two special keywords that determine how the content of the listing is parsed before display. <br><br>One keyword argument is 'keyword', which will highlight those papers that have certain keywords in the title, author list, or the abstract. Multiple keywords are supported (an OR logical operation is understood for this case), but each one of them has to be preceded by 'keyword'. E.g., <br><br>127.0.0.1:8080/?arxiv=cond-mat&amp;keyword=physics<br><br>will highlight papers whose content contains the word 'physics', while <br><br>127.0.0.1:8080/?arxiv=cond-mat&amp;keyword=physics&amp;keyword=optics&amp;keyword=quantum<br><br>will highlight those papers that contain any of the words 'physics', 'optics', or 'quantum'.<br><br>The 'includeonly' keyword can be used for actually filtering the listing. E.g.,<br><br>127.0.0.1:8080/?arxiv=cond-mat&amp;includeonly=physics<br><br>will display <b><i>only</i></b> those papers that contain 'physics', while <br><br>127.0.0.1:8080/?arxiv=cond-mat&amp;includeonly=physics&amp;includeonly=optics<br><br>will display those, that contain either 'physics' or 'optics'. <br><br>The above-mentioned two keywords can be combined, e.g., <br><br>127.0.0.1:8080/?arxiv=cond-mat&amp;includeonly=physics&amp;includeonly=optics&amp;keyword=optics<br><br>will first filter the list, and then highlight those elements that contain the word 'physics'. <br><br>Other listings can be browsed by supplying the id of the appropriate rss feed to the arxiv field above.<br><br>",
+                    "id": "div_text_body_1",
+                    "searchable": "true"
+                },
+                "text_header": {
+                    "collapsed": "false",
+                    "content": "Getting arxiv listings",
+                    "id": "div_text_header_1",
+                    "searchable": "true",
+                    "toc": "true"
+                }
             },
-            "text_header": {
-                "content": "Extracting and saving the content of a listing",
-                "id": "div_text_header_2",
-                "props": "intoc;searchable"
-            }
+            "count": 1,
+            "id": "div_text_main_1",
+            "type": "text"
         },
-        "count": 2,
-        "id": "div_text_main_2",
-        "type": "text"
-    }
-]
+        {
+            "content": {
+                "text_body": {
+                    "collapsed": "false",
+                    "content": "At the moment, only one meaningful operation can be performed on an entry in a listing, and that is retrieving the bibtex code. This can then be copied into a bibtex list for use in latex.<br><br>Planned, and implemented soon is saving the entry directly into a bibnote file.<br>",
+                    "id": "div_text_body_2",
+                    "searchable": "true"
+                },
+                "text_header": {
+                    "collapsed": "false",
+                    "content": "Extracting and saving the content of a listing",
+                    "id": "div_text_header_2",
+                    "searchable": "true",
+                    "toc": "true"
+                }
+            },
+            "count": 2,
+            "id": "div_text_main_2",
+            "type": "text"
+        }
+    ]
 }

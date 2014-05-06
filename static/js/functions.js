@@ -236,15 +236,13 @@ $(document).ready(function () {
 	$('#notebook_tab').tabs();
 	$(function() { generate_toc() })
 	
-	$(function() {
-		$("#document_tree").dynatree({
-			persist: true,
-			onActivate: function(node) {
-				save_notebook('save')
-				window.location.href = "?name=" + node.getKeyPath().slice(1)
-				return false
-			}
-		});
+	$("#document_tree").dynatree({
+		persist: true,
+		onActivate: function(node) {
+			save_notebook('save')
+			window.location.href = "?name=" + node.getKeyPath().slice(1)
+			return false
+		}
 	});
 	$("#document_tree").removeClass().addClass('document_tree')
 	
