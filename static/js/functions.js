@@ -240,7 +240,7 @@ $(document).ready(function () {
 		persist: true,
 		onActivate: function(node) {
 			save_notebook('save')
-			window.location.href = "?name=" + node.getKeyPath().slice(1)
+			window.location.href = node.data.href
 			return false
 		}
 	});
