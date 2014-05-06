@@ -65,3 +65,30 @@ function shuffle_marked() {
 		}
 	})
 }
+
+function parse_feed(url) {
+	var bibliography = new Object()
+	var counter = 0
+	var date = new Date()
+	$.get(url, function (data) {
+		$(data).find('entry').each(function () { 
+			var el = $(this)
+			var entry = new Object()
+			counter += 1
+			entry['title'] = el.find('title').text()
+			var _authors = new Array()
+			el.find('author').each(function () { 
+				_authors.push($(this).text().trim())
+			})
+			entry['author'] = _authors.join(' and ')
+			entry['abstract'] = el.find('summary').text()
+			entry['url'] = el.find('id').text()
+			entry['journal'] = 'arxiv'
+			entry['pages'] = '...'
+			var month = (100 + date.getMonth() + 1).toString().slice(1,3)
+			var day = (100 + date.getDate()).toString().slice(1,3)
+			entry['timestamp'] = date.getFullYear() + '.' + month + '.' + day
+			entry['year'] = date.getFullYear()
+		})
+	})
+}

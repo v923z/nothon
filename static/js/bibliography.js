@@ -143,7 +143,7 @@ function activate_element(event) {
 function _fill_in_fields(dom, uuid) {
 	var id = $(dom).attr('id').replace('text_', '')
 	if(bibliography[uuid][id]) {
-		$(dom).val(bibliography[uuid][id])
+		$(dom).val($.trim(bibliography[uuid][id]))
 	} else {
 		bibliography[uuid][id] = ''
 		$(dom).val('')
