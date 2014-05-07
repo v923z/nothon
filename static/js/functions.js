@@ -187,20 +187,6 @@ function save_html(target) {
     //$(target).parent().hide()
 }
 
-function docmain_render(address) {
-	var message = create_message('', "docmain_render")
-	message.address = address
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), docmain_handler)
-}
-
-function docmain_handler(req) {
-	var message = JSON.parse(req.responseText)
-	$('#docmain').html(message['docmain'])
-	document.title = message['doc_title']
-	$('#div_dir').html(message["directory"])
-	$('#div_title').html(message["title"])	
-}
-
 function delete_block() {
 	if(active_div) {
 		var elem = active_div.parentNode
