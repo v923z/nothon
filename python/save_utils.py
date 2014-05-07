@@ -1,7 +1,6 @@
 import simplejson
 import os
 from shutil import copytree, move
-from fileutils import notebook_folder
 import latex
 import markdown
 
