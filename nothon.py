@@ -20,7 +20,7 @@ from python.new_notebook import *
 from python.plot_utils import Plot
 from python.head_utils import Head
 from python.code_utils import Code
-from python.save_utils import Zip, Tar, Save, Latex, Markdown
+from python.save_utils import Zip, Tar, Latex, Markdown
 from python.notebook import Notebook
 from python.arxiv import Arxiv
 
@@ -112,7 +112,6 @@ class Index(object):
 			nb = Notebook(nothon_resource, render)
 			sp = link.name.split('#')
 			link.name = sp[0]
-			print 'here', link.name
 			if not os.path.exists(link.name):
 				nb.new_notebook(link.name)
 				aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}

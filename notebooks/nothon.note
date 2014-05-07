@@ -1,6 +1,6 @@
 {
     "_metadata": {
-        "date": "Tue May 06 2014 17:04:31 GMT+0200",
+        "date": "Wed May 07 2014 13:30:27 GMT+0200",
         "directory": "",
         "nothon version": 1.4,
         "title": "Comments on using the nothon notebook<br>",
@@ -397,7 +397,7 @@
                 },
                 "plot_file": {
                     "collapsed": "false",
-                    "content": "_nothon.note/nothon.note.png",
+                    "content": "./notebooks/_nothon.note/nothon.note_plot_1.png",
                     "id": "div_plot_file_1"
                 },
                 "plot_header": {

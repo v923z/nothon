@@ -1,7 +1,6 @@
 import simplejson
 import datetime
 from fileutils import get_notebook, create_notebook_folder, notebook_folder, write_notebook, write_to_disc, _save_notebook
-from save_utils import save_notebook
 import uuid
 import os
 from bibtex2bibnote import Translator

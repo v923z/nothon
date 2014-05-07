@@ -31,10 +31,9 @@ class Plot(object):
 		# TODO: this needs a bit of a clean-up...
 		#if message['directory']: os.chdir(message['directory'].strip('<br>'))
 		
-		new_path = create_notebook_folder(os.path.basename(message.get('file')))
+		new_path = create_notebook_folder(message.get('file'))
 		# TODO: This is a beauty plaster for the moment...
 		os.chdir(new_path)
-		#fn = message.get('filename').replace('./', '')
 		fn = os.path.basename(message.get('filename'))
 		out_file = os.path.join(new_path, fn + '.png')
 		print out_file
