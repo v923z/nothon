@@ -17,9 +17,6 @@ from python.jsutils import *
 from python.cell_utils import *
 from python.new_notebook import *
 
-from python.plot_utils import Plot
-from python.head_utils import Head
-from python.code_utils import Code
 from python.save_utils import Zip, Tar, Latex, Markdown
 from python.notebook import Notebook
 from python.arxiv import Arxiv
