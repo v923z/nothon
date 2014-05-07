@@ -123,7 +123,14 @@ class Index(object):
 		doc_type = message.get('type')
 		if doc_type in ('notebook', 'bibliography', 'arxiv'):
 			exec('obj = %s(nothon_resource, render)'%(doc_type.title()))
-			return simplejson.dumps(obj.handler(message))
+			result = obj.handler(message)
+			if(message.get('aux')):
+				aux = message.get('aux')
+				if aux.get('command') in ('new_notebook'):
+					nb = Notebook(nothon_resource, render)
+					nb.new_notebook(aux.get('file'), aux=aux)
+				result['aux'] = aux
+			return simplejson.dumps(result)
 			
 		if message['command'] in ('text', 'paragraph', 'savehtml', 'docmain_render', 'image', 'paste_cell', 'remove_cell'):
 			exec('result = %s_handler(message, nothon_resource)'%(message['command']))

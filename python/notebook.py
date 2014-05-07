@@ -85,10 +85,14 @@ class Notebook(object):
 		" Writes the stipped document content to disc "
 		return _save_notebook(fn, message.get('full_notebook'))
 
-	def new_notebook(self, fn):
+	def new_notebook(self, fn, aux=False):
 		" Creates an empty notebook on disc "
 		create_notebook_folder(fn)
 		_save_notebook(fn, self.resource.new_notebook)
+		if aux:
+			nb = get_notebook(fn)
+			nb['_metadata']['raw_date'] = aux.get('raw_date', '')
+			_save_notebook(fn, nb)
 		new_notebook(fn, self.resource)
 
 def update_image(content, directory):

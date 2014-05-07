@@ -66,13 +66,12 @@ function get_max_index(className) {
 
 function _create_message(command) {
 	var message = new Object()
+	var aux = new Object()
 	message.date = Date()
 	message.command = command
-	message.doc_title = document.title
 	message.type = $('body').data('type')
 	message.sub_type = $('#docmain').data('sub_type')
 	message.file = $('body').data('file')
-	message.directory = $('#div_dir').html().replace('<br>', '')
 	return message
 }
 
@@ -146,14 +145,21 @@ function get_divs() {
 function save_handler(req) {
 	var message = JSON.parse(req.responseText)
 	if(message['success'] == 'success') {
-		var time = new Date()
-		$('#notebook_status').html('Saved at ' + time.toTimeString().split(' ')[0])
+		var date = new Date()
+		$('#notebook_status').html('Saved at ' + date.toTimeString().split(' ')[0])
 	} else {
 		alert(message['success'])
+	}
+	if(message.aux) {
+		var aux = message.aux
+		if(aux['redirect']) {
+			window.location.href = aux['redirect']
+		}
 	}
 }
 
 function _save(method) {
+	// These cannot be saved, so we bail out immediately
 	if(window.location.href.indexOf('?name=__timeline') > 0 || 
 		window.location.href.indexOf('?name=__toc') > 0 ||
 		window.location.href.indexOf('?name=__bibliography') > 0) {
@@ -163,7 +169,7 @@ function _save(method) {
 	return message
 }
 
-function save_notebook(method) {
+function save_notebook(method, aux) {
 	var message = _save(method)
 	if(message == null) return
 	
@@ -174,7 +180,9 @@ function save_notebook(method) {
 	// TODO: we might have to track the type of the parent document (bibliography etc.)
 	message.type = 'notebook'
 	message.file = $('#docmain').data('file')
-	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
+	if(typeof(aux) === 'undefined') { aux = null }
+	message.aux = aux
+	xml_http_post(running_server, JSON.stringify(message, null, 4), save_handler)
 }
 
 function save_html(target) {
@@ -182,7 +190,7 @@ function save_html(target) {
 	message.outfile = document.title
 	message.title = document.getElementById("div_title").innerHTML
 	message.content = document.getElementById('docmain').innerHTML
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), save_handler)
+    xml_http_post(running_server, JSON.stringify(message), save_handler)
 	// This is broken for now...
     //$(target).parent().hide()
 }
@@ -209,13 +217,26 @@ function recover_block() {
 		document.getElementById('trash_image').style.backgroundImage = 'url(static/css/trashbin_empty.png)'
 	}
 }
+function raw_date(date) {
+	var month = (100 + date.getMonth() + 1).toString().slice(1,3)
+	var day = (100 + date.getDate()).toString().slice(1,3)
+	return date.getFullYear() + '.'+ month + '.' + day
+}
 
 $(document).ready(function () {	
+	var date = new Date()
+	console.log()
+	
 	$('#calendar').datepick({
 		dateFormat: 'yyyy-mm-dd',
 		onSelect: function(date) {
-			save_notebook('save')
-			window.location.href = 'http://127.0.0.1:8080/?name=' +  calendar_path(date.valueOf()[0]) + '.note'
+			var aux = new Object()
+			aux['command'] = 'new_notebook'
+			aux['type'] = 'calendar'			
+			aux['raw_date'] = raw_date(date.valueOf()[0])
+			aux['file'] = calendar_path(date.valueOf()[0]) + '.note'
+			aux['redirect'] = running_server + '?name=' +  aux['file']
+			save_notebook('save', aux)
 		}
 	});
 	
@@ -486,7 +507,7 @@ function _save_notebook_as(method) {
 	message.notebook = get_divs()
 	message.sub_command = method
 	message.notebook_address = notebook_address
-	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_as_handler)
+	xml_http_post(running_server, JSON.stringify(message, null, 4), save_as_handler)
 }
 
 function save_as_handler(req) {
