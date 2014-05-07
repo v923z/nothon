@@ -17,12 +17,11 @@ from python.jsutils import *
 from python.cell_utils import *
 from python.new_notebook import *
 
-from python.save_utils import Zip, Tar, Latex, Markdown
 from python.notebook import Notebook
+from python.bibliography import Bibliography
 from python.arxiv import Arxiv
 
 from python.template_helpers import *
-from python.bibliography import *
 
 nothon_resource = NothonResource()
 
@@ -125,10 +124,6 @@ class Index(object):
 		if doc_type in ('notebook', 'bibliography', 'arxiv'):
 			exec('obj = %s(nothon_resource, render)'%(doc_type.title()))
 			return simplejson.dumps(obj.handler(message))
-			
-		#if message['command'] in ('plot', 'head', 'code', 'zip', 'tar', 'save', 'latex', 'markdown', 'bibliography'):
-			#exec('obj = %s(nothon_resource)'%(message['command'].title()))
-			#return obj.handler(message)
 			
 		if message['command'] in ('text', 'paragraph', 'savehtml', 'docmain_render', 'image', 'paste_cell', 'remove_cell'):
 			exec('result = %s_handler(message, nothon_resource)'%(message['command']))
