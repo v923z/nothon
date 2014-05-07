@@ -87,12 +87,15 @@ class Notebook(object):
 
 	def new_notebook(self, fn, aux=False):
 		" Creates an empty notebook on disc "
+		if os.path.exists(fn): return aux
+		
 		create_notebook_folder(fn)
 		_save_notebook(fn, self.resource.new_notebook)
 		if aux:
-			nb = get_notebook(fn)
-			nb['_metadata']['raw_date'] = aux.get('raw_date', '')
-			_save_notebook(fn, nb)
+			if aux.get('type') in ('calendar'):
+				nb = get_notebook(fn)
+				nb['_metadata']['raw_date'] = aux.get('raw_date', '')
+				_save_notebook(fn, nb)
 		new_notebook(fn, self.resource)
 
 def update_image(content, directory):
