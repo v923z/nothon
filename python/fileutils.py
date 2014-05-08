@@ -176,13 +176,11 @@ def make_timeline():
 				h = None
 				fn = tree[year][month][day]
 				try:
-					# TODO: This is probably unsafe: it won't work on windows
 					h = extract_headers(fn)
 				except simplejson.decoder.JSONDecodeError:
 					print('WARNING: could not decode JSON (most probably this is not a proper nothon file)')
 				if h != None:
 					dayofweek = time.strftime("%A",datetime.date(int(year),int(month),int(day)).timetuple())
-					# TODO: This is probably unsafe: it won't work on windows
 					str_tl += "<li id='li_%d_%d'><a href='?name=%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), fn, str(dayofweek) + ' ' + day)
 					str_tl += "<div class='toc_entry'>"
 					str_tl += h
