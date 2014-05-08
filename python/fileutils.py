@@ -4,6 +4,7 @@ import calendar
 import datetime
 import time
 from random import randrange
+from collections import defaultdict
 
 def get_file_from_disc(file):
 	# TODO: resolve relative paths
@@ -94,6 +95,21 @@ def dir_tree(dir, ext='.note'):
 	tree.sort()
 	return tree
 
+def file_list(dir, ext='.note'):
+	l = []
+	# TODO: We should also skip the static, and python directories, for those should not contain any documents
+	if check_for_special_folder(dir, '_'): return l
+	
+	for item in os.listdir(dir):
+		path = os.path.join(dir, item)
+		if os.path.isdir(path):
+			sublist = file_list(path, ext)
+			if len(sublist) > 0:
+				l += sublist
+		elif item.endswith(ext):
+			l.append(os.path.join(dir,item))
+	return l
+
 def extract_headers(fn):
 	output = ""
 	data = get_notebook(fn)
@@ -140,31 +156,41 @@ def make_timeline():
 	# create the html output from the directory tree
 	tree = dir_tree('Calendar')
 	str_tl = ''
-	for year in reversed(tree):
-		if is_year(year):  # only include proper calendar entries
-			str_tl += "<div class='timeline_year'>%s"%year[0]
-			for month in reversed(year[1]):
-				if is_month(month): # only include proper calendar entries
-					str_tl += "<div class='timeline_month'>%s"%(calendar.month_name[int(month[0])])
-					for day in reversed(month[1]):	
-						d = day.replace('.note','')
-						if is_day(d):
-							h = None
-							try:
-								# TODO: This is probably unsafe: it won't work on windows
-								h = extract_headers('Calendar/%s/%s/%s'%(year[0],month[0],day))
-							except simplejson.decoder.JSONDecodeError:
-								print('WARNING: could not decode JSON (most probably this is not a proper nothon file)')
-							if h != None:
-								dayofweek = time.strftime("%A",datetime.date(int(year[0]),int(month[0]),int(d)).timetuple())
-								# TODO: This is probably unsafe: it won't work on windows
-								str_tl += "<li id='li_%d_%d'><a href='?name=Calendar/%s/%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), year[0], month[0], day, str(dayofweek) + ' ' + d)
-								str_tl += "<div class='toc_entry'>"
-								str_tl += h
-								str_tl += "</div>"
-								str_tl += '</li>'
-					str_tl += '</div>'
+
+	l = file_list('Calendar') 
+	tree = defaultdict(lambda: defaultdict(lambda: defaultdict(str)))
+	for fn in l:
+		try:
+			data = get_notebook(fn)
+			(year,month,day) = data['_metadata']['raw_date'].split('.')
+			tree[year][month][day] = fn
+		except:
+			print('WARNING: could not parse note file %s'%fn)
+
+	for year in reversed(sorted(tree.keys())):
+		str_tl += "<div class='timeline_year'>%s"%year
+		for month in reversed(sorted(tree[year].keys())):
+			str_tl += "<div class='timeline_month'>%s"%(calendar.month_name[int(month)])
+			for day in reversed(sorted(tree[year][month].keys())):
+				dayofweek = time.strftime("%A",datetime.date(int(year),int(month),int(day)).timetuple())	
+				h = None
+				fn = tree[year][month][day]
+				try:
+					# TODO: This is probably unsafe: it won't work on windows
+					h = extract_headers(fn)
+				except simplejson.decoder.JSONDecodeError:
+					print('WARNING: could not decode JSON (most probably this is not a proper nothon file)')
+				if h != None:
+					dayofweek = time.strftime("%A",datetime.date(int(year),int(month),int(day)).timetuple())
+					# TODO: This is probably unsafe: it won't work on windows
+					str_tl += "<li id='li_%d_%d'><a href='?name=%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), fn, str(dayofweek) + ' ' + day)
+					str_tl += "<div class='toc_entry'>"
+					str_tl += h
+					str_tl += "</div>"
+					str_tl += '</li>'
 			str_tl += '</div>'
+		str_tl += '</div>'
+
 	note['content'] = {'content' : str_tl}
 	return note
 
