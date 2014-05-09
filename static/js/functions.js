@@ -245,7 +245,11 @@ $(document).ready(function () {
 	
 	$("#document_tree").dynatree({
 		persist: true,
-		onActivate: function(node) {
+		onClick: function(node, event) {
+			if(node.getEventTargetType(event) === "title" && node.data.isFolder) {
+				node.toggleExpand()
+				return false
+			}
 			save_notebook('save')
 			window.location.href = node.data.href
 			return false
