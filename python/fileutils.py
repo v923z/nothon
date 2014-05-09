@@ -117,7 +117,7 @@ def extract_headers(fn):
 	for element in content:
 		for cell_name in element['content']:
 			cell = element['content'][cell_name]
-			if 'props' in cell and 'intoc' in cell['props'].split(';'):
+			if cell.get('toc') == 'true':
 				output += '<p><input type="checkbox"/><a href="?name=%s#%s" class="toc_link">'%(fn, element['id']) + cell['content'] + '</a></p>'
 			
 	return output
@@ -173,19 +173,14 @@ def make_timeline():
 			str_tl += "<div class='timeline_month'>%s"%(calendar.month_name[int(month)])
 			for day in reversed(sorted(tree[year][month].keys())):
 				dayofweek = time.strftime("%A",datetime.date(int(year),int(month),int(day)).timetuple())	
-				h = None
 				fn = tree[year][month][day]
-				try:
-					h = extract_headers(fn)
-				except simplejson.decoder.JSONDecodeError:
-					print('WARNING: could not decode JSON (most probably this is not a proper nothon file)')
-				if h != None:
-					dayofweek = time.strftime("%A",datetime.date(int(year),int(month),int(day)).timetuple())
-					str_tl += "<li id='li_%d_%d'><a href='?name=%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), fn, str(dayofweek) + ' ' + day)
-					str_tl += "<div class='toc_entry'>"
-					str_tl += h
-					str_tl += "</div>"
-					str_tl += '</li>'
+				h = extract_headers(fn)
+				dayofweek = time.strftime("%A",datetime.date(int(year),int(month),int(day)).timetuple())
+				str_tl += "<li id='li_%d_%d'><a href='?name=%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), fn, str(dayofweek) + ' ' + day)
+				str_tl += "<div class='toc_entry'>"
+				str_tl += h
+				str_tl += "</div>"
+				str_tl += '</li>'
 			str_tl += '</div>'
 		str_tl += '</div>'
 
@@ -196,18 +191,13 @@ def rec_toc(tree, path, level):
 	str_tl = ""
 	for elem in tree:
 		if isinstance(elem,basestring):  #file
-			h = None
-			try:
-				h = extract_headers('%s/%s'%(path,elem))
-			except simplejson.decoder.JSONDecodeError:
-				print('WARNING: could not decode JSON (most probably this is not a proper nothon file) - %s/%s'%(path,elem))
-			if h != None:
-				# TODO: This is probably unsafe: it won't work on windows
-				str_tl += "<li id='li_%d_%d'><a href='?name=%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), path, elem, elem)
-				str_tl += "<div class='toc_entry'>"
-				str_tl += h
-				str_tl += "</div>"
-				str_tl += '</li>'
+			h = extract_headers('%s/%s'%(path,elem))
+			# TODO: This is probably unsafe: it won't work on windows
+			str_tl += "<li id='li_%d_%d'><a href='?name=%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), path, elem, elem)
+			str_tl += "<div class='toc_entry'>"
+			str_tl += h
+			str_tl += "</div>"
+			str_tl += '</li>'
 		elif len(elem) == 2: # directory
 			str_tl += "<li>%s</li>"%elem[0]
 			str_tl += '<ul>\n'
