@@ -243,23 +243,33 @@ $(document).ready(function () {
 	$('#notebook_tab').tabs();
 	$(function() { generate_toc() })
 	
-	$("#document_tree").dynatree({
-		persist: true,
-		onClick: function(node, event) {
-			if(node.getEventTargetType(event) === "title" && node.data.isFolder) {
-				node.toggleExpand()
+	$("#document_tree").fancytree({
+		extensions: ["persist"],
+		activate: function(event, data) {
+			if(data.node.isFolder()) {
+				data.node.toggleExpanded()
 				return false
 			}
-			save_notebook('save')
-			window.location.href = node.data.href
-			return false
+			return true
+		},
+		click: function(event, data) {
+			if(data.node.isFolder()) {
+				data.node.toggleExpanded()
+				return false
+			} else {
+				if(window.location.href.indexOf('?name=')  != -1) {
+					save_notebook('save')
+				}
+				window.location.href = data.node.key
+			}
+			return true
 		}
-	});
+	})
 	$("#document_tree").removeClass().addClass('document_tree')
 	
-	$("#document_tree").bind("contextmenu", function(e) {
-		return false;
-	});
+	//$("#document_tree").bind("contextmenu", function(e) {
+		//return false;
+	//});
 	
 	$(function() {
 		$('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })

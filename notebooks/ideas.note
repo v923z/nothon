@@ -1,151 +1,111 @@
 {
-    "_metadata": {
-        "date": "Fri May 09 2014 21:52:00 GMT+0200",
-        "directory": "/home/v923z/sandbox/nothon",
-        "nothon version": 1.4,
-        "title": "Ideas",
-        "type": "notebook"
+"title" : "Ideas",
+"type": "notebook",
+"directory" : "/home/v923z/sandbox/nothon",
+"date" : "Sat Sep 14 2013 13:05:53 GMT+0200 (CEST)",
+"nothon version" : 1.3,
+"notebook" : [
+    {
+        "content": {
+            "text_body": {
+                "content": "Or, in other words, where are we heading? These ideas concern mainly the front-end.<br>",
+                "id": "div_text_body_1",
+                "props": "searchable;"
+            },
+            "text_header": {
+                "content": "A couple of ideas on nothon",
+                "id": "div_text_header_1",
+                "props": "searchable;intoc;"
+            }
+        },
+        "count": 1,
+        "id": "div_text_main_1",
+        "type": "text"
     },
-    "notebook": [
-        {
-            "content": {
-                "text_body": {
-                    "collapsed": "false",
-                    "content": "Or, in other words, where are we heading? These ideas concern mainly the front-end.<br>",
-                    "id": "div_text_body_1",
-                    "searchable": "true"
-                },
-                "text_header": {
-                    "collapsed": "false",
-                    "content": "A couple of ideas on nothon",
-                    "id": "div_text_header_1",
-                    "searchable": "true",
-                    "toc": "true"
-                }
+    {
+        "content": {
+            "text_body": {
+                "content": "The title speaks for itself.<br>",
+                "id": "div_text_body_6",
+                "props": "searchable;"
             },
-            "count": 1,
-            "id": "div_text_main_1",
-            "type": "text"
+            "text_header": {
+                "content": "Autosave",
+                "id": "div_text_header_6",
+                "props": "searchable;intoc;"
+            }
         },
-        {
-            "content": {
-                "text_body": {
-                    "collapsed": "false",
-                    "content": "The title speaks for itself.<br>",
-                    "id": "div_text_body_6",
-                    "searchable": "true"
-                },
-                "text_header": {
-                    "collapsed": "false",
-                    "content": "Autosave",
-                    "id": "div_text_header_6",
-                    "searchable": "true",
-                    "toc": "true"
-                }
+        "count": 6,
+        "id": "div_text_main_6",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "This should bring up an info box showing the<br><ol><li>ID of the box</li><li>Word count. This would require stripping the content of images (we might have to keep the image caption, and the content of links, and notes, but we could skip formulae.)</li></ol><p><br></p>",
+                "id": "div_text_body_2",
+                "props": "searchable;"
             },
-            "count": 6,
-            "id": "div_text_main_6",
-            "type": "text"
+            "text_header": {
+                "content": "Hovering on section-collapse button",
+                "id": "div_text_header_2",
+                "props": "searchable;intoc;"
+            }
         },
-        {
-            "content": {
-                "text_body": {
-                    "collapsed": "false",
-                    "content": "This should bring up an info box showing the<br><ol><li>ID of the box</li><li>Word count. This would require stripping the content of images (we might have to keep the image caption, and the content of links, and notes, but we could skip formulae.)</li></ol><p><br></p>",
-                    "id": "div_text_body_2",
-                    "searchable": "true"
-                },
-                "text_header": {
-                    "collapsed": "false",
-                    "content": "Hovering on section-collapse button",
-                    "id": "div_text_header_2",
-                    "searchable": "true",
-                    "toc": "true"
-                }
+        "count": 2,
+        "id": "div_text_main_2",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "This should bring up an info box showing <br><ol><li>The image ID (file name)</li><li>Size?</li><li>Any other info that might be useful.</li></ol><p><br></p>",
+                "id": "div_text_body_3",
+                "props": "searchable;"
             },
-            "count": 2,
-            "id": "div_text_main_2",
-            "type": "text"
+            "text_header": {
+                "content": "Hovering on plot",
+                "id": "div_text_header_3",
+                "props": "searchable;intoc;"
+            }
         },
-        {
-            "content": {
-                "text_body": {
-                    "collapsed": "false",
-                    "content": "This should bring up an info box showing <br><ol><li>The image ID (file name)</li><li>Size?</li><li>Any other info that might be useful.</li></ol><p><br></p>",
-                    "id": "div_text_body_3",
-                    "searchable": "true"
-                },
-                "text_header": {
-                    "collapsed": "false",
-                    "content": "Hovering on plot",
-                    "id": "div_text_header_3",
-                    "searchable": "true",
-                    "toc": "true"
-                }
+        "count": 3,
+        "id": "div_text_main_3",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "This could be a button in the menu bar, and it should display<br><ol><li>The number of cells in the notebook, counted by type</li><li>Word count. Here we should think about what to do with non-textual cells, e.g., code, head/tail, plots, etc.</li></ol><p><br></p>",
+                "id": "div_text_body_4",
+                "props": "searchable;"
             },
-            "count": 3,
-            "id": "div_text_main_3",
-            "type": "text"
+            "text_header": {
+                "content": "Hovering over \"notebook info\"",
+                "id": "div_text_header_4",
+                "props": "searchable;intoc;"
+            }
         },
-        {
-            "content": {
-                "text_body": {
-                    "collapsed": "false",
-                    "content": "This could be a button in the menu bar, and it should display<br><ol><li>The number of cells in the notebook, counted by type</li><li>Word count. Here we should think about what to do with non-textual cells, e.g., code, head/tail, plots, etc.</li></ol><p><br></p>",
-                    "id": "div_text_body_4",
-                    "searchable": "true"
-                },
-                "text_header": {
-                    "collapsed": "false",
-                    "content": "Hovering over \"notebook info\"",
-                    "id": "div_text_header_4",
-                    "searchable": "true",
-                    "toc": "true"
-                }
+        "count": 4,
+        "id": "div_text_main_4",
+        "type": "text"
+    },
+    {
+        "content": {
+            "text_body": {
+                "content": "There should be options for <br><ol><li>Copying cells across notebooks</li><li>Undoing cell copy. This could be done by marking copied cells with some CSS style, and if required, the styled cells could be removed.</li><li>Delete cells? A bit problematic, because the user could then irrevocably remove content without actually seeing it.</li><li>Hover function for links to cells: this could render the cell alone, and bring up the content in an info box. One could then see what is in that cell without having to navigate to the notebook. This would be rather handy, given leaving the TOC would remove all CSS markup, and there is no way of recovering that (unless we save that on disc somehow).<br></li></ol><br>",
+                "id": "div_text_body_5",
+                "props": "searchable;"
             },
-            "count": 4,
-            "id": "div_text_main_4",
-            "type": "text"
+            "text_header": {
+                "content": "Menu in TOC/timeline",
+                "id": "div_text_header_5",
+                "props": "searchable;intoc;"
+            }
         },
-        {
-            "content": {
-                "text_body": {
-                    "collapsed": "false",
-                    "content": "There should be options for <br><ol><li>Copying cells across notebooks</li><li>Undoing cell copy. This could be done by marking copied cells with some CSS style, and if required, the styled cells could be removed.</li><li>Delete cells? A bit problematic, because the user could then irrevocably remove content without actually seeing it.</li><li>Hover function for links to cells: this could render the cell alone, and bring up the content in an info box. One could then see what is in that cell without having to navigate to the notebook. This would be rather handy, given leaving the TOC would remove all CSS markup, and there is no way of recovering that (unless we save that on disc somehow).<br></li></ol><br>",
-                    "id": "div_text_body_5",
-                    "searchable": "true"
-                },
-                "text_header": {
-                    "collapsed": "false",
-                    "content": "Menu in TOC/timeline",
-                    "id": "div_text_header_5",
-                    "searchable": "true",
-                    "toc": "true"
-                }
-            },
-            "count": 5,
-            "id": "div_text_main_5",
-            "type": "text"
-        },
-        {
-            "content": {
-                "text_body": {
-                    "collapsed": "false",
-                    "content": "<p>What we mean by this is that the server should not render the content of the notebook, it should send the notebook as a JSON string to the client, and the client should take care of rendering.&nbsp;</p><p><br></p><p>This has multiple advantages. First, moving metadata around is much simpler. We would need a JSON structure &nbsp;as&nbsp;</p><p><br></p><p>{ \"_metadata\" : {\"type\": \"notebook\", \"date\": \"2013-may-19\", \"directory\": \"/some/directory/\"},</p><p>&nbsp; \"notebook\" : [{ cell1 }, { cell2}...]</p><p>}</p><p><br></p><p>and similar for the bibliography. One could then simply write the JSON string to disc, it would not have to be \"parsed\" or formatted in any particular way. Given that _metadata begins with an underscore, it would always be the first key, if we use alphabetical ordering in simplejson.dumps.</p><p><br></p><p>Second, by removing the extra parsing on the server side, we could save the content to disc directly from the browser. This would make off-line editing possible.&nbsp;</p><p><br></p><p><br></p>",
-                    "id": "div_text_body_7",
-                    "searchable": "true"
-                },
-                "text_header": {
-                    "collapsed": "false",
-                    "content": "Moving to JSON-based content transfer between server and client",
-                    "id": "div_text_header_7",
-                    "searchable": "true",
-                    "toc": "true"
-                }
-            },
-            "count": 7,
-            "id": "div_text_main_7",
-            "type": "text"
-        }
-    ]
+        "count": 5,
+        "id": "div_text_main_5",
+        "type": "text"
+    }
+]
 }
