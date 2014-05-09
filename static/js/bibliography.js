@@ -45,6 +45,8 @@ $(document).ready(function () {
 		keyword_list()
 		list_groups(bibliography)
 	})
+	$('#loading_message').remove()
+	$('#doc_toplevel').show()
 })
 
 function bibliography_side_switch() {
