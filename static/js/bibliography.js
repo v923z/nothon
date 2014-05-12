@@ -85,14 +85,13 @@ function add_row(target, type) {
 	var entry = new Object()
 	entry['type'] = type
 	bibliography[uuid] = entry
+	fill_in_fields(uuid)
 	set_active_paper(uuid)	
 	var row = generate_row(target, type, uuid, count_rows(target))
 	$(target).find('tbody').append(row).trigger("applyWidgets")
 	$('#' + uuid).addClass('active_row')
 	// Activate the first fields tab
 	$('#notes_tab').tabs('option', 'active', 1)
-
-	fill_in_fields(uuid)
 	fill_in_row(uuid)
 	var row_pos = $('#publication_list tr[id="' + uuid + '"]').offset().top
 	$('#publication_list').parent().animate({scrollTop: row_pos}, 'fast')
