@@ -57,10 +57,10 @@ function arxiv_search(name) {
 function render_results(json) {
 	// Renders the feed in html
 	var all_html = ''
-	console.log(json)
-	console.log(Object.keys(json).length)
-	console.log(Object.keys(json))
-	console.log(json['1207.2090v2'])
+	console.log('json: ', json)
+	console.log('length: ', Object.keys(json).length)
+	console.log('keys: ', Object.keys(json))
+	console.log('entry: ', json['1207.2090v2'])
 	for(var key in json) {
 		var entry = json[key]
 		var html = "<div class='arxiv-entry' id='" + entry.key + "'>"
@@ -77,7 +77,7 @@ function render_results(json) {
 
 function search_arxiv() {
 	var author = $('#database_search_author').val()
-	console.log(author)
+	console.log('Author: ', author)
 	var entries = arxiv_search(author)
 	var html = render_results(entries)
 	$('#database_search_results').html(html)
