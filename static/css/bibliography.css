@@ -135,3 +135,7 @@
 	color:				#cc0000;		/* this doesn't take effect... */
 	font-weight:		bold;
 }
+
+#database_search_dialog {
+	background:			#eeeeff;
+}

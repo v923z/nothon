@@ -57,30 +57,17 @@ function arxiv_search(name) {
 function render_results(json) {
 	// Renders the feed in html
 	var all_html = ''
-	console.log('json: ', json)
-	console.log('length: ', Object.keys(json).length)
-	console.log('keys: ', Object.keys(json))
-	console.log('entry: ', json['1207.2090v2'])
 	for(var key in json) {
 		var entry = json[key]
 		var html = "<div class='arxiv-entry' id='" + entry.key + "'>"
 		html += "<div class='arxiv-title'>" + entry.title
-		html += "<a href='" + entry.pdf + "' target='_blank'> " + entry.key + "</a></div>"
+		html += "<a href='http://arxiv.org/pdf/" + entry.pdf + "' target='_blank'> " + entry.key + "</a></div>"
 		html += "<div class='arxiv-authors'>" + entry.author + "</div>"
 		html += "<div class='arxiv-abstract'>" + entry.abstract + "</div>"
 		html += "</div>"
 		all_html += html
 	}
-	console.log(all_html)
 	return all_html
-}
-
-function search_arxiv() {
-	var author = $('#database_search_author').val()
-	console.log('Author: ', author)
-	var entries = arxiv_search(author)
-	var html = render_results(entries)
-	$('#database_search_results').html(html)
 }
 
 function search_database(method) {
@@ -96,13 +83,20 @@ function search_database(method) {
 		buttons:	{
 			'Search' : function(){ 
 					if(method === 'arxiv') {
-						search_arxiv()
-					} else if(method === 'doi') {
-						
+						var author = $('#database_search_author').val()
+						var entries = arxiv_search(author)
+						// It is unclear, what the timeout should really be...
+					} else if(method === 'doi') {						
 					}
+					window.setTimeout(function(){ insert_entries(entries) }, 1000)
 				},
 			'Cancel' : function(){ $(this).dialog('close') }
 		}
 	})
 	$('#database_search_dialog').html('<p>Author</p><input id="database_search_author" /><div id="database_search_results"></div>')
+}
+
+function insert_entries(entries) {
+	var html = render_results(entries)
+	$('#database_search_results').html(html)
 }
