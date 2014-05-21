@@ -14,7 +14,7 @@ function parse_arxiv_feed(url) {
 			counter += 1
 			var _key = el.find('id').text().split('/')
 			entry['key'] = _key[_key.length-1]
-			entry['title'] = el.find('title').text()
+			entry['title'] = $.trim(el.find('title').text())
 			var _authors = new Array()
 			el.find('author').each(function() { 
 				_authors.push($(this).text().trim())
@@ -25,7 +25,7 @@ function parse_arxiv_feed(url) {
 				}
 			})
 			entry['author'] = _authors.join(' and ')
-			entry['abstract'] = el.find('summary').text()
+			entry['abstract'] = $.trim(el.find('summary').text())
 			entry['url'] = el.find('id').text()
 			entry['journal'] = 'arxiv'
 			entry['pages'] = '...'
@@ -57,7 +57,11 @@ function arxiv_search(name) {
 function render_results(json) {
 	// Renders the feed in html
 	var all_html = ''
-	for(key in json) {
+	console.log(json)
+	console.log(Object.keys(json).length)
+	console.log(Object.keys(json))
+	console.log(json['1207.2090v2'])
+	for(var key in json) {
 		var entry = json[key]
 		var html = "<div class='arxiv-entry' id='" + entry.key + "'>"
 		html += "<div class='arxiv-title'>" + entry.title
@@ -67,7 +71,16 @@ function render_results(json) {
 		html += "</div>"
 		all_html += html
 	}
+	console.log(all_html)
 	return all_html
+}
+
+function search_arxiv() {
+	var author = $('#database_search_author').val()
+	console.log(author)
+	var entries = arxiv_search(author)
+	var html = render_results(entries)
+	$('#database_search_results').html(html)
 }
 
 function search_database(method) {
@@ -79,19 +92,17 @@ function search_database(method) {
 		modal:		false,
 		draggable:	true,
 		hide:		'fade',
+		title:		method + ' search',
 		buttons:	{
 			'Search' : function(){ 
-					var author = $('#database_search_author').val()
-					var entries = arxiv_search(author)
-					var html = render_results(entries)
-					$('#database_search_results').html(html)
+					if(method === 'arxiv') {
+						search_arxiv()
+					} else if(method === 'doi') {
+						
+					}
 				},
-			'Cancel' : function(){ $(this).dialog('close')}
+			'Cancel' : function(){ $(this).dialog('close') }
 		}
 	})
 	$('#database_search_dialog').html('<p>Author</p><input id="database_search_author" /><div id="database_search_results"></div>')
-	if(method === 'arxiv') {
-	} else if(method === 'doi') {
-		return
-	}
 }
