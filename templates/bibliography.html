@@ -33,6 +33,7 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/bibliography.js"></script>
 <script src="/static/js/bibtex_key.js"></script>
 <script src="/static/js/custom.js"></script>
+<script src="/static/js/database.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
@@ -204,6 +205,12 @@ $for f in create_funcs + handler_funcs:
 		<ul>
 			<li onmouseup='toggle_calendar()'>Calendar</li>
 			<li onmouseup='open_calculator(); return false;' onmousedown='return false;'>Calculator</li>
+			<li>Search
+				<ul>
+					<li onmouseup='search_database("arxiv")'>arxiv</li>
+					<li onmouseup='search_database("doi")'>DOI</li>					
+				</ul>
+			</li>
 		</ul>
 	</li>
 	<li>Help
@@ -319,6 +326,8 @@ $for f in create_funcs + handler_funcs:
 </div>
 <div id='new_notebook_dialog'>
 	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'>
+</div>
+<div id='database_search_dialog'>
 </div>
 </article>
 </body>
