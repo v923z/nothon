@@ -41,9 +41,8 @@ function parse_arxiv_feed(url) {
 			entry['timestamp'] = date.getFullYear() + '.' + month + '.' + day
 			entry['year'] = date.getFullYear()
 			arxiv_listing[entry['key']] = entry
-		}),
-		'xml'
-	})
+		})
+		}, 'xml')
 	return arxiv_listing
 }
 
