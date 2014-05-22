@@ -93,7 +93,7 @@ function search_database(method) {
 		hide:		'fade',
 		title:		method + ' search',
 		buttons:	{
-			'Search' : function(){ _search(method) },
+			'Search' : function(){ _search() },
 			'Cancel' : function(){ $(this).dialog('close') }
 		}
 	})
