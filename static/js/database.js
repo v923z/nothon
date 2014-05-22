@@ -115,6 +115,8 @@ function _search() {
 }
 
 function insert_entries(entries) {
+	// Takes json representation returned from the query handler, and 
+	// places the results into the modal window
 	var html
 	if(entries) {
 		html = render_results(entries)
