@@ -97,9 +97,11 @@ function search_database(method) {
 			'Cancel' : function(){ $(this).dialog('close') }
 		}
 	})
-	$('#database_search_dialog').html('<p>Author</p>\
-	<form action="#" onsubmit="return _search()"><input id="database_search_author" /></form>\
-	<div id="database_search_results"></div>')
+	$('#database_search_dialog')
+	.append('<p>Author</p>')
+	.append('<form action="#" onsubmit="return _search()">')
+	.append('<input id="database_search_author" /></form>')
+	.append('<div id="database_search_results"></div>')
 }
 
 function _search() {
