@@ -209,7 +209,7 @@ $for f in create_funcs + handler_funcs:
 			<li>Search
 				<ul>
 					<li onmouseup='search_database("arxiv")'>arxiv</li>
-					<li onmouseup='search_database("doi")'>DOI</li>					
+					<li onmouseup='search_database("crossref")'>crossref</li>					
 				</ul>
 			</li>
 		</ul>
@@ -328,8 +328,7 @@ $for f in create_funcs + handler_funcs:
 <div id='new_notebook_dialog'>
 	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'>
 </div>
-<div id='database_search_dialog'>
-</div>
+<div id='database_search_dialog'></div>
 </article>
 </body>
 </html>

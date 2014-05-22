@@ -1,15 +1,27 @@
-var arxiv_listing = new Object()
+var _listing = new Object()
 
-function parse_arxiv_feed(url) {
-	// Produces the json representation of an arxiv feed given in the url
+function arxiv_query(name) {
+	// Produces the json representation of an arxiv query
 	// Searching can be done by passing the particular query terms in the url as in 
 	// http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=1
 	// http://arxiv.org/help/api/index
 	// http://arxiv.org/help/api/user-manual
-	for (var key in arxiv_listing) delete arxiv_listing[key]
+	
+	// These are the query methods that can be passed to arxiv
+	//au 	Author
+	//abs 	Abstract
+	//co 	Comment
+	//jr 	Journal Reference
+	//cat 	Subject Category
+	//rn 	Report Number
+	//id 	Id (use id_list instead)
+	//all 	All of the above 
+	// Note that at the moment, we support searching for names only!
+	var url = 'http://export.arxiv.org/api/query?search_query=au:' + name
+
+	for (var key in _listing) delete _listing[key]
 	var counter = 0
 	var date = new Date()
-	$('#database_search_results').html('<p>Loading...</p>')
 	
 	$.get(url, function (data, success) {
 		if(success !== 'success') {
@@ -45,24 +57,10 @@ function parse_arxiv_feed(url) {
 			var day = (100 + date.getDate()).toString().slice(1,3)
 			entry['timestamp'] = date.getFullYear() + '.' + month + '.' + day
 			entry['year'] = date.getFullYear()
-			arxiv_listing[entry['key']] = entry
+			_listing[entry['key']] = entry
 		})
-		}, 'xml')
-	return arxiv_listing
-}
-
-function arxiv_search(name) {
-	// These are the query methods that can be passed to arxiv
-	//au 	Author
-	//abs 	Abstract
-	//co 	Comment
-	//jr 	Journal Reference
-	//cat 	Subject Category
-	//rn 	Report Number
-	//id 	Id (use id_list instead)
-	//all 	All of the above 
-	// Note that at the moment, we support searching for names only!
-	return parse_arxiv_feed('http://export.arxiv.org/api/query?search_query=au:' + name)
+	}, 'xml')
+	return _listing
 }
 
 function render_results(json) {
@@ -97,20 +95,26 @@ function search_database(method) {
 			'Cancel' : function(){ $(this).dialog('close') }
 		}
 	})
-	$('#database_search_dialog')
-	.append('<p>Author</p>')
-	.append('<form action="#" onsubmit="return _search()">')
-	.append('<input id="database_search_author" /></form>')
-	.append('<div id="database_search_results"></div>')
+	if($('#database_search_dialog').is(':empty')) {
+		// we should preserve the previous state, if the dialog has already been populated
+		$('#database_search_dialog')
+		.append('<p>Author</p>')
+		.append('<form action="#" onsubmit="return _search()"><input id="database_search_author" /></form>')
+		.append('<div id="database_search_results"></div>')
+	}
 }
 
 function _search() {
 	var method = $('#database_search_dialog').dialog('option', 'title')
+	var author = $('#database_search_author').val()
+	$('#database_search_results').html('<p>Loading...</p>')
+
 	if(method === 'arxiv search') {
-		var author = $('#database_search_author').val()
-		var entries = arxiv_search(author)
-	} else if(method === 'doi search') {
+		var entries = arxiv_query(author)
+	} else if(method === 'crossref search') {
+		var entries = crossref_query(author)
 	}
+	
 	// It is unclear, what the timeout should really be...
 	window.setTimeout(function(){ insert_entries(entries) }, 1000)
 	return false
@@ -131,7 +135,7 @@ function insert_entries(entries) {
 
 function insert_into_bibliography(button) {
 	// Inserts an arxiv/doi.org entry into the bibliography list
-	var entry = arxiv_listing[$(button).attr('id').replace('button-', '')]
+	var entry = _listing[$(button).attr('id').replace('button-', '')]
 	add_row("#publication_list", 'article')
 	var uuid = get_active_paper()
 	for(var key in entry) {
@@ -140,3 +144,29 @@ function insert_into_bibliography(button) {
 	fill_in_row(uuid)
 	fill_in_fields(uuid)
 }
+
+function crossref_query(name) {
+	// for names for now
+	var url = 'http://api.crossref.org/works?query=' + name
+	for (var key in _listing) delete _listing[key]
+	var counter = 0
+	var date = new Date()
+	$('#database_search_results').html('<p>Loading...</p>')
+	
+	$.get(url, function (data, success) {
+		if(success !== 'success') {
+			$('#database_search_results').html('<p>Could not process request: ' + success + '</p>')
+			return null
+		}
+		console.log(data['message']['items'])
+		for(k in data['message']['items']) {
+			var _entry = data['message']['items'][k]
+			var entry = new Object()
+			entry['title'] = _entry['title']
+			entry['doi'] = _entry['DOI']
+			entry['year'] = _entry['year']			
+		}
+	}, 'json')
+	
+}
+
