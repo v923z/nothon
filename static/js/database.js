@@ -9,8 +9,13 @@ function parse_arxiv_feed(url) {
 	for (var key in arxiv_listing) delete arxiv_listing[key]
 	var counter = 0
 	var date = new Date()
+	$('#database_search_results').html('<p>Loading...</p>')
 	
 	$.get(url, function (data, success) {
+		if(success !== 'success') {
+			$('#database_search_results').html('<p>Could not process request: ' + success + '</p>')
+			return null
+		}
 		$(data).find('entry').each(function () { 			
 			var el = $(this)
 			var entry = new Object()
@@ -99,7 +104,6 @@ function search_database(method) {
 
 function _search() {
 	var method = $('#database_search_dialog').dialog('option', 'title')
-	console.log(method)
 	if(method === 'arxiv search') {
 		var author = $('#database_search_author').val()
 		var entries = arxiv_search(author)
@@ -111,7 +115,12 @@ function _search() {
 }
 
 function insert_entries(entries) {
-	var html = render_results(entries)
+	var html
+	if(entries) {
+		html = render_results(entries)
+	} else {
+		html = '<p>No entries returned</p>'
+	}
 	$('#database_search_results').html(html)
 }
 
