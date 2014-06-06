@@ -107,7 +107,7 @@ function _generate_bibtex_key(id, bibliography) {
 		first_author = first_author.split(',')[0]
 	} else {		
 		// The name is in the format 'Joe Smith'
-		first_author = first_author.split(' ')[0]
+		first_author = first_author.split(' ')[1]
 	}
 	var key = first_author + year
 	var keys = new Array()
