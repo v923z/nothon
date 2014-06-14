@@ -40,7 +40,7 @@ $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
 	<script src="$js_src"></script>
 
-<script>var full_bibliography = $:content['full_bibliography']</script>
+<script id="id">var full_bibliography = $:content['full_bibliography']</script>
 <script>var bibliography = full_bibliography['bibliography']</script>
 <script>var directory = full_bibliography['_metadata']['directory']</script>
 <script>var extra_data = $:content['extra_data']</script>

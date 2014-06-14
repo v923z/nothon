@@ -1,6 +1,6 @@
 var _listing = new Object()
 
-function arxiv_query(name) {
+function arxiv_query(search_string) {
 	// Produces the json representation of an arxiv query
 	// Searching can be done by passing the particular query terms in the url as in 
 	// http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=1
@@ -8,6 +8,7 @@ function arxiv_query(name) {
 	// http://arxiv.org/help/api/user-manual
 	
 	// These are the query methods that can be passed to arxiv
+	//ti	Title
 	//au 	Author
 	//abs 	Abstract
 	//co 	Comment
@@ -17,7 +18,7 @@ function arxiv_query(name) {
 	//id 	Id (use id_list instead)
 	//all 	All of the above 
 	// Note that at the moment, we support searching for names only!
-	var url = 'http://export.arxiv.org/api/query?search_query=au:' + name
+	var url = 'http://export.arxiv.org/api/query?search_query=' + search_string
 
 	for (var key in _listing) delete _listing[key]
 	var counter = 0
@@ -98,19 +99,52 @@ function search_database(method) {
 	if($('#database_search_dialog').is(':empty')) {
 		// we should preserve the previous state, if the dialog has already been populated
 		$('#database_search_dialog')
-		.append('<p>Author</p>')
+		.append('<p class="database_search_label">Author  </p>')
 		.append('<form action="#" onsubmit="return _search()"><input id="database_search_author" /></form>')
+		.append('<br><p class="database_search_label">Title  </p>')
+		.append('<form action="#" onsubmit="return _search()"><input id="database_search_title" /></form>')
+		.append('<select id="select_title"><option value="AND">AND</option><option value="OR">OR</option><option value="ANDNOT">ANDNOT</option></select>')
+		.append('<br><p class="database_search_label">Abstract  </p>')
+		.append('<form action="#" onsubmit="return _search()"><input id="database_search_abstract" /></form>')
+		.append('<select id="select_abstract"><option value="AND">AND</option><option value="OR">OR</option><option value="ANDNOT">ANDNOT</option></select>')
 		.append('<div id="database_search_results"></div>')
 	}
+}
+
+function replace_arxiv_escape_character(string) {
+	return string.replace(/\"/g, '%22')
+				.replace(/\(/g, '%28')
+				.replace(/\)/g, '%29')
 }
 
 function _search() {
 	var method = $('#database_search_dialog').dialog('option', 'title')
 	var author = $('#database_search_author').val()
-	$('#database_search_results').html('<p>Loading...</p>')
-
+	var title = $('#database_search_title').val()
+	var abstract = $('#database_search_abstract').val()
+	var dialog_title = $('#database_search_dialog').dialog('option', 'title') + ' - loading...'
+	$('#database_search_dialog').dialog('option', {'title': dialog_title})
+	
+	var search_items = new Array();
+	console.log($('#select_author').val())
 	if(method === 'arxiv search') {
-		var entries = arxiv_query(author)
+		if(author.length > 0) {
+			search_items.push('au:' + replace_arxiv_escape_character(author))
+		}
+		if(title.length > 0) {
+			if(search_items.length > 0) {
+				search_items.push($('#select_title option:selected').text())
+			}
+			search_items.push('ti:' + replace_arxiv_escape_character(title))
+		}
+		if(abstract.length > 0) {
+			if(search_items.length > 0) {
+				search_items.push($('#select_abstract option:selected').text())
+			}
+			search_items.push('abs:' + replace_arxiv_escape_character(abstract))
+		}
+		console.log(search_items.join('+'))
+		var entries = arxiv_query(search_items.join('+'))
 	} else if(method === 'crossref search') {
 		var entries = crossref_query(author)
 	}
@@ -123,6 +157,9 @@ function _search() {
 function insert_entries(entries) {
 	// Takes json representation returned from the query handler, and 
 	// places the results into the modal window
+	var title = $('#database_search_dialog').dialog('option', 'title')
+	$('#database_search_dialog').dialog('option', {'title': title.replace(' - loading...', '')})
+
 	var html
 	if(entries) {
 		html = render_results(entries)

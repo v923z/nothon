@@ -139,3 +139,19 @@
 #database_search_dialog {
 	background:			#eeeeff;
 }
+
+#database_search_author, #database_search_title, #database_search_abstract {
+	display:			inline;
+}
+
+.database_search_label {
+	display:			inline;
+	position:			relative;
+	margin-left:		20px;
+}
+
+#database_search_dialog > form {
+	display: 			inline;
+	left:				100px;
+	padding-top:		5px;
+}
