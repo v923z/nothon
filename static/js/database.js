@@ -99,12 +99,12 @@ function search_database(method) {
 	if($('#database_search_dialog').is(':empty')) {
 		// we should preserve the previous state, if the dialog has already been populated
 		$('#database_search_dialog')
-		.append('<p class="database_search_label">Author  </p>')
+		.append('<p>Author</p>')
 		.append('<form action="#" onsubmit="return _search()"><input id="database_search_author" /></form>')
-		.append('<br><p class="database_search_label">Title  </p>')
+		.append('<br><p>Title</p>')
 		.append('<form action="#" onsubmit="return _search()"><input id="database_search_title" /></form>')
 		.append('<select id="select_title"><option value="AND">AND</option><option value="OR">OR</option><option value="ANDNOT">ANDNOT</option></select>')
-		.append('<br><p class="database_search_label">Abstract  </p>')
+		.append('<br><p>Abstract</p>')
 		.append('<form action="#" onsubmit="return _search()"><input id="database_search_abstract" /></form>')
 		.append('<select id="select_abstract"><option value="AND">AND</option><option value="OR">OR</option><option value="ANDNOT">ANDNOT</option></select>')
 		.append('<div id="database_search_results"></div>')
@@ -143,7 +143,6 @@ function _search() {
 			}
 			search_items.push('abs:' + replace_arxiv_escape_character(abstract))
 		}
-		console.log(search_items.join('+'))
 		var entries = arxiv_query(search_items.join('+'))
 	} else if(method === 'crossref search') {
 		var entries = crossref_query(author)
