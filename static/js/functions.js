@@ -307,7 +307,7 @@ function create_new_notebook() {
 function open_new_notebook_dialog(title) {
 	// TODO: move focus to dialog
 	$('#new_notebook_dialog').dialog('open')
-	$('#new_notebook_dialog').dialog({title: title})	
+	$('#new_notebook_dialog').dialog({title: title})
 }
 
 function new_notebook_keypress(event) {

@@ -47,6 +47,20 @@ $(document).ready(function () {
 	})
 	$('#loading_message').remove()
 	$('#doc_toplevel').show()
+	$('#directory_dialog').dialog({
+		dialogClass: 'no-close ui-dialog',
+		autoOpen: 	false,
+		height:		150,
+		width:		400,
+		modal:		true,
+		draggable:	true,
+		hide:		'fade',
+		title:		'Set bibliography root directory',
+		buttons:	{
+			'Set' : function(){ set_bibliography_directory() },
+			'Cancel' : function(){ $(this).dialog('close')}
+		}
+	});
 })
 
 function bibliography_side_switch() {
@@ -351,6 +365,7 @@ function save_bibliography(method) {
 	message.sub_type = 'bibliography'
 	full_bibliography['bibliography'] = bibliography
 	full_bibliography['_metadata']['date'] = Date()
+	full_bibliography['_metadata']['directory'] = directory
 	message.full_bibliography = full_bibliography
 	message['command'] = method
 	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
@@ -598,4 +613,18 @@ function group_onmouseup(bibliography, which) {
 	}
 	$('#publication_list > tbody').html(populate_publication_list(new_bib))
 	count_publications()
+}
+
+function open_bibliography_directory() {
+	$('#directory_dialog').dialog('open')
+	$('#bibliography_directory').val(directory)
+}
+
+function set_bibliography_directory(event) {
+	if(event.which === 13) {
+		directory = $('#bibliography_directory').val()
+		$('#directory_dialog').dialog('close')
+		return false
+	}
+	return true
 }

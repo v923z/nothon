@@ -157,6 +157,7 @@ $for f in create_funcs + handler_funcs:
 					<li onmouseup='git();'>Git</li>
 				</ul>
 			</li>
+			<li onmouseup='open_bibliography_directory();'>Directory</li>
 		</ul>
 	</li>
 	<li>Notebook
@@ -333,6 +334,9 @@ $for f in create_funcs + handler_funcs:
 </div>
 <div id='new_notebook_dialog'>
 	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'>
+</div>
+<div id='directory_dialog'>
+	<input id='bibliography_directory' type='text' style='width: 90%; position: absolute; top: 50px;' onkeypress='return set_bibliography_directory(event);'>
 </div>
 <div id='database_search_dialog'></div>
 </article>
