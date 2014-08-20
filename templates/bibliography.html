@@ -5,12 +5,13 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <meta charset="utf-8">
 <link rel="stylesheet" href="/static/css/highlight.css"/>
 <link rel="stylesheet" href="/static/css/ui.dynatree.css"/>
-<link rel="stylesheet" href="/static/css/dynatree_custom.css"/>
+<link rel="stylesheet" href="/static/css/fancytree/ui.fancytree.css">
 <link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
 <link rel="stylesheet" href="/static/css/jquery-ui-smoothness.css" />
 <link rel="stylesheet" href="/static/css/theme.default.css" />
 <link rel="stylesheet" href="/static/css/main.css"/>
 <link rel="stylesheet" href="/static/css/bibliography.css"/>
+<link rel="stylesheet" href="/static/css/arxiv.css"/>
 
 <script 
   src="/static/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -23,20 +24,27 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/jquery.datepick.js"></script>
 <script src="/static/js/ui/jquery-ui.min.js"></script>
 <script src="/static/js/jquery.cookie.js"></script>
-<script src="/static/js/jquery.dynatree-1.2.4.js"></script>
+<script src="/static/js/fancytree/jquery.fancytree.js"></script>
+<script src="/static/js/fancytree/jquery.fancytree.edit.js"></script>
+<script src="/static/js/fancytree/jquery.fancytree.persist.js"></script>
 <script src="/static/js/jquery.tablesorter.min.js"></script>
 <script src="/static/js/jquery.tablesorter.widgets.min.js"></script>
-<script src="/static/js/widgets-scroller.js"></script>
+<script src="/static/js/widget-scroller.js"></script>
 <script src="/static/js/functions.js"></script>
 <script src="/static/js/bibliography.js"></script>
 <script src="/static/js/bibtex_key.js"></script>
+<script src="/static/js/custom.js"></script>
+<script src="/static/js/database.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
 	<script src="$js_src"></script>
 
-<script>var bibliography = $:content['bibliography']</script>
+<script id="id">var full_bibliography = $:content['full_bibliography']</script>
+<script>var bibliography = full_bibliography['bibliography']</script>
+<script>var directory = full_bibliography['_metadata']['directory']</script>
 <script>var extra_data = $:content['extra_data']</script>
+<script>var running_server = true</script>
 </head>
 <body data-type='bibliography' data-file='$filename'>
 <aside id='aside'>
@@ -45,11 +53,11 @@ $for f in create_funcs + handler_funcs:
 	 <ul>
 		<li><a href='#document_tree'>Documents</a></li>
 		<li><a href='#biblio_search'>Search</a></li>
-		<li><a href='#biblio_keywords'>Tags</a></li>
+		<li><a href='#biblio_keywords'>Keywords</a></li>
 	</ul>
 	<div id='document_tree'>$:aside['tree']</div>
 	<div id='biblio_search'></div>
-	<div id='biblio_keywords'>$:content['keywords']</div>
+	<div id='biblio_keywords'></div>
 </div>
 </aside>
 <article id='article'>
@@ -119,6 +127,22 @@ $for f in create_funcs + handler_funcs:
 	</li>
 	<li>Bibliography
 		<ul>
+			<li>Group
+				<ul id='ul_group'>
+				</ul>
+			</li>
+			<li>Column
+				<ul>
+					<li onmouseup='toggle_column("type");'>Toggle type</li>
+					<li onmouseup='toggle_column("author");'>Toggle author</li>
+					<li onmouseup='toggle_column("title");'>Toggle title</li>
+					<li onmouseup='toggle_column("year");'>Toggle year</li>
+					<li onmouseup='toggle_column("journal");'>Toggle journal</li>
+					<li onmouseup='toggle_column("key");'>Toggle key</li>
+					<li onmouseup='toggle_column("group");'>Toggle group</li>
+					<li onmouseup='toggle_column("stars");'>Toggle stars</li>
+				</ul>
+			</li>		
 			<li>Save
 				<ul>
 					<li onmouseup='save_bibliography("save_bibnote");'>Bibnote</li>
@@ -133,6 +157,7 @@ $for f in create_funcs + handler_funcs:
 					<li onmouseup='git();'>Git</li>
 				</ul>
 			</li>
+			<li onmouseup='open_bibliography_directory();'>Directory</li>
 		</ul>
 	</li>
 	<li>Notebook
@@ -182,6 +207,18 @@ $for f in create_funcs + handler_funcs:
 		<ul>
 			<li onmouseup='toggle_calendar()'>Calendar</li>
 			<li onmouseup='open_calculator(); return false;' onmousedown='return false;'>Calculator</li>
+			<li>Search
+				<ul>
+					<li onmouseup='search_database("arxiv")'>arxiv</li>
+					<li onmouseup='search_database("crossref")'>crossref</li>					
+				</ul>
+			</li>
+			<li>Tag cloud
+				<ul>
+					<li onmouseup='open_cloud("authors")'>Authors</li>
+					<li onmouseup='open_cloud("keywords")'>Keywords</li>
+				</ul>
+			</li>
 		</ul>
 	</li>
 	<li>Help
@@ -194,6 +231,7 @@ $for f in create_funcs + handler_funcs:
 	<div id='notebook_status'>Saved: never</div>
 </ul>
 </div>
+<div id='loading_message'><h1><br>Loading...</h1></div>
 <div id='doc_toplevel'>
 <div id='menucontainer-right'>
 <div class='menu' onclick='move("up");'><img src='/static/css/up-arrow.png'  width="60%"></div>
@@ -202,34 +240,30 @@ $for f in create_funcs + handler_funcs:
 <div id='context_menu'></div>
 <div id="div_dir">$safe_content(content, "directory")</div>
 
+<div id='bibliography_panes'>
 <div id='publication_div'>
+	<div id='publication_count'></div>
 	<table id='publication_list' class='tablesorter'>
 		<thead>$:content['table_header']
 		</thead>
-		<tbody>$:content['table_body']
+		<tbody>
 		</tbody>
 	</table>
 </div>
 
 <div id='notes_tab'>
-	 <ul>
+	<ul>
 		<li><a href='#notes'>Notes</a></li>
 		<li><a href='#bibliography_fields'>Fields</a></li>
-		<li><a href='#bibliography_fields2'>Fields 2</a></li>		
+		<li><a href='#bibliography_fields2'>Fields 2</a></li>
+		<li><a href='#bibliography_privnotes'>Private notes</a></li>
+		<li><a href='#bibliography_abstract'>Abstract</a></li>
 		<li><a href='#bibtex_entry'>Bibtex</a></li>
 	</ul>
 	<div id='notes'>
 		<div id='notes_header' class='field_div'>
-			<label id='field_id' class='field_label'></label>
-			<label class='field_label'>Group</label>
-			<span class='field_span'>
-				<input id='group_1' type='checkbox' onchange='group_changed();'/>
-				<input id='group_2' type='checkbox' onchange='group_changed();' />
-				<input id='group_3' type='checkbox' onchange='group_changed();'/>
-				<input id='group_4' type='checkbox' onchange='group_changed();'/>
-				<input id='group_5' type='checkbox' onchange='group_changed();' />
-				<label id='group_label'>00000</label>
-			</span>
+			<a href='javascript: show_hide_info();' id='info_switch'>-</a>
+			<label id='info_id' class='field_label'></label>
 			<label class='field_label'>Stars</label>
 			<span class='field_span'>
 				<label>1</label><input id='star_1' name='stars' type='radio' onchange='stars_changed();'/>
@@ -238,6 +272,18 @@ $for f in create_funcs + handler_funcs:
 				<label>4</label><input id='star_4' name='stars' type='radio' onchange='stars_changed();'/>
 				<label>5</label><input id='star_5' name='stars' type='radio' onchange='stars_changed();'/>
 			</span>
+			<span class='field_span' id='email-link'></span>
+		</div>
+		<div id='info_box'>
+			<label id='info_title'></label>
+			<br>
+			<div id='info_author'></div>
+			<label id='info_journal'></label>
+			<label id='info_volume'></label>
+			<label id='info_pages'></label>
+			<label id='info_year'></label>
+			<span id='info_link'></span>
+			<div id='pdf-link'></div>
 		</div>
 		<div id='docmain' data-id=''></div>
 	</div>
@@ -249,10 +295,12 @@ $for f in create_funcs + handler_funcs:
 			<label class='field_label'>Volume</label><span class='field_span'><input id='text_volume' type='text' onkeypress='return field_keypress(event, "text_pages");'/></span>
 			<label class='field_label'>Pages</label><span class='field_span'><input id='text_pages' type='text' onkeypress='return field_keypress(event, "text_year");'/></span>
 			<label class='field_label'>Year</label><span class='field_span'><input id='text_year' type='text' onkeypress='return field_keypress(event, "text_key");'/></span>
-			<input type='button' class='field_label' value='Key' onmouseup='generate_bibtex_key();'><span class='field_span'><input id='text_key' type='text' /></span>
+			<input type='button' class='field_label' value='Key' onmouseup='generate_bibtex_key();'><span class='field_span'><input id='text_key' type='text'/></span>
 		</div>
+		<div class='field_div'><label class='field_label'>Crossref</label><span class='field_span'><input id='text_crossref' type='text'/></span></div>		
 	</div>
 	<div id='bibliography_fields2'>
+		<div class='field_div'><label class='field_label'>Group</label><span class='field_span'><input id='text_group' type='text' onkeypress='return field_keypress(event, "text_keywords");'/></span></div>
 		<div class='field_div'><label class='field_label'>Keywords</label><span class='field_span'><input id='text_keywords' type='text' onkeypress='return field_keypress(event, "text_file");'/></span></div>
 		<div class='field_div'>
 			<label class='field_label'>File</label><span class='field_span'><input id='text_file' type='text' onkeypress='return field_keypress(event, "text_url");'/></span>
@@ -266,18 +314,31 @@ $for f in create_funcs + handler_funcs:
 			<label class='field_label'>Timestamp</label><span class='field_span'><input id='text_timestamp' type='text' ondblclick='return generate_timestamp(this);'/></span>
 		</div>
 	</div>
+	<div id='bibliography_privnotes'>
+		<label class='field_label'>Private notes</label>
+		<input id='text_privnotes' type='text' class='field_label' />
+	</div>
+	<div id='bibliography_abstract'>
+		<label class='field_label'>Abstract</label>
+		<input id='text_abstract' type='text' class='field_label' />
+	</div>
 	<div id='bibtex_entry'>
 		<div>
 			<textarea id='textarea_bibtex'></textarea>
 		</div>
 	</div>
 </div>
+</div> 
 
 <div id='trash'></div>
 </div>
 <div id='new_notebook_dialog'>
 	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 50px;' onkeypress='return new_notebook_keypress(event);'>
 </div>
+<div id='directory_dialog'>
+	<input id='bibliography_directory' type='text' style='width: 90%; position: absolute; top: 50px;' onkeypress='return set_bibliography_directory(event);'>
+</div>
+<div id='database_search_dialog'></div>
 </article>
 </body>
 </html>

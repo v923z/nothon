@@ -17,15 +17,11 @@ from python.jsutils import *
 from python.cell_utils import *
 from python.new_notebook import *
 
-from python.plot_utils import Plot
-from python.head_utils import Head
-from python.code_utils import Code
-from python.save_utils import Zip, Tar, Save, Latex, Markdown
 from python.notebook import Notebook
+from python.bibliography import Bibliography
 from python.arxiv import Arxiv
 
 from python.template_helpers import *
-from python.bibliography import *
 
 nothon_resource = NothonResource()
 
@@ -72,18 +68,34 @@ def list_create_functions():
 class Index(object):
 	update_js()
 	def GET(self):
-		link = web.input(name='', arxiv='')
-		if link.name == '' and link.arxiv == '':
+		
+		aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
+		link = web.input(keyword=[], includeonly=[])
+		if 'file' in link:
+			return get_file_from_disc(link.file)
+			
+		if 'arxiv' in link:
+			arxiv = Arxiv(nothon_resource, render)
+			if len(link.arxiv) == 0:
+				return render.arxiv_all(nothon_resource.server, aside)
+			return render.arxiv('arxiv', aside, arxiv.parse(link.arxiv, keyword=link.keyword, includeonly=link.includeonly))
+		
+		if 'bibnote' in link:
+			bib = Bibliography(nothon_resource, render)
+			bibnote = link.bibnote
+			if len(bibnote) > 0:
+				return render.bibliography(bibnote, bibnote, aside, 
+											bib.parse_bibliography(bibnote), 
+											list_handler_functions(), list_create_functions())
+			else: return render.welcome(None)
+				
+		if link.name == '':
 			return render.welcome(None)
 						
 		if link.name.endswith('.html'): 
 			with open(link.name, 'r') as fin:
 				html = fin.read()
 			return html
-		aside = {"tree" : unwrap_tree(dir_tree('.', nothon_resource.listed), '.', nothon_resource.dirlisting_style)}
-		if link.arxiv:
-			arxiv = Arxiv(nothon_resource, render)
-			return render.arxiv('arxiv', aside, arxiv.parse(link.arxiv))
 
 		if link.name == '__timeline':
 			return 	render.timeline(link.name, aside, make_timeline())
@@ -91,11 +103,6 @@ class Index(object):
 			return 	render.toc(link.name, aside, make_toc())
 		elif link.name == '__bibliography':
 			return 	render.bib_list(link.name, aside, make_bibliography())
-		elif link.name.endswith('.bibnote'):
-			bib = Bibliography(nothon_resource, render)
-			if not os.path.exists(link.name):
-				bib.new_bibliography(link.name)
-			return render.bibliography(link.name, link.name, aside, bib.parse_bibliography(link.name), list_handler_functions(), list_create_functions())
 			
 		elif link.name.endswith('.note'):
 			nb = Notebook(nothon_resource, render)
@@ -112,15 +119,18 @@ class Index(object):
 
 	def POST(self):
 		message = simplejson.loads(web.data())
-		print message
+		print message		
 		doc_type = message.get('type')
-		if doc_type in ('notebook', 'bibliography'):
+		if doc_type in ('notebook', 'bibliography', 'arxiv'):
 			exec('obj = %s(nothon_resource, render)'%(doc_type.title()))
-			return simplejson.dumps(obj.handler(message))
-			
-		#if message['command'] in ('plot', 'head', 'code', 'zip', 'tar', 'save', 'latex', 'markdown', 'bibliography'):
-			#exec('obj = %s(nothon_resource)'%(message['command'].title()))
-			#return obj.handler(message)
+			result = obj.handler(message)
+			if(message.get('aux')):
+				aux = message.get('aux')
+				if aux.get('command') in ('new_notebook'):
+					nb = Notebook(nothon_resource, render)
+					nb.new_notebook(aux.get('file'), aux=aux)
+				result['aux'] = aux
+			return simplejson.dumps(result)
 			
 		if message['command'] in ('text', 'paragraph', 'savehtml', 'docmain_render', 'image', 'paste_cell', 'remove_cell'):
 			exec('result = %s_handler(message, nothon_resource)'%(message['command']))

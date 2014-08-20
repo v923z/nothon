@@ -1,31 +1,25 @@
 #doc_toplevel {
 	width:				78%;
+	display:			none;
+}
+
+#publication_count {
+	font-size:			16px;
+	font-weight:		bold;
 }
 
 #publication_list {
-/*
-	height:				100%;
-*/
 	top:				0px;
 	margin-left:		5px;
 	display:			block;
 }
 
 #publication_list thead {
-/*
-	display:			block;
-*/
 	height: 			20px;
 }
 
 #publication_list tbody {
-/*
-	display:			block;
-*/
 	overflow-y:			scroll;
-/*
-	height:				200px;
-*/
 }
 
 #publication_list tr {
@@ -56,7 +50,7 @@
 }
 
 .field_label {
-	width:				5em;
+	width:				6em;
 	padding:			0 0 0 0;
 	display:			table-cell;
 }
@@ -66,7 +60,9 @@
 	padding: 			0 0 0 0;
 }
 
-#text_author, #text_title, #text_journal, #text_key, #text_keywords, #text_file, #text_doi, #text_url {
+#text_author, #text_title, #text_journal, #text_key, 
+#text_group, #text_keywords, #text_file, #text_doi, 
+#text_url, #text_crossref, #text_privnotes, #text_abstract {
 	width:				100%;
 }
 
@@ -88,12 +84,41 @@
 
 #group_label {
 	font-weight:		bold;
+	padding:			0 0 0 0;
+	display:			table-cell;
+}
+#info_box {
+	float:				left;
+	width:				100%;
+	display:			block;
+	padding:			0 0 0 0;
 }
 
-#field_id {
+#info_id {
 	font-weight:		bold;
 	color:				#ee0000;
 	width:				20em;
+}
+
+#info_names {
+	color:				#ee0000;
+}
+
+#info_title {
+	font-weight:		bold;
+}
+
+#info_journal {
+}
+
+#info_volume {
+	font-weight:		bold;	
+}
+
+#info_pages {
+}
+
+#info_year {
 }
 
 .keywords_list {
@@ -109,4 +134,23 @@
 .active_filter {
 	color:				#cc0000;		/* this doesn't take effect... */
 	font-weight:		bold;
+}
+
+#database_search_dialog {
+	background:			#eeeeff;
+}
+
+#database_search_author, #database_search_title, #database_search_abstract {
+	display:			inline;
+	width:				200px;
+	margin:				2 2 2 2;
+}
+
+#database_search_dialog p {
+	display:			inline;
+	margin-left:		10px;
+}
+
+#database_search_dialog > form {
+	display: 			inline;
 }

@@ -83,5 +83,5 @@ class Code(object):
 			if self.resource.has_pygments: lexer = get_lexer_by_name('text')
 		
 		if self.resource.has_pygments:	
-			dictionary['content']['code_body']['content'] = highlight(dictionary['content']['code_body']['content'], lexer, HtmlFormatter(linenos=linenos))
-		return render.code_html(dictionary['count'], dictionary['content'])
+			dictionary['content']['code_body']['content'] = self.code_formatter(fn, self.resource.code_delimiter, tag, linenos, include)
+		return dictionary

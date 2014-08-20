@@ -66,13 +66,12 @@ function get_max_index(className) {
 
 function _create_message(command) {
 	var message = new Object()
+	var aux = new Object()
 	message.date = Date()
 	message.command = command
-	message.doc_title = document.title
 	message.type = $('body').data('type')
 	message.sub_type = $('#docmain').data('sub_type')
 	message.file = $('body').data('file')
-	message.directory = $('#div_dir').html().replace('<br>', '')
 	return message
 }
 
@@ -85,10 +84,12 @@ function create_message(div_data, command) {
 
 function message_handler(req) {
 	var message = JSON.parse(req.responseText)
-	for(i in message) {
-		var elem = document.getElementById(i)
-		if(elem && i != "scroller") {
-			elem.innerHTML = message[i]
+	console.log(message)
+	for(elem in message) {
+		if($('#' + elem).is('textarea')) {
+			$('#' + elem).val(message[elem])
+		} else {
+			$('#' + elem).html(message[elem])
 		}
 	}
 	// TODO: scrolling is not quite perfect
@@ -111,50 +112,25 @@ function block_content(elem) {
 	var block = new Object()
 
 	block.type = $(elem).data('type')
-	block.count = get_index($(elem).attr('id'))
+	block.count = $(elem).data('count')
 	block.id = $(elem).attr('id')
 	block.content = {}
 	$(elem).children().each( function() {
 		if($(this).parent().get(0) === $(elem).get(0)) {
-			var nothon = $(this).data('nothon')
-			var props = $(this).data('props')
-			if(nothon) {
-				if(check_tag(nothon, 'save')) {
-					var sub_block = new Object()
-					if($(this).is('textarea')) sub_block['content'] = $(this).val()
-					else sub_block['content'] = $(this).html()
-					sub_block['id'] = $(this).attr('id')
-					if($(this).is(':visible')) props.replace('collapsed;', '')
-					else props = add_tag(props, 'collapsed')
-					console.log(props)
-					sub_block['props']= props
-					block.content[$(this).attr('class')] = sub_block
-				}
+			if($(this).data('save')) {
+				var sub_block = new Object()
+				if($(this).is('textarea')) sub_block.content = $(this).val()
+				else sub_block.content = $(this).html()
+				sub_block.id = $(this).attr('id')
+				if($(this).is(':visible')) sub_block.collapsed = "false"
+				if($(this).data('searchable')) sub_block.searchable = "true"
+				if($(this).data('toc')) sub_block.toc = "true"
+				block.content[$(this).attr('class')] = sub_block
 			}
 		}
 	})
 	eval('block = ' + block.type + '_sanitise(block)')
 	return block
-}
-
-function check_tag(where, tag) {
-	if(!where || where.length == 0) return false
-	var tags = where.split(';')
-	tags = $.unique(tags)
-	for(i=0; i < tags.length; i++) {
-		if($.trim(tags[i]) === tag) return true
-	}
-	return false
-}
-
-function add_tag(where, tag) {
-	if(where.length == 0) return tag + ';'
-	var tags = where.split(';')
-	for(i=0; i < tags.length; i++) {
-		if($.trim(tags[i]) === tag) return where
-	}
-	if(where.charAt(where.length - 1) == ';') return where + tag + ';'
-	return where + ';' + tag + ';'
 }
 
 function get_divs() {
@@ -169,14 +145,21 @@ function get_divs() {
 function save_handler(req) {
 	var message = JSON.parse(req.responseText)
 	if(message['success'] == 'success') {
-		var time = new Date()
-		$('#notebook_status').html('Saved at ' + time.toTimeString().split(' ')[0])
+		var date = new Date()
+		$('#notebook_status').html('Saved at ' + date.toTimeString().split(' ')[0])
 	} else {
 		alert(message['success'])
+	}
+	if(message.aux) {
+		var aux = message.aux
+		if(aux['redirect']) {
+			window.location.href = aux['redirect']
+		}
 	}
 }
 
 function _save(method) {
+	// These cannot be saved, so we bail out immediately
 	if(window.location.href.indexOf('?name=__timeline') > 0 || 
 		window.location.href.indexOf('?name=__toc') > 0 ||
 		window.location.href.indexOf('?name=__bibliography') > 0) {
@@ -186,16 +169,20 @@ function _save(method) {
 	return message
 }
 
-function save_notebook(method) {
-	console.log('here')
+function save_notebook(method, aux) {
 	var message = _save(method)
 	if(message == null) return
-	message.title = $('#div_title').html()
-	message.notebook = get_divs()
+	
+	full_notebook['notebook'] = get_divs()
+	full_notebook['_metadata']['date'] = Date()
+	full_notebook['_metadata']['title'] = $('#div_title').html()
+	message['full_notebook'] = full_notebook
 	// TODO: we might have to track the type of the parent document (bibliography etc.)
 	message.type = 'notebook'
 	message.file = $('#docmain').data('file')
-	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
+	if(typeof(aux) === 'undefined') { aux = null }
+	message.aux = aux
+	xml_http_post(running_server, JSON.stringify(message, null, 4), save_handler)
 }
 
 function save_html(target) {
@@ -203,23 +190,9 @@ function save_html(target) {
 	message.outfile = document.title
 	message.title = document.getElementById("div_title").innerHTML
 	message.content = document.getElementById('docmain').innerHTML
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), save_handler)
+    xml_http_post(running_server, JSON.stringify(message), save_handler)
 	// This is broken for now...
     //$(target).parent().hide()
-}
-
-function docmain_render(address) {
-	var message = create_message('', "docmain_render")
-	message.address = address
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), docmain_handler)
-}
-
-function docmain_handler(req) {
-	var message = JSON.parse(req.responseText)
-	$('#docmain').html(message['docmain'])
-	document.title = message['doc_title']
-	$('#div_dir').html(message["directory"])
-	$('#div_title').html(message["title"])	
 }
 
 function delete_block() {
@@ -244,48 +217,59 @@ function recover_block() {
 		document.getElementById('trash_image').style.backgroundImage = 'url(static/css/trashbin_empty.png)'
 	}
 }
+function raw_date(date) {
+	var month = (100 + date.getMonth() + 1).toString().slice(1,3)
+	var day = (100 + date.getDate()).toString().slice(1,3)
+	return date.getFullYear() + '.'+ month + '.' + day
+}
 
 $(document).ready(function () {	
+	var date = new Date()
+	console.log()
+	
 	$('#calendar').datepick({
 		dateFormat: 'yyyy-mm-dd',
 		onSelect: function(date) {
-			save()
-			var d = new Date(date)
-			var month = (100 + d.getMonth() + 1).toString().slice(1,3)
-			var day = (100 + d.getDate()).toString().slice(1,3)
-			window.location.href = 'http://127.0.0.1:8080/?name=Calendar/' + d.getFullYear() + '/' + month + '/' + day + '.note'
+			var aux = new Object()
+			aux['command'] = 'new_notebook'
+			aux['type'] = 'calendar'			
+			aux['raw_date'] = raw_date(date.valueOf()[0])
+			aux['file'] = calendar_path(date.valueOf()[0]) + '.note'
+			aux['redirect'] = running_server + '?name=' +  aux['file']
+			save_notebook('save', aux)
 		}
 	});
 	
 	$('#notebook_tab').tabs();
 	$(function() { generate_toc() })
 	
-	$(function() {
-		$("#document_tree").dynatree({
-			persist: true,
-			onActivate: function(node) {
-				save()
-				window.location.href = "?name=" + node.getKeyPath().slice(1)
+	$("#document_tree").fancytree({
+		extensions: ["persist"],
+		activate: function(event, data) {
+			if(data.node.isFolder()) {
+				data.node.toggleExpanded()
 				return false
 			}
-		});
-	});
+			return true
+		},
+		click: function(event, data) {
+			if(data.node.isFolder()) {
+				data.node.toggleExpanded()
+				return false
+			} else {
+				if(window.location.href.indexOf('?name=')  != -1) {
+					save_notebook('save')
+				}
+				window.location.href = data.node.key
+			}
+			return true
+		}
+	})
 	$("#document_tree").removeClass().addClass('document_tree')
 	
-	$("#document_tree").bind("contextmenu", function(e) {
-		return false;
-	});
-	
-	$(function() {
-		$("div").each( function() {
-			var props = $(this).data('props')
-			if(check_tag(props, 'collapsed')) {
-				$(this).hide()
-				set_collapse('#' + $(this).data('main'))
-			}
-			if(check_tag(props, 'locked')) $(this).attr('contenteditable', false)
-		});
-	});
+	//$("#document_tree").bind("contextmenu", function(e) {
+		//return false;
+	//});
 	
 	$(function() {
 		$('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })
@@ -323,7 +307,7 @@ function create_new_notebook() {
 function open_new_notebook_dialog(title) {
 	// TODO: move focus to dialog
 	$('#new_notebook_dialog').dialog('open')
-	$('#new_notebook_dialog').dialog({title: title})	
+	$('#new_notebook_dialog').dialog({title: title})
 }
 
 function new_notebook_keypress(event) {
@@ -453,7 +437,6 @@ function lock_cell(cell) {
 	$(_main).find('*').each( function() {
 		if($(this).attr('contenteditable')) {
 			$(this).attr('contenteditable', false)
-			$(this).data('props', add_tag($(this).data('props'), 'locked'))
 		}
 	})
 	return false
@@ -463,16 +446,20 @@ function usage() {
 	window.open('?name=help.html', 'nothon quick help', 'left=20, top=20, width=500, height=500, toolbar=0, location=0, menubar=0, resizable=0')
 }
 
+function add_new_cell(html) {
+	if($('#docmain').is(':empty')) {
+		$('#docmain').prepend(html)
+	} else {
+		$('#docmain').children(':last').after(html)
+	}
+}
+
 function insert_new_cell(html, to_activate) {
 	if(active_div && $.contains($('#docmain')[0], active_div)) {
 		$('#' + $(active_div).data('main')).after(html)		
 	}
 	else {
-		if($('#docmain').is(':empty')) {
-			$('#docmain').prepend(html)
-		} else {
-			$('#docmain').children(':last').after(html)
-		}
+		add_new_cell(html)
 	}
 	generate_toc()
 	set_active(document.getElementById(to_activate))
@@ -484,8 +471,7 @@ function generate_toc() {
 	var code = '<ul id="#contents_list">'
 	$('#docmain').children().each( function() {
 		$(this).children().each( function() {
-			var props = $(this).data('props')
-			if(check_tag(props, 'intoc')) {
+			if($(this).data('toc')) {
 				var text = $(this).text()
 				if(text.length > 0) {
 					code = code + '<li><a class="contents_link" href="#' + $(this).data('main') + '">' + cut_intoc(text) + '</a></li>'
@@ -535,7 +521,7 @@ function _save_notebook_as(method) {
 	message.notebook = get_divs()
 	message.sub_command = method
 	message.notebook_address = notebook_address
-	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_as_handler)
+	xml_http_post(running_server, JSON.stringify(message, null, 4), save_as_handler)
 }
 
 function save_as_handler(req) {
@@ -545,4 +531,32 @@ function save_as_handler(req) {
 	} else {
 		alert(message['success'])
 	}
+}
+
+$(function() {
+	$('#cell_dialog').dialog({
+		dialogClass: 'no-close ui-dialog',
+		autoOpen: 	false,
+		height:		250,
+		width:		900,
+		modal:		false,
+		draggable:	true,
+		hide:		'fade',
+		buttons:	{
+			'Cancel' : function(){ $(this).dialog('close')}
+		}
+	});
+});
+
+function popout_cell() {
+	if(!active_div) return false
+	$('#cell_dialog_content').html($('#' + $(active_div).data('main')).html())
+	$('#cell_dialog_content').find('*').each(function() {
+		if($(this).attr('id')) {
+			$(this).attr('id', $(this).attr('id') + '_popout')
+		}
+	})
+	console.log($('#cell_dialog_content').html())
+	$('#cell_dialog').dialog('open')
+	return false
 }

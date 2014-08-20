@@ -4,7 +4,22 @@ import calendar
 import datetime
 import time
 from random import randrange
+from collections import defaultdict
 
+def get_file_from_disc(file):
+	# TODO: resolve relative paths
+	if os.path.exists(file):
+		try:
+			f = open(file, 'r')
+			return f.read()
+		except:
+			return 'Could not load file %s'%(file)
+	else:
+			return 'File %s does not exist'%(file)
+
+def _save_notebook(fn, nb):
+	return write_to_disc(simplejson.dumps(nb, sort_keys=True, indent=4), fn)
+	
 def print_notebook(nb, objects):
 	def safe_notebook_cell(nb, obj):
 		if obj in nb: return simplejson.dumps(nb[obj], sort_keys=True, indent=4)
@@ -18,7 +33,7 @@ def print_notebook(nb, objects):
 def write_to_disc(string, fn):
 	try:
 		with open(fn, 'w') as fout:
-			fout.write(string) #.encode('utf-8'))
+			fout.write(string.encode('utf-8'))
 		return {'success': 'success'}
 	except EnvironmentError: 
 		return {'success': 'Could not write file %s'%(fn)}
@@ -44,7 +59,9 @@ def get_file_path(fn, base_path):
 	elif fn.startswith('./'): return os.path.join(base_path, fn)
 	else: return fn
 	
-def get_notebook(fn):
+def get_notebook(fn, new_note=False):
+	if not os.path.exists(fn) and new_note:
+		_save_notebook(fn, new_note)			
 	with open(fn, 'r') as fin:
 		data = simplejson.load(fin)
 	return data
@@ -64,6 +81,7 @@ def check_for_special_folder(dir, marker):
 	
 def dir_tree(dir, ext='.note'):
 	tree = []
+	# TODO: We should also skip the static, and python directories, for those should not contain any documents
 	if check_for_special_folder(dir, '_'): return tree
 	
 	for item in os.listdir(dir):
@@ -77,6 +95,21 @@ def dir_tree(dir, ext='.note'):
 	tree.sort()
 	return tree
 
+def file_list(dir, ext='.note'):
+	l = []
+	# TODO: We should also skip the static, and python directories, for those should not contain any documents
+	if check_for_special_folder(dir, '_'): return l
+	
+	for item in os.listdir(dir):
+		path = os.path.join(dir, item)
+		if os.path.isdir(path):
+			sublist = file_list(path, ext)
+			if len(sublist) > 0:
+				l += sublist
+		elif item.endswith(ext):
+			l.append(os.path.join(dir,item))
+	return l
+
 def extract_headers(fn):
 	output = ""
 	data = get_notebook(fn)
@@ -84,7 +117,7 @@ def extract_headers(fn):
 	for element in content:
 		for cell_name in element['content']:
 			cell = element['content'][cell_name]
-			if 'props' in cell and 'intoc' in cell['props'].split(';'):
+			if cell.get('toc') == 'true':
 				output += '<p><input type="checkbox"/><a href="?name=%s#%s" class="toc_link">'%(fn, element['id']) + cell['content'] + '</a></p>'
 			
 	return output
@@ -123,31 +156,34 @@ def make_timeline():
 	# create the html output from the directory tree
 	tree = dir_tree('Calendar')
 	str_tl = ''
-	for year in reversed(tree):
-		if is_year(year):  # only include proper calendar entries
-			str_tl += "<div class='timeline_year'>%s"%year[0]
-			for month in reversed(year[1]):
-				if is_month(month): # only include proper calendar entries
-					str_tl += "<div class='timeline_month'>%s"%(calendar.month_name[int(month[0])])
-					for day in reversed(month[1]):	
-						d = day.replace('.note','')
-						if is_day(d):
-							h = None
-							try:
-								# TODO: This is probably unsafe: it won't work on windows
-								h = extract_headers('Calendar/%s/%s/%s'%(year[0],month[0],day))
-							except simplejson.decoder.JSONDecodeError:
-								print('WARNING: could not decode JSON (most probably this is not a proper nothon file)')
-							if h != None:
-								dayofweek = time.strftime("%A",datetime.date(int(year[0]),int(month[0]),int(d)).timetuple())
-								# TODO: This is probably unsafe: it won't work on windows
-								str_tl += "<li id='li_%d_%d'><a href='?name=Calendar/%s/%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), year[0], month[0], day, str(dayofweek) + ' ' + d)
-								str_tl += "<div class='toc_entry'>"
-								str_tl += h
-								str_tl += "</div>"
-								str_tl += '</li>'
-					str_tl += '</div>'
+
+	l = file_list('Calendar') 
+	tree = defaultdict(lambda: defaultdict(lambda: defaultdict(str)))
+	for fn in l:
+		try:
+			data = get_notebook(fn)
+			(year,month,day) = data['_metadata']['raw_date'].split('.')
+			tree[year][month][day] = fn
+		except:
+			print('WARNING: could not parse note file %s'%fn)
+
+	for year in reversed(sorted(tree.keys())):
+		str_tl += "<div class='timeline_year'>%s"%year
+		for month in reversed(sorted(tree[year].keys())):
+			str_tl += "<div class='timeline_month'>%s"%(calendar.month_name[int(month)])
+			for day in reversed(sorted(tree[year][month].keys())):
+				dayofweek = time.strftime("%A",datetime.date(int(year),int(month),int(day)).timetuple())	
+				fn = tree[year][month][day]
+				h = extract_headers(fn)
+				dayofweek = time.strftime("%A",datetime.date(int(year),int(month),int(day)).timetuple())
+				str_tl += "<li id='li_%d_%d'><a href='?name=%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), fn, str(dayofweek) + ' ' + day)
+				str_tl += "<div class='toc_entry'>"
+				str_tl += h
+				str_tl += "</div>"
+				str_tl += '</li>'
 			str_tl += '</div>'
+		str_tl += '</div>'
+
 	note['content'] = {'content' : str_tl}
 	return note
 
@@ -155,18 +191,13 @@ def rec_toc(tree, path, level):
 	str_tl = ""
 	for elem in tree:
 		if isinstance(elem,basestring):  #file
-			h = None
-			try:
-				h = extract_headers('%s/%s'%(path,elem))
-			except simplejson.decoder.JSONDecodeError:
-				print('WARNING: could not decode JSON (most probably this is not a proper nothon file) - %s/%s'%(path,elem))
-			if h != None:
-				# TODO: This is probably unsafe: it won't work on windows
-				str_tl += "<li id='li_%d_%d'><a href='?name=%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), path, elem, elem)
-				str_tl += "<div class='toc_entry'>"
-				str_tl += h
-				str_tl += "</div>"
-				str_tl += '</li>'
+			h = extract_headers('%s/%s'%(path,elem))
+			# TODO: This is probably unsafe: it won't work on windows
+			str_tl += "<li id='li_%d_%d'><a href='?name=%s/%s'>%s</a> <input type='button' class='toc_paste_button' value='Paste'/> <input type='button' class='toc_undo_button' value='Undo'/>"%(randrange(1000000), randrange(1000000), path, elem, elem)
+			str_tl += "<div class='toc_entry'>"
+			str_tl += h
+			str_tl += "</div>"
+			str_tl += '</li>'
 		elif len(elem) == 2: # directory
 			str_tl += "<li>%s</li>"%elem[0]
 			str_tl += '<ul>\n'
@@ -200,9 +231,9 @@ def unwrap_tree(tree, path, dirlisting_style):
 	for elem in tree:
 		if isinstance(elem, basestring):  #file
 			if elem.endswith('.bibnote'):
-				tree_str += '<li id="%s" data="addClass: \'bibnote\'"><a href="?name=%s">%s</a>\n'%(os.path.join(path, elem), os.path.join(path, elem), os.path.join('', elem))
+				tree_str += '<li id="?bibnote=%s" class="bibnote">%s\n'%(os.path.join(path, elem), os.path.join('', elem))
 			else:
-				tree_str += '<li id="%s"><a href="?name=%s">%s</a>\n'%(os.path.join(path, elem), os.path.join(path, elem), os.path.join('', elem))				
+				tree_str += '<li id="?name=%s">%s\n'%(os.path.join(path, elem), os.path.join('', elem))				
 		elif len(elem) == 2: 	# directory
 			tree_str += '<li id="%s" class="folder">%s\n'%(elem[0], elem[0])
 			tree_str += unwrap_tree(elem[1], os.path.join(path, elem[0]), dirlisting_style)

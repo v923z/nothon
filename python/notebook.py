@@ -10,8 +10,8 @@ from plot_utils import Plot
 from head_utils import Head
 from code_utils import Code
 from text_utils import Text, Section, Paragraph
-from save_utils import Zip, Tar, Save, Latex, Markdown
-from fileutils import notebook_folder, get_notebook, write_notebook, create_notebook_folder
+from save_utils import Zip, Tar, Latex, Markdown
+from fileutils import notebook_folder, get_notebook, write_notebook, create_notebook_folder, _save_notebook
 from new_notebook import new_notebook
 
 
@@ -57,25 +57,19 @@ class Notebook(object):
 		
 	def parse_note(self, fn):
 		print 'Reading file %s %s'%(fn, datetime.datetime.now().strftime("%H:%M:%S.%f"))
-		note = {}
-		note_str = ''
-			
 		data = get_notebook(fn)
-		content = data.get('notebook')
-		directory = data.get('directory')
-		note['directory'] = {'content' : directory}
-		note['title'] = {'content' : data.get('title')}
-		
-		for element in content:
+		notebook = data.get('notebook')
+		_metadata = data.get('_metadata')
+		directory = _metadata.get('directory')
+		for element in notebook:
 			elem_type = element.get('type')
 			if elem_type in ('plot', 'head', 'code', 'text', 'paragraph', 'section'):
 				exec('obj = %s(self.resource)'%(elem_type.title()))
-				div = obj.render(element, directory, self.render)
+				element = obj.render(element, directory, self.render)
 			else:
 				pass
-			note_str += str(div)
-			
-		note['content'] = {'content' : note_str}
+				
+		note = {'full_notebook': simplejson.dumps({'_metadata': data['_metadata'], 'notebook': notebook})}
 		print 'Read file %s %s'%(fn, datetime.datetime.now().strftime("%H:%M:%S.%f"))
 		return note
 		
@@ -89,20 +83,19 @@ class Notebook(object):
 		
 	def save_notebook(self, message, fn):
 		" Writes the stipped document content to disc "
-		nb = { 'title' : message.get('title', ''),
-				'type' : message.get('type'),
-				'date' : message.get('date'),
-				'directory' : message.get('directory', '""').strip('<br>'), 
-				'nothon version' : self.resource.nothon_version
-		}
-		nb['notebook'] = message.get('notebook')
-		return write_notebook(fn, nb, self.resource.notebook_item_order)
+		return _save_notebook(fn, message.get('full_notebook'))
 
-	def new_notebook(self, fn):
+	def new_notebook(self, fn, aux=False):
 		" Creates an empty notebook on disc "
-		title = os.path.basename(fn).replace('.note', '')
+		if os.path.exists(fn): return aux
+		
 		create_notebook_folder(fn)
-		write_notebook(fn, {'title': title, 'type' : 'notebook', 'notebook': []}, self.resource.notebook_item_order)
+		_save_notebook(fn, self.resource.new_notebook)
+		if aux:
+			if aux.get('type') in ('calendar'):
+				nb = get_notebook(fn)
+				nb['_metadata']['raw_date'] = aux.get('raw_date', '')
+				_save_notebook(fn, nb)
 		new_notebook(fn, self.resource)
 
 def update_image(content, directory):

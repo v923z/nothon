@@ -27,6 +27,7 @@ function text_context_menu() {
 		<li alt="lock" onmouseup="return lock_cell(active_div);">Lock cell</li>\
 		<li alt="new" onmousedown="return false;" onmouseup="return insert_text();">New text cell</li>\
 		<li alt="copy" onmousedown="return false;" onmouseup="return copy_text_cell();">Copy cell</li>\
+		<li onmousedown="return false;" onmouseup="return popout_cell()">Pop out cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
 }
@@ -229,6 +230,7 @@ function text_handler(req) {
 
 function text_sanitise(block) {
 	var dtemp = $('<div/>', {'id': 'dtemp'}).appendTo('#trash')
+	console.log(block)
 	$('#dtemp').html($('#' + block.content.text_body.id).html())
 	strip_mathjax_for_save($('#dtemp'))
 	strip_images_for_save($('#dtemp'))
@@ -236,6 +238,12 @@ function text_sanitise(block) {
 	block.content.text_header.content = block.content.text_header.content.replace('<br>', '')
 	$('#dtemp').remove()
 	return block
+}
+
+function text_render(json) {
+	add_new_cell(text_html(json.count))
+	$('#div_text_header_' + json.count).html(json.content.text_header.content)
+	$('#div_text_body_' + json.count).html(json.content.text_body.content)
 }
 
 // Keep mandatory functions at the beginning of the file!

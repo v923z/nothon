@@ -11,6 +11,7 @@ function plot_context_menu() {
 		<li alt="lock" onmouseup="return lock_cell(active_div);">Lock cell</li>\
 		<li onmousedown="return false;" onmouseup="return copy_plot_cell();">Copy cell</li>\
 		<li onmousedown="return false;" onmouseup="return insert_plot()">New plot cell</li>\
+		<li onmousedown="return false;" onmouseup="return popout_cell()">Pop out cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
 }
@@ -71,13 +72,17 @@ function plot_caption_keypress(event) {
 	}
 }
 
-function plot_data(div_data) {
+function plot_data(target) {
+	var count = $(target).data('count')
 	var message = _create_message('plot')
-	message.content = $('#div_plot_header_'+get_num(div_data)).val()
-	message.title = 'div_plot_file_' + get_num(div_data)
-	message.filename = $('#docmain').data('file') + '_plot_' + get_num(div_data)
-	message.body = 'div_plot_body_' + get_num(div_data)
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
+	message.code = $(target).val()
+	message.filename = $('#docmain').data('file') + '_plot_' + count
+
+	$.post('http://127.0.0.1:8080/', JSON.stringify(message, null, 4), function(data) {
+		$('#div_plot_body_' + count).html(data.body)
+		$('#div_plot_file_' + count).html(data.out_file)
+		$('#div_plot_body_' + count).scrollTop(100)		// For some reason, this doesn't work...
+	}, 'json');
 }
 
 function plot_sanitise(block) {
@@ -107,6 +112,14 @@ function toggle_comment(target) {
 	} else {
 		$(target).val(text.substring(0, start) + text.substring(start+1, text.length))
 	}
+}
+
+function plot_render(json) {
+	add_new_cell(plot_html(json.count))
+	$('#div_plot_caption_' + json.count).html(json.content.plot_caption.content)
+	$('#div_plot_header_' + json.count).html(json.content.plot_header.content)
+	$('#div_plot_file_' + json.count).html(json.content.plot_file.content)
+	$('#div_plot_body_' + json.count).html(json.content.plot_body.content)
 }
 
 jQuery.fn.getCursorPosition = function() {

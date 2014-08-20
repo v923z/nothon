@@ -1,6 +1,6 @@
 import sys
 from pybtex.database.input import bibtex
-from fileutils import write_notebook
+from fileutils import _save_notebook
 import simplejson
 import datetime
 from StringIO import StringIO
@@ -59,8 +59,9 @@ class Translator(object):
 		bibdata = parser.parse_stream(StringIO(string))
 		new_dic = {}
 		
-		key = bibdata.entry_keys[0]
-		if not key:
+		try:
+			key = bibdata.entry_keys[0]
+		except:
 			return {'success': 'Could not parse bibtex string'}
 		entry = bibdata.entries[key]
 		for skey in entry.fields:
@@ -73,11 +74,14 @@ class Translator(object):
 		
 	def writer(self, file):
 		if self.outformat in ('bibnote'):
-			data = {'type': 'bibliography', 'nothon version': self.resource.nothon_version}
+			data = self.resource.new_bibliography
 			data['bibliography'] = self.bibliography
-			data['date'] = datetime.datetime.now().strftime(self.resource.time_format)
-			write_notebook(file, data, self.resource.bibliography_item_order)
+			data['_metadata']['date'] = datetime.datetime.now().strftime(self.resource.time_format)
+			_save_notebook(file, data)
 			
+	def endnote(self):
+		pass
+	
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
 		print '\n\tSyntax: python bibtex2bibnote.py in.bib [out.bibnote]\n'

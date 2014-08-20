@@ -1,4 +1,9 @@
-.arxiv_title {
+#arxiv-header {
+	font-size:			16px;
+	font-weight:		bold;
+}
+
+.arxiv-title {
 	font-size:			16px;
 	font-weight:		bold;
 	margin-top:			10px;
@@ -6,8 +11,47 @@
 	background-color:	rgba(255, 0, 0, 0.2);
 }
 
-.arxiv_save_button {
-	background:			#eeee88;
+.arxiv-abstract {
+	/* Leave this, even if empty */
+}
+
+.arxiv-button {
 	font-weight: 		bold;
 	border: 			solid 0px;
+}
+
+.arxiv-save-button {
+	background:			#eeee00;
+	width:				5em;
+	text-align:			center;
+}
+
+.arxiv-bibtex-button {
+	background:			#eeee88;
+}
+
+.arxiv-entry {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 		5px;
+}
+
+.arxiv-has-keyword {
+	background:			#8888ee;
+}
+
+.arxiv-odd {
+	background:			#ccd9ff;
+}
+
+.arxiv-odd {
+	background:			#f2f2f2;
+}
+
+.paper_save_menu {
+	z-index:		100;
+}
+
+.paper_save_menu > li {
+	display:		hidden;
 }

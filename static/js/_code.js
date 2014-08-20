@@ -18,6 +18,7 @@ function code_context_menu() {
 	var menu = '<div class="context_menu_header">Code</div>\
 		<ul class="context_menu_list">\
 		<li onmousedown="return false;" onmouseup="return false;">New code cell</li>\
+		<li onmousedown="return false;" onmouseup="return popout_cell()">Pop out cell</li>\
 	</ul>'
 	$('#context_menu').html(menu)
 }
@@ -50,4 +51,11 @@ function code_sanitise(block) {
 	block.content.code_body.content = $('#temp_div').find('.highlight').text()
 	$("#temp_div").remove()	
 	return block
+}
+
+function code_render(json) {
+	add_new_cell(code_html(json.count))
+	$('#div_code_header_' + json.count).html(json.content.code_header.content)
+	$('#div_code_date_' + json.count).html(json.content.code_date.content)
+	$('#div_code_body_' + json.count).html(json.content.code_body.content)
 }

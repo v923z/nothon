@@ -5,10 +5,10 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <meta charset="utf-8">
 <link rel="stylesheet" href="/static/css/main.css"/>
 <link rel="stylesheet" href="/static/css/highlight.css"/>
-<link rel="stylesheet" href="/static/css/ui.dynatree.css"/>
-<link rel="stylesheet" href="/static/css/dynatree_custom.css"/>
 <link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
 <link rel="stylesheet" href="/static/css/jquery-ui-smoothness.css" />
+<link rel="stylesheet" href="/static/css/fancytree/ui.fancytree.css">
+
 <script 
   src="/static/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
    MathJax.Hub.Config({
@@ -20,8 +20,12 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/jquery.datepick.js"></script>
 <script src="/static/js/ui/jquery-ui.min.js"></script>
 <script src="/static/js/jquery.cookie.js"></script>
-<script src="/static/js/jquery.dynatree-1.2.4.js"></script>
+<script src="/static/js/fancytree/jquery.fancytree.js"></script>
+<script src="/static/js/fancytree/jquery.fancytree.edit.js"></script>
+<script src="/static/js/fancytree/jquery.fancytree.persist.js"></script>
 <script src="/static/js/functions.js"></script>
+<script src="/static/js/notebook.js"></script>
+<script src="/static/js/custom.js"></script>
 <script src="/static/js/math.min.js"></script>
 <script src="/static/js/calculator.js"></script>
 
@@ -29,6 +33,8 @@ $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
 	<script src="$js_src"></script>
 
+<script>var full_notebook = $:content['full_notebook']</script>
+<script>var running_server = 'http://127.0.0.1:8080/'</script>
 </head>
 <body data-type='notebook' data-file='$filename'>
 <aside id='aside'>
@@ -134,6 +140,9 @@ $for f in create_funcs + handler_funcs:
 </div>
 <div id='new_notebook_dialog'>
 	<input id='new_notebook' type='text' style='width: 90%; position: absolute; top: 10px;' onkeypress='return new_notebook_keypress(event);'>
+</div>
+<div id='cell_dialog'>
+	<div id='cell_dialog_content'></div>
 </div>
 </article>
 </body>
