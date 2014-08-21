@@ -323,6 +323,8 @@ function field_keypress(event, target) {
 	var id = get_active_paper()
 	if(id == null) return false
 	if(event.which === 13) {
+		// This could be removed, and the specific entry could be placed 
+		// into the bibliography
 		fill_in_bibliography(id)
 		fill_in_row(id)
 		$('#' + target).focus()
