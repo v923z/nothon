@@ -97,7 +97,9 @@ function add_row(target, type) {
 	$('#publication_list tr.active_row').removeClass('active_row')
 	var uuid = generate_uuid()
 	var entry = new Object()
+	var date = new Date()
 	entry['type'] = type
+	entry['timestamp'] = date.getFullYear() + '.' + ('0' + (date.getMonth()+1)).slice(-2) + '.' + ('0' + date.getDate()).slice(-2)
 	bibliography[uuid] = entry
 	fill_in_fields(uuid)
 	set_active_paper(uuid)	
@@ -180,13 +182,14 @@ function fill_in_fields(uuid) {
 		_fill_in_fields(this, uuid)
 	})	
 	set_paper_info(uuid)	
-	if(!bibliography[uuid]['stars'] || !bibliography[uuid]['stars'] == 'undefined') {
+	if(!bibliography[uuid]['stars'] || bibliography[uuid]['stars'] == 'undefined') {
 		bibliography[uuid]['stars'] = 1
 	}
 	set_stars(bibliography[uuid]['stars'])
 }
 
 function fill_in_row(uuid) {
+	// Places relevant information into the bibliography table
 	for(i=2; i <= count_columns('#publication_list'); i++) {
 		var key = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
 		$('#' + uuid + '-' + key).html(bibliography[uuid][key])
@@ -194,7 +197,9 @@ function fill_in_row(uuid) {
 }
 
 function fill_in_bibliography(uuid) {
-	// This is the inverse of fill_in_fields
+	// This is the inverse of fill_in_fields, and it takes information 
+	// from the text boxes, and pushes it into the proper fields in the bibliography
+	// TODO: this function is probably not needed!
 	for(i=2; i <= count_columns('#publication_list'); i++) {
 		var key = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
 		if($('#text_' + key)) {
@@ -551,8 +556,10 @@ function generate_bibtex_key() {
 		alert('No active entry found')
 		return false
 	}
-	$('#text_key').val(_generate_bibtex_key(id, bibliography))
-	fill_in_bibliography(id)
+	var key = _generate_bibtex_key(id, bibliography)
+	$('#text_key').val(key)
+	//fill_in_bibliography(id)
+	bibliography[id]['key'] = key
 	fill_in_row(id)
 	return false
 }

@@ -2,7 +2,9 @@ import web
 import datetime
 import simplejson
 import os
+import time
 from bs4 import BeautifulSoup
+from shutil import rmtree, move
 
 from template_helpers import *
 
@@ -48,6 +50,9 @@ class Notebook(object):
 				
 		elif command in ('render_docmain'):
 			result = self.render_docmain(message.get('address'))
+			
+		elif command in ('remove_notebook'):
+			result = self.remote_notebook(message)
 			
 		else:
 			result = {'success': 'undefined command: %s'%(command)}
@@ -97,7 +102,17 @@ class Notebook(object):
 				nb['_metadata']['raw_date'] = aux.get('raw_date', '')
 				_save_notebook(fn, nb)
 		new_notebook(fn, self.resource)
-
+		
+	def remove_notebook(self, message):
+		" Moves the notebook and all its auxiliary content (plots, etc.) from the directory tree to .trash. "
+		fn = message.get('file')
+		folder = notebook_folder(fn)
+		Tar(self.resource).tar_notebook(fn, folder, fn.replace('.note', '.tgz'))
+		rmtree(folder)
+		os.remove(fn)
+		move(fn.replace('.note', '.tgz'), '.trash/' + fn.replace('.note', '') + '_%.2f'%(time.time()) + '.tgz')
+		return {'success': 'success'}
+		
 def update_image(content, directory):
 	# Parses the content for images, fetches them from disc, and inserts them accordingly
 	soup = BeautifulSoup(str(content))
