@@ -168,7 +168,8 @@ function _fill_in_fields(dom, uuid) {
 }
 
 function fill_in_fields(uuid) {
-	// This is the inverse of fill_in_bibliography
+	// This is function takes the bibliography, and copies all information 
+	// into the edit fields in the various tabs
 	$('#bibliography_fields input[type=text]').each( function() {
 		_fill_in_fields(this, uuid)
 	})
@@ -189,25 +190,10 @@ function fill_in_fields(uuid) {
 }
 
 function fill_in_row(uuid) {
-	// Places relevant information into the bibliography table
+	// Copies relevant information into the bibliography table
 	for(i=2; i <= count_columns('#publication_list'); i++) {
 		var key = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
 		$('#' + uuid + '-' + key).html(bibliography[uuid][key])
-	}
-}
-
-function fill_in_bibliography(uuid) {
-	// This is the inverse of fill_in_fields, and it takes information 
-	// from the text boxes, and pushes it into the proper fields in the bibliography
-	// TODO: this function is probably not needed!
-	for(i=2; i <= count_columns('#publication_list'); i++) {
-		var key = $('#publication_list th:nth-child(' + i + ')').text().trim().toLowerCase()
-		if($('#text_' + key)) {
-			var value = $('#text_' + key).val()
-		} else {
-			var value = ''
-		}
-		bibliography[uuid][key] = value
 	}
 }
 
@@ -323,9 +309,8 @@ function field_keypress(event, target) {
 	var id = get_active_paper()
 	if(id == null) return false
 	if(event.which === 13) {
-		// This could be removed, and the specific entry could be placed 
-		// into the bibliography
-		fill_in_bibliography(id)
+		var key = event.target.id.replace('text_', '')
+		bibliography[id][key] = $('#' + event.target.id).val()
 		fill_in_row(id)
 		$('#' + target).focus()
 		return false
@@ -560,7 +545,6 @@ function generate_bibtex_key() {
 	}
 	var key = _generate_bibtex_key(id, bibliography)
 	$('#text_key').val(key)
-	//fill_in_bibliography(id)
 	bibliography[id]['key'] = key
 	fill_in_row(id)
 	return false
