@@ -359,8 +359,13 @@ function save_bibliography(method) {
 	full_bibliography['_metadata']['date'] = Date()
 	full_bibliography['_metadata']['directory'] = directory
 	message.full_bibliography = full_bibliography
-	message['command'] = method
-	xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
+	if(method == 'save_client_side') {
+		var blob = new Blob([JSON.stringify(full_bibliography, null, '    ')], {type: "text/plain;charset=utf-8"});
+		saveAs(blob, "test.bibnote");
+	} else {
+		message['command'] = method
+		xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message, null, 4), save_handler)
+	}
 }
 
 function save_and_load(id) {

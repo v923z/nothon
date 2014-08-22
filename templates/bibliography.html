@@ -35,6 +35,7 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/bibtex_key.js"></script>
 <script src="/static/js/custom.js"></script>
 <script src="/static/js/database.js"></script>
+<script src="/static/js/FileSaver.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)
@@ -148,6 +149,7 @@ $for f in create_funcs + handler_funcs:
 					<li onmouseup='save_bibliography("save_bibnote");'>Bibnote</li>
 					<li onmouseup='save_bibliography("save_bibtex");'>BibTeX</li>
 					<li onmouseup='save_bibliography("save_html");'>HTML</li>
+					<li onmouseup='save_bibliography("save_client_side");'>JSON</li>
 				</ul>
 			</li>
 			<li>Archive
@@ -316,7 +318,7 @@ $for f in create_funcs + handler_funcs:
 	</div>
 	<div id='bibliography_privnotes'>
 		<label class='field_label'>Private notes</label>
-		<input id='text_privnotes' type='text' class='field_label' />
+		<input id='text_privnotes' type='text' class='field_label'/>
 	</div>
 	<div id='bibliography_abstract'>
 		<label class='field_label'>Abstract</label>
