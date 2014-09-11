@@ -43,7 +43,6 @@ function copy_plot_cell() {
 	var id = get_max_index('plot_main') + 1
 	insert_plot()
 	$('#div_plot_header_' + id).val($('#div_plot_header_' + num).val())
-	//$('#div_plot_header_' + id).height($('#div_plot_header_' + num).height()+20)
 	$('#div_plot_caption_' + id).html($('#div_plot_caption_' + num).html())
 	return false
 }
