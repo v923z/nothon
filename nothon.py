@@ -1,15 +1,12 @@
 import web
 import os
-import shutil
 import urllib
 import base64
 import simplejson
 import traceback
 import tempfile
 import time
-import datetime
 import sys
-from bs4 import BeautifulSoup
 
 from python.resource import NothonResource
 from python.fileutils import *

@@ -8,6 +8,7 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <link rel="stylesheet" href="/static/css/jquery.datepick.css"/> 
 <link rel="stylesheet" href="/static/css/jquery-ui-smoothness.css" />
 <link rel="stylesheet" href="/static/css/fancytree/ui.fancytree.css">
+<link rel="stylesheet" href="/static/css/codemirror.css">
 
 <script 
   src="/static/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -28,6 +29,12 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/custom.js"></script>
 <script src="/static/js/math.min.js"></script>
 <script src="/static/js/calculator.js"></script>
+<script src="/static/js/codemirror/codemirror.js"></script>
+<script src="/static/js/codemirror/comment.js"></script>
+<script src="/static/js/codemirror/addon/edit/closebrackets.js"></script>
+<script src="/static/js/codemirror/addon/edit/matchbrackets.js"></script>
+<script src="/static/js/codemirror/addon/comment/comment.js"></script>
+<script src="/static/js/codemirror/mode/python/python.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)

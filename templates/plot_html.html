@@ -10,7 +10,7 @@ $ eid = 'expand_div_plot_main_%s'%(id)
 <div id='$mid' class='plot_main' data-type='plot' data-count='$id'>
 <div class='button_expand' id='$eid' data-count='$id' onclick='plot_onclick(this);'><img src='/static/icons/collapse.png' height='18px'/></div>
 <div id='$cid' class='plot_caption' contenteditable='true' data-save='true' data-toc='true' data-searchable='true' data-main='$mid' data-type='plot' data-count='$id' onkeypress='return plot_caption_keypress(event);'  onfocus='set_active(this);'>$:safe_content(content, "plot_caption")</div>
-<textarea id='$taid' class='plot_header' data-save='true' data-searchable='true' data-main='$mid' data-type='plot' data-count='$id' data-expand='$eid' onkeypress='return plot_header_keypress(event);' onkeyup='return plot_up(this);' onfocus='set_active(this);'>$:safe_content(content, "plot_header")</textarea>
+<textarea id='$taid' class='plot_header' data-save='true' data-searchable='true' data-main='$mid' data-type='plot' data-count='$id' data-expand='$eid' onkeyup='return plot_up(this);' onfocus='set_active(this);'>$:safe_content(content, "plot_header")</textarea>
 <div id='$tid' class='plot_file' data-save='true' data-main='$mid' data-type='plot' data-count='$id'>$safe_content(content, "plot_file")</div>
 <div id='$bid' class='plot_body' data-main='$mid' data-type='plot' data-count='$id'>$:safe_content(content, "plot_body")</div>
 </div>

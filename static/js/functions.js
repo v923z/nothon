@@ -129,7 +129,12 @@ function block_content(elem) {
 			}
 		}
 	})
-	eval('block = ' + block.type + '_sanitise(block)')
+	if(block.type === 'plot') {
+		console.log(elem)
+		block = $(elem).data('sanitise')(block)
+	} else {
+		eval('block = ' + block.type + '_sanitise(block)')
+	}
 	return block
 }
 
