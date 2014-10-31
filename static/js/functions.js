@@ -110,18 +110,19 @@ function set_active(id) {
 
 function block_content(elem) {
 	var block = new Object()
-
+	
 	block.type = $(elem).data('type')
+	console.log(block.type)
 	block.count = $(elem).data('count')
-	block.id = $(elem).attr('id')
+	//block.id = $(elem).attr('id')
 	block.content = {}
 	$(elem).children().each( function() {
 		if($(this).parent().get(0) === $(elem).get(0)) {
 			if($(this).data('save')) {
 				var sub_block = new Object()
-				if($(this).is('textarea')) sub_block.content = $(this).val()
+				if($(this).is('textarea') || $(this).is('input')) sub_block.content = $(this).val()
 				else sub_block.content = $(this).html()
-				sub_block.id = $(this).attr('id')
+				//sub_block.id = $(this).attr('id')
 				if($(this).is(':visible')) sub_block.collapsed = "false"
 				if($(this).data('searchable')) sub_block.searchable = "true"
 				if($(this).data('toc')) sub_block.toc = "true"
@@ -129,8 +130,8 @@ function block_content(elem) {
 			}
 		}
 	})
-	if(block.type === 'plot') {
-		console.log(elem)
+	console.log(block)
+	if(block.type === 'plot' || block.type === 'code') {
 		block = $(elem).data('sanitise')(block)
 	} else {
 		eval('block = ' + block.type + '_sanitise(block)')
@@ -459,15 +460,16 @@ function add_new_cell(html) {
 	}
 }
 
-function insert_new_cell(html, to_activate) {
-	if(active_div && $.contains($('#docmain')[0], active_div)) {
-		$('#' + $(active_div).data('main')).after(html)		
-	}
-	else {
-		add_new_cell(html)
-	}
+function insert_new_cell(cell, to_activate) {
+	//if(active_div && $.contains($('#docmain')[0], active_div)) {
+		//$('#' + $(active_div).data('main')).after(html)		
+	//}
+	//else {
+		//add_new_cell(html)
+	//}
+	$('#docmain').append(cell)
 	generate_toc()
-	set_active(document.getElementById(to_activate))
+	//set_active(document.getElementById(to_activate))
 	$('#' + to_activate).focus()
 	$('#' + to_activate).scrollTop()
 }

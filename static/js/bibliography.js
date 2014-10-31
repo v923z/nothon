@@ -352,10 +352,16 @@ function get_active_paper() {
 	return $('#docmain').data('id')
 }
 
-function save_bibliography(method) {
+function save_bibliography(method, whatexactly) {
+	if(whatexactly == 'all' || !whatexactly) {
+		var bibliography_to_save = bibliography
+	} else if(whatexactly == 'visible') {
+		var bibliography_to_save = get_visible_papers()
+	}
+
 	var message = _save('bibliography')
 	message.sub_type = 'bibliography'
-	full_bibliography['bibliography'] = bibliography
+	full_bibliography['bibliography'] = bibliography_to_save
 	full_bibliography['_metadata']['date'] = Date()
 	full_bibliography['_metadata']['directory'] = directory
 	message.full_bibliography = full_bibliography
@@ -625,4 +631,12 @@ function set_bibliography_directory(event) {
 		return false
 	}
 	return true
+}
+
+function get_visible_papers() {
+	var visible_papers = new Array()
+	$('#publication_list tr:visible').each( function() {
+		visible_papers.push(bibliography[$(this).attr('id')])
+	})
+	return visible_papers
 }

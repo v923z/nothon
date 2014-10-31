@@ -1,6 +1,7 @@
 import simplejson
 import os
 import time
+from fileutils import get_file_from_disc
 #from resource import NothonResource
 
 # We have to check for non-standard packages, so that we can run on android
@@ -38,9 +39,13 @@ class Code(object):
 	def handler(self, message):
 		print message
 		fn, tag, linenos, include = code_arguments(message['content'])
-		return {message.get('date'): 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
-				message.get('body'): self.code_formatter(fn, self.resource.code_delimiter, tag, linenos, include), 
-				'scroller': message.get('body')}
+		message['body'] = get_file_from_disc(fn)
+		message['date'] = 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn)))
+		return message
+		
+		#return {message.get('date'): 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
+				#message.get('body'): self.code_formatter(fn, self.resource.code_delimiter, tag, linenos, include), 
+				#'scroller': message.get('body')}
 
 	def code_formatter(self, fn, delimiters, tag=False, linenos=False, include=False):
 			
@@ -76,12 +81,4 @@ class Code(object):
 		return highlight(''.join(code), lexer, HtmlFormatter(linenos=linenos))
 
 	def render(self, dictionary, directory, render):
-		fn, tag, linenos, include = code_arguments(dictionary['content']['code_header']['content'])
-		try:
-			if self.resource.has_pygments: lexer = get_lexer_for_filename(fn)
-		except:
-			if self.resource.has_pygments: lexer = get_lexer_by_name('text')
-		
-		if self.resource.has_pygments:	
-			dictionary['content']['code_body']['content'] = self.code_formatter(fn, self.resource.code_delimiter, tag, linenos, include)
 		return dictionary

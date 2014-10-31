@@ -68,7 +68,7 @@ function plot_caption_keypress(event) {
 }
 
 function plot_sanitise(block) {
-	var editor = $('#' + block.id).data('editor')	
+	var editor = $('#div_plot_main_' + block.count).data('editor')	
 	block.content.plot_caption.content = block.content.plot_caption.content.replace('<br>', '')
 	block.content.plot_header.content = editor.getValue()
 	return block
@@ -105,8 +105,11 @@ function plot_render(json) {
 	editor.setValue(json.content.plot_header.content)
 	$('#div_plot_file_' + json.count).html(json.content.plot_file.content)
 	$('#div_plot_body_' + json.count).html(json.content.plot_body.content)
-	$('#div_plot_main_' + json.count).data('editor', editor)
-	$('#div_plot_main_' + json.count).data({'sanitise': function(block) { return plot_sanitise(block) }})	
+	$('#div_plot_main_' + json.count).data({'editor': editor, 
+		'sanitise': function(block) { 
+			return plot_sanitise(block) 
+		}
+	})
 }
 
 function plot_server(cm) {

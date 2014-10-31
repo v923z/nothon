@@ -146,10 +146,20 @@ $for f in create_funcs + handler_funcs:
 			</li>		
 			<li>Save
 				<ul>
-					<li onmouseup='save_bibliography("save_bibnote");'>Bibnote</li>
-					<li onmouseup='save_bibliography("save_bibtex");'>BibTeX</li>
-					<li onmouseup='save_bibliography("save_html");'>HTML</li>
-					<li onmouseup='save_bibliography("save_client_side");'>JSON</li>
+					<li onmouseup='save_bibliography("save_bibnote", "all");'>Bibnote</li>
+					<li>BibTeX
+						<ul>
+							<li onmouseup='save_bibliography("save_bibtex", "all");'>All entries</li>
+							<li onmouseup='save_bibliography("save_bibtex", "visible");'>Visible entries</li>						
+						</ul>
+					</li>					
+					<li onmouseup='save_bibliography("save_html", "all");'>HTML</li>
+					<li>Client side
+						<ul>
+							<li onmouseup='save_bibliography("save_client_side", "all");'>All entries</li>
+							<li onmouseup='save_bibliography("save_client_side", "visible");'>Visible entries</li>						
+						</ul>
+					</li>
 				</ul>
 			</li>
 			<li>Archive
