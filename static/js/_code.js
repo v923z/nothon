@@ -32,9 +32,13 @@ function code_keypress(event) {
 		if(header.indexOf('--inline') == 0) {
 			// This is an in-line request
 			var ta = 'textarea_code_body_' + $(event.target).data('count')
+			var date = new Date()
+			$('#input_code_date_' + $(event.target).data('count'))
+			.val('Created: ' + date.toString()).show()
 			var editor = $('#' + ta).data('editor')
 			if(editor) {
 				editor.setValue('')
+				editor.setOption('readOnly', false)
 			} else {
 				var editor = CodeMirror.fromTextArea(document.getElementById(ta), {
 					lineNumbers: true,
@@ -70,16 +74,17 @@ function code_data(target) {
 function code_handler(req) {
 	var message = JSON.parse(req.responseText)
 	var target = 'textarea_code_body_' + message.count
-	var editor = CodeMirror.fromTextArea(document.getElementById(target), {
-		lineNumbers: true,
-		mode: {name: "python",
-				version: 2
-			},
-		readOnly: true
-	})
+	var editor = $('#' + target).data('editor')
+	if(!editor) {
+		editor = CodeMirror.fromTextArea(document.getElementById(target), {
+			lineNumbers: true,
+			mode: {name: guess_language(message.content)},
+			readOnly: true
+		})
+		$('#' + target).data({'editor': editor})
+	}
 	editor.setValue(message.body)
-	$('#' + target).data({'editor': editor})
-	// Insert date
+	editor.setOption('readOnly', true)
 	$('#input_code_date_' + message.count).val(message.date).show()
 }
 
@@ -92,17 +97,21 @@ function code_sanitise(block) {
 function code_render(json) {
 	add_new_cell(code_html_x(json.count))
 	$('#input_code_header_' + json.count).val(json.content.code_header.content)
-	$('#input_code_date_' + json.count).val(json.content.code_date.content).show()
+	if(json.content.code_date.content.length > 0) {
+		$('#input_code_date_' + json.count).val(json.content.code_date.content).show()
+	}
 	var editor = CodeMirror.fromTextArea(document.getElementById('textarea_code_body_' + json.count), {
 		lineNumbers: true,
-		mode: {name: "python",
-				version: 2
-			},
-		readOnly: true
+		mode: {name: guess_language(json.content.code_header.content)},
+		readOnly: true,
+		matchBrackets: true,
+		extraKeys: {
+			"Ctrl-K" : "toggleComment"
+		},
+		autoCloseBrackets: "()[]{}"
 	})
-	console.log(json.content.code_body.content)
 	editor.setValue(json.content.code_body.content)
-	$('#textarea_code_body_' + json.count).attr('data-editor', editor)
+	$('#textarea_code_body_' + json.count).data({'editor': editor})
 }
 
 function code_html_x(count) {
