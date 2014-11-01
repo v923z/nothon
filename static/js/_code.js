@@ -1,8 +1,6 @@
 function insert_code() {
 	var id = get_max_index('code_main') + 1
-	//insert_new_cell(code_html(id), 'div_code_header_' + id)
 	insert_new_cell(code_html_x(id), 'input_code_header_' + id)
-	//$('input_code_header_' + id).focus()
 	code_context_menu()
 	return false
 }
