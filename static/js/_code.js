@@ -26,16 +26,36 @@ function code_context_menu() {
 }
 
 function code_keypress(event) {
-	if (event.which === 13 && event.shiftKey) {	// Enter
-		code_data(event.target)
-		insert_code()
-		return false
-	}
-	else if (event.which === 13) {				// Enter
-		code_data(event.target)
-		return false
-	}
 	generate_toc()
+	if(event.which === 13) {
+		var header = $.trim($(event.target).val())
+		if(header.indexOf('--inline') == 0) {
+			// This is an in-line request
+			var ta = 'textarea_code_body_' + $(event.target).data('count')
+			var editor = $('#' + ta).data('editor')
+			if(editor) {
+				editor.setValue('')
+			} else {
+				var editor = CodeMirror.fromTextArea(document.getElementById(ta), {
+					lineNumbers: true,
+					mode: {name: guess_language(header)},
+					matchBrackets: true,
+					extraKeys: {
+						"Ctrl-K" : "toggleComment"
+					},
+					autoCloseBrackets: "()[]{}"
+				})
+				$('#' + ta).data({'editor': editor})
+			}
+			set_active('#' + ta)
+		} else if (event.shiftKey) {			// Enter
+			code_data(event.target)
+			insert_code()
+		} else {				// Enter
+			code_data(event.target)
+		}
+		return false
+	}
 	return true
 }
 
@@ -128,16 +148,24 @@ function code_html_x(count) {
 function guess_language(string) {
 	var fragments = $.trim(string).split(' ')
 	var file_fragments = fragments[0].split('.')
-	if(file_fragments[-1] == 'py') {
+	var ext = file_fragments[file_fragments.length - 1]
+	if(ext == 'py') {
 		return 'python'
-	} else if(file_fragments[-1] == 'c' || 
-			file_fragments[-1] == 'c++' ||
-			file_fragments[-1] == 'cpp' ||
-			file_fragments[-1] == 'cs' ||
-			file_fragments[-1] == 'h' ||
-			file_fragments[-1] == 'hpp') {
+	} else if(ext == 'c' || ext == 'c++' || ext == 'cpp' || ext == 'cs' || ext == 'h' || ext == 'hpp') {
 		return 'clike'
-	} else if(file_fragments[-1] == 'f90') {
+	} else if(ext == 'f90') {
 		return 'fortran'
+	} else if(ext == 'm') {
+		return 'matlab'
+	} else if(ext == 'js') {
+		return 'javascript'
+	} else if(ext == 'java') {
+		return 'java'
+	} else if(ext == 'htm' || ext == 'html') {
+		return 'html'
+	} else if(ext == 'jl') {
+		return 'julia'
+	} else if(ext == 'lua') {
+		return 'lua'
 	}
 }
