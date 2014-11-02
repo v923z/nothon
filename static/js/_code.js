@@ -66,7 +66,7 @@ function code_data(target) {
 	message.content = $(target).val()
 	message.count = $(target).data('count')
 	message.sub_type = 'notebook'
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), code_handler)
+    xml_http_post(server_address, JSON.stringify(message), code_handler)
 }
 
 function code_handler(req) {

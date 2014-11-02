@@ -211,7 +211,7 @@ function set_paper_info(uuid) {
 	for(i in file_links) {
 		// This could be done a bit more elegantly using join.
 		var fl = $.trim(file_links[i])
-		if(running_server) {
+		if(server_address) {
 			file_link_str += '<a href="/?file=' + directory + fl + '" target="_blank">' + fl + '</a> '
 		} else {
 			file_link_str += '<a href="' + fl + '" target="_blank">' + fl + '</a> '

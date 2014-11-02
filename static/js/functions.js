@@ -188,7 +188,7 @@ function save_notebook(method, aux) {
 	message.file = $('#docmain').data('file')
 	if(typeof(aux) === 'undefined') { aux = null }
 	message.aux = aux
-	xml_http_post(running_server, JSON.stringify(message, null, 4), save_handler)
+	xml_http_post(server_address, JSON.stringify(message, null, 4), save_handler)
 }
 
 function save_html(target) {
@@ -196,7 +196,7 @@ function save_html(target) {
 	message.outfile = document.title
 	message.title = document.getElementById("div_title").innerHTML
 	message.content = document.getElementById('docmain').innerHTML
-    xml_http_post(running_server, JSON.stringify(message), save_handler)
+    xml_http_post(server_address, JSON.stringify(message), save_handler)
 	// This is broken for now...
     //$(target).parent().hide()
 }
@@ -241,7 +241,7 @@ $(document).ready(function () {
 			aux['type'] = 'calendar'			
 			aux['raw_date'] = raw_date(date.valueOf()[0])
 			aux['file'] = calendar_path(date.valueOf()[0]) + '.note'
-			aux['redirect'] = running_server + '?name=' +  aux['file']
+			aux['redirect'] = server_address + '?name=' +  aux['file']
 			save_notebook('save', aux)
 		}
 	});
@@ -528,7 +528,7 @@ function _save_notebook_as(method) {
 	message.notebook = get_divs()
 	message.sub_command = method
 	message.notebook_address = notebook_address
-	xml_http_post(running_server, JSON.stringify(message, null, 4), save_as_handler)
+	xml_http_post(server_address, JSON.stringify(message, null, 4), save_as_handler)
 }
 
 function save_as_handler(req) {
