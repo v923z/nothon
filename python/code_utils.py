@@ -1,65 +1,37 @@
-import simplejson
-import os
-import time
-from fileutils import get_file_from_disc
-#from resource import NothonResource
-
-# We have to check for non-standard packages, so that we can run on android
-try:
-	from pygments import highlight
-	from pygments.lexers import get_lexer_for_filename, get_lexer_by_name
-	from pygments.formatters import HtmlFormatter
-	has_pygments = True			
-except ImportError:
-	print 'nothing to import'
-	has_pygments = False
+from os.path import getctime, getmtime
+from time import ctime
 
 def code_arguments(string):
 	sp = string.rstrip('<br>').rstrip('\t').rstrip('\n').split(' ')
-	if len(sp) == 0: return False, False, False, False
+	if len(sp) == 0: return False, False, False
 	fn = sp[0]
-	tag, linenos, include = False, False, False
-	if '-lineno' in sp: linenos=True
+	tag, include = False, False
 		
 	if '-tag' in sp and len(sp) > sp.index('-tag'):
 		tag = sp[sp.index('-tag') + 1]
 		
 	if '-include' in sp: include = True
 		
-	return fn, tag, linenos, include
+	return fn, tag, include
 
 class Code(object):
 	
 	def __init__(self, resource):
-		#if resource is None:
-			#resource = NothonResource()
 		self.resource = resource
-		self.resource.has_pygments = has_pygments
 	
 	def handler(self, message):
 		print message
-		fn, tag, linenos, include = code_arguments(message['content'])
-		message['body'] = get_file_from_disc(fn)
-		message['date'] = 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn)))
+		fn, tag, include = code_arguments(message['content'])
+		message['body'], message['date'] = self.code_formatter(fn, self.resource.code_delimiter, tag, include)
 		return message
 		
-		#return {message.get('date'): 'Created: %s, modified: %s'%(time.ctime(os.path.getctime(fn)), time.ctime(os.path.getmtime(fn))),
-				#message.get('body'): self.code_formatter(fn, self.resource.code_delimiter, tag, linenos, include), 
-				#'scroller': message.get('body')}
-
-	def code_formatter(self, fn, delimiters, tag=False, linenos=False, include=False):
+	def code_formatter(self, fn, delimiters, tag=False, include=False):
 			
 		try:
 			with open(fn, 'r') as fin: code_string = fin.readlines()
 		except IOError:
-			return '<span class="code_error">File doesn\'t exist</span>'
-	
-		lexer = None
-		try:
-			if self.resource.has_pygments: lexer = get_lexer_for_filename(fn)
-		except:
-			if self.resource.has_pygments: lexer = get_lexer_by_name('text')
-						
+			return '', 'FILE DOES NOT EXIST!'
+							
 		code = []
 		state = -1
 		if not tag: state = 2
@@ -75,10 +47,9 @@ class Code(object):
 				state = 1
 				break
 		
-		if state == -1: return '<span class="code_error">Couldn\'t find first tag %s</span>'%(delimiters[0] + ' ' + tag)
-		if state == 0: return '<span class="code_error">Couldn\'t find second tag %s</span>'%(tag + ' ' + delimiters[1])
-		if not lexer: return ''.join(code)
-		return highlight(''.join(code), lexer, HtmlFormatter(linenos=linenos))
+		if state == -1: return '', 'COULDN NOT FIND FIRST TAG %s'%(delimiters[0] + ' ' + tag)
+		if state == 0: return '', 'COULDN NOT FIND SECOND TAG %s'%(tag + ' ' + delimiters[1])
+		return ''.join(code), 'Created: %s, modified: %s'%(ctime(getctime(fn)), ctime(getmtime(fn)))
 
 	def render(self, dictionary, directory, render):
 		return dictionary

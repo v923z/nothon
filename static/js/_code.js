@@ -75,14 +75,17 @@ function code_handler(req) {
 	var editor = $('#' + target).data('editor')
 	if(!editor) {
 		editor = CodeMirror.fromTextArea(document.getElementById(target), {
-			lineNumbers: true,
 			mode: {name: guess_language(message.content)},
-			readOnly: true
 		})
 		$('#' + target).data({'editor': editor})
 	}
 	editor.setValue(message.body)
 	editor.setOption('readOnly', true)
+	if(message.content.indexOf(' -lineno') > -1) {
+		editor.setOption('lineNumbers', true)
+	} else {
+		editor.setOption('lineNumbers', false)
+	}	
 	$('#input_code_date_' + message.count).val(message.date).show()
 }
 
