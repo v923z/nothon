@@ -249,7 +249,8 @@ article {
 .plot_file {
 	/* This can be made hidden */
 	font-size: 			10pt;
-	font-weight: 		bold;
+	font-weight: 		normal;
+	border:				none;
 }
 
 .plot_image {
@@ -325,6 +326,7 @@ article {
 	background: 		#eeeeff;
 	border-radius: 		2px;
 	width: 				95%;
+	border:				none;
 }
 
 .text_header, .text_body, .paragraph_body {
@@ -521,8 +523,12 @@ p {
 .button_expand {
 	float:					right;
 	float:					top;
-	height:					0px;
+	height:					18px;
 	z-index:				100;
+	background-image: 		url('/static/icons/collapse.png');
+/*
+	background-size:		contain;
+*/
 }
 
 .section_image {

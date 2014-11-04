@@ -1,6 +1,6 @@
 function insert_plot() {
 	var id = get_max_index('plot_main') + 1
-	insert_new_cell(plot_html(id), 'div_plot_header_' + id)
+	insert_new_cell(plot_html_x(id), 'div_plot_header_' + id)
 	var editor = CodeMirror.fromTextArea(document.getElementById('div_plot_header_' + id), {
 			lineNumbers: true,
 			mode: {name: "python",
@@ -21,11 +21,62 @@ function insert_plot() {
 			autoCloseBrackets: "()[]{}"
 		})
 	$('#div_plot_main_' + id).data('editor', editor)
-	$('#div_plot_main_' + id).data({'sanitise': function(block) { return plot_sanitise(block) }})
+	//$('#div_plot_main_' + id).data({'sanitise': function(block) { return plot_sanitise(block) }})
 	plot_context_menu()
 	return false
 }
 
+function plot_html_x(count) {
+	var $main = $('<div></div>').addClass('plot_main')
+				.attr({'id': 'div_plot_main_' + count, 
+					'data-type': 'plot', 
+					'data-count': count
+				}).data({'sanitise': function(block) { 
+						return plot_sanitise(block) 
+					}
+				})
+
+	$('<div></div>').appendTo($main).addClass('button_expand').
+	attr('id', 'expand_div_plot_main_' + count)
+	.click(function(event) { plot_onclick(event) })
+
+	$('<div></div>').appendTo($main).addClass('plot_caption').
+	attr({'id': 'div_plot_caption_' + count, 
+		'data-type': 'plot',
+		'data-save': true,
+		'data-toc': true,
+		'data-searchable': true, 
+		'data-main': 'div_plot_main_' + count,
+		'data-count': count
+		})
+	.click(function(event) { plot_onclick(event) })
+
+	$('<textarea></textarea>').appendTo($main).addClass('plot_header')
+	.attr({'id': 'textarea_plot_header_' + count,
+	'data-type': 'plot',
+	'data-count': count, 
+	'data-save': true, 
+	'data-searchable': true, 
+	'data-main': 'div_plot_main_' + count})
+	
+	$('<input type="text"/>').appendTo($main).addClass('plot_file')
+	.attr({'id': 'input_plot_file_' + count, 
+	'data-type': 'plot',
+	'data-count': count, 
+	'data-save': true,
+	'data-main': 'div_plot_main_' + count})
+	.keyup(function(event) { code_keypress(event) })
+
+	$('<div></div>').appendTo($main).addClass('plot_body').
+	attr({'id': 'div_plot_body_' + count, 
+		'data-type': 'plot',
+		'data-main': 'div_plot_main_' + count,
+		'data-count': count
+		})
+	.click(function(event) { plot_onclick(event) })
+	return $main
+}
+	
 function plot_context_menu() {
 	var menu = '<div class="context_menu_header">Plot</div>\
 		<ul class="context_menu_list">\
@@ -47,9 +98,11 @@ function copy_plot_cell() {
 	return false
 }
 
-function plot_onclick(target) {
-	if(collapse_collapsible(target) == 'visible') {
-		active_div = $('#' + target.id.replace('expand_', '').replace('_main_', '_header_'))
+function plot_onclick(count) {
+	var target1 = '#textarea_plot_header_' + count
+	var target2 =  '#div_plot_body_' + count
+	if(collapse_collapsible(target2) == 'visible') {
+		active_div = $(target1) //$('#' + target.id.replace('expand_', '').replace('_main_', '_header_'))
 		active_div.focus()
 	} else {
 		active_div = null
@@ -81,9 +134,9 @@ function plot_up(target) {
 }
 
 function plot_render(json) {
-	add_new_cell(plot_html(json.count))
+	add_new_cell(plot_html_x(json.count))
 	$('#div_plot_caption_' + json.count).html(json.content.plot_caption.content)
-	var editor = CodeMirror.fromTextArea(document.getElementById('div_plot_header_' + json.count), {
+	var editor = CodeMirror.fromTextArea(document.getElementById('textarea_plot_header_' + json.count), {
 			lineNumbers: true,
 			mode: {name: "python",
 					version: 2
@@ -103,7 +156,7 @@ function plot_render(json) {
 			autoCloseBrackets: "()[]{}"
 		})
 	editor.setValue(json.content.plot_header.content)
-	$('#div_plot_file_' + json.count).html(json.content.plot_file.content)
+	$('#input_plot_file_' + json.count).val(json.content.plot_file.content)
 	$('#div_plot_body_' + json.count).html(json.content.plot_body.content)
 	$('#div_plot_main_' + json.count).data({'editor': editor, 
 		'sanitise': function(block) { 
@@ -119,7 +172,7 @@ function plot_server(cm) {
 	message.code = cm.getValue()
 	message.filename = $('#docmain').data('file') + '_plot_' + count
 
-	$.post('http://127.0.0.1:8080/', JSON.stringify(message, null, 4), function(data) {
+	$.post(server_address, JSON.stringify(message, null, 4), function(data) {
 		$('#div_plot_body_' + count).html(data.body)
 		$('#div_plot_file_' + count).html(data.out_file)
 		$('#div_plot_body_' + count).scrollTop(100)		// For some reason, this doesn't work...

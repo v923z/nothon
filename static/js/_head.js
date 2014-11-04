@@ -48,7 +48,6 @@ function head_data(div_data) {
 }
 
 function head_sanitise(block) {
-	//block.content.head_header.content = block.content.head_header.content.replace('<br>', '')
 	return block
 }
 
@@ -58,4 +57,36 @@ function head_render(json) {
 	$('#div_head_header_' + json.count).html(json.content.head_header.content)
 	$('#div_head_date_' + json.count).html(json.content.head_date.content)
 	$('#div_head_body_' + json.count).html(json.content.head_body.content)
+}
+
+function head_html_x(count) {
+	var $main = $('<div></div>').addClass('head_main')
+				.attr({'id': 'div_head_main_' + count, 
+					'data-type': 'head', 
+					'data-count': count
+				}).data({'sanitise': function(block) { 
+						return head_sanitise(block) 
+					}
+				})
+
+	$('<div></div>').appendTo($main).addClass('button_expand').
+	attr('id', 'expand_div_head_main_' + count)
+	.click(function(event) { head_onclick(event) })
+
+	$('<input type="text"/>').appendTo($main).addClass('head_header')
+	.attr({'id': 'input_head_header_' + count, 
+	'data-type': 'head',
+	'data-count': count, 
+	'data-save': true,
+	'data-main': 'div_head_main_' + count})
+	.keyup(function(event) { head_keypress(event) })
+
+	$('<textarea></textarea>').appendTo($main).addClass('head_body')
+	.attr({'id': 'textarea_head_body_' + count,
+	'data-type': 'head',
+	'data-count': count, 
+	'data-save': true, 
+	'data-searchable': true, 
+	'data-main': 'div_head_main_' + count})	
+	return $main
 }

@@ -5,13 +5,14 @@ function insert_code() {
 	return false
 }
 
-function code_onclick(target) {
-	if(collapse_collapsible(target) == 'visible') {
-		active_div = $('#' + target.id.replace('expand_', '').replace('_main_', '_body_'))
-		active_div.focus()
-	} else {
-		active_div = null
-	}
+function code_onclick(count) {
+	var target = '#div_code_main_' + count
+	//if($(target).attr( == 'visible') {
+		//active_div = $('#' + target.id.replace('expand_', '').replace('_main_', '_body_'))
+		//active_div.focus()
+	//} else {
+		//active_div = null
+	//}
 }
 
 function code_context_menu() {
@@ -117,15 +118,17 @@ function code_render(json) {
 
 function code_html_x(count) {
 	var $main = $('<div></div>').addClass('code_main')
-	.attr({'id': 'div_code_main_' + count, 
-		'data-type': 'code', 
-		'data-count': count
-	}).data({'sanitise': function(block) { 
-			return code_sanitise(block) 
-		}
-	})
-	
-	$('<div></div>').appendTo($main).addClass('button_expand').attr('id', 'expand_div_code_main_' + count)
+				.attr({'id': 'div_code_main_' + count, 
+					'data-type': 'code', 
+					'data-count': count
+				}).data({'sanitise': function(block) { 
+						return code_sanitise(block) 
+					}
+				})
+				
+	$('<div></div>').appendTo($main).addClass('button_expand').
+	attr('id', 'expand_div_code_main_' + count)
+	.click(function(event) { code_onclick(count) })
 
 	$('<input type="text"/>').appendTo($main).addClass('code_header')
 	.attr({'id': 'input_code_header_' + count, 
