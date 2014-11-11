@@ -1,7 +1,47 @@
 import os
+import os.path
 import simplejson
-from fileutils import get_notebook
+from fileutils import get_notebook, write_to_disc, dir_tree
+import datetime
 
+class Search(object):
+
+	def __init__(self, resource):
+		self.resource = resource
+		pass
+
+	def create_database(self):
+		if not os.path.exists(self.resource.database):
+			database = {'_metadata': {
+				'type': 'database', 
+				'date': datetime.datetime.now().strftime("%a %b %d %Y %H:%M:%S"),
+				'nothon version': self.resource.nothon_version },
+				'files': {}, 
+				'words': {}}
+			
+			database['files'] = {'%d'%(i): f for i, f in enumerate(file_strings('.'))}
+			write_to_disc(simplejson.dumps(database, sort_keys=True, indent=4), self.resource.database)
+		else: pass
+		
+	def update_database(self, fn):
+		create_database(self.resource.database)
+		with open(self., 'r') as fin:
+			db = simplejson.load(fin)
+		files = db['files']
+		for key in files:
+			if files[key] == fn:
+				break
+	
+def file_strings(dir):
+	ret = []
+	for root, dirs, files in os.walk(dir):
+		for f in files:
+			fullpath = os.path.join(root, f)
+			if os.path.splitext(fullpath)[1] == '.note':
+				ret.append(fullpath)
+	ret.sort()
+	return ret
+				
 def find_notes(dir):
 	fn = []
 	for path, subdirs, files in os.walk(dir):

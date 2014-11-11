@@ -17,6 +17,7 @@ from python.new_notebook import *
 from python.notebook import Notebook
 from python.bibliography import Bibliography
 from python.arxiv import Arxiv
+from python.searchutils import Search
 
 from python.template_helpers import *
 
@@ -136,7 +137,9 @@ class Index(object):
 		else:
 			return simplejson.dumps({'success': 'Could not parse command'})
 
-if __name__ == "__main__": app.run()
+if __name__ == "__main__": 
+	Search(nothon_resource).create_database()
+	app.run()
 
 #class StaticMiddleware:
     #"""WSGI middleware for serving static files."""
