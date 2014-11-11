@@ -19,19 +19,20 @@ class Search(object):
 				'files': {}, 
 				'words': {}}
 			
-			database['files'] = {'%d'%(i): f for i, f in enumerate(file_strings('.'))}
+			database['files'] = {f: i for i, f in enumerate(file_strings('.'))}
+			print database['files']
 			write_to_disc(simplejson.dumps(database, sort_keys=True, indent=4), self.resource.database)
 		else: pass
 		
 	def update_database(self, fn):
 		create_database(self.resource.database)
-		with open(self., 'r') as fin:
+		with open(self.resource.database, 'r') as fin:
 			db = simplejson.load(fin)
 		files = db['files']
-		for key in files:
-			if files[key] == fn:
-				break
-	
+		
+		if key in files: indx = files[key]
+		else: indx = max([files[key] for key in files])
+		
 def file_strings(dir):
 	ret = []
 	for root, dirs, files in os.walk(dir):
