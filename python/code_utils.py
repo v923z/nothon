@@ -2,7 +2,7 @@ from os.path import getctime, getmtime
 from time import ctime
 
 def code_arguments(string):
-	sp = string.rstrip('<br>').rstrip('\t').rstrip('\n').split(' ')
+	sp = string.rstrip('\t').rstrip('\n').split(' ')
 	if len(sp) == 0: return False, False, False
 	fn = sp[0]
 	tag, include = False, False
