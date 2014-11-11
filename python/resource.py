@@ -20,6 +20,7 @@ class NothonResource(object):
 					"directory": "",
 					"nothon version": self.nothon_version },
 					"bibliography": {}}
+		self.plot_preamble = {'python': 'x = linspace(-20, 20, 100)'}
 		self.time_format = '%a %b %d %Y %H:%M:%S'
 		self.has_matplotlib = False
 		self.has_pygments = False

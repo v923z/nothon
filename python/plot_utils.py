@@ -51,8 +51,8 @@ class Plot(object):
 				exit_status = 'Could not import matplotlib. Choose gnuplot as the plotting back-end.'
 				
 			else:
-				x = linspace(-10, 10, 100)
 				try:
+					exec(self.resource.plot_preamble.get('python', ''))
 					exec(code)
 					os.chdir(pwd)
 					savefig(out_file)
