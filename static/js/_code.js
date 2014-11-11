@@ -132,12 +132,17 @@ function code_html_x(count) {
 
 	$('<input type="text"/>').appendTo($main).addClass('code_header')
 	.attr({'id': 'input_code_header_' + count, 
-	'data-type': 'code',
-	'data-toc': 'true', 
-	'data-count': count, 
-	'data-save': 'true', 
-	'data-searchable': 'true'})
+		'data-type': 'code',
+		'data-toc': 'true', 
+		'data-count': count, 
+		'data-save': 'true', 
+		'data-searchable': 'true'})
+	.data({'menu': function() { 
+			code_context_menu() 
+		}
+	})
 	.keyup(function(event) { code_keypress(event) })
+	.focus(function() { set_active('input_code_header_' + count) })
 		
 	$('<input type="text"/>').appendTo($main).addClass('code_date')
 	.attr({'id': 'input_code_date_' + count, 
@@ -155,6 +160,10 @@ function code_html_x(count) {
 	'data-searchable': 'true', 
 	'data-expand': 'expand_div_code_main_' + count, 
 	'readonly': 'readonly'}).hide()
+	.data({'menu': function() { 
+			code_context_menu() 
+		}
+	})
 	return $main
 }
 

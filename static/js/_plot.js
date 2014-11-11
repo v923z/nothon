@@ -42,14 +42,19 @@ function plot_html_x(count) {
 
 	$('<div></div>').appendTo($main).addClass('plot_caption').
 	attr({'id': 'div_plot_caption_' + count, 
+		'contenteditable': true,
 		'data-type': 'plot',
 		'data-save': true,
 		'data-toc': true,
 		'data-searchable': true, 
 		'data-main': 'div_plot_main_' + count,
 		'data-count': count
-		})
+	}).data({'menu': function() { 
+				plot_context_menu() 
+			}
+	})
 	.click(function(event) { plot_onclick(event) })
+	.focus(function() { set_active('div_plot_caption_' + count) })
 
 	$('<textarea></textarea>').appendTo($main).addClass('plot_header')
 	.attr({'id': 'textarea_plot_header_' + count,
@@ -58,6 +63,7 @@ function plot_html_x(count) {
 	'data-save': true, 
 	'data-searchable': true, 
 	'data-main': 'div_plot_main_' + count})
+	.focus(function() { set_active('textarea_plot_header_' + count) })
 	
 	$('<input type="text"/>').appendTo($main).addClass('plot_file')
 	.attr({'id': 'input_plot_file_' + count, 
@@ -111,6 +117,7 @@ function plot_onclick(count) {
 
 function plot_caption_keypress(event) {
 	if (event.which === 13) {	// Enter
+		insert_modified(event.target)
 		generate_toc()
 		active_div = document.getElementById(event.target.id.replace('_plot_caption_', '_plot_header_'))
 		active_div.focus()
@@ -134,9 +141,10 @@ function plot_up(target) {
 }
 
 function plot_render(json) {
-	add_new_cell(plot_html_x(json.count))
-	$('#div_plot_caption_' + json.count).html(json.content.plot_caption.content)
-	var editor = CodeMirror.fromTextArea(document.getElementById('textarea_plot_header_' + json.count), {
+	var count = json.count || generate_cell_id()
+	add_new_cell(plot_html_x(count))
+	$('#div_plot_caption_' + count).html(check(json.content.plot_caption))
+	var editor = CodeMirror.fromTextArea(document.getElementById('textarea_plot_header_' + count), {
 			lineNumbers: true,
 			mode: {name: "python",
 					version: 2
@@ -155,14 +163,16 @@ function plot_render(json) {
 			},
 			autoCloseBrackets: "()[]{}"
 		})
-	editor.setValue(json.content.plot_header.content)
-	$('#input_plot_file_' + json.count).val(json.content.plot_file.content)
-	$('#div_plot_body_' + json.count).html(json.content.plot_body.content)
-	$('#div_plot_main_' + json.count).data({'editor': editor, 
+	editor.setValue(check(json.content.plot_header))
+	$('#input_plot_file_' + count).val(check(json.content.plot_file))
+	$('#div_plot_body_' + count).html(check(json.content.plot_body))
+	$('#div_plot_main_' + count).data({'editor': editor, 
 		'sanitise': function(block) { 
 			return plot_sanitise(block) 
 		}
 	})
+	add_modified_created('#div_plot_main_' + count, json)
+	// TODO: Fetch image from disc
 }
 
 function plot_server(cm) {
@@ -171,7 +181,7 @@ function plot_server(cm) {
 	var message = _create_message('plot')
 	message.code = cm.getValue()
 	message.filename = $('#docmain').data('file') + '_plot_' + count
-
+	insert_modified('#div_plot_body_' + count)
 	$.post(server_address, JSON.stringify(message, null, 4), function(data) {
 		$('#div_plot_body_' + count).html(data.body)
 		$('#div_plot_file_' + count).html(data.out_file)

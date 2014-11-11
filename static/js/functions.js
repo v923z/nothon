@@ -100,7 +100,8 @@ function message_handler(req) {
 
 function set_active(id) {
 	active_div = id
-	eval($(id).data('type') + '_context_menu()')
+	//eval($(id).data('type') + '_context_menu()')
+	$('#' + id).data('menu')()
 	var main = '#' + $(id).data('main')
 	$('#document_contents').find('li > a').each(function() {
 		$(this).removeClass('currently_active')
@@ -112,8 +113,10 @@ function block_content(elem) {
 	var block = new Object()
 	
 	block.type = $(elem).data('type')
-	console.log(block.type)
 	block.count = $(elem).data('count')
+	block.created = $(elem).data('created')
+	block.modified = $(elem).data('modified')
+	
 	//block.id = $(elem).attr('id')
 	block.content = {}
 	$(elem).children().each( function() {
@@ -371,22 +374,22 @@ function toggle_context_menu() {
 }
 
 function collapse_collapsible(target) {
-	var state = 'visible'
-	$('#' + target.id.replace('expand_', '')).find('*').each(function() {
-		if($(this).data('expand') === target.id) {
-			$(this).toggle()
-			if(!$(this).is(':visible')) {
-				state = 'hidden'
-			}
-		}
-	})
-	if(state === 'hidden') {
-		$('#' + target.id).children().attr('src', '/static/icons/expand.png')
-	}
-	else {
-		$('#' + target.id).children().attr('src', '/static/icons/collapse.png')
-	}
-	return state
+	//var state = 'visible'
+	//$('#' + target.id.replace('expand_', '')).find('*').each(function() {
+		//if($(this).data('expand') === target.id) {
+			//$(this).toggle()
+			//if(!$(this).is(':visible')) {
+				//state = 'hidden'
+			//}
+		//}
+	//})
+	//if(state === 'hidden') {
+		//$('#' + target.id).children().attr('src', '/static/icons/expand.png')
+	//}
+	//else {
+		//$('#' + target.id).children().attr('src', '/static/icons/collapse.png')
+	//}
+	//return state
 }
 
 function topmenu_hide() {
@@ -472,6 +475,8 @@ function insert_new_cell(cell, to_activate) {
 	//set_active(document.getElementById(to_activate))
 	$('#' + to_activate).focus()
 	$('#' + to_activate).scrollTop()
+	var cdate = $(event.target).data('main')
+	$('#' + cdate).attr({'created': get_date()})
 }
 
 function generate_toc() {
@@ -566,4 +571,37 @@ function popout_cell() {
 	console.log($('#cell_dialog_content').html())
 	$('#cell_dialog').dialog('open')
 	return false
+}
+
+function generate_cell_id() {
+	// Generates a new ID for a newly created cell
+	// Produces a string of the form time-rand
+	// where the time is the time (to ms) since the Epoch
+	// and rand is a 6-digit random number
+	var t = new Date()
+	return t.getTime() + '-' + (Math.round(Math.random()*1e6 + 1e6) + '').slice(1)
+}
+
+function check(what) {
+	// Returns an empty string, even if the object doesn't exist
+	if(typeof(what) === 'undefined') return ''
+	else return what.content
+}
+
+function get_date() {
+	// Convenience function
+	var t = new Date()
+	return t.toTimeString()
+}
+
+function insert_modified(target) {
+	var main = $(target).data('main')
+	$('#' + main).data('modified', get_date())
+}
+
+function add_modified_created(target, json) {
+	var modified = '', created = ''
+	if(json.modified) modified = json.modified
+	if(json.created) created = json.created
+	$(target).data({'modified': json.modified || '', 'created': created})
 }

@@ -1,7 +1,7 @@
 function insert_head() {
-	var id = get_max_index('head_main') + 1
+	var id = generate_cell_id() //get_max_index('head_main') + 1
 	head_context_menu()
-	insert_new_cell(head_html(id), 'div_head_header_' + id)
+	insert_new_cell(head_html_x(id), 'div_head_header_' + id)
 	return false
 }
 
@@ -26,10 +26,12 @@ function head_context_menu() {
 function head_keypress(event) {
 	if (event.which === 13 && event.shiftKey) {	// Enter
 		head_data(event.target)
+		insert_modified(event.target)
 		insert_head()
 		return false
 	}
 	else if (event.which === 13) {				// Enter
+		insert_modified(event.target)
 		head_data(event.target)
 		return false
 	}
@@ -37,14 +39,24 @@ function head_keypress(event) {
 	return true
 }
 
-function head_data(div_data) {
-	var message = create_message(div_data, "head")
-	message.body = 'div_head_body_' + get_num(div_data)
-	message.container = 'div_head_container_' + get_num(div_data)
-	message.date = 'div_head_date_' + get_num(div_data)
+function head_data(target) {
+	var message = _create_message('head')
+	message.content = $(target).val()
+	message.count = $(target).data('count')
 	message.sub_type = 'notebook'
-	message.content = message.content.replace('<br>', '')
-    xml_http_post("http://127.0.0.1:8080/", JSON.stringify(message), message_handler)
+    xml_http_post(server_address, JSON.stringify(message), head_handler)
+}
+
+function head_handler(req) {
+	var message = JSON.parse(req.responseText)
+	$('#input_head_date_' + message.count).val(message.date)
+	if(message.body.length > 0) {
+		$('#textarea_head_body_' + message.count).val(message.body)
+		$('#textarea_head_body_' + message.count).show()
+	} else {
+		$('#textarea_head_body_' + message.count).hide()
+		$('#input_head_date_' + message.count).show()
+	}
 }
 
 function head_sanitise(block) {
@@ -53,10 +65,12 @@ function head_sanitise(block) {
 
 
 function head_render(json) {
-	add_new_cell(head_html(json.count))
-	$('#div_head_header_' + json.count).html(json.content.head_header.content)
-	$('#div_head_date_' + json.count).html(json.content.head_date.content)
-	$('#div_head_body_' + json.count).html(json.content.head_body.content)
+	var count = json.count || generate_cell_id()
+	add_new_cell(head_html_x(count))
+	$('#input_head_header_' + count).val(check(json.content.head_header))
+	$('#input_head_date_' + count).html(check(json.content.head_date))
+	$('#textarea_head_body_' + count).val(check(json.content.head_body))
+	add_modified_created('#div_head_main_' + count, json)
 }
 
 function head_html_x(count) {
@@ -81,6 +95,12 @@ function head_html_x(count) {
 	'data-main': 'div_head_main_' + count})
 	.keyup(function(event) { head_keypress(event) })
 
+	//$('<input type="text"/>').appendTo($main).addClass('head_date')
+	//.attr({'id': 'input_head_date_' + count, 
+		//'data-type': 'head'
+		//'data-save': true,
+		//'data-count': count})
+		
 	$('<textarea></textarea>').appendTo($main).addClass('head_body')
 	.attr({'id': 'textarea_head_body_' + count,
 	'data-type': 'head',
