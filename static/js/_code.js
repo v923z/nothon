@@ -1,5 +1,5 @@
 function insert_code() {
-	var id = get_max_index('code_main') + 1
+	var id = generate_cell_id()
 	insert_new_cell(code_html_x(id), 'input_code_header_' + id)
 	code_context_menu()
 	return false

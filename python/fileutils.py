@@ -5,6 +5,8 @@ import datetime
 import time
 from random import randrange
 from collections import defaultdict
+import base64
+
 
 def get_file_from_disc(file):
 	# TODO: resolve relative paths
@@ -248,3 +250,16 @@ def make_bibliography():
 	
 	return {'content' : {'content' : bib_str} }
 	
+def get_image(fn, directory, message):
+	try:
+		fn = get_file_path(fn, directory)
+		# TODO: figure out image size, deal with SVG files
+		ext = os.path.splitext(fn)[1]
+		if ext.lower() in ('.png', '.jpg', '.jpeg', '.bmp', '.tiff'):
+			with open(fn, "rb") as image_file:
+				message['status'] = 'success'
+				message['image_data'] = base64.b64encode(image_file.read())
+	except IOError:
+		message['status'] = 'failure'
+
+	return message

@@ -69,5 +69,4 @@ class Plot(object):
 		return {'success': 'success', 'out_file': out_file, 'body': exit_status}
 
 	def render(self, dictionary, directory, render):
-		dictionary['content']['plot_body'] = {'content' : self.read_plot(dictionary['content']['plot_file']['content'])}
 		return dictionary

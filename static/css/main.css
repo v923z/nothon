@@ -314,7 +314,7 @@ article {
 	border-width: 		0 10px 0 0;
 }
 
-.code_error, .head_error {
+.code_error, .head_error, .plot_error {
 	color: 				#990000;
 	font-weight: 		bold;
 }

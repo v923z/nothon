@@ -1,5 +1,5 @@
 function insert_head() {
-	var id = generate_cell_id() //get_max_index('head_main') + 1
+	var id = generate_cell_id()
 	head_context_menu()
 	insert_new_cell(head_html_x(id), 'div_head_header_' + id)
 	return false

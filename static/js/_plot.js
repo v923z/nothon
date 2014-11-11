@@ -1,5 +1,5 @@
 function insert_plot() {
-	var id = get_max_index('plot_main') + 1
+	var id = generate_cell_id()
 	insert_new_cell(plot_html_x(id), 'div_plot_header_' + id)
 	var editor = CodeMirror.fromTextArea(document.getElementById('div_plot_header_' + id), {
 			lineNumbers: true,
@@ -17,8 +17,7 @@ function insert_plot() {
 						insert_plot()
 						generate_toc()
 					}					
-			},
-			autoCloseBrackets: "()[]{}"
+			}
 		})
 	$('#div_plot_main_' + id).data('editor', editor)
 	//$('#div_plot_main_' + id).data({'sanitise': function(block) { return plot_sanitise(block) }})
@@ -157,7 +156,7 @@ function plot_render(json) {
 					},
 				'Shift-Enter' : function(cm) { 
 						plot_server(cm)
-						insert_plot()
+						//insert_plot()
 						generate_toc()
 					}					
 			},
@@ -172,7 +171,25 @@ function plot_render(json) {
 		}
 	})
 	add_modified_created('#div_plot_main_' + count, json)
-	// TODO: Fetch image from disc
+	insert_modified('#div_plot_body_' + count)
+
+	var message = _create_message('image')
+	message.count = count	
+	message.image_file = check(json.content.plot_file)
+	
+	$.post(server_address, JSON.stringify(message, null, 4), function(data) {
+		if(data.status === 'success') {
+			$('<img>',{
+				'src': 'data:image/png;base64,' + data.image_data,
+				'alt': data.image_file })
+			.appendTo('#div_plot_body_' + count)
+			.attr({'id': 'image-' + count})
+			.addClass('plot_image')
+		} else {
+			$('<div>Failed to fetch image file from disc</div>').appendTo('#div_plot_body_' + count)
+			.addClass('plot_error')
+		}
+	}, 'json');
 }
 
 function plot_server(cm) {
@@ -183,6 +200,7 @@ function plot_server(cm) {
 	message.filename = $('#docmain').data('file') + '_plot_' + count
 	insert_modified('#div_plot_body_' + count)
 	$.post(server_address, JSON.stringify(message, null, 4), function(data) {
+		// There has to be some sort of error checking here!
 		$('#div_plot_body_' + count).html(data.body)
 		$('#div_plot_file_' + count).html(data.out_file)
 		$('#div_plot_body_' + count).scrollTop(100)		// For some reason, this doesn't work...

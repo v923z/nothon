@@ -13,7 +13,7 @@ from head_utils import Head
 from code_utils import Code
 from text_utils import Text, Section, Paragraph
 from save_utils import Zip, Tar, Latex, Markdown
-from fileutils import notebook_folder, get_notebook, write_notebook, create_notebook_folder, _save_notebook
+from fileutils import notebook_folder, get_notebook, write_notebook, create_notebook_folder, _save_notebook, get_image
 from new_notebook import new_notebook
 
 
@@ -28,7 +28,6 @@ class Notebook(object):
 		command = message.get('command')
 		print 'Handling notebook command %s %s'%(command, datetime.datetime.now().strftime("%H:%M:%S.%f"))
 		if command in ('plot', 'head', 'code'):
-			print command.title()
 			exec('obj = %s(self.resource)'%(command.title()))
 			result = obj.handler(message)
 
@@ -52,8 +51,11 @@ class Notebook(object):
 			result = self.render_docmain(message.get('address'))
 			
 		elif command in ('remove_notebook'):
-			result = self.remote_notebook(message)
-			
+			result = self.remove_notebook(message)
+		
+		elif command in ('get_image'):
+			result = get_image(message.get('image_file', ''), '', message)
+				
 		else:
 			result = {'success': 'undefined command: %s'%(command)}
 			
