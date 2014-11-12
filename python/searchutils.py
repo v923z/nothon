@@ -47,10 +47,11 @@ class Search(object):
 		
 		
 	def add_content_to_db(self, content, index, words):
-		splinters = content.replace('<br>', '').split() #translate(string.maketrans("",""), string.punctuation).split()
+		# TODO: the HTML tags have to be removed!
+		splinters = content.replace('<br>', '').split()
 		for w in splinters:
-			word = w.lower().replace(',', '').replace('.', '').replace(':', '')
-			words[word] = list(set(words.get(word, [index])))
+			word = w.lower().rstrip(',.:;!?')
+			words[word] = list(set(words.get(word, [index]) + [index]))
 		
 		return words
 
