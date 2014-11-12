@@ -3,36 +3,57 @@ import os.path
 import simplejson
 from fileutils import get_notebook, write_to_disc, dir_tree
 import datetime
+import string
 
 class Search(object):
 
 	def __init__(self, resource):
 		self.resource = resource
-		pass
-
-	def create_database(self):
 		if not os.path.exists(self.resource.database):
 			database = {'_metadata': {
 				'type': 'database', 
 				'date': datetime.datetime.now().strftime("%a %b %d %Y %H:%M:%S"),
-				'nothon version': self.resource.nothon_version },
-				'files': {}, 
-				'words': {}}
-			
-			database['files'] = {f: i for i, f in enumerate(file_strings('.'))}
-			print database['files']
+				'nothon version': self.resource.nothon_version }}
+			database['files'] = {f: i for i, f in enumerate(file_strings(self.resource.base_path))}
 			write_to_disc(simplejson.dumps(database, sort_keys=True, indent=4), self.resource.database)
+			
+		self.db = get_notebook(self.resource.database)
+		pass
+
+	def create_database(self):
+		if not self.db.get('words', False):
+			for fn in self.db['files']: self.update_database(fn)
+			
+			write_to_disc(simplejson.dumps(self.db, sort_keys=True, indent=4), self.resource.database)
 		else: pass
 		
 	def update_database(self, fn):
-		create_database(self.resource.database)
-		with open(self.resource.database, 'r') as fin:
-			db = simplejson.load(fin)
-		files = db['files']
+		files = self.db.get('files', {})
+		words = self.db.get('words', {})
 		
-		if key in files: indx = files[key]
-		else: indx = max([files[key] for key in files])
+		if fn in files: index = files[fn]
+		else: 
+			index = max([files[key] for key in files])
+			files[fn] = index
+			
+		nb = get_notebook(fn)
+		for cell in nb.get('notebook', []):
+			for subcell in cell.get('content'):
+				if cell['content'][subcell].get('searchable', 'false') in ('true'):
+					content = cell['content'][subcell].get('content', '')
+					words = self.add_content_to_db(content, index, words)
 		
+		self.db['words'] = words
+		
+		
+	def add_content_to_db(self, content, index, words):
+		splinters = content.replace('<br>', '').split() #translate(string.maketrans("",""), string.punctuation).split()
+		for w in splinters:
+			word = w.lower().replace(',', '').replace('.', '').replace(':', '')
+			words[word] = list(set(words.get(word, [index])))
+		
+		return words
+
 def file_strings(dir):
 	ret = []
 	for root, dirs, files in os.walk(dir):
@@ -51,19 +72,3 @@ def find_notes(dir):
 				fn.append(os.path.join(path, name))
 			
 	return fn
-
-def find_string_in_file(filelist, string):
-	flist = []
-	for fn in filelist:
-		ret = inspect_file(fn, string)
-		if ret: flist.append(ret)
-	return flist
-
-def inspect_file(fn, string):
-	content = get_notebook(fn)
-	for element in content:
-		for cell_name in element['content']:
-			cell = element['content'][cell_name]
-			if 'props' in cell and 'searchable' in cell['props'].split(';'):
-				if cell['content'].find(string) > -1: return fn
-	return False
