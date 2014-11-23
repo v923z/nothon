@@ -105,6 +105,11 @@ article {
 	overflow-y: 		scroll;
 }
 
+.article_expanded {
+	width:				98%;
+	left: 				20px;
+}
+
 #top_menu {
 	position: 			fixed;
 	top: 				0px;

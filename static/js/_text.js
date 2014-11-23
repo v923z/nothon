@@ -1,5 +1,5 @@
 function insert_text() {
-	var id = get_max_index('text_main') + 1
+	var id = generate_cell_id()
 	insert_new_cell(text_html(id), 'div_text_header_' + id)
 	text_context_menu()
 	return false

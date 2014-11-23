@@ -71,16 +71,16 @@ $for f in create_funcs + handler_funcs:
 	</li>
 	<li>Notebook
 		<ul>
-			<li onmouseup='open_new_notebook_dialog("New notebook")'>New</li>
-			<li onmouseup='save_notebook("save")'>Save</li>
-			<li onmouseup='save_notebook_as("save_notebook_as")'>Save as</li>
-			<li onmouseup='save_notebook_as("rename_notebook")'>Rename</li>
+			<li onmouseup='open_new_notebook_dialog("New notebook")' onmousedown='return false'>New</li>
+			<li onmouseup='save_notebook("save")' onmousedown='return false'>Save</li>
+			<li onmouseup='save_notebook_as("save_notebook_as")' onmousedown='return false'>Save as</li>
+			<li onmouseup='save_notebook_as("rename_notebook")' onmousedown='return false'>Rename</li>
 			<hr>
-			<li onmouseup='expand_collapse_all("expand");'>Expand all</li>
-			<li onmouseup='expand_collapse_all("collapse");'>Collapse all</li>
+			<li onmouseup='expand_collapse_all("expand");' onmousedown='return false'>Expand all</li>
+			<li onmouseup='expand_collapse_all("collapse");' onmousedown='return false'>Collapse all</li>
 			<hr>
-			<li onmouseup='save_notebook("latex");'>LaTeX</li>
-			<li onmouseup='save_notebook("markdown");'>Markdown</li>
+			<li onmouseup='save_notebook("latex");' onmousedown='return false'>LaTeX</li>
+			<li onmouseup='save_notebook("markdown");' onmousedown='return false'>Markdown</li>
 			<li onmouseup='save_html(this);'>HTML</li>
 			<li>Archive
 				<ul>
@@ -93,28 +93,28 @@ $for f in create_funcs + handler_funcs:
 	</li>
 	<li>Cell
 		<ul>
-			<li onmouseup='insert_text()'>Section</li>
-			<li onmouseup='insert_paragraph()'>Paragraph</li>
-			<li onmouseup='insert_plot()'>Plot</li>
-			<li onmouseup='insert_code()'>Code</li>
-			<li onmouseup='insert_head()'>Head</li>
+			<li onmouseup='return insert_text()' onmousedown='return false'>Section</li>
+			<li onmouseup='return insert_paragraph()' onmousedown='return false'>Paragraph</li>
+			<li onmouseup='return insert_plot()' onmousedown='return false'>Plot</li>
+			<li onmouseup='return insert_code()' onmousedown='return false'>Code</li>
+			<li onmouseup='return insert_head()' onmousedown='return false'>Head</li>
 			<hr>
-			<li onmouseup='delete_block()'>Delete</li>
-			<li onmouseup='recover_block()'>Recover</li>			
+			<li onmouseup='delete_cell()'>Delete</li>
+			<li onmouseup='recover_cell()'>Recover</li>			
 		</ul>
 	</li>
 	<li>Menu
 		<ul>
-			<li onmouseup='toggle_context_menu();'>Context</li>
-			<li onmouseup='topmenu_hide();'>Hide</li>
-			<li onmouseup='trashbin_image_toggle();'>Trashbin</li>
-			<li onmouseup='toggle_all();'>Toggle all</li>
+			<li onmouseup='return toggle_context_menu()' onmousedown='return false'>Context</li>
+			<li onmouseup='return topmenu_hide()' onmousedown='return false'>Hide</li>
+			<li onmouseup='return trashbin_image_toggle()' onmousedown='return false'>Trashbin</li>
+			<li onmouseup='toggle_all()' onmousedown='return false'>Toggle all</li>
 		</ul>
 	</li>
 	<li>Tools
 		<ul>
-			<li onmouseup='toggle_calendar()'>Calendar</li>
-			<li onmouseup='open_calculator(); return false;' onmousedown='return false;'>Calculator</li>
+			<li onmouseup='return toggle_calendar()' onmousedown='return false'>Calendar</li>
+			<li onmouseup='open_calculator()' onmousedown='return false;'>Calculator</li>
 		</ul>
 	</li>
 	<li>Help

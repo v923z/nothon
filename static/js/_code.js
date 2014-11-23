@@ -132,6 +132,7 @@ function code_html_x(count) {
 
 	$('<input type="text"/>').appendTo($main).addClass('code_header')
 	.attr({'id': 'input_code_header_' + count, 
+		'data-main': 'div_code_main_' + count,
 		'data-type': 'code',
 		'data-toc': 'true', 
 		'data-count': count, 

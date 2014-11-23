@@ -54,23 +54,6 @@ function move(where) {
 	$active.focus()		// This doesn't work!
 }
 
-function get_index(obj) {
-	var num = obj.split("_")
-	return parseInt(num[num.length-1])
-}
-
-function get_num(divide) {
-	return get_index(divide.id)
-}
-
-function get_max_index(className) {
-	var num = 0
-	$('.' + className).each( function() {
-		if(num < get_index($(this).attr('id'))) num = get_index($(this).attr('id'))
-	})
-	return num
-}
-
 function _create_message(command) {
 	var message = new Object()
 	var aux = new Object()
@@ -106,7 +89,11 @@ function message_handler(req) {
 }
 
 function set_active(id) {
-	$('#docmain').attr('data-active', id)
+	$('body').attr({'data-active': id})
+	if(id === null) {
+		$('#context_menu').html('')
+		return
+	}
 	$('#' + id).data('menu')()
 	var main = '#' + $(id).data('main')
 	$('#document_contents').find('li > a').each(function() {
@@ -210,23 +197,19 @@ function save_html(target) {
     //$(target).parent().hide()
 }
 
-function delete_block() {
-	if(active_div) {
-		var elem = active_div.parentNode
-		document.getElementById('trash').appendChild(elem)
-		active_div = null
+function delete_cell() {
+	var $active = get_active_cell()
+	if($active) {
+		$('#trash').prepend(get_active_main())
 	}
 	document.getElementById('trash_image').style.backgroundImage = 'url(static/css/trashbin_full.png)'
 	generate_toc()
-	$('#context_menu').html('')
+	set_active(null)
 }
 
-function recover_block() {
-	if(active_div) {
-		var elem = active_div.parentNode
-		if(elem && elem.parentNode.id == 'trash') {
-			document.getElementById('docmain').appendChild(elem)
-		}
+function recover_cell() {
+	if(get_active_main_in_trash()) {
+		$('#docmain').append(get_active_main_in_trash())
 	}
 	if(document.getElementById('trash').childNodes.length == 1) {
 		document.getElementById('trash_image').style.backgroundImage = 'url(static/css/trashbin_empty.png)'
@@ -341,13 +324,11 @@ function dir_keypress(event) {
 function toggle_document_tree() {
 	if($('#aside').css('display') == 'block') {
 		$('#aside').css('display', 'none')
-		// TODO: find out how to retrieve default properties
-		$('#article').css('width', '98%')
+		$('#article').addClass('article_expanded')
 		$('#aside_switch').html('>>')
-	}
-	else {
+	} else {
 		$('#aside').css('display', 'block')
-		$('#article').css('width', '78%')
+		$('#article').removeClass('article_expanded')
 		$('#aside_switch').html('<<')
 	}
 }
@@ -377,6 +358,7 @@ function redirect(address) {
 
 function toggle_context_menu() {
 	$('#context_menu').toggle()
+	return false
 }
 
 function collapse_collapsible(target) {
@@ -402,6 +384,7 @@ function topmenu_hide() {
 	if($('#top_menu').css('top') == '0px') {
 		$('#top_menu').css('top', '-=20px')
 	}
+	return false
 }
 
 function topmenu_over() {
@@ -434,10 +417,12 @@ function expand_collapse_all(action) {
 
 function trashbin_image_toggle() {
 	$('#trash_image').toggle()
+	return false
 }
 
 function toggle_trashbin() {
 	$('#trash').toggle()
+	return false
 }
 
 function toggle_all() {
@@ -472,7 +457,7 @@ function add_new_cell(html) {
 function insert_new_cell(cell, to_activate) {
 	var $active = get_active_cell()
 	if($active) {
-		$('#' + $active.data('main')).after(cell)
+		get_active_main().after(cell)
 	}
 	else {
 		add_new_cell(cell)
@@ -485,9 +470,26 @@ function insert_new_cell(cell, to_activate) {
 }
 
 function get_active_cell() {
-	var active = $('#docmain').data('active')
+	var active = $('body').attr('data-active')
 	if(active && $('#docmain').has('#' + active).length) {
 		return $('#' + active)
+	} else {
+		return null
+	}
+}
+
+function get_active_main() {
+	if(get_active_cell()) {
+		return $('#' + get_active_cell().attr('data-main'))
+	} else {
+		return null
+	}
+}
+
+function get_active_main_in_trash() {
+	var active = $('body').attr('data-active')
+	if(active && $('#trash').has('#' + active).length) {
+		return $('#' + $('#' + active).attr('data-main'))
 	} else {
 		return null
 	}
@@ -575,14 +577,13 @@ $(function() {
 });
 
 function popout_cell() {
-	if(!active_div) return false
-	$('#cell_dialog_content').html($('#' + $(active_div).data('main')).html())
+	if(!get_active_main()) return false
+	$('#cell_dialog_content').html(get_active_main().html())
 	$('#cell_dialog_content').find('*').each(function() {
 		if($(this).attr('id')) {
 			$(this).attr('id', $(this).attr('id') + '_popout')
 		}
 	})
-	console.log($('#cell_dialog_content').html())
 	$('#cell_dialog').dialog('open')
 	return false
 }

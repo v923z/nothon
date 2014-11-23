@@ -63,4 +63,5 @@ $(function() {
 
 function open_calculator() {
 	$('#calculator_dialog').dialog('open')
+	return false
 }
