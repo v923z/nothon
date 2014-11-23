@@ -40,7 +40,7 @@ function section_onclick(target) {
 
 function section_sanitise(block) {
 	var dtemp = $('<div/>', {'id': 'dtemp'}).appendTo('#trash')
-	console.log(block)
+	// We have to remove all codemirror and editor instances
 	$('#dtemp').html(block.content.section_body.content)
 	strip_mathjax_for_save($('#dtemp'))
 	strip_images_for_save($('#dtemp'))
@@ -154,9 +154,10 @@ function math_editor(id) {
 						render_math(cm)
 					},
 				'Shift-Enter' : function(cm) { 
-					// This should close the editor
 						render_math(cm)
-						cm.getWrapperElement().style.display = 'none'
+						var $ta = $('#' + cm.getTextArea().id)
+						cm.toTextArea()
+						$ta.remove()
 					}
 			},
 			autoCloseBrackets: "()[]{}"
