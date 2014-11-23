@@ -5,7 +5,6 @@ function insert_plot() {
 	$('#textarea_plot_header_' + id).val('')
 	var editor = plot_editor('textarea_plot_header_' + id)
 	$('#div_plot_main_' + id).data('editor', editor)
-	$('#div_plot_main_' + id).data({'sanitise': function(block) { return plot_sanitise(block) }})
 	plot_context_menu()
 	return false
 }

@@ -116,18 +116,21 @@ function block_content(elem) {
 		if($(this).parent().get(0) === $(elem).get(0)) {
 			if($(this).data('save')) {
 				var sub_block = new Object()
-				if($(this).is('textarea') || $(this).is('input')) sub_block.content = $(this).val()
-				else sub_block.content = $(this).html()
+				if($(this).is('textarea') || $(this).is('input')) {
+					sub_block.content = $(this).val()
+				} else {
+					sub_block.content = $(this).html()
+				}
 				//sub_block.id = $(this).attr('id')
 				if($(this).is(':visible')) sub_block.collapsed = "false"
 				if($(this).data('searchable')) sub_block.searchable = "true"
 				if($(this).data('toc')) sub_block.toc = "true"
+				// This is not quite safe, given that an element can belong to multiple classes
 				block.content[$(this).attr('class')] = sub_block
 			}
 		}
 	})
-	console.log(block)
-	if(block.type === 'plot' || block.type === 'code') {
+	if(block.type === 'plot' || block.type === 'code' || block.type === 'section') {
 		block = $(elem).data('sanitise')(block)
 	} else {
 		eval('block = ' + block.type + '_sanitise(block)')

@@ -89,10 +89,14 @@ function head_html_x(count) {
 
 	$('<input type="text"/>').appendTo($main).addClass('head_header')
 	.attr({'id': 'input_head_header_' + count, 
-	'data-type': 'head',
-	'data-count': count, 
-	'data-save': true,
-	'data-main': 'div_head_main_' + count})
+		'data-type': 'head',
+		'data-count': count, 
+		'data-save': true,
+		'data-main': 'div_head_main_' + count})
+	.data({'menu': function() { 
+				head_context_menu() 
+			}
+	})
 	.keyup(function(event) { head_keypress(event) })
 	.focus(function() { set_active('input_head_header_' + count) })
 
@@ -104,10 +108,10 @@ function head_html_x(count) {
 		
 	$('<textarea></textarea>').appendTo($main).addClass('head_body')
 	.attr({'id': 'textarea_head_body_' + count,
-	'data-type': 'head',
-	'data-count': count, 
-	'data-save': true, 
-	'data-searchable': true, 
-	'data-main': 'div_head_main_' + count})	
+		'data-type': 'head',
+		'data-count': count, 
+		'data-save': true, 
+		'data-searchable': true, 
+		'data-main': 'div_head_main_' + count})	
 	return $main
 }

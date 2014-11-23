@@ -199,6 +199,13 @@ article {
     border-bottom: 		2px solid #ac9;
 }
 
+.math_editor {
+	font-size: 			12pt;
+	background: 		#eeeeff;
+	border-radius: 		2px;
+	width: 				100%;
+}
+
 .plot_main, .head_main, .code_main, .text_main, .paragraph_main {
 }
 
@@ -251,7 +258,6 @@ article {
 .plot_body:focus {
 	border: 			solid blue;
 	border-width: 		0 10px 0 0;
-	contenteditable: 	true;
 }
 
 .plot_file {
@@ -337,33 +343,33 @@ article {
 	border:				none;
 }
 
-.text_header, .text_body, .paragraph_body {
+.section_header, .section_body, .paragraph_body {
 	font-size: 			12pt;
 	color: 				#008800;
 	border-radius: 		2px;
 	width: 				95%;
 }
 
-.text_header {
+.section_header {
 	background: 		#d3e8da;
 	min-height:  		1.2em;
 	font-weight: 		bold;
 }
 
-.text_body, .paragraph_body {
+.section_body, .paragraph_body {
 	background: 		#eeffee;
 	margin-top: 		1px;
 	min-height:  		1.2em;
 	word-wrap: 			break-word;
 }
 
-.text_header:focus {
+.section_header:focus {
 	border: 			solid green;
 	border-width: 		0 10px 0 0;
 	
 }
 
-.text_body:focus {
+.section_body:focus {
 	border: 			solid green;
 	border-width: 		0 10px 0 0;	
 }
