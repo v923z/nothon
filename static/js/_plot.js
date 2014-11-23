@@ -1,26 +1,11 @@
 function insert_plot() {
 	var id = generate_cell_id()
-	insert_new_cell(plot_html_x(id), 'div_plot_header_' + id)
-	var editor = CodeMirror.fromTextArea(document.getElementById('div_plot_header_' + id), {
-			lineNumbers: true,
-			mode: {name: "python",
-					version: 2
-				},
-			matchBrackets: true,
-			extraKeys: {
-				"Ctrl-K" : "toggleComment",
-				'Ctrl-Enter' : function(cm) { 
-						plot_server(cm)
-					},
-				'Shift-Enter' : function(cm) { 
-						plot_server(cm)
-						insert_plot()
-						generate_toc()
-					}					
-			}
-		})
+	insert_new_cell(plot_html_x(id), 'div_plot_caption_' + id)
+	// We should insert here any extra text (default plot options)
+	$('#textarea_plot_header_' + id).val('')
+	var editor = plot_editor('textarea_plot_header_' + id)
 	$('#div_plot_main_' + id).data('editor', editor)
-	//$('#div_plot_main_' + id).data({'sanitise': function(block) { return plot_sanitise(block) }})
+	$('#div_plot_main_' + id).data({'sanitise': function(block) { return plot_sanitise(block) }})
 	plot_context_menu()
 	return false
 }
@@ -35,12 +20,12 @@ function plot_html_x(count) {
 					}
 				})
 
-	$('<div></div>').appendTo($main).addClass('button_expand').
-	attr('id', 'expand_div_plot_main_' + count)
+	$('<div></div>').appendTo($main).addClass('button_expand')
+	.attr('id', 'expand_div_plot_main_' + count)
 	.click(function(event) { plot_onclick(event) })
 
-	$('<div></div>').appendTo($main).addClass('plot_caption').
-	attr({'id': 'div_plot_caption_' + count, 
+	$('<div></div>').appendTo($main).addClass('plot_caption')
+	.attr({'id': 'div_plot_caption_' + count, 
 		'contenteditable': true,
 		'data-type': 'plot',
 		'data-save': true,
@@ -118,8 +103,7 @@ function plot_caption_keypress(event) {
 	if (event.which === 13) {	// Enter
 		insert_modified(event.target)
 		generate_toc()
-		active_div = document.getElementById(event.target.id.replace('_plot_caption_', '_plot_header_'))
-		active_div.focus()
+		document.getElementById(event.target.id.replace('_plot_caption_', '_plot_header_')).focus()
 		return false
 	} else {
 		return true
@@ -139,11 +123,8 @@ function plot_up(target) {
     return false
 }
 
-function plot_render(json) {
-	var count = json.count || generate_cell_id()
-	add_new_cell(plot_html_x(count))
-	$('#div_plot_caption_' + count).html(check(json.content.plot_caption))
-	var editor = CodeMirror.fromTextArea(document.getElementById('textarea_plot_header_' + count), {
+function plot_editor(id) {
+	var editor = CodeMirror.fromTextArea(document.getElementById(id), {
 			lineNumbers: true,
 			mode: {name: "python",
 					version: 2
@@ -162,6 +143,14 @@ function plot_render(json) {
 			},
 			autoCloseBrackets: "()[]{}"
 		})
+	return editor
+}
+
+function plot_render(json) {
+	var count = json.count || generate_cell_id()
+	add_new_cell(plot_html_x(count))
+	$('#div_plot_caption_' + count).html(check(json.content.plot_caption))
+	var editor = plot_editor('textarea_plot_header_' + count)
 	editor.setValue(check(json.content.plot_header))
 	$('#input_plot_file_' + count).val(check(json.content.plot_file))
 	$('#div_plot_body_' + count).html(check(json.content.plot_body))
@@ -171,7 +160,6 @@ function plot_render(json) {
 		}
 	})
 	add_modified_created('#div_plot_main_' + count, json)
-	insert_modified('#div_plot_body_' + count)
 
 	var message = _create_message('image')
 	message.count = count	
@@ -202,7 +190,7 @@ function plot_server(cm) {
 	$.post(server_address, JSON.stringify(message, null, 4), function(data) {
 		// There has to be some sort of error checking here!
 		$('#div_plot_body_' + count).html(data.body)
-		$('#div_plot_file_' + count).html(data.out_file)
+		$('#input_plot_file_' + count).val(data.out_file)
 		$('#div_plot_body_' + count).scrollTop(100)		// For some reason, this doesn't work...
 	}, 'json');
 }

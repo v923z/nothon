@@ -94,6 +94,7 @@ function head_html_x(count) {
 	'data-save': true,
 	'data-main': 'div_head_main_' + count})
 	.keyup(function(event) { head_keypress(event) })
+	.focus(function() { set_active('input_head_header_' + count) })
 
 	//$('<input type="text"/>').appendTo($main).addClass('head_date')
 	//.attr({'id': 'input_head_date_' + count, 

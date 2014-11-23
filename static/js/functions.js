@@ -99,8 +99,7 @@ function message_handler(req) {
 }
 
 function set_active(id) {
-	active_div = id
-	//eval($(id).data('type') + '_context_menu()')
+	$('#docmain').attr('data-active', id)
 	$('#' + id).data('menu')()
 	var main = '#' + $(id).data('main')
 	$('#document_contents').find('li > a').each(function() {
@@ -464,18 +463,17 @@ function add_new_cell(html) {
 }
 
 function insert_new_cell(cell, to_activate) {
-	//if(active_div && $.contains($('#docmain')[0], active_div)) {
-		//$('#' + $(active_div).data('main')).after(html)		
-	//}
-	//else {
-		//add_new_cell(html)
-	//}
-	$('#docmain').append(cell)
+	var active = $('#docmain').data('active')
+	if(active && $('#docmain').has('#' + active).length) {
+		$('#' + $('#' + active).data('main')).after(cell)
+	}
+	else {
+		add_new_cell(cell)
+	}
 	generate_toc()
-	//set_active(document.getElementById(to_activate))
 	$('#' + to_activate).focus()
-	$('#' + to_activate).scrollTop()
-	var cdate = $(event.target).data('main')
+	$('#' + to_activate)[0].scrollIntoView(true)
+	var cdate = $('#' + to_activate).data('main')
 	$('#' + cdate).attr({'created': get_date()})
 }
 
@@ -591,7 +589,7 @@ function check(what) {
 function get_date() {
 	// Convenience function
 	var t = new Date()
-	return t.toTimeString()
+	return t.toString()
 }
 
 function insert_modified(target) {
@@ -603,5 +601,5 @@ function add_modified_created(target, json) {
 	var modified = '', created = ''
 	if(json.modified) modified = json.modified
 	if(json.created) created = json.created
-	$(target).data({'modified': json.modified || '', 'created': created})
+	$(target).data({'modified': modified, 'created': created})
 }
