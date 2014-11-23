@@ -35,16 +35,23 @@ function xml_http_post(url, data, callback) {
     req.send(data);
 }
 
+function scrollto(elem) {
+	elem[0].scrollIntoView(true)
+}
+
 function move(where) {
-	if(!active_div) return
-	var $pos = $('#' + $(active_div).data('main'))
-	if(where == 'up' && !$pos.is('#docmain :first')) {
-		$pos.after($pos.prev())
+	var $active = get_active_cell()
+	if(!$active) return
+	
+	var $main = $('#' + $active.data('main'))
+	if(where == 'up') {
+		$main.after($main.prev())
 	}
-	if(where == 'down' && !$pos.is('#docmain :last')) {
-		$pos.before($pos.next())
+	if(where == 'down') {
+		$main.before($main.next())
 	}
-	active_div.focus()
+	scrollto($main)
+	$active.focus()		// This doesn't work!
 }
 
 function get_index(obj) {
@@ -463,9 +470,9 @@ function add_new_cell(html) {
 }
 
 function insert_new_cell(cell, to_activate) {
-	var active = $('#docmain').data('active')
-	if(active && $('#docmain').has('#' + active).length) {
-		$('#' + $('#' + active).data('main')).after(cell)
+	var $active = get_active_cell()
+	if($active) {
+		$('#' + $active.data('main')).after(cell)
 	}
 	else {
 		add_new_cell(cell)
@@ -475,6 +482,15 @@ function insert_new_cell(cell, to_activate) {
 	$('#' + to_activate)[0].scrollIntoView(true)
 	var cdate = $('#' + to_activate).data('main')
 	$('#' + cdate).attr({'created': get_date()})
+}
+
+function get_active_cell() {
+	var active = $('#docmain').data('active')
+	if(active && $('#docmain').has('#' + active).length) {
+		return $('#' + active)
+	} else {
+		return null
+	}
 }
 
 function generate_toc() {

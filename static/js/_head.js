@@ -74,7 +74,7 @@ function head_render(json) {
 }
 
 function head_html_x(count) {
-	var $main = $('<div></div>').addClass('head_main')
+	var $main = $('<div></div>').addClass('main head_main')
 				.attr({'id': 'div_head_main_' + count, 
 					'data-type': 'head', 
 					'data-count': count

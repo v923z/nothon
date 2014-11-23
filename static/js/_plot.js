@@ -11,7 +11,7 @@ function insert_plot() {
 }
 
 function plot_html_x(count) {
-	var $main = $('<div></div>').addClass('plot_main')
+	var $main = $('<div></div>').addClass('main plot_main')
 				.attr({'id': 'div_plot_main_' + count, 
 					'data-type': 'plot', 
 					'data-count': count

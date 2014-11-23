@@ -184,7 +184,7 @@ article {
 	background: 		#ffffff;
 }
 
-.plot_main, .head_main, .code_main, .text_main, .paragraph_main {
+.main {
 	background-color: 	rgba(0, 0, 0, 0.05);
 	margin-top: 		8px;
 	margin-left: 		5px;
@@ -192,6 +192,9 @@ article {
 	width: 				100%;
 	border-top: 		2px solid #ac9;
     border-bottom: 		2px solid #ac9;
+}
+
+.plot_main, .head_main, .code_main, .text_main, .paragraph_main {
 }
 
 /*

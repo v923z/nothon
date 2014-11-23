@@ -117,7 +117,7 @@ function code_render(json) {
 }
 
 function code_html_x(count) {
-	var $main = $('<div></div>').addClass('code_main')
+	var $main = $('<div></div>').addClass('main code_main')
 				.attr({'id': 'div_code_main_' + count, 
 					'data-type': 'code', 
 					'data-count': count
