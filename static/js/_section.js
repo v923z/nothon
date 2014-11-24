@@ -42,12 +42,27 @@ function section_sanitise(block) {
 	var dtemp = $('<div/>', {'id': 'dtemp'}).appendTo('#trash')
 	// We have to remove all codemirror and editor instances
 	$('#dtemp').html(block.content.section_body.content)
-	strip_mathjax_for_save($('#dtemp'))
+	remove_rendered_math($('#dtemp'))
 	strip_images_for_save($('#dtemp'))
 	block.content.section_body.content = $('#dtemp').html()
 	block.content.section_header.content = block.content.section_header.content.replace('<br>', '')
 	$('#dtemp').remove()
 	return block
+}
+
+function remove_rendered_math(target) {
+	$(target).find('.nothon_math').each( function() { $(this).html($(this).attr('alt')) })
+	$(target).find('.math_editor').each( function() { 
+		$(this).remove()
+		//var main = $(this).data('main')
+		//console.log($(this).attr('id'))
+		//$('#' + main).find('#' + $(this).attr('id')).each( function() {
+			////var editor = $(this).attr('data-editor')
+			////console.log(editor.getTextArea().id)
+		//})
+		//$('#' + main + ' #' + $(this).data('formula_id')).attr('alt', editor.getValue().replace(/\\/g, '\\'))
+	})
+	$(target).find('.CodeMirror').each( function() { $(this).remove() })
 }
 
 function section_html(count) {
@@ -119,8 +134,8 @@ function edit_math() {
 					$('#textarea_math_editor_' + id).attr({'data-editor': editor})
 					editor.setValue($(this).attr('alt'))
 				} else {
-					var editor = $('#textarea_math_editor_' + id).data('editor')
-					editor.getWrapperElement().style.display = 'block'
+					//var editor = $('#textarea_math_editor_' + id).data('editor')
+					//editor.getWrapperElement().style.display = 'block'
 					// TODO: Move the cursor to the editor
 				}
 			}
@@ -155,6 +170,7 @@ function math_editor(id) {
 					},
 				'Shift-Enter' : function(cm) { 
 						render_math(cm)
+						// If we remove the editor, changes won't persist!
 						var $ta = $('#' + cm.getTextArea().id)
 						cm.toTextArea()
 						$ta.remove()
