@@ -131,7 +131,7 @@ function edit_math() {
 				if($('#textarea_math_editor_' + id).length == 0) {
 					$(this).after(math_editor_html(id))
 					var editor = math_editor('textarea_math_editor_' + id)
-					$('#textarea_math_editor_' + id).attr({'data-editor': editor})
+					$('#textarea_math_editor_' + id).data({'editor': editor})
 					editor.setValue($(this).attr('alt'))
 				} else {
 					//var editor = $('#textarea_math_editor_' + id).data('editor')
@@ -178,6 +178,7 @@ function math_editor(id) {
 			},
 			autoCloseBrackets: "()[]{}"
 		})
+	editor.on('cursorActivity', function(cm) { cursor_activity(cm) })
 	return editor
 }
 
@@ -189,4 +190,9 @@ function render_math(cm) {
 	MathJax.Hub.Queue(resetEquationNumbers, 
 		["PreProcess", MathJax.Hub, main],
 		["Reprocess", MathJax.Hub, main]);
+}
+
+function cursor_activity(cm) {
+	var pos = cm.getCursor()
+	//console.log(pos.line, pos.ch)
 }
