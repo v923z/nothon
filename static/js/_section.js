@@ -188,11 +188,42 @@ function render_math(cm) {
 	$('#' + formula_id).attr('alt', cm.getValue().replace(/\\/g, '\\'))
 	$('#' + formula_id).html(cm.getValue().replace(/\\/g, '\\'))
 	MathJax.Hub.Queue(resetEquationNumbers, 
-		["PreProcess", MathJax.Hub, main],
+		//["PreProcess", MathJax.Hub, main],
 		["Reprocess", MathJax.Hub, main]);
 }
 
 function cursor_activity(cm) {
+	var formula_id = $('#' + cm.getTextArea().id).data('formula_id')
 	var pos = cm.getCursor()
-	//console.log(pos.line, pos.ch)
+	var lines = cm.getValue().replace(/\\/g, '\\').split('\n')
+	var line = lines[pos.line]
+	var char = line[pos.ch]
+	// If special character, do not render
+	if($.inArray(char, ['{', '}', '^', '_' ]) > -1) return
+	lines[pos.line] = coloured_latex(line, pos.ch)
+	console.log(lines[pos.line])
+	$('#' + formula_id).html(lines.join('\n'))
+	MathJax.Hub.Queue(resetEquationNumbers, 
+		["PreProcess", MathJax.Hub, formula_id],
+		["Reprocess", MathJax.Hub, formula_id]);
+}
+
+function coloured_latex(line, pos) {
+	var latex_commands = new Array()
+	latex_commands = ['\\acute', '\\aleph', '\\alpha', '\\approx']
+	if(line[pos] == '\\') {
+		//We might be at the beginning of a LaTeX word
+		var partial_line = line.slice(pos,line.length)
+		$.each(latex_commands, function(index, value) {
+			if(partial_line.indexOf(value) == 0) {
+				var next_char = line[pos+value.length]
+				// These characters would signify the end of a LaTeX command
+				if($.inArray(next_char, ['_', '^', '\n', '\\', ' ', '\t']) > -1) {
+					console.log(value)
+					return line.slice(0, pos) + '\\color{red}{' + value + '}' + line.slice(pos+value.length, line.length)
+				}
+			}
+		})
+	} 
+	return line.slice(0, pos) + '\\color{red}{' + line[pos] + '}' + line.slice(pos+1, line.length)
 }
