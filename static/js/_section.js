@@ -199,7 +199,7 @@ function cursor_activity(cm) {
 	var line = lines[pos.line]
 	var char = line[pos.ch]
 	// If special character, do not render
-	if($.inArray(char, ['{', '}', '^', '_' ]) > -1) return
+	if('{}^_&\\ \t').indexOf(char) > -1) return
 	var new_line = coloured_latex(line, pos.ch)
 	if(!new_line) return
 	lines[pos.line] = new_line
