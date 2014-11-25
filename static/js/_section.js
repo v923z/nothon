@@ -200,30 +200,167 @@ function cursor_activity(cm) {
 	var char = line[pos.ch]
 	// If special character, do not render
 	if($.inArray(char, ['{', '}', '^', '_' ]) > -1) return
-	lines[pos.line] = coloured_latex(line, pos.ch)
+	var new_line = coloured_latex(line, pos.ch)
+	if(!new_line) return
+	lines[pos.line] = new_line
 	console.log(lines[pos.line])
 	$('#' + formula_id).html(lines.join('\n'))
+	// We have to do some display swapping here, otherwise, the 
+	// display is somewhat jerky
 	MathJax.Hub.Queue(resetEquationNumbers, 
 		["PreProcess", MathJax.Hub, formula_id],
 		["Reprocess", MathJax.Hub, formula_id]);
 }
 
 function coloured_latex(line, pos) {
+	if(line.indexOf('\\begin{') > -1 || line.indexOf('\\end{') > -1) return null
 	var latex_commands = new Array()
-	latex_commands = ['\\acute', '\\aleph', '\\alpha', '\\approx']
-	if(line[pos] == '\\') {
-		//We might be at the beginning of a LaTeX word
-		var partial_line = line.slice(pos,line.length)
-		$.each(latex_commands, function(index, value) {
-			if(partial_line.indexOf(value) == 0) {
-				var next_char = line[pos+value.length]
-				// These characters would signify the end of a LaTeX command
-				if($.inArray(next_char, ['_', '^', '\n', '\\', ' ', '\t']) > -1) {
-					console.log(value)
-					return line.slice(0, pos) + '\\color{red}{' + value + '}' + line.slice(pos+value.length, line.length)
-				}
+	latex_commands = ['\\acute', '\\aleph', '\\alpha', '\\approx', '\\beta']
+	for(i in latex_commands) {
+		var value = latex_commands[i]
+		var start = Math.max(0, pos-value.length)
+		var partial_line = line.slice(start)
+		var index = partial_line.indexOf(value)
+		if(index > -1 && index < value.length) {
+			// We have found a match
+			var end = start+index+value.length
+			var next_char = line[end]
+			// These characters would signify the end of a LaTeX command
+			if('_^\n\\ \t()[]}'.indexOf(next_char) > -1) {
+				return line.slice(0, start+index) + '\\color{red}{' + value + '}' + line.slice(end)
 			}
-		})
-	} 
-	return line.slice(0, pos) + '\\color{red}{' + line[pos] + '}' + line.slice(pos+1, line.length)
+		}
+	}
+	var indx = pos
+	while(indx) {
+		indx--
+		if(line[indx] == '\\') {
+			// This would mean that we have either found an illegal 
+			// LaTeX command, something like '\alp', or one that 
+			// we don't want to handle (not in the list above), like \frac{}{}
+			return null
+		}
+		if('{}()[]_^ \t'.indexOf(line[indx]) > -1) {
+			// We have a completely innocent character here, so we colour it
+			return line.slice(0, pos) + '\\color{red}{' + line[pos] + '}' + line.slice(pos+1)
+		}
+	}
 }
+
+//<!DOCTYPE html>
+//<html>
+//<head>
+//<title>Dynamic Preview of Textarea with MathJax Content</title>
+//<!-- Copyright (c) 2012-2014 The MathJax Consortium -->
+//<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+//<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+//<script type="text/x-mathjax-config">
+  //MathJax.Hub.Config({
+    //showProcessingMessages: false,
+    //tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
+  //});
+//</script>
+//<script type="text/javascript" src="../MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+//<script>
+//var Preview = {
+  //delay: 150,        // delay after keystroke before updating
+
+  //preview: null,     // filled in by Init below
+  //buffer: null,      // filled in by Init below
+
+  //timeout: null,     // store setTimout id
+  //mjRunning: false,  // true when MathJax is processing
+  //oldText: null,     // used to check if an update is needed
+
+  ////
+  ////  Get the preview and buffer DIV's
+  ////
+  //Init: function () {
+    //this.preview = document.getElementById("MathPreview");
+    //this.buffer = document.getElementById("MathBuffer");
+  //},
+
+  ////
+  ////  Switch the buffer and preview, and display the right one.
+  ////  (We use visibility:hidden rather than display:none since
+  ////  the results of running MathJax are more accurate that way.)
+  ////
+  //SwapBuffers: function () {
+    //var buffer = this.preview, preview = this.buffer;
+    //this.buffer = buffer; this.preview = preview;
+    //buffer.style.visibility = "hidden"; buffer.style.position = "absolute";
+    //preview.style.position = ""; preview.style.visibility = "";
+  //},
+
+  ////
+  ////  This gets called when a key is pressed in the textarea.
+  ////  We check if there is already a pending update and clear it if so.
+  ////  Then set up an update to occur after a small delay (so if more keys
+  ////    are pressed, the update won't occur until after there has been 
+  ////    a pause in the typing).
+  ////  The callback function is set up below, after the Preview object is set up.
+  ////
+  //Update: function () {
+    //if (this.timeout) {clearTimeout(this.timeout)}
+    //this.timeout = setTimeout(this.callback,this.delay);
+  //},
+
+  ////
+  ////  Creates the preview and runs MathJax on it.
+  ////  If MathJax is already trying to render the code, return
+  ////  If the text hasn't changed, return
+  ////  Otherwise, indicate that MathJax is running, and start the
+  ////    typesetting.  After it is done, call PreviewDone.
+  ////  
+  //CreatePreview: function () {
+    //Preview.timeout = null;
+    //if (this.mjRunning) return;
+    //var text = document.getElementById("MathInput").value;
+    //if (text === this.oldtext) return;
+    //this.buffer.innerHTML = this.oldtext = text;
+    //this.mjRunning = true;
+    //MathJax.Hub.Queue(
+      //["Typeset",MathJax.Hub,this.buffer],
+      //["PreviewDone",this]
+    //);
+  //},
+
+  ////
+  ////  Indicate that MathJax is no longer running,
+  ////  and swap the buffers to show the results.
+  ////
+  //PreviewDone: function () {
+    //this.mjRunning = false;
+    //this.SwapBuffers();
+  //}
+
+//};
+
+////
+////  Cache a callback to the CreatePreview action
+////
+//Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
+//Preview.callback.autoReset = true;  // make sure it can run more than once
+
+//</script>
+//</head>
+//<body>
+
+//Type text in the box below:<br/>
+
+//<textarea id="MathInput" cols="60" rows="10" onkeyup="Preview.Update()" style="margin-top:5px">
+//</textarea>
+//<br/><br/>
+//Preview is shown here:
+//<div id="MathPreview" style="border:1px solid; padding: 3px; width:50%; margin-top:5px"></div>
+//<div id="MathBuffer" style="border:1px solid; padding: 3px; width:50%; margin-top:5px; 
+//visibility:hidden; position:absolute; top:0; left: 0"></div>
+
+//<script>
+//Preview.Init();
+//</script>
+
+//</body>
+//</html>
