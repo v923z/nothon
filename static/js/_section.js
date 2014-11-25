@@ -232,7 +232,7 @@ function coloured_latex(line, pos) {
 	'\\biguplus', '\\bigvee', '\\bigwedge', '\\binom', '\\blacklozenge', 
 	'\\blacksquare', '\\blacktriangle', '\\blacktriangledown', '\\blacktriangleleft', 
 	'\\blacktriangleright', '\\bmod', '\\boldsymbol', '\\bot', '\\bowtie', '\\Box', 
-	'\\boxdot', '\\boxed', '\\boxminus', '\\boxplus', '\\boxtimes', '\\brace', 
+	'\\boxdot', '\\boxminus', '\\boxplus', '\\boxtimes', '\\brace', 
 	'\\bracevert', '\\brack', '\\breve', '\\buildrel', '\\bullet', '\\Bumpeq', 
 	'\\bumpeq', '\\cal', '\\cap', '\\Cap', '\\cases', 
 	'\\cdot', '\\cdotp', '\\cdots', '\\ce', '\\cee', '\\centerdot', '\\cf', 
