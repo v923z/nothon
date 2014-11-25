@@ -213,7 +213,12 @@ function cursor_activity(cm) {
 }
 
 function coloured_latex(line, pos) {
-	if(line.indexOf('\\begin{') > -1 || line.indexOf('\\end{') > -1) return null
+	if(line.indexOf('\\begin{') > -1 || line.indexOf('\\end{') > -1) {
+		// We should not do anything, if we are in a line of beginning 
+		// or ending an environment
+		return null
+	}
+	
 	var latex_commands = new Array()
 	latex_commands = ['\\acute', '\\aleph', '\\alpha', '\\approx', '\\beta']
 	for(i in latex_commands) {
