@@ -104,7 +104,7 @@ function add_row(target, type) {
 	fill_in_fields(uuid)
 	set_active_paper(uuid)	
 	var row = generate_row(target, type, uuid, count_rows(target))
-	$(target).find('tbody').append(row).trigger("applyWidgets")
+	$(target).find('tbody').append(row).trigger('applyWidgets').trigger('update')
 	$('#' + uuid).addClass('active_row')
 	// Activate the first fields tab
 	$('#notes_tab').tabs('option', 'active', 1)
