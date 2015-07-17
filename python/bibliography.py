@@ -102,6 +102,7 @@ class Bibliography(object):
 
 def dic_to_bib_string(key, entry):
 	if key in ('file'):
+		# This does not treat multiple files properly
 		return '\t%s = {:%s:PDF}'%(key, entry.get(key, '""'))	
 	return '\t%s = {%s}'%(key, entry.get(key, '""'))
 

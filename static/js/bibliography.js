@@ -212,7 +212,11 @@ function set_paper_info(uuid) {
 		// This could be done a bit more elegantly using join.
 		var fl = $.trim(file_links[i])
 		if(server_address) {
-			file_link_str += '<a href="/?file=' + directory + fl + '" target="_blank">' + fl + '</a> '
+			if(fl[0] !== '/') {
+				file_link_str += '<a href="/?file=' + directory + fl + '" target="_blank">' + fl + '</a> '
+			} else {
+				file_link_str += '<a href="/?file=' + fl + '" target="_blank">' + fl + '</a> '
+			}
 		} else {
 			file_link_str += '<a href="' + fl + '" target="_blank">' + fl + '</a> '
 		}
@@ -640,3 +644,27 @@ function get_visible_papers() {
 	})
 	return visible_papers
 }
+
+//function generate_bibtex(list_of_papers) {
+	//// We need this, otherwise jabref doesn't understand the encoding
+	//var bib_str = '% This file was created with JabRef 2.9.2.\n% Encoding: UTF8\n\n'
+	//for(_paper in list_of_papers) {
+		//var paper = list_of_papers[_paper]
+		//if(paper[key]) {
+			//var header = '@' + paper['type'] + '{' + paper['key'] + ',\n'
+			//var body = ',\n'.join([dic_to_bib_string(key, entry) for key in entry])
+			//var bib_str += header + body + '\n}\n\n'
+		//}
+	//}
+//}
+
+//function entry_to_bib_string(entry):
+	//// This is needed, because file links are treated differently in bibtex. 
+	//var arr = $.map(entry, function(el) { return el })
+	////for(key in entry)
+	////if(key == 'file') {
+		////return '\t%s = {:' + entry[key] + ':PDF}'
+	////} else {
+		////return '\t%s = {' +  entry[key] + '}'
+	////}
+//}
