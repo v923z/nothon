@@ -8,7 +8,7 @@ from collections import defaultdict
 import base64
 
 
-def get_file_from_disc(filename):
+def get_file_from_disc(file):
 	# TODO: resolve relative paths
 	if os.path.exists(file):
 		try:
