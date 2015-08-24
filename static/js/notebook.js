@@ -1,4 +1,5 @@
-$(document).ready(function () {	
+$(document).ready(function () {
+	//var md = window.markdownit();
 	// We do the rendering here
 	var notebook = full_notebook['notebook']
 	$('#div_title').html(full_notebook._metadata.title)
@@ -6,6 +7,7 @@ $(document).ready(function () {
 		eval(notebook[i].type + '_render(notebook[i])')
 	}
 	
+
 	// TODO: this has to be done in the loop above.
 	//$(function() {
 		//$("div").each( function() {
