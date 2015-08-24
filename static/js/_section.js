@@ -98,7 +98,7 @@ function section_render(json) {
 	$('#textarea_section_' + json.count).data('raw', json.content.section_header.content + json.content.section_body.content)
 	$('#div_section_main_' + json.count).data('editor', editor)
 	$(editor.getWrapperElement()).hide()
-	$('#div_section_body_' + json.count).html(json.content.section_header.content + json.content.section_body.content)
+	$('#div_section_body_' + json.count).html(md.render(json.content.section_header.content + json.content.section_body.content))
 }
 
 function section_editor(id) {
@@ -135,7 +135,7 @@ function render_content(cm) {
 	var math = document.getElementById(body_id)
 	$(cm.getWrapperElement()).hide()
 	$('#' + id).data('raw', text)
-	$('#' + body_id).html(text)
+	$('#' + body_id).html(md.render(text))
 	$('#' + body_id).show()
 
 	MathJax.Hub.Queue(resetEquationNumbers, 
@@ -148,10 +148,13 @@ function insert_math(mode, cm) {
 	var value = cm.getValue()
 
 	if(mode === 'inline') {
-		cm.replaceSelection('$ $', 'start')
+		cm.replaceSelection('\\\\(\\\\)', 'start')
+		cm.execCommand('goCharRight')
+		cm.execCommand('goCharRight')
 		cm.execCommand('goCharRight')
 	} else if(mode === 'display') {
-		cm.replaceSelection('\\begin{equation}\n\n\\end{equation}', 'start')
+		cm.replaceSelection('\n\\begin{equation}\n\n\\end{equation}', 'start')
+		cm.execCommand('goLineDown')
 		cm.execCommand('goLineDown')
 	}
 }

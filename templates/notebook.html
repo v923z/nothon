@@ -24,6 +24,7 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/fancytree/jquery.fancytree.js"></script>
 <script src="/static/js/fancytree/jquery.fancytree.edit.js"></script>
 <script src="/static/js/fancytree/jquery.fancytree.persist.js"></script>
+<script src="/static/js/markdown-it/dist/markdown-it.js"></script>
 <script src="/static/js/functions.js"></script>
 <script src="/static/js/notebook.js"></script>
 <script src="/static/js/custom.js"></script>
@@ -36,7 +37,6 @@ $def with (title, filename, aside, content, handler_funcs, create_funcs)
 <script src="/static/js/codemirror/addon/comment/comment.js"></script>
 <script src="/static/js/codemirror/mode/python/python.js"></script>
 <script src="/static/js/codemirror/mode/stex/stex.js"></script>
-<script src="/static/js/markdown-it/dist/markdown-it.js"></script>
 
 $for f in create_funcs + handler_funcs:
 	$ js_src = "/static/js/%s.js"%(f)

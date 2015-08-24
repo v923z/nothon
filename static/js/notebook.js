@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	//var md = window.markdownit();
+
 	// We do the rendering here
 	var notebook = full_notebook['notebook']
 	$('#div_title').html(full_notebook._metadata.title)

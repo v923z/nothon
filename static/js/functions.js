@@ -4,6 +4,7 @@
 // http://forums.phpfreaks.com/topic/268622-place-cursor-at-end-of-line-in-editable-div/
 
 var active_div = null
+var md = window.markdownit()
 
 function xml_http_post(url, data, callback) {
     var req = false;
