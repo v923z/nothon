@@ -645,18 +645,17 @@ function get_visible_papers() {
 	return visible_papers
 }
 
-//function generate_bibtex(list_of_papers) {
-	//// We need this, otherwise jabref doesn't understand the encoding
-	//var bib_str = '% This file was created with JabRef 2.9.2.\n% Encoding: UTF8\n\n'
-	//for(_paper in list_of_papers) {
-		//var paper = list_of_papers[_paper]
-		//if(paper[key]) {
-			//var header = '@' + paper['type'] + '{' + paper['key'] + ',\n'
-			//var body = ',\n'.join([dic_to_bib_string(key, entry) for key in entry])
-			//var bib_str += header + body + '\n}\n\n'
-		//}
-	//}
-//}
+function generate_bibtex(list_of_papers) {
+	// We need this, otherwise jabref doesn't understand the encoding
+	var bib_str = '% This file was created with JabRef 2.9.2.\n% Encoding: UTF8\n\n'
+	for(_paper in list_of_papers) {
+		var paper = list_of_papers[_paper]
+		if(paper['key']) {
+			var bib_str += json_to_bibtex(paper) + '\n\n'
+		}
+	}
+	return bib_str
+}
 
 //function entry_to_bib_string(entry):
 	//// This is needed, because file links are treated differently in bibtex. 
